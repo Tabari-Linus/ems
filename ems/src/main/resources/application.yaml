@@ -1,3 +1,12 @@
 spring:
   application:
     name: ems
+
+  profiles:
+    active: ${APP_PROFILE:dev}
+
+  flyway:
+    locations: classpath:db/migration
+
+server:
+  port: ${SERVER_PORT:8080}
