@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
+    show-sql: true
+
+  graphql:
+    graphiql:
+      enabled: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+logging:
+  level:
+    root: INFO
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+    org.springframework.security: DEBUG
+    org.springframework.graphql: DEBUG
+    org.amalitech.armsloanservicepro: DEBUG
+    org.apache.kafka: INFO
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+allowed:
+  cors:
+    url: ${ALLOWED_CORS_URL}
+
+jwt:
+  publicKey: ${JWT_PUBLIC_KEY}
