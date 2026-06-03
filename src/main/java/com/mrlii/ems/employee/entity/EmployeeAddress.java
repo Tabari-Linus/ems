@@ -1,4 +1,4 @@
-package com.mrlii.ems.employee;
+package com.mrlii.ems.employee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -15,7 +15,7 @@ public class EmployeeAddress {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 

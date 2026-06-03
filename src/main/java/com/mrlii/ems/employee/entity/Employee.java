@@ -1,4 +1,4 @@
-package com.mrlii.ems.employee;
+package com.mrlii.ems.employee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,8 +19,10 @@ public class Employee {
 
     private String lastName;
 
-    private String email;
+    private String workEmail;
 
     @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
     private EmployeeBio bio;
+
+
 }

@@ -1,5 +1,6 @@
-package com.mrlii.ems.employee;
+package com.mrlii.ems.employee.entity;
 
+import com.mrlii.ems.employee.enums.IdentificationType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +16,12 @@ public class EmployeeIdentification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    private String identificationNumber;
+
+    @Enumerated(EnumType.STRING)
+    private IdentificationType identificationType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
     private Employee employee;
 }

@@ -1,7 +1,9 @@
-package com.mrlii.ems.employee;
+package com.mrlii.ems.employee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.Set;
 
 @Entity
 @Getter
@@ -14,6 +16,10 @@ public class EmployeeContact {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private Set<String> phoneNumber;
+
+    private Set<String> personalEmail;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)
