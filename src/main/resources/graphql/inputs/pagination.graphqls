@@ -1,0 +1,19 @@
+input PageInput {
+    page: Int
+    size: Int
+}
+
+input DateRangeInput {
+    startDate: DateTime
+    endDate: DateTime
+}
+
+input SortInput {
+    sortField: String
+    sortDirection: SortDirection
+}
+
+input GeneralFilterInput {
+    status: CommonStatus
+    search: String
+}

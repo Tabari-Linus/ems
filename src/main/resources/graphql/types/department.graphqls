@@ -1,0 +1,47 @@
+type DepartmentResult {
+    id: ID
+    departmentName: String
+}
+
+type DepartmentDetailResult {
+    id: ID!
+    departmentName: String!
+    departmentCode: String!
+    departmentPrefix: String
+    departmentEmail: String
+    departmentPhoneNumber: String
+    departmentAddress: String
+    departmentStatus: CommonStatus
+    office: OfficeResult
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type ApiResponseDepartmentResult {
+    success: Boolean!
+    message: String
+    data: DepartmentResult
+}
+
+type DepartmentListItemResult {
+    id: ID!
+    departmentName: String!
+    departmentCode: String!
+    departmentPrefix: String
+    departmentEmail: String
+    departmentPhoneNumber: String
+    departmentAddress: String
+    departmentStatus: CommonStatus
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type DepartmentPageResult {
+    data: [DepartmentListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}

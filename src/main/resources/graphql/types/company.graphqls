@@ -1,0 +1,47 @@
+type CompanyResult {
+    id: ID
+    companyName: String
+}
+
+type CompanyDetailResult {
+    id: ID!
+    companyName: String!
+    companyCode: String!
+    companyEmail: String
+    companyPhone: String
+    companyPhoneNumber: String
+    companyAddress: String
+    offices: [OfficeDetailResult!]!
+    nextOfficeNumber: String
+    companyStatus: CommonStatus
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type ApiResponseCompanyResult{
+    success: Boolean!
+    message: String
+    data: CompanyResult
+}
+
+type CompanyPageResult {
+    data: [CompanyListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
+
+type CompanyListItemResult{
+    id: ID!
+    companyName: String!
+    companyCode: String!
+    companyEmail: String
+    companyPhone: String
+    companyPhoneNumber: String
+    companyAddress: String
+    nextOfficeNumber: String
+    companyStatus: CommonStatus
+}

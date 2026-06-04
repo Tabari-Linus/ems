@@ -1,0 +1,4 @@
+extend type Query {
+    getDepartment(id: ID!): DepartmentDetailResult
+    getDepartments(officeId: ID, filter: GeneralFilterInput, pageInput: PageInput, sortInput: SortInput): DepartmentPageResult
+}

@@ -1,0 +1,18 @@
+input CreateDepartmentInput {
+    departmentName: String!
+    departmentCode: String!
+    departmentPrefix: String
+    departmentEmail: String!
+    departmentPhoneNumber: String
+    departmentAddress: String
+    officeId: ID!
+}
+
+input UpdateDepartmentInput {
+    departmentName: String
+    departmentCode: String
+    departmentPrefix: String
+    departmentEmail: String
+    departmentPhoneNumber: String
+    departmentAddress: String
+}

@@ -1,0 +1,25 @@
+input CreateCompanyInput {
+    companyName: String!
+    companyCode: String!
+    companyEmail: String!
+    companyPhoneNumber: String
+    companyAddress: String
+}
+
+input UpdateCompanyInput {
+    companyName: String
+    companyEmail: String
+    companyPhoneNumber: String
+    companyAddress: String
+}
+
+input CompanyFilterInput {
+    search: String
+    companyStatus: CommonStatus
+}
+
+input CompanyPaginationInput {
+    page: Int = 0
+    size: Int = 10
+}
+
