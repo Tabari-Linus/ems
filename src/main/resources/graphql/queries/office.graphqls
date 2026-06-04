@@ -1,0 +1,4 @@
+extend type Query {
+    getOffice(id: ID!): OfficeDetailResult
+    getOffices(companyId: ID, filter: GeneralFilterInput, pageInput: PageInput, sortInput: SortInput): OfficePageResult
+}

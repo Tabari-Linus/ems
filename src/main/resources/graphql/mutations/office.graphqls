@@ -1,0 +1,7 @@
+extend type Mutation {
+    createOffice(input: CreateOfficeInput!): ApiResponseOfficeResult
+    updateOffice(id: ID!, input: UpdateOfficeInput!): ApiResponseOfficeResult
+    archiveOffice(id: ID!): ApiResponseOfficeResult
+    activateOffice(id: ID!, active: Boolean!): ApiResponseOfficeResult
+    deleteOffice(id: ID!): ApiResponseOfficeResult
+}

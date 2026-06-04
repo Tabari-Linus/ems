@@ -1,0 +1,6 @@
+enum CommonStatus {
+    PENDING
+    ACTIVE
+    INACTIVE
+    ARCHIVE
+}

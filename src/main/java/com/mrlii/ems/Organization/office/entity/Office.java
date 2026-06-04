@@ -1,9 +1,13 @@
-package com.mrlii.ems.Organization.entity;
+package com.mrlii.ems.Organization.office.entity;
 
+import com.mrlii.ems.Organization.company.entity.Company;
+import com.mrlii.ems.Organization.department.entity.Department;
 import com.mrlii.ems.common.entity.AuditableEntity;
+import com.mrlii.ems.common.enums.CommonStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -33,11 +37,16 @@ public class Office extends AuditableEntity {
 
     private String officeAddress;
 
+    @Enumerated(EnumType.STRING)
+    private CommonStatus officeStatus;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
 
     @OneToMany(mappedBy = "office", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Department> departments;
+
+    private LocalDateTime deletedAt;
 
 }

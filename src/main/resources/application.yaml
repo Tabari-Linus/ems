@@ -7,6 +7,12 @@ spring:
       hibernate:
         format_sql: true
 
+  graphql:
+    graphiql:
+      enabled: false
+    http:
+      path: /
+
 management:
   endpoints:
     web:

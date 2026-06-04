@@ -1,0 +1,7 @@
+extend type Mutation {
+    createCompany(input: CreateCompanyInput!): ApiResponseCompanyResult
+    updateCompany(id: ID!, input: UpdateCompanyInput!): ApiResponseCompanyResult
+    archiveCompany(id: ID!): ApiResponseCompanyResult
+    activateCompany(id: ID!, active: Boolean!): ApiResponseCompanyResult
+    deleteCompany(id: ID!): ApiResponseCompanyResult
+}

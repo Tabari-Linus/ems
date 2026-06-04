@@ -1,0 +1,7 @@
+extend type Mutation {
+    createDepartment(input: CreateDepartmentInput!): ApiResponseDepartmentResult
+    updateDepartment(id: ID!, input: UpdateDepartmentInput!): ApiResponseDepartmentResult
+    archiveDepartment(id: ID!): ApiResponseDepartmentResult
+    activateDepartment(id: ID!, active: Boolean!): ApiResponseDepartmentResult
+    deleteDepartment(id: ID!): ApiResponseDepartmentResult
+}

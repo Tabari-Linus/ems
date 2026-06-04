@@ -1,0 +1,46 @@
+type OfficeResult {
+    id: ID
+    officeName: String
+}
+
+type OfficeDetailResult {
+    id: ID!
+    officeName: String!
+    officeCode: String!
+    officeEmail: String
+    officePhoneNumber: String
+    officeAddress: String
+    officeStatus: CommonStatus
+    company: CompanyResult
+    departments: [DepartmentDetailResult!]!
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type ApiResponseOfficeResult {
+    success: Boolean!
+    message: String
+    data: OfficeResult
+}
+
+type OfficeListItemResult {
+    id: ID!
+    officeName: String!
+    officeCode: String!
+    officeEmail: String
+    officePhoneNumber: String
+    officeAddress: String
+    officeStatus: CommonStatus
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type OfficePageResult {
+    data: [OfficeListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
