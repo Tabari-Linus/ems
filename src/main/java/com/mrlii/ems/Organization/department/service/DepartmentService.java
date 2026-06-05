@@ -2,9 +2,9 @@ package com.mrlii.ems.Organization.department.service;
 
 import com.mrlii.ems.Organization.department.dto.*;
 import com.mrlii.ems.common.dto.GeneralFilterInput;
-import com.mrlii.ems.common.dto.PageInput;
-import com.mrlii.ems.common.dto.PageResult;
-import com.mrlii.ems.common.dto.SortInput;
+import com.mrlii.ems.common.Pagination.PageInput;
+import com.mrlii.ems.common.Pagination.PageResult;
+import com.mrlii.ems.common.Pagination.SortInput;
 
 public interface DepartmentService {
 

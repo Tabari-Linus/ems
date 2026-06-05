@@ -27,20 +27,24 @@ public class OfficePersistenceHelper {
 
     public Office persistNewOffice(CreateOfficeInput input) {
         officeServiceHelper.validateUniqueName(input.officeName());
-        officeServiceHelper.validateUniqueCode(input.officeCode());
         officeServiceHelper.validateUniqueEmail(input.officeEmail());
 
         Company company = companyServiceHelper.getCompanyById(input.companyId());
 
+        Long currentOfficeNumber = company.getNextOfficeNumber();
+        String generatedOfficeCode = String.format("%03d", currentOfficeNumber);
+
         Office office = Office.builder()
                 .officeName(commonUtilHelper.normalizeName(input.officeName()))
-                .officeCode(commonUtilHelper.normalizeName(input.officeCode()))
+                .officeCode(generatedOfficeCode)
                 .officeEmail(commonUtilHelper.normalizeName(input.officeEmail()))
                 .officePhoneNumber(input.officePhoneNumber())
                 .officeAddress(input.officeAddress())
                 .officeStatus(CommonStatus.ACTIVE)
                 .company(company)
                 .build();
+
+        company.setNextOfficeNumber(currentOfficeNumber + 1);
 
         return officeRepository.save(office);
     }
@@ -51,14 +55,10 @@ public class OfficePersistenceHelper {
                         "Office with ID %d not found".formatted(officeId)));
 
         officeServiceHelper.validateUniqueName(input.officeName());
-        officeServiceHelper.validateUniqueCode(input.officeCode());
         officeServiceHelper.validateUniqueEmail(input.officeEmail());
 
         if (officeUtil.validateNotNull(input.officeName())) {
             office.setOfficeName(commonUtilHelper.normalizeName(input.officeName()));
-        }
-        if (officeUtil.validateNotNull(input.officeCode())) {
-            office.setOfficeCode(commonUtilHelper.normalizeName(input.officeCode()));
         }
         if (officeUtil.validateNotNull(input.officeEmail())) {
             office.setOfficeEmail(commonUtilHelper.normalizeName(input.officeEmail()));

@@ -10,16 +10,6 @@ public record CreateDepartmentInput(
         @Size(min = 2, message = "Department name must be at least 2 characters")
         String departmentName,
 
-        @NotBlank(message = "Department code must not be blank")
-        @Size(min = 2, message = "Department code must be at least 2 characters")
-        @Pattern(
-                regexp = "^(?=.*[A-Za-z0-9])[A-Za-z0-9]+$",
-                message = "Department code can only contain letters and numbers"
-        )
-        String departmentCode,
-
-        String departmentPrefix,
-
         @NotBlank(message = "Department email must not be blank")
         @Pattern(
                 regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",

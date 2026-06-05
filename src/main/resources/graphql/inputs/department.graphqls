@@ -1,7 +1,5 @@
 input CreateDepartmentInput {
     departmentName: String!
-    departmentCode: String!
-    departmentPrefix: String
     departmentEmail: String!
     departmentPhoneNumber: String
     departmentAddress: String
@@ -10,8 +8,6 @@ input CreateDepartmentInput {
 
 input UpdateDepartmentInput {
     departmentName: String
-    departmentCode: String
-    departmentPrefix: String
     departmentEmail: String
     departmentPhoneNumber: String
     departmentAddress: String

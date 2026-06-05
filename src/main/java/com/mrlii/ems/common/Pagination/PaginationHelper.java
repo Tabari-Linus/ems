@@ -1,6 +1,5 @@
-package com.mrlii.ems.common.dto;
+package com.mrlii.ems.common.Pagination;
 
-import com.mrlii.ems.common.enums.SortDirection;
 import com.mrlii.ems.common.exception.InputValidationException;
 
 import org.springframework.data.domain.PageRequest;

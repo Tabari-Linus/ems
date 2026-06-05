@@ -1,6 +1,5 @@
 input CreateOfficeInput {
     officeName: String!
-    officeCode: String!
     officeEmail: String!
     officePhoneNumber: String
     officeAddress: String
@@ -9,7 +8,6 @@ input CreateOfficeInput {
 
 input UpdateOfficeInput {
     officeName: String
-    officeCode: String
     officeEmail: String
     officePhoneNumber: String
     officeAddress: String

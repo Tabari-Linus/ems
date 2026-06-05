@@ -10,14 +10,6 @@ public record CreateOfficeInput(
         @Size(min = 2, message = "Office name must be at least 2 characters")
         String officeName,
 
-        @NotBlank(message = "Office code must not be blank")
-        @Size(min = 2, message = "Office code must be at least 2 characters")
-        @Pattern(
-                regexp = "^(?=.*[A-Za-z0-9])[A-Za-z0-9]+$",
-                message = "Office code can only contain letters and numbers"
-        )
-        String officeCode,
-
         @NotBlank(message = "Office email must not be blank")
         @Pattern(
                 regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",

@@ -1,11 +1,14 @@
 package com.mrlii.ems.Organization.company.helper;
 
 import com.mrlii.ems.Organization.company.dto.CompanyListItemResult;
-import com.mrlii.ems.Organization.company.dto.CompanyPageResult;
 import com.mrlii.ems.Organization.company.entity.Company;
 import com.mrlii.ems.Organization.company.repository.CompanyRepository;
 import com.mrlii.ems.Organization.company.util.CompanySpecification;
 import com.mrlii.ems.common.dto.*;
+import com.mrlii.ems.common.Pagination.PageInput;
+import com.mrlii.ems.common.Pagination.PageResult;
+import com.mrlii.ems.common.Pagination.PaginationHelper;
+import com.mrlii.ems.common.Pagination.SortInput;
 import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.common.exception.InputValidationException;
 import lombok.RequiredArgsConstructor;
