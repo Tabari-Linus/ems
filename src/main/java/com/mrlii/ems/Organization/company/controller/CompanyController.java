@@ -3,14 +3,15 @@ package com.mrlii.ems.Organization.company.controller;
 import com.mrlii.ems.Organization.company.dto.*;
 import com.mrlii.ems.Organization.company.service.CompanyService;
 import com.mrlii.ems.common.dto.*;
+import com.mrlii.ems.common.Pagination.PageInput;
+import com.mrlii.ems.common.Pagination.PageResult;
+import com.mrlii.ems.common.Pagination.SortInput;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -61,11 +62,10 @@ public class CompanyController {
     }
 
     @QueryMapping
-    public ApiResponse<CompanyDetailResult> getCompany(
+    public CompanyDetailResult getCompany(
             @Argument Long id
     ) {
-        CompanyDetailResult data = companyService.getCompany(id);
-        return ApiResponse.success(data, "Company retrieved successfully");
+        return companyService.getCompany(id);
     }
 
     @QueryMapping

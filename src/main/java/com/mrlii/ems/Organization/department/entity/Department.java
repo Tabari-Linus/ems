@@ -23,6 +23,7 @@ public class Department extends AuditableEntity {
 
     private String departmentName;
 
+    @Column(unique = true)
     private String departmentCode;
 
     private String departmentPrefix;

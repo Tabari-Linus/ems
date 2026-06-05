@@ -1,6 +1,4 @@
-package com.mrlii.ems.common.dto;
-
-import com.mrlii.ems.common.enums.SortDirection;
+package com.mrlii.ems.common.Pagination;
 
 public record SortInput(
       String sortField,

@@ -2,7 +2,8 @@ package com.mrlii.ems.Organization.department.dto;
 
 import com.mrlii.ems.Organization.department.entity.Department;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import com.mrlii.ems.common.util.DateTimeUtils;
 
 public record DepartmentListItemResult(
         Long id,
@@ -13,8 +14,8 @@ public record DepartmentListItemResult(
         String departmentPhoneNumber,
         String departmentAddress,
         String departmentStatus,
-        LocalDateTime createdDate,
-        LocalDateTime lastModifiedDate
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate
 ) {
     public static DepartmentListItemResult of(Department department) {
         return new DepartmentListItemResult(
@@ -26,8 +27,8 @@ public record DepartmentListItemResult(
                 department.getDepartmentPhoneNumber(),
                 department.getDepartmentAddress(),
                 department.getDepartmentStatus().name(),
-                department.getCreatedDate(),
-                department.getLastModifiedDate()
+                DateTimeUtils.toOffsetUtc(department.getCreatedDate()),
+                department.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(department.getLastModifiedDate())
         );
     }
 }

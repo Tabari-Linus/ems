@@ -1,4 +1,4 @@
-package com.mrlii.ems.common.enums;
+package com.mrlii.ems.common.Pagination;
 
 public enum SortDirection {
     ASC,

@@ -4,6 +4,7 @@ import com.mrlii.ems.Organization.department.dto.CreateDepartmentInput;
 import com.mrlii.ems.Organization.department.dto.UpdateDepartmentInput;
 import com.mrlii.ems.Organization.department.entity.Department;
 import com.mrlii.ems.Organization.department.repository.DepartmentRepository;
+import com.mrlii.ems.Organization.department.util.DepartmentCodeGenerator;
 import com.mrlii.ems.Organization.department.util.DepartmentUtil;
 import com.mrlii.ems.Organization.office.entity.Office;
 import com.mrlii.ems.Organization.office.helper.OfficeServiceHelper;
@@ -24,18 +25,21 @@ public class DepartmentPersistenceHelper {
     private final OfficeServiceHelper officeServiceHelper;
     private final CommonUtilHelper commonUtilHelper;
     private final DepartmentUtil departmentUtil;
+    private final DepartmentCodeGenerator departmentCodeGenerator;
 
     public Department persistNewDepartment(CreateDepartmentInput input) {
         departmentServiceHelper.validateUniqueName(input.departmentName());
-        departmentServiceHelper.validateUniqueCode(input.departmentCode());
         departmentServiceHelper.validateUniqueEmail(input.departmentEmail());
 
         Office office = officeServiceHelper.getOfficeById(input.officeId());
 
+        String prefix = departmentCodeGenerator.generateDepartmentPrefix(input.departmentName());
+        String departmentCode = departmentCodeGenerator.generateUniqueDepartmentCode(prefix, office.getOfficeCode());
+
         Department department = Department.builder()
                 .departmentName(commonUtilHelper.normalizeName(input.departmentName()))
-                .departmentCode(commonUtilHelper.normalizeName(input.departmentCode()))
-                .departmentPrefix(input.departmentPrefix())
+                .departmentCode(departmentCode)
+                .departmentPrefix(prefix)
                 .departmentEmail(commonUtilHelper.normalizeName(input.departmentEmail()))
                 .departmentPhoneNumber(input.departmentPhoneNumber())
                 .departmentAddress(input.departmentAddress())
@@ -52,17 +56,10 @@ public class DepartmentPersistenceHelper {
                         "Department with ID %d not found".formatted(departmentId)));
 
         departmentServiceHelper.validateUniqueName(input.departmentName());
-        departmentServiceHelper.validateUniqueCode(input.departmentCode());
         departmentServiceHelper.validateUniqueEmail(input.departmentEmail());
 
         if (departmentUtil.validateNotNull(input.departmentName())) {
             department.setDepartmentName(commonUtilHelper.normalizeName(input.departmentName()));
-        }
-        if (departmentUtil.validateNotNull(input.departmentCode())) {
-            department.setDepartmentCode(commonUtilHelper.normalizeName(input.departmentCode()));
-        }
-        if (departmentUtil.validateNotNull(input.departmentPrefix())) {
-            department.setDepartmentPrefix(input.departmentPrefix());
         }
         if (departmentUtil.validateNotNull(input.departmentEmail())) {
             department.setDepartmentEmail(commonUtilHelper.normalizeName(input.departmentEmail()));

@@ -1,4 +1,4 @@
-package com.mrlii.ems.common.dto;
+package com.mrlii.ems.common.Pagination;
 
 import org.springframework.data.domain.Page;
 

@@ -2,6 +2,9 @@ package com.mrlii.ems.Organization.company.dto;
 
 import com.mrlii.ems.Organization.company.entity.Company;
 import com.mrlii.ems.Organization.office.dto.OfficeDetailResult;
+import com.mrlii.ems.common.util.DateTimeUtils;
+
+import java.time.OffsetDateTime;
 
 import java.util.List;
 
@@ -15,8 +18,8 @@ public record CompanyDetailResult(
         String companyAddress,
         Long nextOfficeNumber,
         String companyStatus,
-        String createdDate,
-        String lastModifiedDate,
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate,
         List<OfficeDetailResult> offices
 ) {
     public static CompanyDetailResult of(Company company) {
@@ -30,8 +33,8 @@ public record CompanyDetailResult(
                 company.getCompanyAddress(),
                 company.getNextOfficeNumber(),
                 company.getCompanyStatus().name(),
-                company.getCreatedDate().toString(),
-                company.getLastModifiedDate() == null ? null : company.getLastModifiedDate().toString(),
+                DateTimeUtils.toOffsetUtc(company.getCreatedDate()),
+                company.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(company.getLastModifiedDate()),
                 company.getOffices().stream().map(OfficeDetailResult::ofInsideCompany).toList()
         );
     }
