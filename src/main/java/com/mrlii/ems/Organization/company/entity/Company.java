@@ -38,7 +38,14 @@ public class Company extends AuditableEntity {
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Office> offices;
 
-    private Long nextOfficeNumber = 1L;
+    private Long nextOfficeNumber;
 
     private LocalDateTime deletedAt;
+
+    @PrePersist
+    private void prePersist() {
+        if (this.nextOfficeNumber == null) {
+            this.nextOfficeNumber = 1L;
+        }
+    }
 }

@@ -2,7 +2,8 @@ package com.mrlii.ems.Organization.company.dto;
 
 import com.mrlii.ems.Organization.company.entity.Company;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import com.mrlii.ems.common.util.DateTimeUtils;
 
 public record CompanyListItemResult(
         Long id,
@@ -12,8 +13,8 @@ public record CompanyListItemResult(
         String companyPhone,
         String companyPhoneNumber,
         String companyAddress,
-        LocalDateTime createdDate,
-        LocalDateTime lastModifiedDate
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate
 
 ) {
     public static CompanyListItemResult of(Company company) {
@@ -23,10 +24,10 @@ public record CompanyListItemResult(
                 company.getCompanyCode(),
                 company.getCompanyEmail(),
                 company.getCompanyPhoneNumber(),
+                company.getCompanyPhoneNumber(),
                 company.getCompanyAddress(),
-                company.getCompanyStatus().name(),
-                company.getCreatedDate(),
-                company.getLastModifiedDate()
+                DateTimeUtils.toOffsetUtc(company.getCreatedDate()),
+                company.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(company.getLastModifiedDate())
                 );
 
     }

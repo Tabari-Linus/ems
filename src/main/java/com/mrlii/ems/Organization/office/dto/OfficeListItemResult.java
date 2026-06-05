@@ -2,7 +2,8 @@ package com.mrlii.ems.Organization.office.dto;
 
 import com.mrlii.ems.Organization.office.entity.Office;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import com.mrlii.ems.common.util.DateTimeUtils;
 
 public record OfficeListItemResult(
         Long id,
@@ -12,8 +13,8 @@ public record OfficeListItemResult(
         String officePhoneNumber,
         String officeAddress,
         String officeStatus,
-        LocalDateTime createdDate,
-        LocalDateTime lastModifiedDate
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate
 ) {
     public static OfficeListItemResult of(Office office) {
         return new OfficeListItemResult(
@@ -24,8 +25,8 @@ public record OfficeListItemResult(
                 office.getOfficePhoneNumber(),
                 office.getOfficeAddress(),
                 office.getOfficeStatus().name(),
-                office.getCreatedDate(),
-                office.getLastModifiedDate()
+                DateTimeUtils.toOffsetUtc(office.getCreatedDate()),
+                office.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(office.getLastModifiedDate())
         );
     }
 }

@@ -3,8 +3,10 @@ package com.mrlii.ems.Organization.office.dto;
 import com.mrlii.ems.Organization.company.dto.CompanyResult;
 import com.mrlii.ems.Organization.department.dto.DepartmentDetailResult;
 import com.mrlii.ems.Organization.office.entity.Office;
+import com.mrlii.ems.common.util.DateTimeUtils;
 
 import java.util.List;
+import java.time.OffsetDateTime;
 
 public record OfficeDetailResult(
         Long id,
@@ -14,8 +16,8 @@ public record OfficeDetailResult(
         String officePhoneNumber,
         String officeAddress,
         String officeStatus,
-        String createdDate,
-        String lastModifiedDate,
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate,
         CompanyResult company,
         List<DepartmentDetailResult> departments
 ) {
@@ -28,8 +30,8 @@ public record OfficeDetailResult(
                 office.getOfficePhoneNumber(),
                 office.getOfficeAddress(),
                 office.getOfficeStatus().name(),
-                office.getCreatedDate().toString(),
-                office.getLastModifiedDate() == null ? null : office.getLastModifiedDate().toString(),
+                DateTimeUtils.toOffsetUtc(office.getCreatedDate()),
+                office.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(office.getLastModifiedDate()),
                 office.getCompany() != null ? CompanyResult.of(office.getCompany()) : null,
                 office.getDepartments().stream().map(DepartmentDetailResult::ofInsideOffice).toList()
         );
@@ -44,8 +46,8 @@ public record OfficeDetailResult(
                 office.getOfficePhoneNumber(),
                 office.getOfficeAddress(),
                 office.getOfficeStatus().name(),
-                office.getCreatedDate().toString(),
-                office.getLastModifiedDate() == null ? null : office.getLastModifiedDate().toString(),
+                DateTimeUtils.toOffsetUtc(office.getCreatedDate()),
+                office.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(office.getLastModifiedDate()),
                 null,
                 office.getDepartments().stream().map(DepartmentDetailResult::ofInsideOffice).toList()
         );

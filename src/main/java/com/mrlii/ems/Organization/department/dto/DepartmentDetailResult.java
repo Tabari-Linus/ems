@@ -2,6 +2,8 @@ package com.mrlii.ems.Organization.department.dto;
 
 import com.mrlii.ems.Organization.department.entity.Department;
 import com.mrlii.ems.Organization.office.dto.OfficeResult;
+import com.mrlii.ems.common.util.DateTimeUtils;
+import java.time.OffsetDateTime;
 
 public record DepartmentDetailResult(
         Long id,
@@ -12,8 +14,8 @@ public record DepartmentDetailResult(
         String departmentPhoneNumber,
         String departmentAddress,
         String departmentStatus,
-        String createdDate,
-        String lastModifiedDate,
+        OffsetDateTime createdDate,
+        OffsetDateTime lastModifiedDate,
         OfficeResult office
 ) {
     public static DepartmentDetailResult of(Department department) {
@@ -26,8 +28,8 @@ public record DepartmentDetailResult(
                 department.getDepartmentPhoneNumber(),
                 department.getDepartmentAddress(),
                 department.getDepartmentStatus().name(),
-                department.getCreatedDate().toString(),
-                department.getLastModifiedDate() == null ? null : department.getLastModifiedDate().toString(),
+                DateTimeUtils.toOffsetUtc(department.getCreatedDate()),
+                department.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(department.getLastModifiedDate()),
                 department.getOffice() != null ? OfficeResult.of(department.getOffice()) : null
         );
     }
@@ -42,8 +44,8 @@ public record DepartmentDetailResult(
                 department.getDepartmentPhoneNumber(),
                 department.getDepartmentAddress(),
                 department.getDepartmentStatus().name(),
-                department.getCreatedDate().toString(),
-                department.getLastModifiedDate() == null ? null : department.getLastModifiedDate().toString(),
+                DateTimeUtils.toOffsetUtc(department.getCreatedDate()),
+                department.getLastModifiedDate() == null ? null : DateTimeUtils.toOffsetUtc(department.getLastModifiedDate()),
                 null
         );
     }

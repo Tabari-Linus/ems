@@ -62,11 +62,10 @@ public class CompanyController {
     }
 
     @QueryMapping
-    public ApiResponse<CompanyDetailResult> getCompany(
+    public CompanyDetailResult getCompany(
             @Argument Long id
     ) {
-        CompanyDetailResult data = companyService.getCompany(id);
-        return ApiResponse.success(data, "Company retrieved successfully");
+        return companyService.getCompany(id);
     }
 
     @QueryMapping
