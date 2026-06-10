@@ -1,4 +1,4 @@
-package com.mrlii.ems.employee.entity;
+package com.mrlii.ems.Organization.employee.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

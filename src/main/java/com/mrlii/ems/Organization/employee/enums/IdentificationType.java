@@ -1,4 +1,4 @@
-package com.mrlii.ems.employee.enums;
+package com.mrlii.ems.Organization.employee.enums;
 
 public enum IdentificationType {
     NATIONAL_ID_CARD,

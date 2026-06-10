@@ -1,6 +1,6 @@
-package com.mrlii.ems.employee.entity;
+package com.mrlii.ems.Organization.employee.entity;
 
-import com.mrlii.ems.employee.enums.IdentificationType;
+import com.mrlii.ems.Organization.employee.enums.IdentificationType;
 import jakarta.persistence.*;
 import lombok.*;
 
