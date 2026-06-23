@@ -4,6 +4,7 @@ import com.mrlii.ems.accesslevel.entity.AccessLevel;
 import com.mrlii.ems.common.enums.CommonStatus;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Path;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
@@ -42,18 +43,18 @@ class AccessLevelSpecificationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void matchesSearch_buildsCaseInsensitiveOrPredicate() {
         Path<Object> namePath = mock(Path.class);
         Path<Object> descPath = mock(Path.class);
-        Path<String> nameLower = mock(Path.class);
-        Path<String> descLower = mock(Path.class);
+        Expression<String> nameLower = mock(Expression.class);
+        Expression<String> descLower = mock(Expression.class);
         Predicate namePredicate = mock(Predicate.class);
         Predicate descPredicate = mock(Predicate.class);
 
         when(root.get("accessLevelName")).thenReturn(namePath);
         when(root.get("description")).thenReturn(descPath);
-        when(cb.lower(namePath)).thenReturn(nameLower);
-        when(cb.lower(descPath)).thenReturn(descLower);
+        when(cb.lower(any())).thenReturn(nameLower).thenReturn(descLower);
         when(cb.like(eq(nameLower), any(String.class))).thenReturn(namePredicate);
         when(cb.like(eq(descLower), any(String.class))).thenReturn(descPredicate);
         when(cb.or(namePredicate, descPredicate)).thenReturn(predicate);
