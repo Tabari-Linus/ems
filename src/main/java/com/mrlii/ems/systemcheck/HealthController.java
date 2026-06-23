@@ -1,4 +1,4 @@
-package com.mrlii.ems.controller;
+package com.mrlii.ems.systemcheck;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -1,0 +1,28 @@
+type AccessLevelDetailResult {
+    id: ID!
+    accessLevelName: String!
+    description: String
+    status: CommonStatus!
+    permissions: [PermissionSetResult!]!
+    employees: [EmployeeListItemResult!]!
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type AccessLevelListItemResult {
+    id: ID!
+    accessLevelName: String!
+    description: String
+    status: CommonStatus!
+    createdDate: DateTime!
+}
+
+type AccessLevelPageResult {
+    data: [AccessLevelListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}

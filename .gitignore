@@ -32,3 +32,9 @@ build/
 ### VS Code ###
 .vscode/
 .env
+
+### PP
+.claude
+CLAUDE.md
+src/main/resources/certificates/
+!**/tasks

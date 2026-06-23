@@ -1,0 +1,4 @@
+extend type Query {
+    getAccessLevel(id: ID!): AccessLevelDetailResult
+    getAccessLevels(pageInput: PageInput, sortInput: SortInput, filter: AccessLevelFilterInput): AccessLevelPageResult
+}

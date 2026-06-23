@@ -1,0 +1,4 @@
+extend type Query {
+    getEmployee(id: ID!): EmployeeDetailResult
+    getEmployees(pageInput: PageInput, SortInput: SortInput): EmployeePageResult
+}

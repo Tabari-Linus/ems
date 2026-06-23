@@ -1,0 +1,4 @@
+type ActionResult{
+    id: ID!
+    name: String
+}

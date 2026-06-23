@@ -1,0 +1,9 @@
+extend type Mutation {
+    createAccessLevel(input: CreateAccessLevelInput!): ActionResult!
+    updateAccessLevel(id: ID!, input: UpdateAccessLevelInput!): ActionResult!
+    activateAccessLevel(id: ID!): ActionResult!
+    archiveAccessLevel(id: ID!): ActionResult!
+    deleteAccessLevel(id: ID!): ActionResult!
+    addPermissionsToAccessLevel(id: ID!, permissions: [Permission!]!): ActionResult!
+    removePermissionsFromAccessLevel(id: ID!, permissions: [Permission!]!): ActionResult!
+}
