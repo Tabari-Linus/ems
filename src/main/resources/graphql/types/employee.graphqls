@@ -1,0 +1,32 @@
+type EmployeeDetailResult {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    phoneNumber: String
+    jobTitle: String
+    department: DepartmentDetailResult
+    status: CommonStatus!
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type EmployeePageResult {
+    data: [EmployeeListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
+
+type EmployeeListItemResult {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    jobTitle: String
+    department: String
+    status: CommonStatus
+}

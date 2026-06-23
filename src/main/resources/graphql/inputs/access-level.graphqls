@@ -1,0 +1,19 @@
+input CreateAccessLevelInput {
+    accessLevelName: String!
+    description: String
+    permissions: [Permission!]!
+    employeeIds: [ID!]
+}
+
+input UpdateAccessLevelInput {
+    accessLevelName: String
+    description: String
+    addEmployeeIds: [ID!]
+    removeEmployeeIds: [ID!]
+}
+
+input AccessLevelFilterInput {
+    status: CommonStatus
+    search: String
+}
+

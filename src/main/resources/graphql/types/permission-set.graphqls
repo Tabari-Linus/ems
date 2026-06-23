@@ -1,0 +1,4 @@
+type PermissionSetResult {
+    id: ID!
+    permissionName: Permission!
+}

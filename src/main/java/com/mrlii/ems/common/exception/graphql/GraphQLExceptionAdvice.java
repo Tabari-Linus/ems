@@ -1,6 +1,7 @@
 package com.mrlii.ems.common.exception.graphql;
 
 import com.mrlii.ems.common.exception.BusinessRuleViolationException;
+import com.mrlii.ems.common.exception.DuplicateEntityException;
 import com.mrlii.ems.common.exception.EntityNotFoundException;
 import com.mrlii.ems.common.exception.InputValidationException;
 import graphql.GraphQLError;
@@ -47,6 +48,19 @@ public class GraphQLExceptionAdvice {
                 exception.getMessage(),
                 GraphQLErrorType.NOT_FOUND,
                 GraphQLErrorCode.NOT_FOUND
+        );
+    }
+
+    @GraphQlExceptionHandler(DuplicateEntityException.class)
+    public GraphQLError handleDuplicateEntityException(
+            DuplicateEntityException exception,
+            DataFetchingEnvironment environment
+    ) {
+        return errorResponseBuilder.singleError(
+                environment,
+                exception.getMessage(),
+                GraphQLErrorType.BAD_REQUEST,
+                GraphQLErrorCode.DUPLICATE_RECORD
         );
     }
 
