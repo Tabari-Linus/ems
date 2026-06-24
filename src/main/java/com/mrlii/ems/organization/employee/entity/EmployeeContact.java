@@ -17,9 +17,15 @@ public class EmployeeContact {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Set<String> phoneNumber;
+    @ElementCollection
+    @CollectionTable(name = "employee_phone_numbers", joinColumns = @JoinColumn(name = "contact_id"))
+    @Column(name = "phone_number")
+    private Set<String> phoneNumbers;
 
-    private Set<String> personalEmail;
+    @ElementCollection
+    @CollectionTable(name = "employee_personal_emails", joinColumns = @JoinColumn(name = "contact_id"))
+    @Column(name = "personal_email")
+    private Set<String> personalEmails;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", nullable = false)

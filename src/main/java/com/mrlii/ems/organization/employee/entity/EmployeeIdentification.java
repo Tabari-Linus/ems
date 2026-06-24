@@ -16,6 +16,7 @@ public class EmployeeIdentification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true, nullable = false)
     private String identificationNumber;
 
     @Enumerated(EnumType.STRING)

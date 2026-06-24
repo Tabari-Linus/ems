@@ -1,0 +1,17 @@
+input CreatePositionInput {
+    positionName: String!
+    level: PositionLevel!
+    description: String
+}
+
+input UpdatePositionInput {
+    positionName: String
+    level: PositionLevel
+    description: String
+}
+
+input PositionFilterInput {
+    status: CommonStatus
+    level: PositionLevel
+    search: String
+}

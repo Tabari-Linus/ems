@@ -1,0 +1,9 @@
+extend type Mutation {
+    updateMyBio(input: EmployeeBioInput!): ActionResult!
+    updateMyContact(input: EmployeeContactInput!): ActionResult!
+    addMyAddress(input: EmployeeAddressInput!): ActionResult!
+    updateMyAddress(addressId: ID!, input: EmployeeAddressInput!): ActionResult!
+    removeMyAddress(addressId: ID!): ActionResult!
+    addMyIdentification(input: EmployeeIdentificationInput!): ActionResult!
+    removeMyIdentification(identificationId: ID!): ActionResult!
+}

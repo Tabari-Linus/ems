@@ -2,13 +2,27 @@ type EmployeeDetailResult {
     id: ID!
     firstName: String!
     lastName: String!
-    email: String!
-    phoneNumber: String
-    jobTitle: String
-    department: DepartmentDetailResult
+    workEmail: String!
     status: CommonStatus!
+    position: PositionListItemResult
+    department: DepartmentDetailResult
+    accessLevel: AccessLevelListItemResult
+    bio: EmployeeBioResult
+    contact: EmployeeContactResult
+    addresses: [EmployeeAddressResult!]!
+    identifications: [EmployeeIdentificationResult!]!
     createdDate: DateTime!
     lastModifiedDate: DateTime
+}
+
+type EmployeeListItemResult {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    jobTitle: String
+    department: String
+    status: CommonStatus
 }
 
 type EmployeePageResult {
@@ -21,12 +35,37 @@ type EmployeePageResult {
     hasPrevious: Boolean!
 }
 
-type EmployeeListItemResult {
+type EmployeeBioResult {
+    fullName: String
+    otherName: String
+    gender: String
+    nationality: String
+    maritalStatus: String
+    dateOfBirth: String
+    placeOfBirth: String
+    profilePicture: String
+    dateHired: String
+    isExpert: String
+}
+
+type EmployeeContactResult {
+    phoneNumbers: [String!]
+    personalEmails: [String!]
+}
+
+type EmployeeAddressResult {
     id: ID!
-    firstName: String!
-    lastName: String!
-    email: String!
-    jobTitle: String
-    department: String
-    status: CommonStatus
+    street: String
+    city: String
+    state: String
+    zipCode: String
+    country: String
+    digitalAddress: String
+    isCurrentAddress: Boolean
+}
+
+type EmployeeIdentificationResult {
+    id: ID!
+    identificationNumber: String!
+    identificationType: IdentificationType!
 }

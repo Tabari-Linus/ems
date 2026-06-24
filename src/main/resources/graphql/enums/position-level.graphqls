@@ -1,0 +1,9 @@
+enum PositionLevel {
+    INTERN
+    JUNIOR
+    MID
+    SENIOR
+    LEAD
+    PRINCIPAL
+    STAFF
+}

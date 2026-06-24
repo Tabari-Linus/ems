@@ -1,0 +1,4 @@
+extend type Query {
+    getPosition(id: ID!): PositionDetailResult
+    getPositions(pageInput: PageInput, sortInput: SortInput, filter: PositionFilterInput): PositionPageResult
+}

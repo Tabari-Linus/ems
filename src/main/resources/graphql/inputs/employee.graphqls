@@ -1,0 +1,63 @@
+input CreateEmployeeInput {
+    firstName: String!
+    lastName: String!
+    workEmail: String!
+    positionId: ID
+    departmentId: ID
+    accessLevelId: ID
+    bio: EmployeeBioInput
+    contact: EmployeeContactInput
+    address: EmployeeAddressInput
+    identification: EmployeeIdentificationInput
+}
+
+input UpdateEmployeeInput {
+    firstName: String
+    lastName: String
+    workEmail: String
+    positionId: ID
+    departmentId: ID
+    accessLevelId: ID
+    bio: EmployeeBioInput
+    contact: EmployeeContactInput
+}
+
+input EmployeeBioInput {
+    fullName: String
+    otherName: String
+    gender: String
+    nationality: String
+    maritalStatus: String
+    dateOfBirth: String
+    placeOfBirth: String
+    profilePicture: String
+    dateHired: String
+    isExpert: String
+}
+
+input EmployeeContactInput {
+    phoneNumbers: [String!]
+    personalEmails: [String!]
+}
+
+input EmployeeAddressInput {
+    street: String
+    city: String
+    state: String
+    zipCode: String
+    country: String
+    digitalAddress: String
+    isCurrentAddress: Boolean
+}
+
+input EmployeeIdentificationInput {
+    identificationNumber: String!
+    identificationType: IdentificationType!
+}
+
+input EmployeeFilterInput {
+    status: CommonStatus
+    search: String
+    departmentId: ID
+    positionId: ID
+}
