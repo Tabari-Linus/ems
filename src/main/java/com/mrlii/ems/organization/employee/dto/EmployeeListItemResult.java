@@ -13,14 +13,20 @@ public record EmployeeListItemResult(
         CommonStatus status
 ) {
     public static EmployeeListItemResult of(Employee employee) {
+        String jobTitle = employee.getPosition() != null
+                ? employee.getPosition().getLevel().name() + " · " + employee.getPosition().getPositionName()
+                : null;
+        String department = employee.getDepartment() != null
+                ? employee.getDepartment().getDepartmentName()
+                : null;
         return new EmployeeListItemResult(
                 employee.getId(),
                 employee.getFirstName(),
                 employee.getLastName(),
                 employee.getWorkEmail(),
-                null,
-                null,
-                null
+                jobTitle,
+                department,
+                employee.getStatus()
         );
     }
 }

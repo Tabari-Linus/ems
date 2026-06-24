@@ -1,0 +1,7 @@
+extend type Mutation {
+    createEmployee(input: CreateEmployeeInput!): ActionResult!
+    updateEmployee(id: ID!, input: UpdateEmployeeInput!): ActionResult!
+    activateEmployee(id: ID!): ActionResult!
+    archiveEmployee(id: ID!): ActionResult!
+    deleteEmployee(id: ID!): ActionResult!
+}

@@ -18,5 +18,7 @@ public enum Permission {
     VIEW_ACCESS_LEVEL,
     MANAGE_ACCESS_LEVEL,
     VIEW_ROLE,
-    MANAGE_ROLE
+    MANAGE_ROLE,
+    VIEW_POSITION,
+    MANAGE_POSITION
 }

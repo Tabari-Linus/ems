@@ -1,0 +1,7 @@
+extend type Mutation {
+    createPosition(input: CreatePositionInput!): ActionResult!
+    updatePosition(id: ID!, input: UpdatePositionInput!): ActionResult!
+    activatePosition(id: ID!): ActionResult!
+    archivePosition(id: ID!): ActionResult!
+    deletePosition(id: ID!): ActionResult!
+}

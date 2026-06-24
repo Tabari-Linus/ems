@@ -1,0 +1,28 @@
+type PositionDetailResult {
+    id: ID!
+    positionName: String!
+    level: PositionLevel!
+    description: String
+    status: CommonStatus!
+    createdDate: DateTime!
+    lastModifiedDate: DateTime
+}
+
+type PositionListItemResult {
+    id: ID!
+    positionName: String!
+    level: PositionLevel!
+    description: String
+    status: CommonStatus!
+    createdDate: DateTime!
+}
+
+type PositionPageResult {
+    data: [PositionListItemResult!]!
+    currentPage: Int!
+    totalPages: Int!
+    totalElements: Int!
+    pageSize: Int!
+    hasNext: Boolean!
+    hasPrevious: Boolean!
+}
