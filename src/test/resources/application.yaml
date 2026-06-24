@@ -1,4 +1,7 @@
 spring:
+  flyway:
+    enabled: false
+
   datasource:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
     driver-class-name: org.h2.Driver
@@ -11,3 +14,18 @@ spring:
   graphql:
     graphiql:
       enabled: false
+
+jwt:
+  public-key: classpath:certificates/jwt-public-key.pem
+  private-key: classpath:certificates/jwt-private-key.pem
+  expiration-ms: 28800000
+  refresh-expiration-ms: 86400000
+  cookie-secure: false
+
+admin:
+  email: admin@test.com
+  password: admin123
+
+allowed:
+  cors:
+    url: http://localhost:3000

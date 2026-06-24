@@ -9,5 +9,7 @@ import java.security.interfaces.RSAPublicKey;
 public record RsaKeyProperties(
         RSAPublicKey publicKey,
         RSAPrivateKey privateKey,
-        long expirationMs
-) {}
+        long expirationMs,
+        long refreshExpirationMs,
+        boolean cookieSecure
+    ) {}

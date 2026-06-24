@@ -8,7 +8,10 @@ spring:
   jpa:
     open-in-view: false
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL_AUTO:none}
+      ddl-auto: ${HIBERNATE_DDL_AUTO:validate}
+
+  flyway:
+    enabled: true
     show-sql: true
 
   graphql:
@@ -38,6 +41,8 @@ jwt:
   publicKey: ${JWT_PUBLIC_KEY}
   privateKey: ${JWT_PRIVATE_KEY}
   expirationMs: ${JWT_EXPIRATION_MS:28800000}
+  refreshExpirationMs: ${JWT_REFRESH_EXPIRATION_MS:604800000}
+  cookieSecure: ${JWT_COOKIE_SECURE:false}
 
 admin:
   email: ${ADMIN_EMAIL}

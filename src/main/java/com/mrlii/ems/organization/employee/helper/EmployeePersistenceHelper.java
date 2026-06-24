@@ -2,6 +2,8 @@ package com.mrlii.ems.organization.employee.helper;
 
 import com.mrlii.ems.accesslevel.entity.AccessLevel;
 import com.mrlii.ems.accesslevel.repository.AccessLevelRepository;
+import com.mrlii.ems.auth.entity.UserAccount;
+import com.mrlii.ems.auth.repository.UserAccountRepository;
 import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.common.exception.DuplicateEntityException;
 import com.mrlii.ems.common.exception.EntityNotFoundException;
@@ -15,8 +17,13 @@ import com.mrlii.ems.organization.employee.util.EmployeeValidator;
 import com.mrlii.ems.organization.position.entity.Position;
 import com.mrlii.ems.organization.position.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class EmployeePersistenceHelper {
@@ -31,6 +38,8 @@ public class EmployeePersistenceHelper {
     private final AccessLevelRepository accessLevelRepository;
     private final EmployeeValidator validator;
     private final CommonUtilHelper commonUtilHelper;
+    private final UserAccountRepository userAccountRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public Employee create(CreateEmployeeInput input) {
         validator.validateEmailIsUnique(input.workEmail());
@@ -51,8 +60,27 @@ public class EmployeePersistenceHelper {
         persistContact(input.contact(), saved);
         persistAddress(input.address(), saved);
         persistIdentification(input.identification(), saved);
+        createUserAccount(saved);
 
         return saved;
+    }
+
+    private String generateTemporaryPassword() {
+        // DO: deliver via email when notification service is implemented
+        String raw = UUID.randomUUID().toString().replace("-", "");
+        log.info("Temporary password for new employee account: {}", raw);
+        return raw;
+    }
+
+    private void createUserAccount(Employee employee) {
+        String raw = generateTemporaryPassword();
+        UserAccount account = UserAccount.builder()
+                .email(employee.getWorkEmail())
+                .passwordHash(passwordEncoder.encode(raw))
+                .employee(employee)
+                .build();
+        userAccountRepository.save(account);
+        log.info("UserAccount provisioned for employee id={}, email={}", employee.getId(), employee.getWorkEmail());
     }
 
     public Employee update(Long id, UpdateEmployeeInput input) {

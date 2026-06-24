@@ -13,6 +13,8 @@ public interface AccessLevelRepository extends JpaRepository<AccessLevel, Long> 
 
     boolean existsByAccessLevelNameIgnoreCase(String accessLevelName);
 
+    Optional<AccessLevel> findByAccessLevelNameIgnoreCase(String name);
+
     boolean existsByAccessLevelNameIgnoreCaseAndIdNot(String accessLevelName, Long id);
 
     @EntityGraph(attributePaths = {"permissions", "employees"})
