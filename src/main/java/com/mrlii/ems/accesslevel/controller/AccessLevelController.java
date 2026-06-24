@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 import java.util.List;
@@ -22,13 +23,13 @@ public class AccessLevelController {
 
     private final AccessLevelService accessLevelService;
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult createAccessLevel(@Argument @Valid CreateAccessLevelInput input) {
         return accessLevelService.createAccessLevel(input);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult updateAccessLevel(
             @Argument Long id,
@@ -37,25 +38,25 @@ public class AccessLevelController {
         return accessLevelService.updateAccessLevel(id, input);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult activateAccessLevel(@Argument Long id) {
         return accessLevelService.activateAccessLevel(id);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult archiveAccessLevel(@Argument Long id) {
         return accessLevelService.archiveAccessLevel(id);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult deleteAccessLevel(@Argument Long id) {
         return accessLevelService.deleteAccessLevel(id);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult addPermissionsToAccessLevel(
             @Argument Long id,
@@ -64,7 +65,7 @@ public class AccessLevelController {
         return accessLevelService.addPermissionsToAccessLevel(id, permissions);
     }
 
-    // @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('MANAGE_ACCESS_LEVEL')")
     @MutationMapping
     public ActionResult removePermissionsFromAccessLevel(
             @Argument Long id,
@@ -73,13 +74,13 @@ public class AccessLevelController {
         return accessLevelService.removePermissionsFromAccessLevel(id, permissions);
     }
 
-    // @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
     @QueryMapping
     public AccessLevelDetailResult getAccessLevel(@Argument Long id) {
         return accessLevelService.getAccessLevel(id);
     }
 
-    // @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
     @QueryMapping
     public PageResult<AccessLevelListItemResult> getAccessLevels(
             @Argument PageInput pageInput,
@@ -89,7 +90,7 @@ public class AccessLevelController {
         return accessLevelService.getAccessLevels(pageInput, sortInput, filter);
     }
 
-    // @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
+    @PreAuthorize("hasAuthority('VIEW_ACCESS_LEVEL')")
     @QueryMapping
     public List<PermissionSetResult> getPermissionsByAccessLevel(@Argument Long accessLevelId) {
         return accessLevelService.getPermissionsByAccessLevel(accessLevelId);

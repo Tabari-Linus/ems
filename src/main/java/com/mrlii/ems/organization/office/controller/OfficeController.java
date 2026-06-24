@@ -1,16 +1,18 @@
 package com.mrlii.ems.organization.office.controller;
 
-import com.mrlii.ems.organization.office.dto.*;
-import com.mrlii.ems.organization.office.service.OfficeService;
-import com.mrlii.ems.common.dto.*;
 import com.mrlii.ems.common.Pagination.PageInput;
 import com.mrlii.ems.common.Pagination.PageResult;
 import com.mrlii.ems.common.Pagination.SortInput;
+import com.mrlii.ems.common.dto.ApiResponse;
+import com.mrlii.ems.common.dto.GeneralFilterInput;
+import com.mrlii.ems.organization.office.dto.*;
+import com.mrlii.ems.organization.office.service.OfficeService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -19,6 +21,7 @@ public class OfficeController {
 
     private final OfficeService officeService;
 
+    @PreAuthorize("hasAuthority('MANAGE_OFFICE')")
     @MutationMapping
     public ApiResponse<OfficeResult> createOffice(
             @Argument @Valid CreateOfficeInput input
@@ -27,6 +30,7 @@ public class OfficeController {
         return ApiResponse.success(data, "Office created successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_OFFICE')")
     @MutationMapping
     public ApiResponse<OfficeResult> updateOffice(
             @Argument Long id,
@@ -36,6 +40,7 @@ public class OfficeController {
         return ApiResponse.success(data, "Office updated successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_OFFICE')")
     @MutationMapping
     public ApiResponse<OfficeResult> archiveOffice(
             @Argument Long id
@@ -44,6 +49,7 @@ public class OfficeController {
         return ApiResponse.success(data, "Office archived successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_OFFICE')")
     @MutationMapping
     public ApiResponse<OfficeResult> activateOffice(
             @Argument Long id,
@@ -53,6 +59,7 @@ public class OfficeController {
         return ApiResponse.success(data, "Office activation status updated successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_OFFICE')")
     @MutationMapping
     public ApiResponse<OfficeResult> deleteOffice(
             @Argument Long id
@@ -61,6 +68,7 @@ public class OfficeController {
         return ApiResponse.success(data, "Office deleted successfully");
     }
 
+    @PreAuthorize("hasAuthority('VIEW_OFFICE')")
     @QueryMapping
     public OfficeDetailResult getOffice(
             @Argument Long id
@@ -68,6 +76,7 @@ public class OfficeController {
         return officeService.getOffice(id);
     }
 
+    @PreAuthorize("hasAuthority('VIEW_OFFICE')")
     @QueryMapping
     public PageResult<OfficeListItemResult> getOffices(
             @Argument Long companyId,

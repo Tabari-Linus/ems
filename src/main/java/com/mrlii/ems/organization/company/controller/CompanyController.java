@@ -1,16 +1,18 @@
 package com.mrlii.ems.organization.company.controller;
 
-import com.mrlii.ems.organization.company.dto.*;
-import com.mrlii.ems.organization.company.service.CompanyService;
-import com.mrlii.ems.common.dto.*;
 import com.mrlii.ems.common.Pagination.PageInput;
 import com.mrlii.ems.common.Pagination.PageResult;
 import com.mrlii.ems.common.Pagination.SortInput;
+import com.mrlii.ems.common.dto.ApiResponse;
+import com.mrlii.ems.common.dto.GeneralFilterInput;
+import com.mrlii.ems.organization.company.dto.*;
+import com.mrlii.ems.organization.company.service.CompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -19,6 +21,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
+    @PreAuthorize("hasAuthority('MANAGE_COMPANY')")
     @MutationMapping
     public ApiResponse<CompanyResult> createCompany(
             @Argument @Valid CreateCompanyInput input
@@ -27,6 +30,7 @@ public class CompanyController {
         return ApiResponse.success(data, "Company created successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_COMPANY')")
     @MutationMapping
     public ApiResponse<CompanyResult> updateCompany(
             @Argument Long companyId,
@@ -36,6 +40,7 @@ public class CompanyController {
         return ApiResponse.success(data, "Company updated successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_COMPANY')")
     @MutationMapping
     public ApiResponse<CompanyResult> archiveCompany(
             @Argument Long companyId
@@ -44,6 +49,7 @@ public class CompanyController {
         return ApiResponse.success(data, "Company archived successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_COMPANY')")
     @MutationMapping
     public ApiResponse<CompanyResult> activateCompany(
             @Argument Long id,
@@ -53,6 +59,7 @@ public class CompanyController {
         return ApiResponse.success(data, "Company activated successfully");
     }
 
+    @PreAuthorize("hasAuthority('MANAGE_COMPANY')")
     @MutationMapping
     public ApiResponse<CompanyResult> deleteCompany(
             @Argument Long companyId
@@ -61,6 +68,7 @@ public class CompanyController {
         return ApiResponse.success(data, "Company deleted successfully");
     }
 
+    @PreAuthorize("hasAuthority('VIEW_COMPANY')")
     @QueryMapping
     public CompanyDetailResult getCompany(
             @Argument Long id
@@ -68,6 +76,7 @@ public class CompanyController {
         return companyService.getCompany(id);
     }
 
+    @PreAuthorize("hasAuthority('VIEW_COMPANY')")
     @QueryMapping
     public PageResult<CompanyListItemResult> getCompanies(
             @Argument GeneralFilterInput filter,
@@ -76,5 +85,4 @@ public class CompanyController {
             ) {
         return companyService.getCompanies(filter, pageInput, sortInput);
     }
-
 }

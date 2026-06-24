@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.graphql.data.method.annotation.GraphQlExceptionHandler;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -61,6 +62,19 @@ public class GraphQLExceptionAdvice {
                 exception.getMessage(),
                 GraphQLErrorType.BAD_REQUEST,
                 GraphQLErrorCode.DUPLICATE_RECORD
+        );
+    }
+
+    @GraphQlExceptionHandler(AccessDeniedException.class)
+    public GraphQLError handleAccessDeniedException(
+            AccessDeniedException exception,
+            DataFetchingEnvironment environment
+    ) {
+        return errorResponseBuilder.singleError(
+                environment,
+                "Access denied",
+                GraphQLErrorType.UNAUTHENTICATED,
+                GraphQLErrorCode.FORBIDDEN
         );
     }
 
