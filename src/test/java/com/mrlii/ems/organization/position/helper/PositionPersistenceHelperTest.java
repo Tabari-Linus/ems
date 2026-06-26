@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -149,7 +150,7 @@ class PositionPersistenceHelperTest {
     @Test
     void softDelete_setsArchivedStatusAndDeletedAt() {
         Position position = buildPosition(1L, "Engineer", PositionLevel.SENIOR);
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.of(2026, Month.JANUARY, 15, 10, 30);
         when(validator.findByIdOrThrow(1L)).thenReturn(position);
         when(commonUtilHelper.getCurrentDateTime()).thenReturn(now);
 

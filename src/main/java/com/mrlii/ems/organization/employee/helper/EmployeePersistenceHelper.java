@@ -8,6 +8,7 @@ import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.common.exception.DuplicateEntityException;
 import com.mrlii.ems.common.exception.EntityNotFoundException;
 import com.mrlii.ems.common.util.CommonUtilHelper;
+import com.mrlii.ems.notification.event.EmployeeCreatedEmailEvent;
 import com.mrlii.ems.organization.department.entity.Department;
 import com.mrlii.ems.organization.department.repository.DepartmentRepository;
 import com.mrlii.ems.organization.employee.dto.*;
@@ -18,6 +19,7 @@ import com.mrlii.ems.organization.position.entity.Position;
 import com.mrlii.ems.organization.position.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -40,6 +42,7 @@ public class EmployeePersistenceHelper {
     private final CommonUtilHelper commonUtilHelper;
     private final UserAccountRepository userAccountRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Employee create(CreateEmployeeInput input) {
         validator.validateEmailIsUnique(input.workEmail());
@@ -60,19 +63,18 @@ public class EmployeePersistenceHelper {
         persistContact(input.contact(), saved);
         persistAddress(input.address(), saved);
         persistIdentification(input.identification(), saved);
-        createUserAccount(saved);
+
+        String temporaryPassword = createUserAccount(saved);
+        eventPublisher.publishEvent(new EmployeeCreatedEmailEvent(saved.getId(), saved.getWorkEmail(), temporaryPassword));
 
         return saved;
     }
 
     private String generateTemporaryPassword() {
-        // DO: deliver via email when notification service is implemented
-        String raw = UUID.randomUUID().toString().replace("-", "");
-        log.info("Temporary password for new employee account: {}", raw);
-        return raw;
+        return UUID.randomUUID().toString().replace("-", "");
     }
 
-    private void createUserAccount(Employee employee) {
+    private String createUserAccount(Employee employee) {
         String raw = generateTemporaryPassword();
         UserAccount account = UserAccount.builder()
                 .email(employee.getWorkEmail())
@@ -81,6 +83,7 @@ public class EmployeePersistenceHelper {
                 .build();
         userAccountRepository.save(account);
         log.info("UserAccount provisioned for employee id={}, email={}", employee.getId(), employee.getWorkEmail());
+        return raw;
     }
 
     public Employee update(Long id, UpdateEmployeeInput input) {
@@ -172,8 +175,8 @@ public class EmployeePersistenceHelper {
                 .digitalAddress(input.digitalAddress())
                 .isCurrentAddress(Boolean.TRUE.equals(input.isCurrentAddress()))
                 .build();
-        EmployeeAddress saved = addressRepository.save(address);
-        employee.setAddress(saved);
+        EmployeeAddress savedAddress = addressRepository.save(address);
+        employee.setAddress(savedAddress);
         employeeRepository.save(employee);
     }
 
@@ -188,8 +191,8 @@ public class EmployeePersistenceHelper {
                 .identificationNumber(input.identificationNumber())
                 .identificationType(input.identificationType())
                 .build();
-        EmployeeIdentification saved = identificationRepository.save(identification);
-        employee.setIdentification(saved);
+        EmployeeIdentification savedIdentification = identificationRepository.save(identification);
+        employee.setIdentification(savedIdentification);
         employeeRepository.save(employee);
     }
 

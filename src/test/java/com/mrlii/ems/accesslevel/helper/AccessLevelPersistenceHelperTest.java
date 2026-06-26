@@ -20,16 +20,13 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.HashSet;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class AccessLevelPersistenceHelperTest {
@@ -183,7 +180,7 @@ class AccessLevelPersistenceHelperTest {
     void softDelete_setsArchivedStatusAndDeletedAt() {
         AccessLevel accessLevel = buildAccessLevel(1L, "Admin");
         accessLevel.setEmployees(List.of());
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.of(2026, Month.JANUARY, 15, 10, 30);
         when(validator.findByIdOrThrow(1L)).thenReturn(accessLevel);
         when(commonUtilHelper.getCurrentDateTime()).thenReturn(now);
 

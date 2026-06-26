@@ -16,7 +16,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
 

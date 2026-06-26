@@ -2,6 +2,15 @@ spring:
   application:
     name: ems
 
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    url: ${JDBC_DATABASE_URL:jdbc:postgresql://localhost:5432/ems}
+    username: ${JDBC_DATABASE_USERNAME:postgres}
+    password: ${JDBC_DATABASE_PASSWORD:password}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     properties:
       hibernate:
@@ -12,6 +21,28 @@ spring:
       enabled: false
     http:
       path: /
+
+  mail:
+    host: ${MAIL_HOST:smtp.gmail.com}
+    port: ${MAIL_PORT:587}
+    username: ${MAIL_USERNAME:noreply@example.com}
+    password: ${MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+        transport:
+          protocol: smtp
+
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+    validate-on-migrate: true
+    out-of-order: true
+    locations: ${FLYWAY_LOCATIONS:classpath:db/migration}
 
 management:
   endpoints:

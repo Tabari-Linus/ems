@@ -24,9 +24,11 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Optional;
 import java.util.Set;
 
@@ -51,6 +53,7 @@ class EmployeePersistenceHelperTest {
     @Mock private CommonUtilHelper commonUtilHelper;
     @Mock private UserAccountRepository userAccountRepository;
     @Mock private PasswordEncoder passwordEncoder;
+    @Mock private ApplicationEventPublisher eventPublisher;
     @InjectMocks private EmployeePersistenceHelper persistenceHelper;
 
     // ── create ────────────────────────────────────────────────────────────────
@@ -294,7 +297,7 @@ class EmployeePersistenceHelperTest {
     @Test
     void softDelete_setsArchivedStatusAndDeletedAt() {
         Employee employee = buildEmployee(1L, "john@test.com");
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.of(2026, Month.JANUARY, 15, 10, 30);
         when(validator.findByIdOrThrow(1L)).thenReturn(employee);
         when(commonUtilHelper.getCurrentDateTime()).thenReturn(now);
 
