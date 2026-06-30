@@ -1,0 +1,24 @@
+type DashboardSummaryResult {
+    companyCount:        Int!
+    officeCount:         Int!
+    departmentCount:     Int!
+    activeEmployeeCount: Int!
+    headcountTrend:      HeadcountTrendResult!
+    companyBreakdowns:   [CompanyBreakdownResult!]!
+}
+
+type HeadcountTrendResult {
+    currentPeriodNewHires:  Int!
+    previousPeriodNewHires: Int!
+    trend:                  TrendDirection!
+    percentageChange:       Float
+}
+
+type CompanyBreakdownResult {
+    companyId:           ID!
+    companyName:         String!
+    officeCount:         Int!
+    departmentCount:     Int!
+    activeEmployeeCount: Int!
+    newHiresInPeriod:    Int!
+}

@@ -1,0 +1,5 @@
+input DashboardFilterInput {
+    companyId:   ID
+    periodStart: String
+    periodEnd:   String
+}
