@@ -20,5 +20,6 @@ public enum Permission {
     VIEW_ROLE,
     MANAGE_ROLE,
     VIEW_POSITION,
-    MANAGE_POSITION
+    MANAGE_POSITION,
+    VIEW_DASHBOARD
 }

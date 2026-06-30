@@ -19,4 +19,5 @@ enum Permission{
     MANAGE_ROLE
     VIEW_POSITION
     MANAGE_POSITION
+    VIEW_DASHBOARD
 }

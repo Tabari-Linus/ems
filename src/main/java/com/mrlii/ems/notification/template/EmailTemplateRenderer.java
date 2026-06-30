@@ -3,8 +3,8 @@ package com.mrlii.ems.notification.template;
 import com.mrlii.ems.notification.enums.EmailTemplateType;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Locale;
 import java.util.Map;
@@ -12,9 +12,9 @@ import java.util.Map;
 @Component
 public class EmailTemplateRenderer {
 
-    private final TemplateEngine templateEngine;
+    private final SpringTemplateEngine templateEngine;
 
-    public EmailTemplateRenderer(@Qualifier("emailTemplateEngine") TemplateEngine templateEngine) {
+    public EmailTemplateRenderer(@Qualifier("emailTemplateEngine") SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 

@@ -23,10 +23,11 @@ spring:
       path: /
 
   mail:
-    host: ${MAIL_HOST:smtp.gmail.com}
+    host: ${MAIL_HOST}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:noreply@example.com}
-    password: ${MAIL_PASSWORD:}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtp
     properties:
       mail:
         smtp:
@@ -34,8 +35,8 @@ spring:
           starttls:
             enable: true
             required: true
-        transport:
-          protocol: smtp
+          ssl:
+            trust: smtp.gmail.com
 
   flyway:
     enabled: true

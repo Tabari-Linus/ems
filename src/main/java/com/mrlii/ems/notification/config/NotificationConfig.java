@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
@@ -29,7 +29,7 @@ public class NotificationConfig {
     }
 
     @Bean(name = "emailTemplateEngine")
-    public TemplateEngine emailTemplateEngine() {
+    public SpringTemplateEngine emailTemplateEngine() {
         ClassLoaderTemplateResolver htmlResolver = new ClassLoaderTemplateResolver();
         htmlResolver.setOrder(1);
         htmlResolver.setCheckExistence(true);
@@ -48,7 +48,7 @@ public class NotificationConfig {
         textResolver.setCharacterEncoding("UTF-8");
         textResolver.setCacheable(true);
 
-        TemplateEngine engine = new TemplateEngine();
+        SpringTemplateEngine engine = new SpringTemplateEngine();
         engine.addTemplateResolver(htmlResolver);
         engine.addTemplateResolver(textResolver);
         return engine;

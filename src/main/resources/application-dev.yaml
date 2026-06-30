@@ -13,9 +13,6 @@ spring:
   graphql:
     graphiql:
       enabled: true
-  mail:
-    username: ${MAIL_USERNAME}
-    password: ${MAIL_PASSWORD}
 
 server:
   port: ${SERVER_PORT:8080}
