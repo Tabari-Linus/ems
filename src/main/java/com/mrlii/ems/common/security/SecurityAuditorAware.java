@@ -1,8 +1,5 @@
 package com.mrlii.ems.common.security;
 
-import com.mrlii.ems.auth.entity.UserAccount;
-import com.mrlii.ems.auth.repository.UserAccountRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -11,13 +8,9 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-import java.util.UUID;
 
 @Component
-@RequiredArgsConstructor
 public class SecurityAuditorAware implements AuditorAware<Long> {
-
-    private final UserAccountRepository userAccountRepository;
 
     @Override
     public Optional<Long> getCurrentAuditor() {
@@ -26,8 +19,16 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
             return Optional.empty();
         }
         if (auth instanceof JwtAuthenticationToken jwtAuth) {
-            UUID userId = UUID.fromString(jwtAuth.getToken().getSubject());
-            return userAccountRepository.findByUserId(userId).map(UserAccount::getId);
+            Object accountId = jwtAuth.getToken().getClaim("account_id");
+            if (accountId instanceof Long id) {
+                return Optional.of(id);
+            }
+            if (accountId instanceof Integer id) {
+                return Optional.of(id.longValue());
+            }
+            if (accountId instanceof Number id) {
+                return Optional.of(id.longValue());
+            }
         }
         return Optional.empty();
     }

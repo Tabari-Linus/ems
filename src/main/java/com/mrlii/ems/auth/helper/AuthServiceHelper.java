@@ -30,6 +30,7 @@ public class AuthServiceHelper {
                 .issuedAt(now)
                 .expiresAt(now.plusMillis(rsaKeyProperties.expirationMs()))
                 .claim("permissions", permissions)
+                .claim("account_id", account.getId())
                 .build();
 
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();

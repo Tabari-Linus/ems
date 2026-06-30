@@ -1,13 +1,13 @@
 package com.mrlii.ems.organization.company.helper;
 
+import com.mrlii.ems.common.enums.CommonStatus;
+import com.mrlii.ems.common.exception.EntityNotFoundException;
+import com.mrlii.ems.common.util.CommonUtilHelper;
 import com.mrlii.ems.organization.company.dto.CreateCompanyInput;
 import com.mrlii.ems.organization.company.dto.UpdateCompanyInput;
 import com.mrlii.ems.organization.company.entity.Company;
 import com.mrlii.ems.organization.company.repository.CompanyRepository;
 import com.mrlii.ems.organization.company.util.CompanyUtil;
-import com.mrlii.ems.common.enums.CommonStatus;
-import com.mrlii.ems.common.exception.EntityNotFoundException;
-import com.mrlii.ems.common.util.CommonUtilHelper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -78,7 +78,7 @@ public class CompanyPersistenceHelper {
 
     public Company activateCompany(Long companyId, Boolean active) {
         Company company = companyServiceHelper.getCompanyById(companyId);
-        company.setCompanyStatus(active ? CommonStatus.ACTIVE : CommonStatus.INACTIVE);
+        company.setCompanyStatus(Boolean.TRUE.equals(active) ? CommonStatus.ACTIVE : CommonStatus.INACTIVE);
         return companyRepository.save(company);
         }
 

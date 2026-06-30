@@ -36,6 +36,7 @@ class AuthServiceHelperTest {
     @Test
     void generateAccessToken_validAccount_returnsTokenValue() {
         UserAccount account = UserAccount.builder()
+                .id(1L)
                 .userId(USER_ID)
                 .email("user@example.com")
                 .enabled(true)
