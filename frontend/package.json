@@ -18,7 +18,11 @@
     "tokens:check": "npm run tokens:build && git diff --exit-code -- projects/tokens/src/generated",
     "tokens:check-contrast": "node projects/tokens/scripts/check-contrast.mjs",
     "lib:build": "npm run tokens:build && ng build tokens && ng build icons && ng build ui",
-    "lib:test": "ng test ui --configuration ci && ng test icons --configuration ci"
+    "lib:test": "ng test ui --configuration ci && ng test icons --configuration ci",
+    "storybook": "storybook dev -p 6006 -c .storybook",
+    "storybook:build": "storybook build -c .storybook -o storybook-static",
+    "storybook:test": "vitest run --config vitest.storybook.config.mts",
+    "test:visual": "playwright test -c playwright.visual.config.ts"
   },
   "private": true,
   "packageManager": "npm@11.17.0",
@@ -41,6 +45,7 @@
     "@angular/build": "^21.2.28",
     "@angular/cli": "^21.2.28",
     "@angular/compiler-cli": "^21.2.25",
+    "@axe-core/playwright": "^4.14.0",
     "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
     "@graphql-codegen/add": "^7.1.1",
