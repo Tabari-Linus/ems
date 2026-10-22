@@ -1,0 +1,43 @@
+{
+  "focus": {
+    "ring": {
+      "color": {
+        "$type": "color",
+        "$value": "{color.border.focus}",
+        "$description": "Resolves per theme (this file is part of both theme builds)."
+      },
+      "width": { "$type": "dimension", "$value": "{border-width.thick}" },
+      "offset": { "$type": "dimension", "$value": { "value": 2, "unit": "px" } }
+    }
+  },
+  "control": {
+    "border-width": { "$type": "dimension", "$value": "{border-width.thin}" },
+    "min-target": {
+      "$type": "dimension",
+      "$value": { "value": 24, "unit": "px" },
+      "$description": "WCAG 2.2 SC 2.5.8 minimum target size."
+    }
+  },
+  "motion": {
+    "duration": {
+      "$type": "duration",
+      "control": { "$value": "{duration.fast}" },
+      "spinner": { "$value": { "value": 800, "unit": "ms" } }
+    },
+    "easing": {
+      "$type": "cubicBezier",
+      "standard": { "$value": "{easing.standard}" }
+    }
+  },
+  "text": {
+    "body": {
+      "family": { "$type": "fontFamily", "$value": "{font.family.sans}" },
+      "size": { "$type": "dimension", "$value": "{font.size.md}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.normal}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+    },
+    "code": {
+      "family": { "$type": "fontFamily", "$value": "{font.family.mono}" }
+    }
+  }
+}

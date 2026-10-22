@@ -1,0 +1,71 @@
+/* Base element styles from semantic tokens (layer: base). */
+@layer base {
+  /* Native controls and scrollbars follow the active theme. */
+  :root,
+  [data-theme='light'] {
+    color-scheme: light;
+  }
+
+  [data-theme='dark'] {
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme='light']) {
+      color-scheme: dark;
+    }
+  }
+
+  html {
+    font-family: var(--ems-text-body-family);
+    font-size: 100%;
+    line-height: var(--ems-text-body-line-height);
+  }
+
+  body {
+    background-color: var(--ems-color-bg-canvas);
+    color: var(--ems-color-text-default);
+    font-size: var(--ems-text-body-size);
+    font-weight: var(--ems-text-body-weight);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  code,
+  kbd,
+  pre,
+  samp {
+    font-family: var(--ems-text-code-family);
+  }
+
+  a {
+    color: var(--ems-color-accent-text);
+  }
+
+  /* One visible focus ring for everything keyboard-focused; mouse focus stays quiet. */
+  :focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  ::selection {
+    background-color: var(--ems-color-accent-bg);
+    color: var(--ems-color-text-on-accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms;
+      animation-iteration-count: 1;
+      transition-duration: 0.01ms;
+      scroll-behavior: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      interpolate-size: allow-keywords;
+    }
+  }
+}

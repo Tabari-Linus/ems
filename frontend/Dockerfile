@@ -7,6 +7,10 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
+# npm workspaces (design-system packages, versioned with Changesets) must exist for `npm ci`.
+COPY projects/tokens/package.json projects/tokens/
+COPY projects/icons/package.json projects/icons/
+COPY projects/ui/package.json projects/ui/
 RUN npm ci --no-audit --no-fund
 
 COPY . .

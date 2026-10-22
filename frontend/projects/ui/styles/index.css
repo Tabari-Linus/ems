@@ -1,0 +1,11 @@
+/*
+ * @ems/ui global stylesheet. Load after @ems/tokens/css/tokens.css and before app styles.
+ *
+ * Cascade layers, lowest precedence first. Anything unlayered (e.g. legacy app styles) beats
+ * every layer, so this stylesheet can be added to an existing app without overriding it.
+ */
+@layer reset, tokens, base, components, utilities;
+
+@import './reset.css';
+@import './base.css';
+@import './utilities.css';

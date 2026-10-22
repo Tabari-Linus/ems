@@ -1,0 +1,49 @@
+/* Minimal modern reset (layer: reset, the lowest precedence). */
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  * {
+    margin: 0;
+  }
+
+  html {
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+  }
+
+  body {
+    min-block-size: 100dvh;
+  }
+
+  /*
+   * Deliberately NOT here while the legacy app shares the page (Slice 0.8): `display: block` on
+   * media and `font: inherit` on form controls. Both visibly change legacy screens (inline SVG
+   * icons, control heights). @ems/ui components set their own display and font instead.
+   * Revisit when the legacy styles.scss is retired.
+   */
+  img,
+  picture,
+  video,
+  canvas,
+  svg {
+    max-inline-size: 100%;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+  }
+
+  [hidden]:not([hidden='until-found']) {
+    display: none;
+  }
+}
