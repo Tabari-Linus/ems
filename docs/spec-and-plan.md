@@ -39,6 +39,7 @@
 | D26 | **We build our own design system package** (§2.6): industry-standard engineering, a distinctive modern visual identity. No generic or template look. |
 | D27 | `certificates.zip` and all key material are deleted and gitignored. Keys are generated locally by script. |
 | D28 | The project moves out of OneDrive to **`C:\Users\LinusTabari\Downloads\ems`**. |
+| D31 | Welcome emails carry a **one-time set-password link** (hashed token, single use, 72 h), not a temporary password. Setting the password through the link is the first-login password change and moves the employee PENDING → ACTIVE. |
 | D19 | Production runs on a **custom domain**: frontend at `app.<domain>`, API at `api.<domain>`. These are same-site, so the refresh cookie is first-party: `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, host-only on `api.<domain>`. The `SameSite=None` fallback is not used. |
 
 ---
