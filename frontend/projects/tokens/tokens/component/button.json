@@ -1,0 +1,109 @@
+{
+  "button": {
+    "primary": {
+      "$type": "color",
+      "bg": {
+        "$value": "{color.accent.bg}"
+      },
+      "bg-hover": {
+        "$value": "{color.accent.bg-hover}"
+      },
+      "fg": {
+        "$value": "{color.text.on-accent}"
+      }
+    },
+    "secondary": {
+      "$type": "color",
+      "bg": {
+        "$value": "{color.bg.surface}"
+      },
+      "bg-hover": {
+        "$value": "{color.bg.subtle}"
+      },
+      "fg": {
+        "$value": "{color.text.default}"
+      },
+      "border": {
+        "$value": "{color.border.strong}"
+      }
+    },
+    "ghost": {
+      "$type": "color",
+      "bg-hover": {
+        "$value": "{color.bg.subtle}"
+      },
+      "fg": {
+        "$value": "{color.accent.text}"
+      }
+    },
+    "danger": {
+      "$type": "color",
+      "bg": {
+        "$value": "{color.status.danger.solid}"
+      },
+      "bg-hover": {
+        "$value": "{color.status.danger.solid-hover}"
+      },
+      "fg": {
+        "$value": "{color.status.danger.on-solid}"
+      }
+    },
+    "radius": {
+      "$type": "dimension",
+      "$value": "{radius.md}"
+    },
+    "gap": {
+      "$type": "dimension",
+      "$value": "{space.2}"
+    },
+    "font-weight": {
+      "$type": "fontWeight",
+      "$value": "{font.weight.medium}"
+    },
+    "sm": {
+      "$type": "dimension",
+      "height": {
+        "$value": {
+          "value": 2,
+          "unit": "rem"
+        }
+      },
+      "padding-inline": {
+        "$value": "{space.3}"
+      },
+      "font-size": {
+        "$value": "{font.size.sm}"
+      }
+    },
+    "md": {
+      "$type": "dimension",
+      "height": {
+        "$value": {
+          "value": 2.5,
+          "unit": "rem"
+        }
+      },
+      "padding-inline": {
+        "$value": "{space.4}"
+      },
+      "font-size": {
+        "$value": "{font.size.sm}"
+      }
+    },
+    "lg": {
+      "$type": "dimension",
+      "height": {
+        "$value": {
+          "value": 3,
+          "unit": "rem"
+        }
+      },
+      "padding-inline": {
+        "$value": "{space.5}"
+      },
+      "font-size": {
+        "$value": "{font.size.md}"
+      }
+    }
+  }
+}
