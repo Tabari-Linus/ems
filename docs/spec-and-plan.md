@@ -75,7 +75,7 @@ ems/                                  (existing repo github.com/Tabari-Linus/ems
 The only shared contract is the GraphQL schema, plus the REST auth endpoints.
 
 **Runtime configuration of the frontend.** The API URL is **not baked into the build**.
-- The SPA loads `/config.json` (`{ "apiUrl": "https://api.<domain>" }`) before bootstrap, via `provideAppInitializer`.
+- The SPA loads `/config.json` (`{ "apiUrl": "https://api.<domain>" }`) in `main.ts` *before* `bootstrapApplication` and provides it as an immutable `APP_CONFIG` value (so Apollo and services can read it synchronously, and it cannot race the session initializer).
 - The same bundle can therefore be promoted from staging to prod.
 - The nginx image writes `config.json` from env vars at container start.
 
