@@ -20,4 +20,6 @@ enum Permission{
     VIEW_POSITION
     MANAGE_POSITION
     VIEW_DASHBOARD
+    VIEW_SELF
+    MANAGE_SELF
 }

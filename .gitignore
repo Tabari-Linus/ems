@@ -39,3 +39,14 @@ CLAUDE.md
 src/main/resources/certificates/
 /tasks
 /scripts
+### Secrets & key material (never commit) ###
+.keys/
+*.pem
+*.key
+*.p12
+*.jks
+**/certificates/
+certificates*.zip
+.env
+.env.*
+!.env.example
