@@ -5,7 +5,10 @@ import com.mrlii.ems.dashboard.dto.DashboardSummaryResult;
 import com.mrlii.ems.dashboard.service.DashboardService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.mrlii.ems.support.TestcontainersConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -19,6 +22,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 @EnableMethodSecurity
 class DashboardControllerTest {
 

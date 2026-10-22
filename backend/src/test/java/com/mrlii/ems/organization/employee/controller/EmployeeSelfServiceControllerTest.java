@@ -6,7 +6,10 @@ import com.mrlii.ems.organization.employee.service.EmployeeSelfServiceService;
 import com.mrlii.ems.organization.employee.util.EmployeeSecurityHelper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.mrlii.ems.support.TestcontainersConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -21,6 +24,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
+@ActiveProfiles("test")
+@Import(TestcontainersConfiguration.class)
 @EnableMethodSecurity
 class EmployeeSelfServiceControllerTest {
 
