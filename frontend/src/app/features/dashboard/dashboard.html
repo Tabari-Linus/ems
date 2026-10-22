@@ -149,7 +149,7 @@
             </a>
 
             @if (canManageEmployees()) {
-              <div class="row-menu" (click)="$event.stopPropagation()">
+              <div class="row-menu" role="presentation" (click)="$event.stopPropagation()">
                 <button
                   class="row-menu-btn"
                   [class.is-open]="openMenuId() === emp.id"

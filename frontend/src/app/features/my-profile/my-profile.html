@@ -99,16 +99,16 @@
           <form class="inline-form" (submit)="saveBio(); $event.preventDefault()">
             <div class="form-grid">
               <div class="field">
-                <label>Full Name</label>
-                <input [formField]="bioForm.fullName" placeholder="Full legal name" />
+                <label for="my-profile-bio-form-full-name">Full Name</label>
+                <input id="my-profile-bio-form-full-name" [formField]="bioForm.fullName" placeholder="Full legal name" />
               </div>
               <div class="field">
-                <label>Other Name</label>
-                <input [formField]="bioForm.otherName" placeholder="Nickname or alias" />
+                <label for="my-profile-bio-form-other-name">Other Name</label>
+                <input id="my-profile-bio-form-other-name" [formField]="bioForm.otherName" placeholder="Nickname or alias" />
               </div>
               <div class="field">
-                <label>Gender</label>
-                <select [formField]="bioForm.gender">
+                <label for="my-profile-bio-form-gender">Gender</label>
+                <select id="my-profile-bio-form-gender" [formField]="bioForm.gender">
                   <option value="">Select</option>
                   <option value="MALE">Male</option>
                   <option value="FEMALE">Female</option>
@@ -117,8 +117,8 @@
                 </select>
               </div>
               <div class="field">
-                <label>Marital Status</label>
-                <select [formField]="bioForm.maritalStatus">
+                <label for="my-profile-bio-form-marital-status">Marital Status</label>
+                <select id="my-profile-bio-form-marital-status" [formField]="bioForm.maritalStatus">
                   <option value="">Select</option>
                   <option value="SINGLE">Single</option>
                   <option value="MARRIED">Married</option>
@@ -127,16 +127,16 @@
                 </select>
               </div>
               <div class="field">
-                <label>Date of Birth</label>
-                <input type="date" [formField]="bioForm.dateOfBirth" />
+                <label for="my-profile-bio-form-date-of-birth">Date of Birth</label>
+                <input id="my-profile-bio-form-date-of-birth" type="date" [formField]="bioForm.dateOfBirth" />
               </div>
               <div class="field">
-                <label>Place of Birth</label>
-                <input [formField]="bioForm.placeOfBirth" placeholder="City, Country" />
+                <label for="my-profile-bio-form-place-of-birth">Place of Birth</label>
+                <input id="my-profile-bio-form-place-of-birth" [formField]="bioForm.placeOfBirth" placeholder="City, Country" />
               </div>
               <div class="field span-2">
-                <label>Nationality</label>
-                <input [formField]="bioForm.nationality" placeholder="e.g. Ghanaian" />
+                <label for="my-profile-bio-form-nationality">Nationality</label>
+                <input id="my-profile-bio-form-nationality" [formField]="bioForm.nationality" placeholder="e.g. Ghanaian" />
               </div>
             </div>
             <div class="form-actions">
@@ -178,7 +178,7 @@
         @if (editSection() === 'contact') {
           <div class="contact-edit">
             <div class="contact-group">
-              <label class="contact-label">Phone Numbers</label>
+              <label for="my-profile-new-phone" class="contact-label">Phone Numbers</label>
               @for (phone of phoneNumbers(); track phone) {
                 <div class="contact-chip">
                   <span>{{ phone }}</span>
@@ -186,7 +186,7 @@
                 </div>
               }
               <div class="contact-add-row">
-                <input class="contact-input" type="tel" placeholder="+1 555 0000"
+                <input id="my-profile-new-phone" class="contact-input" type="tel" placeholder="+1 555 0000"
                   [value]="newPhone()" (input)="newPhone.set($any($event.target).value)"
                   (keydown.enter)="addPhone(); $event.preventDefault()" />
                 <button type="button" class="add-chip-btn" (click)="addPhone()">Add</button>
@@ -194,7 +194,7 @@
             </div>
 
             <div class="contact-group">
-              <label class="contact-label">Personal Emails</label>
+              <label for="my-profile-new-email" class="contact-label">Personal Emails</label>
               @for (mail of personalEmails(); track mail) {
                 <div class="contact-chip">
                   <span>{{ mail }}</span>
@@ -202,7 +202,7 @@
                 </div>
               }
               <div class="contact-add-row">
-                <input class="contact-input" type="email" placeholder="personal@email.com"
+                <input id="my-profile-new-email" class="contact-input" type="email" placeholder="personal@email.com"
                   [value]="newEmail()" (input)="newEmail.set($any($event.target).value)"
                   (keydown.enter)="addEmail(); $event.preventDefault()" />
                 <button type="button" class="add-chip-btn" (click)="addEmail()">Add</button>
@@ -251,38 +251,38 @@
           <form class="inline-form" (submit)="saveAddress(); $event.preventDefault()">
             <div class="form-grid">
               <div class="field span-2">
-                <label>Street</label>
-                <input [formField]="addressForm.street" placeholder="123 Main St" />
+                <label for="my-profile-address-form-street">Street</label>
+                <input id="my-profile-address-form-street" [formField]="addressForm.street" placeholder="123 Main St" />
               </div>
               <div class="field">
-                <label>City <span class="req">*</span></label>
-                <input [formField]="addressForm.city" placeholder="Accra" />
+                <label for="my-profile-address-form-city">City <span class="req">*</span></label>
+                <input id="my-profile-address-form-city" [formField]="addressForm.city" placeholder="Accra" />
                 @if (addressForm.city().touched() && addressForm.city().errors().length) {
                   <span class="field-err">{{ addressForm.city().errors()[0].message }}</span>
                 }
               </div>
               <div class="field">
-                <label>State / Region</label>
-                <input [formField]="addressForm.state" placeholder="Greater Accra" />
+                <label for="my-profile-address-form-state">State / Region</label>
+                <input id="my-profile-address-form-state" [formField]="addressForm.state" placeholder="Greater Accra" />
               </div>
               <div class="field">
-                <label>Zip / Postal Code</label>
-                <input [formField]="addressForm.zipCode" placeholder="GA-123" />
+                <label for="my-profile-address-form-zip-code">Zip / Postal Code</label>
+                <input id="my-profile-address-form-zip-code" [formField]="addressForm.zipCode" placeholder="GA-123" />
               </div>
               <div class="field">
-                <label>Country <span class="req">*</span></label>
-                <input [formField]="addressForm.country" placeholder="Ghana" />
+                <label for="my-profile-address-form-country">Country <span class="req">*</span></label>
+                <input id="my-profile-address-form-country" [formField]="addressForm.country" placeholder="Ghana" />
                 @if (addressForm.country().touched() && addressForm.country().errors().length) {
                   <span class="field-err">{{ addressForm.country().errors()[0].message }}</span>
                 }
               </div>
               <div class="field span-2">
-                <label>Digital Address</label>
-                <input [formField]="addressForm.digitalAddress" placeholder="GA-123-4567" />
+                <label for="my-profile-address-form-digital-address">Digital Address</label>
+                <input id="my-profile-address-form-digital-address" [formField]="addressForm.digitalAddress" placeholder="GA-123-4567" />
               </div>
               <div class="field span-2">
-                <label class="checkbox-label">
-                  <input type="checkbox"
+                <label for="my-profile-field" class="checkbox-label">
+                  <input id="my-profile-field" type="checkbox"
                     [checked]="addressModel().isCurrentAddress"
                     (change)="addressModel.update(m => ({ ...m, isCurrentAddress: $any($event.target).checked }))" />
                   This is my current address
@@ -344,16 +344,16 @@
           <form class="inline-form" (submit)="saveId(); $event.preventDefault()">
             <div class="form-grid">
               <div class="field">
-                <label>ID Type <span class="req">*</span></label>
-                <select [formField]="idForm.identificationType">
+                <label for="my-profile-id-form-identification-type">ID Type <span class="req">*</span></label>
+                <select id="my-profile-id-form-identification-type" [formField]="idForm.identificationType">
                   @for (type of ID_TYPES; track type) {
                     <option [value]="type">{{ formatIdType(type) }}</option>
                   }
                 </select>
               </div>
               <div class="field">
-                <label>ID Number <span class="req">*</span></label>
-                <input [formField]="idForm.identificationNumber" placeholder="GHA-12345678-9" />
+                <label for="my-profile-id-form-identification-number">ID Number <span class="req">*</span></label>
+                <input id="my-profile-id-form-identification-number" [formField]="idForm.identificationNumber" placeholder="GHA-12345678-9" />
                 @if (idForm.identificationNumber().touched() && idForm.identificationNumber().errors().length) {
                   <span class="field-err">{{ idForm.identificationNumber().errors()[0].message }}</span>
                 }

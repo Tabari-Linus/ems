@@ -19,8 +19,8 @@
         <div class="form-grid">
           @if (!editId()) {
             <div class="field span-2">
-              <label>Office <span class="req">*</span></label>
-              <select [formField]="deptForm.officeId">
+              <label for="departments-dept-form-office-id">Office <span class="req">*</span></label>
+              <select id="departments-dept-form-office-id" [formField]="deptForm.officeId">
                 <option value="">Select an office</option>
                 @for (o of officesResource.value()?.data ?? []; track o.id) {
                   <option [value]="o.id">{{ o.officeName }}</option>
@@ -32,26 +32,26 @@
             </div>
           }
           <div class="field">
-            <label>Department Name <span class="req">*</span></label>
-            <input [formField]="deptForm.departmentName" placeholder="Engineering" />
+            <label for="departments-dept-form-department-name">Department Name <span class="req">*</span></label>
+            <input id="departments-dept-form-department-name" [formField]="deptForm.departmentName" placeholder="Engineering" />
             @if (deptForm.departmentName().touched() && deptForm.departmentName().errors().length) {
               <span class="field-err">{{ deptForm.departmentName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" [formField]="deptForm.departmentEmail" placeholder="eng@acme.com" />
+            <label for="departments-dept-form-department-email">Email <span class="req">*</span></label>
+            <input id="departments-dept-form-department-email" type="email" [formField]="deptForm.departmentEmail" placeholder="eng@acme.com" />
             @if (deptForm.departmentEmail().touched() && deptForm.departmentEmail().errors().length) {
               <span class="field-err">{{ deptForm.departmentEmail().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Phone</label>
-            <input [formField]="deptForm.departmentPhoneNumber" placeholder="+1 555 0002" />
+            <label for="departments-dept-form-department-phone-number">Phone</label>
+            <input id="departments-dept-form-department-phone-number" [formField]="deptForm.departmentPhoneNumber" placeholder="+1 555 0002" />
           </div>
           <div class="field">
-            <label>Address</label>
-            <input [formField]="deptForm.departmentAddress" placeholder="Floor 3, Block B" />
+            <label for="departments-dept-form-department-address">Address</label>
+            <input id="departments-dept-form-department-address" [formField]="deptForm.departmentAddress" placeholder="Floor 3, Block B" />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">

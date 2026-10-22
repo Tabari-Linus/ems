@@ -31,29 +31,29 @@
       <form (submit)="onAddSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label>First Name <span class="req">*</span></label>
-            <input [formField]="addForm.firstName" placeholder="John" />
+            <label for="staff-add-form-first-name">First Name <span class="req">*</span></label>
+            <input id="staff-add-form-first-name" [formField]="addForm.firstName" placeholder="John" />
             @if (addForm.firstName().touched() && addForm.firstName().errors().length) {
               <span class="field-err">{{ addForm.firstName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Last Name <span class="req">*</span></label>
-            <input [formField]="addForm.lastName" placeholder="Doe" />
+            <label for="staff-add-form-last-name">Last Name <span class="req">*</span></label>
+            <input id="staff-add-form-last-name" [formField]="addForm.lastName" placeholder="Doe" />
             @if (addForm.lastName().touched() && addForm.lastName().errors().length) {
               <span class="field-err">{{ addForm.lastName().errors()[0].message }}</span>
             }
           </div>
           <div class="field span-2">
-            <label>Work Email <span class="req">*</span></label>
-            <input type="email" [formField]="addForm.workEmail" placeholder="john.doe@company.com" />
+            <label for="staff-add-form-work-email">Work Email <span class="req">*</span></label>
+            <input id="staff-add-form-work-email" type="email" [formField]="addForm.workEmail" placeholder="john.doe@company.com" />
             @if (addForm.workEmail().touched() && addForm.workEmail().errors().length) {
               <span class="field-err">{{ addForm.workEmail().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Position</label>
-            <select [formField]="addForm.positionId">
+            <label for="staff-add-form-position-id">Position</label>
+            <select id="staff-add-form-position-id" [formField]="addForm.positionId">
               <option value="">Select position</option>
               @for (p of positionsResource.value()?.data ?? []; track p.id) {
                 <option [value]="p.id">{{ p.level }} · {{ p.positionName }}</option>
@@ -61,8 +61,8 @@
             </select>
           </div>
           <div class="field">
-            <label>Department</label>
-            <select [formField]="addForm.departmentId">
+            <label for="staff-add-form-department-id">Department</label>
+            <select id="staff-add-form-department-id" [formField]="addForm.departmentId">
               <option value="">Select department</option>
               @for (d of departmentsResource.value()?.data ?? []; track d.id) {
                 <option [value]="d.id">{{ d.departmentName }}</option>
@@ -70,8 +70,8 @@
             </select>
           </div>
           <div class="field span-2">
-            <label>Access Level</label>
-            <select [formField]="addForm.accessLevelId">
+            <label for="staff-add-form-access-level-id">Access Level</label>
+            <select id="staff-add-form-access-level-id" [formField]="addForm.accessLevelId">
               <option value="">Select access level</option>
               @for (a of accessLevelsResource.value()?.data ?? []; track a.id) {
                 <option [value]="a.id">{{ a.accessLevelName }}</option>
@@ -204,8 +204,8 @@
 
 <!-- ── Employee modal ────────────────────────────────────────────── -->
 @if (selectedEmployee(); as emp) {
-  <div class="modal-overlay" (click)="selectedEmployee.set(null)" role="dialog" aria-modal="true">
-    <div class="modal-card" (click)="$event.stopPropagation()">
+  <div class="modal-overlay" (click)="selectedEmployee.set(null)" (keydown.escape)="selectedEmployee.set(null)" role="dialog" aria-modal="true">
+    <div class="modal-card" role="presentation" (click)="$event.stopPropagation()">
 
       <button class="modal-close" (click)="selectedEmployee.set(null)" aria-label="Close">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

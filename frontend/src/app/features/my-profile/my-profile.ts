@@ -13,7 +13,6 @@ import { EmployeeSelfService } from '../../core/services/employee-self.service';
 import { Permission } from '../../core/models/permission.model';
 import {
   EmployeeAddressInput,
-  EmployeeIdentificationInput,
 } from '../../core/services/employee-self.service';
 import { EmployeeAddress, EmployeeIdentification } from '../../core/models/employee.model';
 

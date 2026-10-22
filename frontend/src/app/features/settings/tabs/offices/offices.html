@@ -19,8 +19,8 @@
         <div class="form-grid">
           @if (!editId()) {
             <div class="field span-2">
-              <label>Company <span class="req">*</span></label>
-              <select [formField]="officeForm.companyId">
+              <label for="offices-office-form-company-id">Company <span class="req">*</span></label>
+              <select id="offices-office-form-company-id" [formField]="officeForm.companyId">
                 <option value="">Select a company</option>
                 @for (c of companiesResource.value()?.data ?? []; track c.id) {
                   <option [value]="c.id">{{ c.companyName }}</option>
@@ -32,26 +32,26 @@
             </div>
           }
           <div class="field">
-            <label>Office Name <span class="req">*</span></label>
-            <input [formField]="officeForm.officeName" placeholder="Head Office" />
+            <label for="offices-office-form-office-name">Office Name <span class="req">*</span></label>
+            <input id="offices-office-form-office-name" [formField]="officeForm.officeName" placeholder="Head Office" />
             @if (officeForm.officeName().touched() && officeForm.officeName().errors().length) {
               <span class="field-err">{{ officeForm.officeName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" [formField]="officeForm.officeEmail" placeholder="office@acme.com" />
+            <label for="offices-office-form-office-email">Email <span class="req">*</span></label>
+            <input id="offices-office-form-office-email" type="email" [formField]="officeForm.officeEmail" placeholder="office@acme.com" />
             @if (officeForm.officeEmail().touched() && officeForm.officeEmail().errors().length) {
               <span class="field-err">{{ officeForm.officeEmail().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Phone</label>
-            <input [formField]="officeForm.officePhoneNumber" placeholder="+1 555 0001" />
+            <label for="offices-office-form-office-phone-number">Phone</label>
+            <input id="offices-office-form-office-phone-number" [formField]="officeForm.officePhoneNumber" placeholder="+1 555 0001" />
           </div>
           <div class="field">
-            <label>Address</label>
-            <input [formField]="officeForm.officeAddress" placeholder="456 Park Ave, City" />
+            <label for="offices-office-form-office-address">Address</label>
+            <input id="offices-office-form-office-address" [formField]="officeForm.officeAddress" placeholder="456 Park Ave, City" />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">

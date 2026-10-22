@@ -18,23 +18,23 @@
       <form (submit)="onSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label>Position Name <span class="req">*</span></label>
-            <input [formField]="positionForm.positionName" placeholder="Software Engineer" />
+            <label for="positions-position-form-position-name">Position Name <span class="req">*</span></label>
+            <input id="positions-position-form-position-name" [formField]="positionForm.positionName" placeholder="Software Engineer" />
             @if (positionForm.positionName().touched() && positionForm.positionName().errors().length) {
               <span class="field-err">{{ positionForm.positionName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Level <span class="req">*</span></label>
-            <select [formField]="positionForm.level">
+            <label for="positions-position-form-level">Level <span class="req">*</span></label>
+            <select id="positions-position-form-level" [formField]="positionForm.level">
               @for (lvl of LEVELS; track lvl) {
                 <option [value]="lvl">{{ lvl }}</option>
               }
             </select>
           </div>
           <div class="field span-2">
-            <label>Description</label>
-            <input [formField]="positionForm.description" placeholder="Brief description of the role" />
+            <label for="positions-position-form-description">Description</label>
+            <input id="positions-position-form-description" [formField]="positionForm.description" placeholder="Brief description of the role" />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">

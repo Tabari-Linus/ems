@@ -18,20 +18,22 @@
       <form (submit)="onSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label>Name <span class="req">*</span></label>
-            <input [formField]="accessLevelForm.accessLevelName" placeholder="e.g. HR Manager" />
+            <label for="access-levels-access-level-form-access-level-name">Name <span class="req">*</span></label>
+            <input id="access-levels-access-level-form-access-level-name" [formField]="accessLevelForm.accessLevelName" placeholder="e.g. HR Manager" />
             @if (accessLevelForm.accessLevelName().touched() && accessLevelForm.accessLevelName().errors().length) {
               <span class="field-err">{{ accessLevelForm.accessLevelName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Description</label>
-            <input [formField]="accessLevelForm.description" placeholder="Short description" />
+            <label for="access-levels-access-level-form-description">Description</label>
+            <input id="access-levels-access-level-form-description" [formField]="accessLevelForm.description" placeholder="Short description" />
           </div>
 
           <!-- Permissions -->
           <div class="field span-2">
-            <label>
+            <!-- Heading for the checkbox group below; each checkbox has its own wrapping label. -->
+            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
+            <label id="access-levels-permissions-label">
               Permissions
               @if (!editId()) { <span class="req">*</span> }
               @if (editId()) { <span class="field-hint">Permissions are view-only when editing</span> }
@@ -40,7 +42,7 @@
             @if (loadingPerms()) {
               <div class="perm-loading">Loading permissions…</div>
             } @else {
-              <div class="perm-grid">
+              <div class="perm-grid" role="group" aria-labelledby="access-levels-permissions-label">
                 <div class="perm-col">
                   <div class="perm-col-head">
                     <span class="perm-col-label">View</span>
@@ -95,7 +97,7 @@
 
           <!-- Employee picker -->
           <div class="field span-2">
-            <label>
+            <label for="access-levels-emp-search-input">
               Employees
               <span class="field-hint">optional — add members to this access level</span>
             </label>
@@ -119,7 +121,7 @@
 
             <!-- Search input -->
             <div class="emp-search-wrap">
-              <input
+              <input id="access-levels-emp-search-input"
                 type="text"
                 class="emp-search-input"
                 placeholder="Search employees by name…"

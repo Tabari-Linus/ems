@@ -18,33 +18,33 @@
       <form (submit)="onSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label>Company Name <span class="req">*</span></label>
-            <input [formField]="companyForm.companyName" placeholder="Acme Corporation" />
+            <label for="companies-company-form-company-name">Company Name <span class="req">*</span></label>
+            <input id="companies-company-form-company-name" [formField]="companyForm.companyName" placeholder="Acme Corporation" />
             @if (companyForm.companyName().touched() && companyForm.companyName().errors().length) {
               <span class="field-err">{{ companyForm.companyName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Company Code <span class="req">*</span></label>
-            <input [formField]="companyForm.companyCode" placeholder="ACME" />
+            <label for="companies-company-form-company-code">Company Code <span class="req">*</span></label>
+            <input id="companies-company-form-company-code" [formField]="companyForm.companyCode" placeholder="ACME" />
             @if (companyForm.companyCode().touched() && companyForm.companyCode().errors().length) {
               <span class="field-err">{{ companyForm.companyCode().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" [formField]="companyForm.companyEmail" placeholder="info@acme.com" />
+            <label for="companies-company-form-company-email">Email <span class="req">*</span></label>
+            <input id="companies-company-form-company-email" type="email" [formField]="companyForm.companyEmail" placeholder="info@acme.com" />
             @if (companyForm.companyEmail().touched() && companyForm.companyEmail().errors().length) {
               <span class="field-err">{{ companyForm.companyEmail().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Phone</label>
-            <input [formField]="companyForm.companyPhoneNumber" placeholder="+1 555 0000" />
+            <label for="companies-company-form-company-phone-number">Phone</label>
+            <input id="companies-company-form-company-phone-number" [formField]="companyForm.companyPhoneNumber" placeholder="+1 555 0000" />
           </div>
           <div class="field span-2">
-            <label>Address</label>
-            <input [formField]="companyForm.companyAddress" placeholder="123 Main St, City" />
+            <label for="companies-company-form-company-address">Address</label>
+            <input id="companies-company-form-company-address" [formField]="companyForm.companyAddress" placeholder="123 Main St, City" />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">
