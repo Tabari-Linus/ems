@@ -86,6 +86,34 @@ docker compose up -d                # from the repo root (or run the app yoursel
 npm run e2e                         # base URL: E2E_BASE_URL or http://localhost:4200
 ```
 
+## Design system (`projects/`)
+
+Our own design-system packages live in this Angular workspace (architecture, token tiers and the
+component definition of done: [`projects/README.md`](projects/README.md)):
+
+- `@ems/tokens`: W3C DTCG tokens built by Style Dictionary into `--ems-*` CSS custom properties
+  (light/dark), TS and JSON, with a WCAG contrast gate. **All values are placeholders** until the
+  Slice DS Direction Board.
+- `@ems/ui`: Angular library with secondary entry points (`@ems/ui/button`, `@ems/ui/theme`) and a
+  global stylesheet built on cascade layers.
+- `@ems/icons`: `<ui-icon>` over a curated Lucide set.
+
+The app imports them from source through `tsconfig.json` paths (`@ems/ui/button`, …) and loads
+`tokens.css` + `ui/styles/index.css` before `src/styles.scss`. Both are layered, so the legacy
+unlayered styles still win and the current UI does not change.
+
+```bash
+npm run tokens:build            # DTCG sources -> projects/tokens/src/generated (commit the output)
+npm run tokens:check-contrast   # WCAG contrast table for every declared pair, both themes
+npm run lib:build               # ng build tokens, icons, ui -> dist/
+npm run lib:test                # library unit tests, coverage gate 90% lines
+npm run storybook               # docs site on http://localhost:6006
+npm run storybook:build         # static Storybook in storybook-static/
+npm run storybook:test          # every story: render + play (interactions) + axe
+npm run test:visual             # light/dark screenshots of Button stories (after storybook:build)
+npm run changeset               # record a change to an @ems/* package
+```
+
 ## Production build
 
 ```bash
@@ -111,5 +139,7 @@ docker run --rm -e API_URL=http://localhost:8080 -p 4200:8080 ems-frontend:local
 ## CI
 
 `.github/workflows/frontend.yml` runs on changes to `frontend/**` or the backend GraphQL schema:
-`npm ci`, lint, codegen check, unit tests with coverage (artifact), build. On `main` it also
-publishes `ghcr.io/<owner>/ems-frontend`.
+`npm ci`, lint, codegen check, unit tests with coverage (artifact), build. A parallel
+`design-system` job runs the token drift check and contrast gate, builds and tests the libraries,
+builds Storybook (artifact), runs the Storybook interaction/axe tests and the visual regression.
+On `main` it also publishes `ghcr.io/<owner>/ems-frontend`.
