@@ -4,7 +4,7 @@ import com.mrlii.ems.auth.dto.AuthResponse;
 import com.mrlii.ems.auth.dto.AuthTokenPair;
 import com.mrlii.ems.auth.dto.LoginRequest;
 import com.mrlii.ems.auth.service.AuthService;
-import com.mrlii.ems.common.config.RsaKeyProperties;
+import com.mrlii.ems.common.config.AuthCookieProperties;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -23,7 +23,7 @@ public class AuthController {
     private static final String COOKIE_NAME = "refresh_token";
 
     private final AuthService authService;
-    private final RsaKeyProperties rsaKeyProperties;
+    private final AuthCookieProperties cookieProperties;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody @Valid LoginRequest request) {
@@ -60,9 +60,9 @@ public class AuthController {
         long maxAge = Duration.between(Instant.now(), pair.refreshTokenExpiresAt()).getSeconds();
         return ResponseCookie.from(COOKIE_NAME, pair.refreshToken())
                 .httpOnly(true)
-                .secure(rsaKeyProperties.cookieSecure())
-                .sameSite("Strict")
-                .path("/auth")
+                .secure(cookieProperties.secure())
+                .sameSite(cookieProperties.sameSite())
+                .path(cookieProperties.path())
                 .maxAge(maxAge)
                 .build();
     }
@@ -70,9 +70,9 @@ public class AuthController {
     private ResponseCookie clearRefreshCookie() {
         return ResponseCookie.from(COOKIE_NAME, "")
                 .httpOnly(true)
-                .secure(rsaKeyProperties.cookieSecure())
-                .sameSite("Strict")
-                .path("/auth")
+                .secure(cookieProperties.secure())
+                .sameSite(cookieProperties.sameSite())
+                .path(cookieProperties.path())
                 .maxAge(0)
                 .build();
     }

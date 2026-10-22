@@ -33,6 +33,8 @@ public class SecurityFilterChainConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/login", "/api/v1/auth/refresh-token", "/api/v1/auth/logout").permitAll()
                         .requestMatchers("/actuator/health/**").permitAll()
+                        // GraphiQL UI (enabled in dev only); the /graphql endpoint itself stays authenticated
+                        .requestMatchers(HttpMethod.GET, "/graphiql", "/graphiql/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
