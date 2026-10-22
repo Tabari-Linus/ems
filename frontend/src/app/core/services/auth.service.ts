@@ -5,13 +5,14 @@ import { Observable, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { AuthResponse, LoginRequest } from '../models/auth.model';
 import { Permission } from '../models/permission.model';
-import { environment } from '../../../environments/environment';
+import { APP_CONFIG } from '../config/app-config';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
   private readonly tokenService = inject(TokenService);
   private readonly router = inject(Router);
+  private readonly authUrl = `${inject(APP_CONFIG).apiUrl}/api/v1/auth`;
 
   readonly isAuthenticated = computed(() => this.tokenService.isValid());
   readonly permissions = computed(() => this.tokenService.permissions());
@@ -30,7 +31,7 @@ export class AuthService {
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/api/v1/auth/login`, credentials, {
+      .post<AuthResponse>(`${this.authUrl}/login`, credentials, {
         withCredentials: true,
       })
       .pipe(
@@ -44,14 +45,15 @@ export class AuthService {
   logout(): void {
     this.tokenService.clear();
     this.http
-      .post(`${environment.apiUrl}/api/v1/auth/logout`, {}, { withCredentials: true })
-      .subscribe({ error: () => {} });
+      .post(`${this.authUrl}/logout`, {}, { withCredentials: true })
+      // Best effort: the local session is already cleared; a failed server logout is ignored.
+      .subscribe({ error: () => undefined });
     void this.router.navigate(['/login']);
   }
 
   refreshToken(): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${environment.apiUrl}/api/v1/auth/refresh-token`, {}, {
+      .post<AuthResponse>(`${this.authUrl}/refresh-token`, {}, {
         withCredentials: true,
       })
       .pipe(tap(response => this.tokenService.set(response.accessToken)));
