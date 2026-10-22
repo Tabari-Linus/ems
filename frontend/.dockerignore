@@ -16,3 +16,7 @@ blob-report
 e2e
 npm-debug.log
 *.md
+storybook-static
+visual
+.storybook
+.changeset

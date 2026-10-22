@@ -22,9 +22,16 @@
     "storybook": "storybook dev -p 6006 -c .storybook",
     "storybook:build": "storybook build -c .storybook -o storybook-static",
     "storybook:test": "vitest run --config vitest.storybook.config.mts",
-    "test:visual": "playwright test -c playwright.visual.config.ts"
+    "test:visual": "playwright test -c playwright.visual.config.ts",
+    "changeset": "changeset",
+    "changeset:version": "changeset version"
   },
   "private": true,
+  "workspaces": [
+    "projects/tokens",
+    "projects/icons",
+    "projects/ui"
+  ],
   "packageManager": "npm@11.17.0",
   "dependencies": {
     "@angular/common": "^21.2.25",
