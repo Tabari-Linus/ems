@@ -1,0 +1,97 @@
+import {
+  LucideArrowLeft,
+  LucideArrowRight,
+  LucideBriefcase,
+  LucideBuilding,
+  LucideCalendar,
+  LucideCheck,
+  LucideChevronDown,
+  LucideChevronLeft,
+  LucideChevronRight,
+  LucideChevronUp,
+  LucideCircleAlert,
+  LucideCircleCheck,
+  LucideDownload,
+  LucideEllipsis,
+  LucideExternalLink,
+  LucideEye,
+  LucideEyeOff,
+  LucideFunnel,
+  LucideHouse,
+  LucideInfo,
+  LucideLoaderCircle,
+  LucideLogOut,
+  LucideMail,
+  LucideMenu,
+  LucideMinus,
+  LucideMonitor,
+  LucideMoon,
+  LucidePencil,
+  LucidePhone,
+  LucidePlus,
+  LucideSearch,
+  LucideSettings,
+  LucideSun,
+  LucideTrash,
+  LucideTriangleAlert,
+  LucideUpload,
+  LucideUser,
+  LucideUsers,
+  LucideX,
+  type LucideIconData,
+} from '@lucide/angular';
+
+/**
+ * The curated icon set. Only icons listed here are bundled (named imports keep the rest of
+ * Lucide tree-shaken). To add one: import its `Lucide<Name>` class above and add a kebab-case
+ * key. Brand glyphs can be added as plain `LucideIconData` objects.
+ *
+ * Swapping the icon library later means changing this file and `Icon`, not every call site.
+ */
+export const EMS_ICONS = {
+  'arrow-left': LucideArrowLeft.icon,
+  'arrow-right': LucideArrowRight.icon,
+  briefcase: LucideBriefcase.icon,
+  building: LucideBuilding.icon,
+  calendar: LucideCalendar.icon,
+  check: LucideCheck.icon,
+  'chevron-down': LucideChevronDown.icon,
+  'chevron-left': LucideChevronLeft.icon,
+  'chevron-right': LucideChevronRight.icon,
+  'chevron-up': LucideChevronUp.icon,
+  'circle-alert': LucideCircleAlert.icon,
+  'circle-check': LucideCircleCheck.icon,
+  download: LucideDownload.icon,
+  ellipsis: LucideEllipsis.icon,
+  'external-link': LucideExternalLink.icon,
+  eye: LucideEye.icon,
+  'eye-off': LucideEyeOff.icon,
+  filter: LucideFunnel.icon,
+  home: LucideHouse.icon,
+  info: LucideInfo.icon,
+  loader: LucideLoaderCircle.icon,
+  'log-out': LucideLogOut.icon,
+  mail: LucideMail.icon,
+  menu: LucideMenu.icon,
+  minus: LucideMinus.icon,
+  monitor: LucideMonitor.icon,
+  moon: LucideMoon.icon,
+  pencil: LucidePencil.icon,
+  phone: LucidePhone.icon,
+  plus: LucidePlus.icon,
+  search: LucideSearch.icon,
+  settings: LucideSettings.icon,
+  sun: LucideSun.icon,
+  trash: LucideTrash.icon,
+  'triangle-alert': LucideTriangleAlert.icon,
+  upload: LucideUpload.icon,
+  user: LucideUser.icon,
+  users: LucideUsers.icon,
+  x: LucideX.icon,
+} as const satisfies Readonly<Record<string, LucideIconData>>;
+
+/** Name of an icon in the curated set. */
+export type IconName = keyof typeof EMS_ICONS;
+
+/** All curated icon names, sorted (for docs and pickers). */
+export const ICON_NAMES = Object.keys(EMS_ICONS).sort() as readonly IconName[];

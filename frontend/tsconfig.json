@@ -13,7 +13,13 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "ES2022",
-    "module": "preserve"
+    "module": "preserve",
+    "paths": {
+      "@ems/tokens": ["./projects/tokens/src/public-api.ts"],
+      "@ems/icons": ["./projects/icons/src/public-api.ts"],
+      "@ems/ui": ["./projects/ui/src/public-api.ts"],
+      "@ems/ui/*": ["./projects/ui/*/src/public-api.ts"]
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -28,6 +34,21 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/ui/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/icons/tsconfig.lib.json"
+    },
+    {
+      "path": "./projects/icons/tsconfig.spec.json"
+    },
+    {
+      "path": "./projects/tokens/tsconfig.lib.json"
     }
   ]
 }

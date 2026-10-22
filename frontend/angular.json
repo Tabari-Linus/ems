@@ -30,7 +30,11 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"]
+            "styles": [
+              "projects/tokens/src/generated/tokens.css",
+              "projects/ui/styles/index.css",
+              "src/styles.scss"
+            ]
           },
           "configurations": {
             "production": {
@@ -96,6 +100,133 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": ["src/**/*.ts", "src/**/*.html", "e2e/**/*.ts", "*.ts"]
+          }
+        }
+      }
+    },
+    "ui": {
+      "projectType": "library",
+      "root": "projects/ui",
+      "sourceRoot": "projects/ui",
+      "prefix": "ui",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ui/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ui/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/ui/tsconfig.spec.json",
+            "include": ["**/*.spec.ts"],
+            "coverageInclude": ["projects/ui/**/*.ts"],
+            "coverageExclude": ["**/*.spec.ts", "**/*.stories.ts", "**/public-api.ts"],
+            "coverageReporters": ["text", "text-summary", "html", "lcov", "json-summary"],
+            "coverageThresholds": {
+              "lines": 90,
+              "statements": 90,
+              "functions": 90,
+              "branches": 85
+            }
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "coverage": true,
+              "progress": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/ui/**/*.ts", "projects/ui/**/*.html"],
+            "eslintConfig": "projects/ui/eslint.config.js"
+          }
+        }
+      }
+    },
+    "icons": {
+      "projectType": "library",
+      "root": "projects/icons",
+      "sourceRoot": "projects/icons/src",
+      "prefix": "ui",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/icons/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/icons/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "tsConfig": "projects/icons/tsconfig.spec.json",
+            "include": ["**/*.spec.ts"],
+            "coverageInclude": ["projects/icons/**/*.ts"],
+            "coverageExclude": ["**/*.spec.ts", "**/*.stories.ts", "**/public-api.ts"],
+            "coverageReporters": ["text", "text-summary", "html", "lcov", "json-summary"],
+            "coverageThresholds": {
+              "lines": 90,
+              "statements": 90,
+              "functions": 90,
+              "branches": 85
+            }
+          },
+          "configurations": {
+            "ci": {
+              "watch": false,
+              "coverage": true,
+              "progress": false
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/icons/**/*.ts", "projects/icons/**/*.html"],
+            "eslintConfig": "projects/icons/eslint.config.js"
+          }
+        }
+      }
+    },
+    "tokens": {
+      "projectType": "library",
+      "root": "projects/tokens",
+      "sourceRoot": "projects/tokens/src",
+      "prefix": "ems",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:ng-packagr",
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/tokens/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/tokens/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/tokens/**/*.ts"],
+            "eslintConfig": "projects/tokens/eslint.config.js"
           }
         }
       }
