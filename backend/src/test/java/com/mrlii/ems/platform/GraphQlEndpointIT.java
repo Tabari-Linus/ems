@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 
 import java.util.Map;
 
-class GraphQlEndpointIntegrationTest extends AbstractGraphQlIntegrationTest {
+class GraphQlEndpointIT extends AbstractGraphQlIntegrationTest {
 
     private static final String GET_POSITIONS = """
             query {

@@ -11,7 +11,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class AuthCookieIntegrationTest extends AbstractGraphQlIntegrationTest {
+class AuthCookieIT extends AbstractGraphQlIntegrationTest {
 
     @Autowired
     private AuthCookieProperties cookieProperties;

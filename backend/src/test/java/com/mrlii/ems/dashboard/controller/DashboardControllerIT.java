@@ -25,7 +25,7 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 @Import(TestcontainersConfiguration.class)
 @EnableMethodSecurity
-class DashboardControllerTest {
+class DashboardControllerIT {
 
     @Autowired
     private DashboardController dashboardController;

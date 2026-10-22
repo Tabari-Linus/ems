@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 @Import(TestcontainersConfiguration.class)
 @EnableMethodSecurity
-class CompanyControllerTest {
+class CompanyControllerIT {
 
     @Autowired
     private CompanyController companyController;

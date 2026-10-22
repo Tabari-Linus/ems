@@ -37,25 +37,34 @@ jobs:
           cache: maven
           cache-dependency-path: backend/pom.xml
 
-      # Unit + integration tests. Integration tests start PostgreSQL via Testcontainers
-      # (Docker is available on ubuntu-latest) and generate their own JWT key pair.
-      - name: Verify
-        run: ./mvnw -B verify
+      # Unit tests (*Test, Surefire): no Spring context, no Docker — fast feedback first.
+      - name: Unit tests
+        run: ./mvnw -B test
 
-      - name: Upload JaCoCo report
+      # Integration tests (*IT, Failsafe): start PostgreSQL via Testcontainers (Docker is
+      # available on ubuntu-latest) and generate their own JWT key pair. Unit tests are not
+      # re-run; their coverage data from the previous step is merged into one report.
+      - name: Integration tests
+        run: ./mvnw -B verify -DskipUnitTests
+
+      - name: Upload JaCoCo reports
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: jacoco-report
-          path: backend/target/site/jacoco/
+          path: |
+            backend/target/site/jacoco/
+            backend/target/site/jacoco-merged/
           if-no-files-found: ignore
 
       - name: Upload test reports
         if: failure()
         uses: actions/upload-artifact@v5
         with:
-          name: surefire-reports
-          path: backend/target/surefire-reports/
+          name: test-reports
+          path: |
+            backend/target/surefire-reports/
+            backend/target/failsafe-reports/
           if-no-files-found: ignore
 
   image:

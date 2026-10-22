@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 @ActiveProfiles("test")
 @Import(TestcontainersConfiguration.class)
 @EnableMethodSecurity
-class EmployeeSelfServiceControllerTest {
+class EmployeeSelfServiceControllerIT {
 
     @Autowired
     private EmployeeSelfServiceController controller;

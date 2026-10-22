@@ -4,7 +4,7 @@ import com.mrlii.ems.support.AbstractGraphQlIntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
 
-class CorsIntegrationTest extends AbstractGraphQlIntegrationTest {
+class CorsIT extends AbstractGraphQlIntegrationTest {
 
     private static final String ALLOWED_ORIGIN = "http://localhost:4200";
     private static final String UNKNOWN_ORIGIN = "http://evil.example.com";

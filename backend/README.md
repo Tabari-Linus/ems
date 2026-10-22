@@ -14,7 +14,7 @@ All commands below run from `backend/`.
 ## Prerequisites
 
 - JDK 21 (the Maven wrapper downloads Maven itself)
-- Docker: needed for the test suite (Testcontainers) and for building the image
+- Docker: needed for the integration tests (Testcontainers) and for building the image; unit tests run without it
 - `openssl` (Git Bash ships it on Windows) to generate the JWT keys
 - PostgreSQL 17 for running locally: use `docker compose up postgres mailpit` from the repo root, or your own instance
 
@@ -67,17 +67,29 @@ Flyway applies `src/main/resources/db/migration` on startup and Hibernate valida
 
 ## 4. Test
 
+Tests are split by naming convention:
+
+| Kind | Name | Runner | Needs |
+|---|---|---|---|
+| Unit | `*Test` | Surefire, `test` phase | nothing (Mockito, no Spring context) |
+| Integration | `*IT` | Failsafe, `integration-test` phase | a running Docker daemon |
+
 ```sh
-./mvnw verify
+./mvnw test                       # unit tests only — fast, no Docker
+./mvnw verify                     # unit + integration tests
+./mvnw verify -DskipUnitTests     # integration tests only
+./mvnw verify -DskipITs           # unit tests only, plus packaging
 ```
 
-Runs the unit tests and the integration tests. Integration tests need a running Docker daemon: they start
-PostgreSQL 17 with Testcontainers, apply the real Flyway migrations, and generate a throwaway RSA key pair
-in-JVM, so no local database, keys or `.env` are needed. The JaCoCo report is written to
-`target/site/jacoco/index.html`.
+Integration tests start PostgreSQL 17 with Testcontainers, apply the real Flyway migrations, and generate a
+throwaway RSA key pair in-JVM, so no local database, keys or `.env` are needed.
 
-New end-to-end GraphQL tests extend `AbstractGraphQlIntegrationTest`, which provides an anonymous
-`graphQlTester()` and an `adminGraphQlTester()` authenticated through the real login endpoint.
+JaCoCo writes unit-test coverage to `target/site/jacoco/index.html` and combined unit + integration
+coverage to `target/site/jacoco-merged/index.html`.
+
+Anything that boots a Spring context (`@SpringBootTest`, Testcontainers) is an integration test and must be
+named `*IT`. New end-to-end GraphQL tests extend `AbstractGraphQlIntegrationTest`, which provides an
+anonymous `graphQlTester()` and an `adminGraphQlTester()` authenticated through the real login endpoint.
 
 ## 5. Build the image
 
