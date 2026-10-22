@@ -39,7 +39,7 @@
 | D26 | **We build our own design system package** (§2.6): industry-standard engineering, a distinctive modern visual identity. No generic or template look. |
 | D27 | `certificates.zip` and all key material are deleted and gitignored. Keys are generated locally by script. |
 | D28 | The project moves out of OneDrive to **`C:\Users\LinusTabari\Downloads\ems`**. |
-| D29 | Visual direction: **B — Kente Modern** (Direction Board, `docs/design/direction-board/`). Kente gold is the single action colour (ink lettering); forest green and oxblood are structure only (woven band, department colours, avatar rings); Syne / Manrope / IBM Plex Mono; crisp 4–6px radii; woven-band, stepped-notch and kente-panel motifs used sparingly. |
+| D29 | ~~Visual direction: B — Kente Modern~~ **Withdrawn** (owner rejected it). Round 2 brief: clean, minimal, light-first, Rippling/Deel-like, blue/indigo accent (`docs/design/direction-board/BRIEF-round2.md`). Original entry: (Direction Board, `docs/design/direction-board/`). Kente gold is the single action colour (ink lettering); forest green and oxblood are structure only (woven band, department colours, avatar rings); Syne / Manrope / IBM Plex Mono; crisp 4–6px radii; woven-band, stepped-notch and kente-panel motifs used sparingly. |
 | D19 | Production runs on a **custom domain**: frontend at `app.<domain>`, API at `api.<domain>`. These are same-site, so the refresh cookie is first-party: `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, host-only on `api.<domain>`. The `SameSite=None` fallback is not used. |
 
 ---

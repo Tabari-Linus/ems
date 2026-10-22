@@ -78,43 +78,43 @@
 
 <div class="wrap">
   <header>
-    <span class="eyebrow">EMS · Slice DS · Step 1</span>
+    <span class="eyebrow">EMS · Slice DS · Round 2</span>
     <h1>Pick the visual direction for EMS</h1>
-    <p class="lede">Three directions, each applied to the same three screens (sign in, people directory, an employee profile) in light and dark, with the same Akwaaba Labs sample data. Choose one, or name the parts you want to combine. The choice becomes the token set for the design system.</p>
+    <p class="lede">Clean, minimal, light-first HR software with a blue accent, in the spirit of Rippling and Deel. Three takes on that brief, each shown on the same four screens (sign in, your home, the people directory, an employee profile) in light and dark with the same Akwaaba Labs sample data. Choose one, or name the parts you want to combine.</p>
   </header>
 
   <div class="compare" role="region" aria-label="Comparison of the three directions" tabindex="0">
     <table>
-      <thead><tr><th scope="col"></th><th scope="col">A · Atelier</th><th scope="col">B · Kente Modern</th><th scope="col">C · Precision</th></tr></thead>
+      <thead><tr><th scope="col"></th><th scope="col">D · Daylight</th><th scope="col">E · Structure</th><th scope="col">F · Quiet</th></tr></thead>
       <tbody>
-        <tr><th scope="row">Feels like</th><td>A calm studio handbook. Warm, humane, people first.</td><td>Ghanaian geometric modernism. Confident, rooted, premium.</td><td>An instrument panel. Fast, quiet, keyboard first.</td></tr>
-        <tr><th scope="row">Colour</th><td>Stone and forest neutrals, <strong>malachite green</strong> accent, brass detail</td><td>Kente <strong>gold, forest green, oxblood</strong> on warm paper and ink</td><td>Graphite slate, one luminous <strong>cyan-teal</strong> accent</td></tr>
-        <tr><th scope="row">Type</th><td>Bricolage Grotesque · Figtree · JetBrains Mono</td><td>Syne · Manrope · IBM Plex Mono</td><td>Onest · IBM Plex Mono</td></tr>
-        <tr><th scope="row">Density</th><td>Spacious; card grid directory</td><td>Structured; colour-coded table</td><td>Dense; data table and ⌘K palette</td></tr>
-        <tr><th scope="row">Signature</th><td>Large initials avatars, "Akwaaba" sign-in</td><td>Woven band, segmented avatar rings</td><td>Command palette, mono IDs, audit timeline</td></tr>
-        <tr><th scope="row">Best for</th><td>Everyday employees browsing colleagues</td><td>A distinctive brand story for the CV</td><td>HR and admins working in it all day</td></tr>
+        <tr><th scope="row">Feels like</th><td>Friendly and effortless. Airy, rounded, welcoming.</td><td>Trusted and orderly. Everything has its place.</td><td>Calm and spacious. The most minimal of the three.</td></tr>
+        <tr><th scope="row">Colour</th><td>Light canvas, white cards, <strong>indigo</strong> accent, soft avatar tints</td><td>White content, <strong>deep navy sidebar</strong>, <strong>cobalt</strong> accent</td><td>White and hairlines, <strong>ultramarine</strong> only where you can act</td></tr>
+        <tr><th scope="row">Shape</th><td>Pill buttons, rounded cards, soft shadows</td><td>6px corners, 1px borders, almost no shadow</td><td>Space and hairlines instead of cards</td></tr>
+        <tr><th scope="row">Navigation</th><td>Light sidebar</td><td>Navy sidebar</td><td>Top navigation bar</td></tr>
+        <tr><th scope="row">Directory default</th><td>Grid of people cards</td><td>Table grouped by department</td><td>Spacious people grid</td></tr>
+        <tr><th scope="row">Signature</th><td>Welcoming home with "Needs your attention"</td><td>Profile with sticky summary column and tabs</td><td>Typography and white space</td></tr>
       </tbody>
     </table>
   </div>
 
   <div class="tabs" role="tablist" aria-label="Directions">
-    <button class="tab" role="tab" id="tab-atelier" aria-controls="stage" aria-selected="true" data-file="direction-a.html"><span class="k">A</span>Atelier</button>
-    <button class="tab" role="tab" id="tab-kente" aria-controls="stage" aria-selected="false" data-file="direction-b.html"><span class="k">B</span>Kente Modern</button>
-    <button class="tab" role="tab" id="tab-precision" aria-controls="stage" aria-selected="false" data-file="direction-c.html"><span class="k">C</span>Precision</button>
-    <a class="open" id="open-link" href="direction-a.html" target="_blank" rel="noopener">Open full page</a>
+    <button class="tab" role="tab" id="tab-daylight" aria-controls="stage" aria-selected="true" data-file="direction-d.html"><span class="k">D</span>Daylight</button>
+    <button class="tab" role="tab" id="tab-structure" aria-controls="stage" aria-selected="false" data-file="direction-e.html"><span class="k">E</span>Structure</button>
+    <button class="tab" role="tab" id="tab-quiet" aria-controls="stage" aria-selected="false" data-file="direction-f.html"><span class="k">F</span>Quiet</button>
+    <a class="open" id="open-link" href="direction-d.html" target="_blank" rel="noopener">Open full page</a>
   </div>
 
-  <div class="stage" id="stage" role="tabpanel" aria-labelledby="tab-atelier">
-    <iframe id="frame" title="Direction preview" src="direction-a.html" loading="eager"></iframe>
+  <div class="stage" id="stage" role="tabpanel" aria-labelledby="tab-daylight">
+    <iframe id="frame" title="Direction preview" src="direction-d.html" loading="eager"></iframe>
   </div>
 
   <div class="decide">
-    <section><h2>Choose one</h2><p>Reply with A, B or C. Its palette, type and shapes become the tokens; components follow its patterns.</p></section>
-    <section><h2>Or combine</h2><p>Name the parts, for example "B's palette and woven band with C's table density and command palette".</p></section>
+    <section><h2>Choose one</h2><p>Reply with D, E or F. Its palette, type and shapes become the tokens; components follow its patterns.</p></section>
+    <section><h2>Or combine</h2><p>Name the parts, for example "D's home and palette with E's profile layout".</p></section>
     <section><h2>What happens next</h2><p>The chosen direction is frozen into DTCG tokens with the contrast gate, then the first components ship in Storybook in both themes.</p></section>
   </div>
 
-  <footer>Sample data is fictional. Contrast is checked per direction against WCAG 2.2 AA in both modes.</footer>
+  <footer>Sample data is fictional. Contrast is checked per direction against WCAG 2.2 AA in both modes. Round 1 (Atelier, Kente Modern, Precision) was set aside.</footer>
 </div>
 
 <script>
@@ -122,7 +122,7 @@
   const frame = document.getElementById('frame');
   const stage = document.getElementById('stage');
   const openLink = document.getElementById('open-link');
-  const byHash = { atelier: 0, kente: 1, precision: 2 };
+  const byHash = { daylight: 0, structure: 1, quiet: 2 };
 
   function fit() {
     try {

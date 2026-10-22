@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Direction E — Structure</title>
+<meta name="description" content="EMS direction E: orderly, dependable people software with a navy sidebar, cobalt actions and a sticky record column on the profile.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Instrument+Sans:wdth,wght@75..100,400..700&display=swap">
+<style>
+:root{--canvas:oklch(97.6% 0.006 262);--surface:oklch(100% 0 0);--surface-2:oklch(98.1% 0.005 262);--line:oklch(91.5% 0.012 262);--line-strong:oklch(63% 0.025 262);--text:oklch(23% 0.035 262);--text-2:oklch(39% 0.03 262);--muted:oklch(48.5% 0.025 262);--accent:oklch(54% 0.19 258);--accent-hover:oklch(48% 0.19 258);--accent-soft:oklch(95.6% 0.024 258);--accent-line:oklch(84% 0.06 258);--on-accent:oklch(100% 0 0);--link:oklch(51% 0.19 258);--focus:oklch(54% 0.19 258);--sb:oklch(25% 0.05 262);--sb-2:oklch(32.5% 0.056 262);--sb-line:oklch(34% 0.05 262);--sb-text:oklch(97% 0.008 262);--sb-muted:oklch(78% 0.035 262);--sb-accent:oklch(78% 0.11 255);--danger:oklch(52% 0.19 27);--on-danger:oklch(100% 0 0);--danger-soft:oklch(96% 0.022 27);--ok-fg:oklch(42% 0.11 152);--ok-bg:oklch(95.5% 0.04 152);--warn-fg:oklch(46% 0.1 62);--warn-bg:oklch(95.8% 0.05 82);--off-fg:oklch(44% 0.02 262);--off-bg:oklch(94.5% 0.008 262);--arc-fg:oklch(44% 0.07 305);--arc-bg:oklch(95.5% 0.02 305);--av-bg:92.5% 0.04;--av-fg:38% 0.1;--dot:62% 0.13;color-scheme:light;--sans:"Instrument Sans","Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,"Cascadia Mono",Consolas,"Liberation Mono",monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--canvas:oklch(18.5% 0.026 262);--surface:oklch(22.5% 0.029 262);--surface-2:oklch(25.5% 0.031 262);--line:oklch(31% 0.03 262);--line-strong:oklch(56% 0.035 262);--text:oklch(95% 0.008 262);--text-2:oklch(85% 0.014 262);--muted:oklch(74% 0.024 262);--accent:oklch(72% 0.14 255);--accent-hover:oklch(78% 0.12 255);--accent-soft:oklch(29% 0.06 258);--accent-line:oklch(45% 0.09 258);--on-accent:oklch(18% 0.04 262);--link:oklch(76% 0.12 255);--focus:oklch(72% 0.14 255);--sb:oklch(14.5% 0.03 262);--sb-2:oklch(22% 0.045 262);--sb-line:oklch(24% 0.04 262);--sb-text:oklch(95% 0.008 262);--sb-muted:oklch(73% 0.03 262);--sb-accent:oklch(76% 0.12 255);--danger:oklch(70% 0.16 25);--on-danger:oklch(18% 0.04 262);--danger-soft:oklch(29% 0.06 25);--ok-fg:oklch(83% 0.13 152);--ok-bg:oklch(29% 0.05 152);--warn-fg:oklch(86% 0.11 82);--warn-bg:oklch(30% 0.05 70);--off-fg:oklch(81% 0.015 262);--off-bg:oklch(30% 0.015 262);--arc-fg:oklch(83% 0.07 305);--arc-bg:oklch(30% 0.045 305);--av-bg:34% 0.06;--av-fg:90% 0.05;--dot:72% 0.12;color-scheme:dark;}}
+:root[data-theme="dark"]{--canvas:oklch(18.5% 0.026 262);--surface:oklch(22.5% 0.029 262);--surface-2:oklch(25.5% 0.031 262);--line:oklch(31% 0.03 262);--line-strong:oklch(56% 0.035 262);--text:oklch(95% 0.008 262);--text-2:oklch(85% 0.014 262);--muted:oklch(74% 0.024 262);--accent:oklch(72% 0.14 255);--accent-hover:oklch(78% 0.12 255);--accent-soft:oklch(29% 0.06 258);--accent-line:oklch(45% 0.09 258);--on-accent:oklch(18% 0.04 262);--link:oklch(76% 0.12 255);--focus:oklch(72% 0.14 255);--sb:oklch(14.5% 0.03 262);--sb-2:oklch(22% 0.045 262);--sb-line:oklch(24% 0.04 262);--sb-text:oklch(95% 0.008 262);--sb-muted:oklch(73% 0.03 262);--sb-accent:oklch(76% 0.12 255);--danger:oklch(70% 0.16 25);--on-danger:oklch(18% 0.04 262);--danger-soft:oklch(29% 0.06 25);--ok-fg:oklch(83% 0.13 152);--ok-bg:oklch(29% 0.05 152);--warn-fg:oklch(86% 0.11 82);--warn-bg:oklch(30% 0.05 70);--off-fg:oklch(81% 0.015 262);--off-bg:oklch(30% 0.015 262);--arc-fg:oklch(83% 0.07 305);--arc-bg:oklch(30% 0.045 305);--av-bg:34% 0.06;--av-fg:90% 0.05;--dot:72% 0.12;color-scheme:dark;}
+[data-mode="light"]{--canvas:oklch(97.6% 0.006 262);--surface:oklch(100% 0 0);--surface-2:oklch(98.1% 0.005 262);--line:oklch(91.5% 0.012 262);--line-strong:oklch(63% 0.025 262);--text:oklch(23% 0.035 262);--text-2:oklch(39% 0.03 262);--muted:oklch(48.5% 0.025 262);--accent:oklch(54% 0.19 258);--accent-hover:oklch(48% 0.19 258);--accent-soft:oklch(95.6% 0.024 258);--accent-line:oklch(84% 0.06 258);--on-accent:oklch(100% 0 0);--link:oklch(51% 0.19 258);--focus:oklch(54% 0.19 258);--sb:oklch(25% 0.05 262);--sb-2:oklch(32.5% 0.056 262);--sb-line:oklch(34% 0.05 262);--sb-text:oklch(97% 0.008 262);--sb-muted:oklch(78% 0.035 262);--sb-accent:oklch(78% 0.11 255);--danger:oklch(52% 0.19 27);--on-danger:oklch(100% 0 0);--danger-soft:oklch(96% 0.022 27);--ok-fg:oklch(42% 0.11 152);--ok-bg:oklch(95.5% 0.04 152);--warn-fg:oklch(46% 0.1 62);--warn-bg:oklch(95.8% 0.05 82);--off-fg:oklch(44% 0.02 262);--off-bg:oklch(94.5% 0.008 262);--arc-fg:oklch(44% 0.07 305);--arc-bg:oklch(95.5% 0.02 305);--av-bg:92.5% 0.04;--av-fg:38% 0.1;--dot:62% 0.13;color-scheme:light;}
+[data-mode="dark"]{--canvas:oklch(18.5% 0.026 262);--surface:oklch(22.5% 0.029 262);--surface-2:oklch(25.5% 0.031 262);--line:oklch(31% 0.03 262);--line-strong:oklch(56% 0.035 262);--text:oklch(95% 0.008 262);--text-2:oklch(85% 0.014 262);--muted:oklch(74% 0.024 262);--accent:oklch(72% 0.14 255);--accent-hover:oklch(78% 0.12 255);--accent-soft:oklch(29% 0.06 258);--accent-line:oklch(45% 0.09 258);--on-accent:oklch(18% 0.04 262);--link:oklch(76% 0.12 255);--focus:oklch(72% 0.14 255);--sb:oklch(14.5% 0.03 262);--sb-2:oklch(22% 0.045 262);--sb-line:oklch(24% 0.04 262);--sb-text:oklch(95% 0.008 262);--sb-muted:oklch(73% 0.03 262);--sb-accent:oklch(76% 0.12 255);--danger:oklch(70% 0.16 25);--on-danger:oklch(18% 0.04 262);--danger-soft:oklch(29% 0.06 25);--ok-fg:oklch(83% 0.13 152);--ok-bg:oklch(29% 0.05 152);--warn-fg:oklch(86% 0.11 82);--warn-bg:oklch(30% 0.05 70);--off-fg:oklch(81% 0.015 262);--off-bg:oklch(30% 0.015 262);--arc-fg:oklch(83% 0.07 305);--arc-bg:oklch(30% 0.045 305);--av-bg:34% 0.06;--av-fg:90% 0.05;--dot:72% 0.12;color-scheme:dark;}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--canvas);color:var(--text);font:400 15px/1.55 var(--sans);font-optical-sizing:auto}
+h1,h2,h3,p,ul,dl,dd,figure{margin:0;padding:0}ul{list-style:none}
+a{color:inherit;text-decoration:none}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
+.mono,code,kbd{font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:.93em;letter-spacing:0}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* type roles */
+.t-title{font-size:24px;line-height:30px;font-weight:600;font-stretch:88%;letter-spacing:-.012em}
+.t-name{font-size:20px;line-height:26px;font-weight:600;font-stretch:88%;letter-spacing:-.008em}
+.t-h{font-size:15px;line-height:20px;font-weight:600}
+.t-body{font-size:14px;line-height:20px}.t-sm{font-size:13px;line-height:18px}
+.t-label{font-size:12px;line-height:16px;font-weight:600;font-stretch:92%;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.t-mono{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)}.text-2{color:var(--text-2)}.sm{font-size:12.5px}
+.link{color:var(--link);font-weight:500}.link:hover{text-decoration:underline;text-underline-offset:2px}
+/* page chrome */
+.wrap{max-width:1480px;margin:0 auto;padding:56px max(16px,env(safe-area-inset-right,0px)) 96px max(16px,env(safe-area-inset-left,0px))}
+@media (min-width:720px){.wrap{padding-left:max(40px,env(safe-area-inset-left,0px));padding-right:max(40px,env(safe-area-inset-right,0px))}}
+.hero{display:grid;gap:14px;max-width:780px;padding-bottom:40px;border-bottom:1px solid var(--line)}
+.eyebrow{font:500 12px/1 var(--mono);color:var(--muted)}
+.hero h1{font-size:clamp(34px,5.2vw,56px);line-height:1.02;font-weight:650;font-stretch:84%;letter-spacing:-.025em}
+.hero p.idea{font-size:clamp(16px,1.6vw,19px);line-height:1.5;color:var(--text-2);max-width:62ch}
+.kw{display:flex;flex-wrap:wrap;gap:8px}
+.sec{padding-top:48px;display:grid;gap:20px}
+.sec-h{display:grid;grid-template-columns:minmax(0,1fr);gap:6px;max-width:760px}
+.sec-h h2{font-size:24px;line-height:1.2;font-weight:600;font-stretch:88%;letter-spacing:-.012em}
+.sec-h p{color:var(--text-2);font-size:15px}
+.fd{display:grid;gap:16px}
+.fd-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:1000px){.fd-2{grid-template-columns:minmax(0,1fr)}}
+.fd-panel{background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:20px;display:grid;gap:16px;align-content:start;min-width:0}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:14px 12px}
+.sw li{display:grid;gap:3px;min-width:0}
+.chip{height:40px;border-radius:6px;border:1px solid var(--line);margin-bottom:5px}
+.sw b{font-size:13px;font-weight:600;line-height:1.3}.sw code{font-size:11.5px;color:var(--muted);overflow-wrap:anywhere}
+.type{display:grid}
+.type .tr{display:grid;grid-template-columns:96px minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line)}
+.type .tr:last-child{border-bottom:0}
+.type .tr>span:first-child{font-size:12px;color:var(--muted);font-weight:600}
+.type .tr>code{font-size:12px;color:var(--muted)}
+.specimen{font-size:clamp(30px,4vw,44px);line-height:1.05;font-weight:600;font-stretch:84%;letter-spacing:-.02em;padding-bottom:8px}
+.specimen small{display:block;font:400 15px/1.5 var(--sans);font-stretch:100%;letter-spacing:0;color:var(--text-2);margin-top:8px}
+@media (max-width:640px){.type .tr{grid-template-columns:minmax(0,1fr);gap:2px}}
+.shapes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.shapes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.shape{display:grid;grid-template-rows:80px auto auto;gap:6px;font-size:13px;align-content:start}.shape b{font-weight:600}
+.shape .demo{align-self:center;height:72px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;color:var(--muted);font-size:12px}
+.shape code{font-size:11.5px;color:var(--muted)}
+.comps{gap:18px}.comps .row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.comps .fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;align-items:start}
+.sep{width:1px;height:24px;background:var(--line);margin:0 4px}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:1000px){.pair{grid-template-columns:minmax(0,1fr)}}
+.frame{display:grid;gap:8px;min-width:0}
+.frame figcaption{font:500 12px/1 var(--mono);color:var(--muted)}
+.device{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:8px;height:calc(var(--H) * 1px * var(--s,.5));background:var(--surface)}
+.cv{position:absolute;top:0;left:0;width:1200px;transform-origin:0 0;transform:scale(var(--s,.5));background:var(--canvas);color:var(--text);font:400 14px/20px var(--sans);overflow:hidden}
+.wbar{height:32px;display:flex;align-items:center;justify-content:center;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.wurl{font:400 12px/22px var(--mono);color:var(--muted);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:0 14px;min-width:360px;text-align:center}
+.screen{height:var(--H);overflow:hidden}
+footer.end{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+/* components */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:34px;padding:0 14px;border-radius:6px;border:1px solid transparent;font:500 13.5px/1 var(--sans);white-space:nowrap;cursor:pointer;background:none}
+.btn.sm{height:30px;padding:0 11px;font-size:13px}
+.btn.block{width:100%;height:38px}
+.btn.primary{background:var(--accent);color:var(--on-accent)}.btn.primary:hover{background:var(--accent-hover)}
+.btn.secondary{background:var(--surface);color:var(--text);border-color:var(--line-strong)}.btn.secondary:hover{background:var(--surface-2)}
+.btn.ghost{color:var(--link);padding-inline:8px}.btn.ghost:hover{background:var(--accent-soft)}
+.btn.danger{background:var(--danger);color:var(--on-danger)}
+.icon-btn{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:6px;border:0;background:none;color:var(--muted);cursor:pointer}
+.icon-btn:hover{background:var(--surface-2);color:var(--text)}.icon-btn.xs{width:24px;height:24px}
+.i{flex:none;vertical-align:middle}
+.pill{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px 0 7px;border-radius:4px;font:500 12px/1 var(--sans);white-space:nowrap}
+.pill.active{background:var(--ok-bg);color:var(--ok-fg)}.pill.pending{background:var(--warn-bg);color:var(--warn-fg)}
+.pill.inactive{background:var(--off-bg);color:var(--off-fg)}.pill.archived{background:var(--arc-bg);color:var(--arc-fg)}
+.tag{display:inline-flex;align-items:center;height:22px;padding:0 8px;border:1px solid var(--line);border-radius:4px;font-size:12px;font-weight:500;color:var(--text-2);background:var(--surface);white-space:nowrap}
+.tag.xs{height:18px;padding:0 5px;font-size:11px;margin-left:4px;vertical-align:1px}
+.av{--sz:32px;display:inline-grid;place-items:center;flex:none;width:var(--sz);height:var(--sz);border-radius:50%;background:oklch(var(--av-bg) var(--h));color:oklch(var(--av-fg) var(--h));font:600 calc(var(--sz) * .38)/1 var(--sans);letter-spacing:.02em}
+.field{display:grid;gap:6px;min-width:0}.field label,.lbl-row label{font-size:13px;font-weight:500}
+.lbl-row{display:flex;justify-content:space-between;align-items:baseline}
+.input{width:100%;height:38px;padding:0 12px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--text);font-size:14px}
+.input:focus-visible{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--focus)}
+.hint{font-size:12.5px;color:var(--muted)}
+.field.err .input{border-color:var(--danger);box-shadow:inset 0 0 0 1px var(--danger)}
+.error{display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--danger);font-weight:500}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;min-width:0}
+.panel-h{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 16px;border-bottom:1px solid var(--line)}
+.count{font:500 12px/1 var(--mono);padding:4px 6px;border-radius:4px;background:var(--surface-2);color:var(--text-2);border:1px solid var(--line)}
+.count.lg{font:500 13px/1 var(--sans);padding:5px 8px}
+.push{margin-left:auto}
+.seg{display:inline-flex;border:1px solid var(--line-strong);border-radius:6px;padding:2px;background:var(--surface);gap:2px}
+.seg button{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:0;border-radius:4px;background:none;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--link)}
+/* shell */
+.app{display:grid;grid-template-columns:224px minmax(0,1fr);height:var(--H)}
+.sb{background:var(--sb);color:var(--sb-text);display:flex;flex-direction:column;padding:14px 12px;gap:4px}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 18px}
+.brand b{display:block;font-size:14px;line-height:18px;font-weight:600}.brand span{display:block;font-size:12px;line-height:16px;color:var(--sb-muted)}
+.mark{display:inline-grid;align-content:center;gap:3px;width:28px;height:28px;padding:0 6px;border-radius:6px;background:var(--sb-accent);flex:none}
+.mark i{display:block;height:3px;border-radius:1px;background:var(--sb)}.mark i:nth-child(2){width:70%}.mark i:nth-child(3){width:40%}
+.nav{display:grid;gap:2px}
+.nv{display:flex;align-items:center;gap:10px;height:36px;padding:0 10px;border-radius:6px;color:var(--sb-muted);font-weight:500;font-size:14px}
+.nv:hover{color:var(--sb-text);background:var(--sb-2)}
+.nv[aria-current]{background:var(--sb-2);color:var(--sb-text)}.nv[aria-current] .i{color:var(--sb-accent)}
+.badge{margin-left:auto;min-width:20px;height:20px;padding:0 6px;border-radius:4px;background:var(--sb-accent);color:var(--sb);font:600 12px/20px var(--mono);text-align:center}
+.nav.foot{margin-top:auto;padding-top:10px;border-top:1px solid var(--sb-line)}
+.main{display:flex;flex-direction:column;min-width:0;height:var(--H)}
+.top{height:56px;flex:none;display:flex;align-items:center;gap:16px;padding:0 24px 0 28px;background:var(--surface);border-bottom:1px solid var(--line)}
+.search{display:flex;align-items:center;gap:8px;width:380px;height:34px;padding:0 8px 0 10px;border:1px solid var(--line-strong);border-radius:6px;color:var(--muted);font-size:13.5px;background:var(--surface)}
+.search span{flex:1}
+kbd{font-size:11px;line-height:18px;padding:0 6px;border:1px solid var(--line);border-radius:4px;color:var(--text-2);background:var(--surface-2)}
+.who{margin-left:auto;display:flex;align-items:center;gap:10px;border:0;background:none;padding:4px 6px;border-radius:6px;color:var(--muted);text-align:left;cursor:pointer}
+.who b{display:block;font-size:13px;line-height:16px;font-weight:600;color:var(--text)}.who small{display:block;font-size:12px;line-height:16px;color:var(--muted)}
+.content{flex:1;min-height:0;padding:24px 28px;overflow:hidden;display:flex;flex-direction:column;gap:16px}
+.page-h{display:flex;align-items:flex-end;justify-content:space-between;gap:16px}
+.page-h p{margin-top:2px;font-size:13.5px}
+.ttl{display:flex;align-items:center;gap:12px}
+/* home */
+.home{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:24px 16px;align-items:start}
+.home .quick{grid-column:1/-1}
+.tasks li{display:flex;align-items:center;gap:14px;padding:16px;border-bottom:1px solid var(--line)}
+.tasks li:last-child{border-bottom:0}
+.tasks p{font-size:14px;line-height:20px}.tasks .sm{margin-top:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.grow{flex:1;min-width:0}.acts{display:flex;gap:8px;flex:none}
+.quick{display:grid;gap:10px;padding-top:4px}
+.ql{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.q{display:flex;align-items:center;gap:12px;padding:12px 14px;color:var(--muted)}
+.q:hover{border-color:var(--line-strong)}
+.q span{flex:1}.q b{display:block;font-size:14px;line-height:18px;font-weight:600;color:var(--text)}.q small{display:block;font-size:12.5px;line-height:17px;color:var(--muted)}
+.q>.i:first-child{color:var(--link)}
+/* tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;font-size:13.5px}
+.tbl th,.tbl td{text-align:left;padding:0 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl thead th{position:sticky;top:0;z-index:1;height:36px;background:var(--surface-2);font-size:12px;font-weight:600;color:var(--text-2)}
+.tbl td{height:42px;color:var(--text-2)}
+.tbl tbody tr:last-child td{border-bottom:0}
+.tbl.compact td{height:52px}
+.tbl .r{text-align:right;width:52px}
+.sort{color:var(--muted);transform:rotate(180deg)}
+.person{display:flex;align-items:center;gap:10px;min-width:0}
+.person b{display:block;font-weight:600;color:var(--text);line-height:18px}.person small{display:block;font-size:12.5px;line-height:16px;color:var(--muted)}
+.tbl-wrap{overflow:hidden}
+.tbl.dir thead th:first-child{width:36%}
+.tbl.dir tr.grp th{height:30px;background:var(--canvas);font-size:12px;font-weight:600;color:var(--text);letter-spacing:.01em}
+.ddot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:oklch(var(--dot) var(--h));vertical-align:0}
+.gcount{margin-left:8px;font:500 12px/1 var(--mono);color:var(--muted)}
+.tbl.dir tr.hover td{background:var(--surface-2)}
+.toolbar{display:flex;align-items:center;gap:8px}
+.search.in-page{width:340px}
+.select{display:inline-flex;align-items:center;gap:6px;height:34px;padding:0 10px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);font-size:13.5px;font-weight:500;cursor:pointer}
+.select .i{color:var(--muted)}
+/* sign in */
+.si{height:100%;display:flex;flex-direction:column;background:var(--canvas)}
+.si-top{display:flex;align-items:center;justify-content:space-between;padding:20px 32px}
+.si-brand{display:flex;align-items:center;gap:10px;font-size:15px}.si-brand .mark{background:var(--accent)}.si-brand .mark i{background:var(--on-accent)}
+.si-brand span{color:var(--muted);padding-left:10px;border-left:1px solid var(--line)}
+.si-body{flex:1;display:grid;align-content:center;justify-items:center;gap:20px;padding-bottom:56px}
+.si-card{width:420px;padding:32px;display:grid;gap:18px}
+.si-card .muted{margin-top:-12px}
+.input-wrap{position:relative}.input-wrap .in{position:absolute;right:4px;top:4px}
+.check{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-2)}
+.check input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
+.note{display:flex;gap:10px;padding:12px;border-radius:6px;background:var(--surface-2);border:1px solid var(--line);font-size:13px;line-height:19px;color:var(--text-2)}
+.note .i{color:var(--link);margin-top:1px}
+.si-foot{font-size:13px}
+/* profile */
+.crumbs{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);margin-bottom:-4px}.crumbs span{color:var(--text-2)}
+.prof{display:grid;grid-template-columns:272px minmax(0,1fr);gap:24px;align-items:start;min-height:0}
+.summary{position:sticky;top:0;padding:20px;display:grid;gap:6px;justify-items:start}
+.summary .av{margin-bottom:8px}
+.sum-pills{display:flex;gap:6px;margin:8px 0 4px;flex-wrap:wrap}
+.sum{width:100%;margin-top:10px;border-top:1px solid var(--line)}
+.sum div{display:grid;gap:2px;padding:10px 0;border-bottom:1px solid var(--line)}
+.sum dt{font-size:12px;color:var(--muted)}.sum dd{font-size:13.5px;display:flex;align-items:center;gap:6px;color:var(--text)}
+.sum dd .icon-btn{margin:-4px 0}
+.person-link{display:inline-flex;align-items:center;gap:8px;color:var(--link);font-weight:500}
+.sum-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;width:100%}.sum-acts .btn{padding:0 8px}
+.detail{display:grid;gap:16px;min-width:0}
+.tabs{display:flex;gap:28px;border-bottom:1px solid var(--line)}
+.tabs button{height:40px;padding:0 1px;border:0;background:none;font-size:14px;font-weight:500;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.tabs button[aria-selected="true"]{color:var(--text);font-weight:600;border-bottom-color:var(--accent)}
+.tabs button:hover{color:var(--text)}
+.tcount{font:500 11px/1 var(--mono);padding:3px 5px;border-radius:4px;background:var(--surface-2);border:1px solid var(--line);color:var(--text-2)}
+.notice{display:flex;align-items:center;gap:12px;padding:12px 14px 12px 16px;border:1px solid var(--accent-line);background:var(--accent-soft);border-radius:6px}
+.notice>.i{color:var(--link)}.notice p{line-height:19px}
+.dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px;padding:4px 16px 8px}
+.dl>div{display:grid;gap:2px;padding:9px 0;border-bottom:1px solid var(--line)}
+.dl>div.span{grid-column:1/-1;border-bottom:0}
+.dl>div:nth-last-child(-n+2):not(.span){border-bottom:0}
+.dl dt{font-size:12px;line-height:16px;color:var(--muted)}.dl dd{font-size:14px;line-height:20px;color:var(--text)}
+.private{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:12.5px;font-weight:500;color:var(--text-2);padding:3px 8px;border:1px solid var(--line);border-radius:4px;background:var(--surface-2)}
+.sub{padding:12px 16px 6px;border-top:1px solid var(--line)}
+.tbl.docs td{height:38px;color:var(--text)}.tbl.docs td:first-child{width:40%}
+.tbl.docs .i{color:var(--muted);margin-right:4px}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10.5 12 4l8 6.5V20H14.5v-6h-5v6H4z"/></g></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c.6-3 2.8-4.8 5.5-4.8s4.9 1.8 5.5 4.8"/><circle cx="17" cy="9" r="2.5"/><path d="M16.2 14.3c2.2 0 3.9 1.4 4.4 4"/></g></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 13.5 6.5 5h11l2.5 8.5V20H4z"/><path d="M4 13.5h4.5l1 2h5l1-2H20"/></g></symbol>
+<symbol id="i-settings" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></g></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.9-3.6 3.6-5.5 7-5.5s6.1 1.9 7 5.5"/></g></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></g></symbol>
+<symbol id="i-chev" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m7 10 5 5 5-5"/></g></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m10 7 5 5-5 5"/></g></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3"/></g></symbol>
+<symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5.5" width="17" height="13" rx="2"/><path d="m4 7 8 6 8-6"/></g></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></g></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></g></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></g></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></g></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></g></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></g></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11"/></g></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="15" r="4"/><path d="m11 12 8-8M16 7l2.5 2.5M13.5 9.5l2 2"/></g></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h.01M12 12h.01M19 12h.01" stroke-width="2.6"/></g></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M14 7l5 5-5 5"/></g></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 8v4.5M12 16h.01"/></g></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 11v5M12 8h.01"/></g></symbol>
+<symbol id="i-phone" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 4h3l1.5 4-2 1.5a10 10 0 0 0 5.5 5.5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A15 15 0 0 1 4.5 6a2 2 0 0 1 2-2z"/></g></symbol>
+<symbol id="i-doc" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 3.5h7.5l4 4v13h-11.5z"/><path d="M14 3.5V8h4M9.5 13h5M9.5 16.5h5"/></g></symbol>
+<symbol id="i-building" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20.5V4.5h9v16M14 9.5h5v11M3.5 20.5h17M8 8h3M8 11.5h3M8 15h3"/></g></symbol>
+<symbol id="s-active" viewBox="0 0 12 12"><circle cx="6" cy="6" r="4.25" fill="currentColor"/></symbol>
+<symbol id="s-pending" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3.75" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 2.25a3.75 3.75 0 0 1 0 7.5z" fill="currentColor"/></symbol>
+<symbol id="s-inactive" viewBox="0 0 12 12"><circle cx="6" cy="6" r="3.6" fill="none" stroke="currentColor" stroke-width="1.6"/></symbol>
+<symbol id="s-archived" viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" rx="1" fill="currentColor"/></symbol>
+</defs></svg>
+<div class="wrap">
+<header class="hero">
+  <p class="eyebrow">EMS direction board · Round 2 · Direction E</p>
+  <h1>Structure</h1>
+  <p class="idea">Serious, dependable people software for a growing company: everything has its place, every record is easy to scan, and nothing is there for decoration.</p>
+  <div class="kw"><span class="tag">Orderly</span><span class="tag">Trusted</span><span class="tag">Scannable</span><span class="tag">Navy and cobalt</span><span class="tag">Light-first</span></div>
+</header>
+
+<section class="sec" aria-labelledby="fd">
+  <div class="sec-h"><h2 id="fd">Foundations</h2><p>One strong surface, the navy sidebar. Cobalt is reserved for actions, links, focus and the selected tab. Neutrals are slate, tinted toward the same hue.</p></div>
+  <div class="fd">
+    <div class="fd-2"><div class="fd-panel" data-mode="light"><h3 class="t-label">Light</h3><ul class="sw"><li><span class="chip" style="background:var(--canvas)"></span><b>Canvas</b><code>97.6% 0.006 262</code></li><li><span class="chip" style="background:var(--surface)"></span><b>Surface</b><code>100% 0 0</code></li><li><span class="chip" style="background:var(--surface-2)"></span><b>Surface subtle</b><code>98.1% 0.005 262</code></li><li><span class="chip" style="background:var(--line)"></span><b>Divider</b><code>91.5% 0.012 262</code></li><li><span class="chip" style="background:var(--line-strong)"></span><b>Control border</b><code>63% 0.025 262</code></li><li><span class="chip" style="background:var(--text)"></span><b>Text</b><code>23% 0.035 262</code></li><li><span class="chip" style="background:var(--text-2)"></span><b>Text secondary</b><code>39% 0.03 262</code></li><li><span class="chip" style="background:var(--muted)"></span><b>Text muted</b><code>48.5% 0.025 262</code></li><li><span class="chip" style="background:var(--accent)"></span><b>Accent</b><code>54% 0.19 258</code></li><li><span class="chip" style="background:var(--accent-soft)"></span><b>Accent soft</b><code>95.6% 0.024 258</code></li><li><span class="chip" style="background:var(--sb)"></span><b>Sidebar</b><code>25% 0.05 262</code></li><li><span class="chip" style="background:var(--sb-muted)"></span><b>Sidebar text muted</b><code>78% 0.035 262</code></li><li><span class="chip" style="background:var(--danger)"></span><b>Danger</b><code>52% 0.19 27</code></li><li><span class="chip" style="background:var(--ok-fg)"></span><b>Active</b><code>42% 0.11 152</code></li><li><span class="chip" style="background:var(--warn-fg)"></span><b>Pending</b><code>46% 0.1 62</code></li><li><span class="chip" style="background:var(--off-fg)"></span><b>Inactive</b><code>44% 0.02 262</code></li><li><span class="chip" style="background:var(--arc-fg)"></span><b>Archived</b><code>44% 0.07 305</code></li></ul></div><div class="fd-panel" data-mode="dark"><h3 class="t-label">Dark</h3><ul class="sw"><li><span class="chip" style="background:var(--canvas)"></span><b>Canvas</b><code>18.5% 0.026 262</code></li><li><span class="chip" style="background:var(--surface)"></span><b>Surface</b><code>22.5% 0.029 262</code></li><li><span class="chip" style="background:var(--surface-2)"></span><b>Surface subtle</b><code>25.5% 0.031 262</code></li><li><span class="chip" style="background:var(--line)"></span><b>Divider</b><code>31% 0.03 262</code></li><li><span class="chip" style="background:var(--line-strong)"></span><b>Control border</b><code>56% 0.035 262</code></li><li><span class="chip" style="background:var(--text)"></span><b>Text</b><code>95% 0.008 262</code></li><li><span class="chip" style="background:var(--text-2)"></span><b>Text secondary</b><code>85% 0.014 262</code></li><li><span class="chip" style="background:var(--muted)"></span><b>Text muted</b><code>74% 0.024 262</code></li><li><span class="chip" style="background:var(--accent)"></span><b>Accent</b><code>72% 0.14 255</code></li><li><span class="chip" style="background:var(--accent-soft)"></span><b>Accent soft</b><code>29% 0.06 258</code></li><li><span class="chip" style="background:var(--sb)"></span><b>Sidebar</b><code>14.5% 0.03 262</code></li><li><span class="chip" style="background:var(--sb-muted)"></span><b>Sidebar text muted</b><code>73% 0.03 262</code></li><li><span class="chip" style="background:var(--danger)"></span><b>Danger</b><code>70% 0.16 25</code></li><li><span class="chip" style="background:var(--ok-fg)"></span><b>Active</b><code>83% 0.13 152</code></li><li><span class="chip" style="background:var(--warn-fg)"></span><b>Pending</b><code>86% 0.11 82</code></li><li><span class="chip" style="background:var(--off-fg)"></span><b>Inactive</b><code>81% 0.015 262</code></li><li><span class="chip" style="background:var(--arc-fg)"></span><b>Archived</b><code>83% 0.07 305</code></li></ul></div></div>
+    <div class="fd-2">
+      <div class="fd-panel"><h3 class="t-label">Type</h3>
+        <p class="specimen">Everything in its place.<small>Instrument Sans for interface and headings: narrowed to width 84–88 for titles so they sit compact and firm, full width for reading. IBM Plex Mono, tabular, for employee numbers, dates and codes.</small></p>
+        <div class="type"><div class="tr"><span>Title</span><span class="t-title">Good morning, Ama</span><code>Instrument Sans 600 · 24/30 · width 88</code></div><div class="tr"><span>Name</span><span class="t-name">Kwame Asante</span><code>Instrument Sans 600 · 20/26 · width 88</code></div><div class="tr"><span>Heading</span><span class="t-h">Needs your attention</span><code>Instrument Sans 600 · 15/20</code></div><div class="tr"><span>Body</span><span class="t-body">Approving emails him a reset link.</span><code>Instrument Sans 400 · 14/20</code></div><div class="tr"><span>Small</span><span class="t-sm">Senior Backend Engineer · Accra</span><code>Instrument Sans 400 · 13/18</code></div><div class="tr"><span>Label</span><span class="t-label" style="color:var(--text)">ID documents</span><code>Instrument Sans 600 · 12/16 · width 92 · caps</code></div><div class="tr"><span>Mono</span><span class="t-mono">GH-ACC-0042  2023-03-14</span><code>IBM Plex Mono 400 · 13/18 · tabular</code></div></div>
+      </div>
+      <div class="fd-panel"><h3 class="t-label">Shape and elevation</h3>
+        <div class="shapes">
+          <div class="shape"><div class="demo" style="border-radius:6px;border-color:var(--line-strong);height:38px">Control</div><b>Controls</b><code>6px · 1px slate border</code></div>
+          <div class="shape"><div class="demo" style="border-radius:6px">Panel</div><b>Panels</b><code>6px · 1px divider · no shadow</code></div>
+          <div class="shape"><div class="demo" style="border-radius:4px;height:28px;width:72px">Pill</div><b>Pills and tags</b><code>4px</code></div>
+          <div class="shape"><div class="demo" style="border-radius:6px;box-shadow:0 8px 24px -8px oklch(25% 0.05 262 / .22),0 2px 4px oklch(25% 0.05 262 / .06)">Menu</div><b>Menus only</b><code>shadow 0 8 24 −8</code></div>
+        </div>
+        <p class="t-sm text-2">Status is carried by shape as well as colour: a filled dot for active, half-filled for pending, an empty ring for inactive, a square for archived.</p>
+      </div>
+    </div>
+    <div class="fd-2"><div class="fd-panel comps" data-mode="light"><h3 class="t-label">Light</h3>
+<div class="row"><button class="btn primary" type="button">Approve reset</button><button class="btn secondary" type="button">Decline</button><button class="btn ghost" type="button">View profile</button><button class="btn danger" type="button">Archive person</button></div>
+<div class="row fields">
+  <div class="field"><label for="f1-light">Work email</label><input class="input" id="f1-light" value="kwame.asante@akwaabalabs.example"><p class="hint">We use this to sign you in.</p></div>
+  <div class="field err"><label for="f2-light">Personal phone</label><input class="input" id="f2-light" value="+233 24 555" aria-invalid="true" aria-describedby="e2-light"><p class="error" id="e2-light"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-alert"/></svg>Enter a full number, e.g. +233 24 555 0142</p></div>
+</div>
+<div class="row"><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span><span class="pill inactive"><svg width="10" height="10" aria-hidden="true"><use href="#s-inactive"/></svg>Inactive</span><span class="pill archived"><svg width="10" height="10" aria-hidden="true"><use href="#s-archived"/></svg>Archived</span><span class="sep"></span><span class="av" style="--h:258;--sz:36px" aria-hidden="true">KA</span><span class="av" style="--h:320;--sz:36px" aria-hidden="true">EB</span><span class="tag">Platform Engineering</span><span class="tag">Senior</span></div></div><div class="fd-panel comps" data-mode="dark"><h3 class="t-label">Dark</h3>
+<div class="row"><button class="btn primary" type="button">Approve reset</button><button class="btn secondary" type="button">Decline</button><button class="btn ghost" type="button">View profile</button><button class="btn danger" type="button">Archive person</button></div>
+<div class="row fields">
+  <div class="field"><label for="f1-dark">Work email</label><input class="input" id="f1-dark" value="kwame.asante@akwaabalabs.example"><p class="hint">We use this to sign you in.</p></div>
+  <div class="field err"><label for="f2-dark">Personal phone</label><input class="input" id="f2-dark" value="+233 24 555" aria-invalid="true" aria-describedby="e2-dark"><p class="error" id="e2-dark"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-alert"/></svg>Enter a full number, e.g. +233 24 555 0142</p></div>
+</div>
+<div class="row"><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span><span class="pill inactive"><svg width="10" height="10" aria-hidden="true"><use href="#s-inactive"/></svg>Inactive</span><span class="pill archived"><svg width="10" height="10" aria-hidden="true"><use href="#s-archived"/></svg>Archived</span><span class="sep"></span><span class="av" style="--h:258;--sz:36px" aria-hidden="true">KA</span><span class="av" style="--h:320;--sz:36px" aria-hidden="true">EB</span><span class="tag">Platform Engineering</span><span class="tag">Senior</span></div></div></div>
+  </div>
+</section>
+
+<section class="sec" aria-labelledby="s-signin">
+  <div class="sec-h"><h2 id="s-signin">Sign in</h2><p>A single calm form. The reset note explains up front that a forgotten password goes to your manager.</p></div>
+  <div class="pair"><figure class="frame"><figcaption>Light</figcaption>
+<div class="device" style="--H:752"><div class="cv" data-mode="light" style="height:752px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/sign-in</span></div>
+<div class="screen" style="--H:720px"><div class="si">
+  <div class="si-top">
+    <div class="si-brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><b>Akwaaba Labs</b><span>People</span></div>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" aria-pressed="true"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-sun"/></svg>Light</button><button type="button" aria-pressed="false"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button>
+    </div>
+  </div>
+  <div class="si-body">
+    <form class="panel si-card" onsubmit="return false">
+      <h1 class="t-title">Sign in</h1>
+      <p class="muted">Use your Akwaaba Labs work account.</p>
+      <div class="field"><label for="em-light">Work email</label><input class="input" id="em-light" type="email" value="ama.mensah@akwaabalabs.example" autocomplete="username"></div>
+      <div class="field"><div class="lbl-row"><label for="pw-light">Password</label><a href="#" class="link sm">Forgot password?</a></div>
+        <div class="input-wrap"><input class="input" id="pw-light" type="password" value="correct-horse" autocomplete="current-password"><button class="btn ghost sm in" type="button">Show</button></div></div>
+      <label class="check"><input type="checkbox" checked> Keep me signed in on this device</label>
+      <button class="btn primary block" type="submit">Sign in</button>
+      <div class="note"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-info"/></svg><p>Forgot your password? We send a reset request to your manager. When they approve it, you get a reset link at your work email.</p></div>
+    </form>
+    <p class="si-foot muted">New here or locked out? Contact People Operations at <a class="link" href="#">people@akwaabalabs.example</a></p>
+  </div>
+</div></div></div></div></figure><figure class="frame"><figcaption>Dark</figcaption>
+<div class="device" style="--H:752"><div class="cv" data-mode="dark" style="height:752px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/sign-in</span></div>
+<div class="screen" style="--H:720px"><div class="si">
+  <div class="si-top">
+    <div class="si-brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><b>Akwaaba Labs</b><span>People</span></div>
+    <div class="seg" role="group" aria-label="Theme">
+      <button type="button" aria-pressed="false"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-sun"/></svg>Light</button><button type="button" aria-pressed="true"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button>
+    </div>
+  </div>
+  <div class="si-body">
+    <form class="panel si-card" onsubmit="return false">
+      <h1 class="t-title">Sign in</h1>
+      <p class="muted">Use your Akwaaba Labs work account.</p>
+      <div class="field"><label for="em-dark">Work email</label><input class="input" id="em-dark" type="email" value="ama.mensah@akwaabalabs.example" autocomplete="username"></div>
+      <div class="field"><div class="lbl-row"><label for="pw-dark">Password</label><a href="#" class="link sm">Forgot password?</a></div>
+        <div class="input-wrap"><input class="input" id="pw-dark" type="password" value="correct-horse" autocomplete="current-password"><button class="btn ghost sm in" type="button">Show</button></div></div>
+      <label class="check"><input type="checkbox" checked> Keep me signed in on this device</label>
+      <button class="btn primary block" type="submit">Sign in</button>
+      <div class="note"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-info"/></svg><p>Forgot your password? We send a reset request to your manager. When they approve it, you get a reset link at your work email.</p></div>
+    </form>
+    <p class="si-foot muted">New here or locked out? Contact People Operations at <a class="link" href="#">people@akwaabalabs.example</a></p>
+  </div>
+</div></div></div></div></figure></div>
+</section>
+<section class="sec" aria-labelledby="s-home">
+  <div class="sec-h"><h2 id="s-home">Home</h2><p>Signed in as Ama Mensah. Tasks first, with the action on the row; team and shortcuts beside it.</p></div>
+  <div class="pair"><figure class="frame"><figcaption>Light</figcaption>
+<div class="device" style="--H:792"><div class="cv" data-mode="light" style="height:792px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/home</span></div>
+<div class="screen" style="--H:760px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><div class="page-h"><div><h1 class="t-title">Good morning, Ama</h1><p class="muted">Thursday, 22 October 2026</p></div></div>
+<div class="home">
+  <section class="panel" aria-labelledby="att">
+    <div class="panel-h"><h2 id="att" class="t-h">Needs your attention</h2><span class="count">2</span></div>
+    <ul class="tasks">
+      <li><span class="av" style="--h:258;--sz:36px" aria-hidden="true">KA</span><div class="grow"><p><b>Password reset request</b></p><p class="muted sm">Kwame Asante · <span class="mono">2h ago</span></p></div>
+        <div class="acts"><button class="btn secondary sm" type="button">Decline</button><button class="btn primary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-check"/></svg>Approve</button></div></li>
+      <li><span class="av" style="--h:195;--sz:36px" aria-hidden="true">KO</span><div class="grow"><p><b>Profile incomplete</b></p><p class="muted sm">Kofi Owusu · Data Analyst · Kumasi</p></div>
+        <div class="acts"><a class="btn ghost sm" href="#">Review profile<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-right"/></svg></a></div></li>
+    </ul>
+  </section>
+  <section class="panel team" aria-labelledby="tm">
+    <div class="panel-h"><h2 id="tm" class="t-h">Your team</h2><span class="count">4</span><a class="link sm push" href="#">Open in People</a></div>
+    <table class="tbl compact"><thead><tr><th scope="col">Name</th><th scope="col">Office</th><th scope="col">Status</th></tr></thead><tbody>
+    <tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">KA</span><div><b>Kwame Asante</b><small>Senior Backend Engineer</small></div></div></td><td>Accra</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:320;--sz:28px" aria-hidden="true">EB</span><div><b>Efua Boateng</b><small>Product Designer</small></div></div></td><td>Accra</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AF</span><div><b>Akosua Frimpong</b><small>Frontend Engineer</small></div></div></td><td>Kumasi</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">EQ</span><div><b>Esi Quaye</b><small>Intern, Engineering</small></div></div></td><td>Takoradi</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td></tr>
+    </tbody></table>
+  </section>
+  <section class="quick" aria-labelledby="ql">
+    <h2 id="ql" class="t-label">Quick links</h2>
+    <div class="ql">
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span><b>My profile</b><small>Your details, documents and access</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span><b>People</b><small>9 people across 3 offices</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span><b>Requests</b><small>2 waiting for you</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+    </div>
+  </section>
+</div></main></div></div></div></div></div></figure><figure class="frame"><figcaption>Dark</figcaption>
+<div class="device" style="--H:792"><div class="cv" data-mode="dark" style="height:792px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/home</span></div>
+<div class="screen" style="--H:760px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><div class="page-h"><div><h1 class="t-title">Good morning, Ama</h1><p class="muted">Thursday, 22 October 2026</p></div></div>
+<div class="home">
+  <section class="panel" aria-labelledby="att">
+    <div class="panel-h"><h2 id="att" class="t-h">Needs your attention</h2><span class="count">2</span></div>
+    <ul class="tasks">
+      <li><span class="av" style="--h:258;--sz:36px" aria-hidden="true">KA</span><div class="grow"><p><b>Password reset request</b></p><p class="muted sm">Kwame Asante · <span class="mono">2h ago</span></p></div>
+        <div class="acts"><button class="btn secondary sm" type="button">Decline</button><button class="btn primary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-check"/></svg>Approve</button></div></li>
+      <li><span class="av" style="--h:195;--sz:36px" aria-hidden="true">KO</span><div class="grow"><p><b>Profile incomplete</b></p><p class="muted sm">Kofi Owusu · Data Analyst · Kumasi</p></div>
+        <div class="acts"><a class="btn ghost sm" href="#">Review profile<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-right"/></svg></a></div></li>
+    </ul>
+  </section>
+  <section class="panel team" aria-labelledby="tm">
+    <div class="panel-h"><h2 id="tm" class="t-h">Your team</h2><span class="count">4</span><a class="link sm push" href="#">Open in People</a></div>
+    <table class="tbl compact"><thead><tr><th scope="col">Name</th><th scope="col">Office</th><th scope="col">Status</th></tr></thead><tbody>
+    <tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">KA</span><div><b>Kwame Asante</b><small>Senior Backend Engineer</small></div></div></td><td>Accra</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:320;--sz:28px" aria-hidden="true">EB</span><div><b>Efua Boateng</b><small>Product Designer</small></div></div></td><td>Accra</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AF</span><div><b>Akosua Frimpong</b><small>Frontend Engineer</small></div></div></td><td>Kumasi</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">EQ</span><div><b>Esi Quaye</b><small>Intern, Engineering</small></div></div></td><td>Takoradi</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td></tr>
+    </tbody></table>
+  </section>
+  <section class="quick" aria-labelledby="ql">
+    <h2 id="ql" class="t-label">Quick links</h2>
+    <div class="ql">
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span><b>My profile</b><small>Your details, documents and access</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span><b>People</b><small>9 people across 3 offices</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+      <a href="#" class="panel q"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span><b>Requests</b><small>2 waiting for you</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-right"/></svg></a>
+    </div>
+  </section>
+</div></main></div></div></div></div></div></figure></div>
+</section>
+<section class="sec" aria-labelledby="s-directory">
+  <div class="sec-h"><h2 id="s-directory">People directory</h2><p>List is the default: grouped by department with counts, a sticky header, and employee numbers in mono so they line up.</p></div>
+  <div class="pair"><figure class="frame"><figcaption>Light</figcaption>
+<div class="device" style="--H:852"><div class="cv" data-mode="light" style="height:852px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/people</span></div>
+<div class="screen" style="--H:820px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><div class="page-h"><div class="ttl"><h1 class="t-title">People</h1><span class="count lg">9 people</span></div>
+  <div class="seg" role="group" aria-label="View"><button type="button" aria-pressed="true"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-list"/></svg>List</button><button type="button" aria-pressed="false"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-grid"/></svg>Grid</button></div></div>
+<div class="toolbar"><label class="search in-page"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search by name, position or employee no.</span></label><button class="select" type="button"><span class="muted">Office</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><button class="select" type="button"><span class="muted">Department</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><button class="select" type="button"><span class="muted">Status</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><span class="muted sm push">Grouped by department</span></div>
+<div class="panel tbl-wrap"><table class="tbl dir"><thead><tr><th scope="col">Name <svg class="i sort" width="12" height="12" aria-hidden="true"><use href="#i-chev"/></svg></th><th scope="col">Level</th><th scope="col">Office</th><th scope="col">Employee no.</th><th scope="col">Status</th><th scope="col"><span class="vh">Actions</span></th></tr></thead><tbody>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:195"></span>Analytics<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:195;--sz:30px" aria-hidden="true">KO</span><div><b>Kofi Owusu</b><small>Data Analyst</small></div></div></td><td>Junior</td><td>Kumasi</td><td class="mono">GH-KSI-0013</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Kofi Owusu"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:320"></span>Design<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:320;--sz:30px" aria-hidden="true">EB</span><div><b>Efua Boateng</b><small>Product Designer</small></div></div></td><td>Mid</td><td>Accra</td><td class="mono">GH-ACC-0051</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Efua Boateng"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:75"></span>Finance<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:75;--sz:30px" aria-hidden="true">NA</span><div><b>Nana Agyeman</b><small>Finance Lead</small></div></div></td><td>Lead</td><td>Accra</td><td class="mono">GH-ACC-0003</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Nana Agyeman"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:25"></span>People Operations<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:25;--sz:30px" aria-hidden="true">AD</span><div><b>Abena Darko</b><small>HR Business Partner</small></div></div></td><td>Senior</td><td>Accra</td><td class="mono">GH-ACC-0019</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Abena Darko"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:258"></span>Platform Engineering<span class="gcount">4</span></th></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">AF</span><div><b>Akosua Frimpong</b><small>Frontend Engineer</small></div></div></td><td>Mid</td><td>Kumasi</td><td class="mono">GH-KSI-0021</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Akosua Frimpong"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">AM</span><div><b>Ama Mensah</b><small>Engineering Manager</small></div></div></td><td>Lead</td><td>Accra</td><td class="mono">GH-ACC-0007</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Ama Mensah"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">EQ</span><div><b>Esi Quaye</b><small>Intern, Engineering</small></div></div></td><td>Intern</td><td>Takoradi</td><td class="mono">GH-TKD-0011</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Esi Quaye"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr class="hover"><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">KA</span><div><b>Kwame Asante</b><small>Senior Backend Engineer</small></div></div></td><td>Senior</td><td>Accra</td><td class="mono">GH-ACC-0042</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Kwame Asante"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:150"></span>Quality Engineering<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:150;--sz:30px" aria-hidden="true">YA</span><div><b>Yaw Appiah</b><small>QA Engineer</small></div></div></td><td>Mid</td><td>Takoradi</td><td class="mono">GH-TKD-0004</td><td><span class="pill inactive"><svg width="10" height="10" aria-hidden="true"><use href="#s-inactive"/></svg>Inactive</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Yaw Appiah"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+</tbody></table></div></main></div></div></div></div></div></figure><figure class="frame"><figcaption>Dark</figcaption>
+<div class="device" style="--H:852"><div class="cv" data-mode="dark" style="height:852px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/people</span></div>
+<div class="screen" style="--H:820px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><div class="page-h"><div class="ttl"><h1 class="t-title">People</h1><span class="count lg">9 people</span></div>
+  <div class="seg" role="group" aria-label="View"><button type="button" aria-pressed="true"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-list"/></svg>List</button><button type="button" aria-pressed="false"><svg class="i " width="15" height="15" aria-hidden="true"><use href="#i-grid"/></svg>Grid</button></div></div>
+<div class="toolbar"><label class="search in-page"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search by name, position or employee no.</span></label><button class="select" type="button"><span class="muted">Office</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><button class="select" type="button"><span class="muted">Department</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><button class="select" type="button"><span class="muted">Status</span>All<svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-chev"/></svg></button><span class="muted sm push">Grouped by department</span></div>
+<div class="panel tbl-wrap"><table class="tbl dir"><thead><tr><th scope="col">Name <svg class="i sort" width="12" height="12" aria-hidden="true"><use href="#i-chev"/></svg></th><th scope="col">Level</th><th scope="col">Office</th><th scope="col">Employee no.</th><th scope="col">Status</th><th scope="col"><span class="vh">Actions</span></th></tr></thead><tbody>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:195"></span>Analytics<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:195;--sz:30px" aria-hidden="true">KO</span><div><b>Kofi Owusu</b><small>Data Analyst</small></div></div></td><td>Junior</td><td>Kumasi</td><td class="mono">GH-KSI-0013</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Kofi Owusu"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:320"></span>Design<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:320;--sz:30px" aria-hidden="true">EB</span><div><b>Efua Boateng</b><small>Product Designer</small></div></div></td><td>Mid</td><td>Accra</td><td class="mono">GH-ACC-0051</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Efua Boateng"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:75"></span>Finance<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:75;--sz:30px" aria-hidden="true">NA</span><div><b>Nana Agyeman</b><small>Finance Lead</small></div></div></td><td>Lead</td><td>Accra</td><td class="mono">GH-ACC-0003</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Nana Agyeman"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:25"></span>People Operations<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:25;--sz:30px" aria-hidden="true">AD</span><div><b>Abena Darko</b><small>HR Business Partner</small></div></div></td><td>Senior</td><td>Accra</td><td class="mono">GH-ACC-0019</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Abena Darko"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:258"></span>Platform Engineering<span class="gcount">4</span></th></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">AF</span><div><b>Akosua Frimpong</b><small>Frontend Engineer</small></div></div></td><td>Mid</td><td>Kumasi</td><td class="mono">GH-KSI-0021</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Akosua Frimpong"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">AM</span><div><b>Ama Mensah</b><small>Engineering Manager</small></div></div></td><td>Lead</td><td>Accra</td><td class="mono">GH-ACC-0007</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Ama Mensah"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">EQ</span><div><b>Esi Quaye</b><small>Intern, Engineering</small></div></div></td><td>Intern</td><td>Takoradi</td><td class="mono">GH-TKD-0011</td><td><span class="pill pending"><svg width="10" height="10" aria-hidden="true"><use href="#s-pending"/></svg>Pending</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Esi Quaye"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr><tr class="hover"><td><div class="person"><span class="av" style="--h:258;--sz:30px" aria-hidden="true">KA</span><div><b>Kwame Asante</b><small>Senior Backend Engineer</small></div></div></td><td>Senior</td><td>Accra</td><td class="mono">GH-ACC-0042</td><td><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Kwame Asante"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+<tr class="grp"><th colspan="6" scope="rowgroup"><span class="ddot" style="--h:150"></span>Quality Engineering<span class="gcount">1</span></th></tr><tr><td><div class="person"><span class="av" style="--h:150;--sz:30px" aria-hidden="true">YA</span><div><b>Yaw Appiah</b><small>QA Engineer</small></div></div></td><td>Mid</td><td>Takoradi</td><td class="mono">GH-TKD-0004</td><td><span class="pill inactive"><svg width="10" height="10" aria-hidden="true"><use href="#s-inactive"/></svg>Inactive</span></td><td class="r"><button class="icon-btn" type="button" aria-label="More actions for Yaw Appiah"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-more"/></svg></button></td></tr>
+</tbody></table></div></main></div></div></div></div></div></figure></div>
+</section>
+<section class="sec" aria-labelledby="s-profile">
+  <div class="sec-h"><h2 id="s-profile">Employee profile</h2><p>The signature: a sticky record column holds who Kwame is; tabs hold everything else. Viewed by his manager.</p></div>
+  <div class="pair"><figure class="frame"><figcaption>Light</figcaption>
+<div class="device" style="--H:852"><div class="cv" data-mode="light" style="height:852px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/people/GH-ACC-0042</span></div>
+<div class="screen" style="--H:820px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><nav class="crumbs" aria-label="Breadcrumb"><a class="link" href="#">People</a><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-right"/></svg><span>Kwame Asante</span></nav>
+<div class="prof">
+  <aside class="panel summary">
+    <span class="av" style="--h:258;--sz:64px" aria-hidden="true">KA</span>
+    <h1 class="t-name">Kwame Asante</h1>
+    <p class="text-2">Senior Backend Engineer</p>
+    <div class="sum-pills"><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span><span class="tag">Platform Engineering</span></div>
+    <dl class="sum">
+      <div><dt>Employee no.</dt><dd><span class="mono">GH-ACC-0042</span><button class="icon-btn xs" type="button" aria-label="Copy employee number"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-copy"/></svg></button></dd></div>
+      <div><dt>Reports to</dt><dd><a class="person-link" href="#"><span class="av" style="--h:258;--sz:20px" aria-hidden="true">AM</span>Ama Mensah</a></dd></div>
+      <div><dt>Office</dt><dd>Accra <span class="mono muted">ACC</span></dd></div>
+      <div><dt>Direct reports</dt><dd class="muted">None</dd></div>
+    </dl>
+    <div class="sum-acts"><button class="btn secondary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-mail"/></svg>Send email</button><button class="btn secondary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-copy"/></svg>Copy email</button></div>
+  </aside>
+  <div class="detail">
+    <div class="tabs" role="tablist" aria-label="Profile sections">
+      <button role="tab" aria-selected="true" type="button">Overview</button><button role="tab" aria-selected="false" type="button">Job</button><button role="tab" aria-selected="false" type="button">Personal</button><button role="tab" aria-selected="false" type="button">Documents <span class="tcount">2</span></button><button role="tab" aria-selected="false" type="button">Activity</button>
+    </div>
+    <div class="notice" role="status"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-key"/></svg><div class="grow"><p><b>Password reset requested</b> <span class="muted mono sm">· 2h ago</span></p><p class="text-2 sm">Kwame can't sign in until you respond. Approving emails him a reset link.</p></div>
+      <button class="btn secondary sm" type="button">Decline</button><button class="btn primary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-check"/></svg>Approve reset</button></div>
+    <section class="panel" aria-labelledby="wd">
+      <div class="panel-h"><h2 id="wd" class="t-h">Work details</h2></div>
+      <dl class="dl">
+        <div><dt>Department</dt><dd>Platform Engineering</dd></div>
+        <div><dt>Position</dt><dd>Senior Backend Engineer</dd></div>
+        <div><dt>Level</dt><dd>Senior</dd></div>
+        <div><dt>Date hired</dt><dd><span class="mono">2023-03-14</span> <span class="muted">· 3 yrs 7 mos</span></dd></div>
+        <div><dt>Access level</dt><dd>Employee</dd></div>
+        <div><dt>Work email</dt><dd><a class="link" href="#">kwame.asante@akwaabalabs.example</a></dd></div>
+      </dl>
+    </section>
+    <section class="panel" aria-labelledby="pd">
+      <div class="panel-h"><h2 id="pd" class="t-h">Private details</h2><span class="private"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-lock"/></svg>Visible to you, your manager and HR</span></div>
+      <dl class="dl">
+        <div><dt>Date of birth</dt><dd class="mono">1994-08-02</dd></div>
+        <div><dt>Nationality</dt><dd>Ghanaian</dd></div>
+        <div><dt>Personal phone</dt><dd class="mono">+233 24 555 0142</dd></div>
+        <div><dt>Address <span class="tag xs">Current</span></dt><dd>14 Oxford St, Osu, Accra, GA-123-4567</dd></div>
+      </dl>
+      <h3 class="t-label sub">ID documents</h3>
+      <table class="tbl docs"><tbody>
+        <tr><td><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-doc"/></svg> Ghana Card</td><td class="mono">GHA-7xxxxxxx-4</td><td class="muted sm"><svg class="i " width="13" height="13" aria-hidden="true"><use href="#i-lock"/></svg> Masked</td></tr>
+        <tr><td><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-doc"/></svg> Passport</td><td class="mono">G2xxxxx</td><td class="muted sm"><svg class="i " width="13" height="13" aria-hidden="true"><use href="#i-lock"/></svg> Masked</td></tr>
+      </tbody></table>
+    </section>
+  </div>
+</div></main></div></div></div></div></div></figure><figure class="frame"><figcaption>Dark</figcaption>
+<div class="device" style="--H:852"><div class="cv" data-mode="dark" style="height:852px">
+<div class="wbar" aria-hidden="true"><span class="wurl">ems.akwaabalabs.example/people/GH-ACC-0042</span></div>
+<div class="screen" style="--H:820px"><div class="app"><aside class="sb">
+  <div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i></span><div><b>Akwaaba Labs</b><span>People</span></div></div>
+  <nav class="nav" aria-label="Main">
+    <a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-home"/></svg><span>Home</span></a><a href="#" class="nv" aria-current="page"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-people"/></svg><span>People</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-inbox"/></svg><span>Requests</span><span class="badge" aria-label="2 open">2</span></a>
+  </nav>
+  <nav class="nav foot" aria-label="Account"><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-user"/></svg><span>My profile</span></a><a href="#" class="nv"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-settings"/></svg><span>Settings</span></a></nav>
+</aside><div class="main"><header class="top">
+  <label class="search"><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-search"/></svg><span>Search people, offices, requests</span><kbd>⌘ K</kbd></label>
+  <button class="who" type="button"><span class="av" style="--h:258;--sz:28px" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></button>
+</header><main class="content"><nav class="crumbs" aria-label="Breadcrumb"><a class="link" href="#">People</a><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-right"/></svg><span>Kwame Asante</span></nav>
+<div class="prof">
+  <aside class="panel summary">
+    <span class="av" style="--h:258;--sz:64px" aria-hidden="true">KA</span>
+    <h1 class="t-name">Kwame Asante</h1>
+    <p class="text-2">Senior Backend Engineer</p>
+    <div class="sum-pills"><span class="pill active"><svg width="10" height="10" aria-hidden="true"><use href="#s-active"/></svg>Active</span><span class="tag">Platform Engineering</span></div>
+    <dl class="sum">
+      <div><dt>Employee no.</dt><dd><span class="mono">GH-ACC-0042</span><button class="icon-btn xs" type="button" aria-label="Copy employee number"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-copy"/></svg></button></dd></div>
+      <div><dt>Reports to</dt><dd><a class="person-link" href="#"><span class="av" style="--h:258;--sz:20px" aria-hidden="true">AM</span>Ama Mensah</a></dd></div>
+      <div><dt>Office</dt><dd>Accra <span class="mono muted">ACC</span></dd></div>
+      <div><dt>Direct reports</dt><dd class="muted">None</dd></div>
+    </dl>
+    <div class="sum-acts"><button class="btn secondary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-mail"/></svg>Send email</button><button class="btn secondary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-copy"/></svg>Copy email</button></div>
+  </aside>
+  <div class="detail">
+    <div class="tabs" role="tablist" aria-label="Profile sections">
+      <button role="tab" aria-selected="true" type="button">Overview</button><button role="tab" aria-selected="false" type="button">Job</button><button role="tab" aria-selected="false" type="button">Personal</button><button role="tab" aria-selected="false" type="button">Documents <span class="tcount">2</span></button><button role="tab" aria-selected="false" type="button">Activity</button>
+    </div>
+    <div class="notice" role="status"><svg class="i " width="18" height="18" aria-hidden="true"><use href="#i-key"/></svg><div class="grow"><p><b>Password reset requested</b> <span class="muted mono sm">· 2h ago</span></p><p class="text-2 sm">Kwame can't sign in until you respond. Approving emails him a reset link.</p></div>
+      <button class="btn secondary sm" type="button">Decline</button><button class="btn primary sm" type="button"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-check"/></svg>Approve reset</button></div>
+    <section class="panel" aria-labelledby="wd">
+      <div class="panel-h"><h2 id="wd" class="t-h">Work details</h2></div>
+      <dl class="dl">
+        <div><dt>Department</dt><dd>Platform Engineering</dd></div>
+        <div><dt>Position</dt><dd>Senior Backend Engineer</dd></div>
+        <div><dt>Level</dt><dd>Senior</dd></div>
+        <div><dt>Date hired</dt><dd><span class="mono">2023-03-14</span> <span class="muted">· 3 yrs 7 mos</span></dd></div>
+        <div><dt>Access level</dt><dd>Employee</dd></div>
+        <div><dt>Work email</dt><dd><a class="link" href="#">kwame.asante@akwaabalabs.example</a></dd></div>
+      </dl>
+    </section>
+    <section class="panel" aria-labelledby="pd">
+      <div class="panel-h"><h2 id="pd" class="t-h">Private details</h2><span class="private"><svg class="i " width="14" height="14" aria-hidden="true"><use href="#i-lock"/></svg>Visible to you, your manager and HR</span></div>
+      <dl class="dl">
+        <div><dt>Date of birth</dt><dd class="mono">1994-08-02</dd></div>
+        <div><dt>Nationality</dt><dd>Ghanaian</dd></div>
+        <div><dt>Personal phone</dt><dd class="mono">+233 24 555 0142</dd></div>
+        <div><dt>Address <span class="tag xs">Current</span></dt><dd>14 Oxford St, Osu, Accra, GA-123-4567</dd></div>
+      </dl>
+      <h3 class="t-label sub">ID documents</h3>
+      <table class="tbl docs"><tbody>
+        <tr><td><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-doc"/></svg> Ghana Card</td><td class="mono">GHA-7xxxxxxx-4</td><td class="muted sm"><svg class="i " width="13" height="13" aria-hidden="true"><use href="#i-lock"/></svg> Masked</td></tr>
+        <tr><td><svg class="i " width="16" height="16" aria-hidden="true"><use href="#i-doc"/></svg> Passport</td><td class="mono">G2xxxxx</td><td class="muted sm"><svg class="i " width="13" height="13" aria-hidden="true"><use href="#i-lock"/></svg> Masked</td></tr>
+      </tbody></table>
+    </section>
+  </div>
+</div></main></div></div></div></div></div></figure></div>
+</section>
+
+<footer class="end">Direction E — Structure · Instrument Sans + IBM Plex Mono · Akwaaba Labs is fictional sample data.</footer>
+</div>
+<script>
+(function(){var d=[].slice.call(document.querySelectorAll('.device'));function f(){d.forEach(function(el){el.style.setProperty('--s',(el.clientWidth/1200).toFixed(4))})}
+f();if('ResizeObserver' in window){var ro=new ResizeObserver(f);d.forEach(function(el){ro.observe(el)})}else{addEventListener('resize',f)}})();
+</script>
+</body>
+</html>
