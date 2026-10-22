@@ -1,0 +1,2 @@
+org.springframework.boot.EnvironmentPostProcessor=\
+com.mrlii.ems.support.TestJwtKeysEnvironmentPostProcessor

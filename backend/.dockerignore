@@ -1,0 +1,20 @@
+# Only pom.xml, lombok.config and src/ are needed to build the image.
+target/
+.keys/
+*.pem
+*.key
+.env
+.env.*
+.git
+.gitignore
+.idea/
+.vscode/
+*.iml
+.claude/
+CLAUDE.md
+tasks/
+scripts/
+HELP.md
+README.md
+Dockerfile
+.dockerignore

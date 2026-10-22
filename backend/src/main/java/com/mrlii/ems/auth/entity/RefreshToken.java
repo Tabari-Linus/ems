@@ -26,6 +26,6 @@ public class RefreshToken extends AuditableEntity {
     private Instant expiryDate;
 
     @OneToOne
-    @JoinColumn(name = "user_account_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_account_id", referencedColumnName = "id", nullable = false)
     private UserAccount userAccount;
 }

@@ -20,6 +20,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -80,6 +81,28 @@ class AdminSeederTest {
         when(userAccountRepository.existsByEmail(ADMIN_EMAIL)).thenReturn(true);
 
         adminSeeder.run(mock(ApplicationArguments.class));
+
+        verify(employeeRepository, never()).save(any());
+        verify(userAccountRepository, never()).save(any());
+    }
+
+    @Test
+    void run_failsFastWithClearMessage_whenAdminPasswordMissing() {
+        AccessLevel adminLevel = AccessLevel.builder()
+                .id(1L)
+                .accessLevelName("ADMINISTRATOR")
+                .status(CommonStatus.ACTIVE)
+                .build();
+        when(adminProperties.email()).thenReturn(ADMIN_EMAIL);
+        when(adminProperties.password()).thenReturn(" ");
+        when(userAccountRepository.existsByEmail(ADMIN_EMAIL)).thenReturn(false);
+        when(accessLevelRepository.findByAccessLevelNameIgnoreCase("ADMINISTRATOR"))
+                .thenReturn(Optional.of(adminLevel));
+        ApplicationArguments args = mock(ApplicationArguments.class);
+
+        assertThatThrownBy(() -> adminSeeder.run(args))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessageContaining("ADMIN_PASSWORD");
 
         verify(employeeRepository, never()).save(any());
         verify(userAccountRepository, never()).save(any());

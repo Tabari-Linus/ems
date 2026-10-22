@@ -38,7 +38,6 @@ build/
 CLAUDE.md
 src/main/resources/certificates/
 /tasks
-/scripts
 ### Secrets & key material (never commit) ###
 .keys/
 *.pem

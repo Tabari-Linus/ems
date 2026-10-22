@@ -1,0 +1,30 @@
+# Production hardening. Everything deploy-specific still comes from env (see application.yaml).
+
+spring:
+  graphql:
+    graphiql:
+      enabled: false
+    schema:
+      introspection:
+        enabled: false
+  lifecycle:
+    timeout-per-shutdown-phase: 30s
+
+server:
+  shutdown: graceful
+  # Trust X-Forwarded-* from the platform's reverse proxy / load balancer.
+  forward-headers-strategy: framework
+  error:
+    include-stacktrace: never
+    include-message: never
+
+app:
+  auth:
+    cookie:
+      # Production is served over HTTPS; only an explicit override turns this off.
+      secure: ${AUTH_COOKIE_SECURE:true}
+
+logging:
+  level:
+    root: INFO
+    com.mrlii.ems: INFO

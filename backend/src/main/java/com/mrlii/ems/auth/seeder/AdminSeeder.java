@@ -44,6 +44,14 @@ public class AdminSeeder implements ApplicationRunner {
             return;
         }
 
+        String adminPassword = adminProperties.password();
+        if (adminPassword == null || adminPassword.isBlank()) {
+            throw new IllegalStateException(
+                    "Cannot seed the administrator account '" + adminProperties.email()
+                            + "': ADMIN_PASSWORD (admin.password) is not set. "
+                            + "Set ADMIN_PASSWORD and restart.");
+        }
+
         Employee adminEmployee = Employee.builder()
                 .firstName("System")
                 .lastName("Administrator")
@@ -54,7 +62,7 @@ public class AdminSeeder implements ApplicationRunner {
 
         UserAccount admin = UserAccount.builder()
                 .email(adminProperties.email())
-                .passwordHash(passwordEncoder.encode(adminProperties.password()))
+                .passwordHash(passwordEncoder.encode(adminPassword))
                 .enabled(true)
                 .employee(adminEmployee)
                 .build();
