@@ -91,9 +91,14 @@
     font-size: 14px;
     color: var(--txt);
     background: var(--bg-2);
-    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    transition:
+      border-color 0.15s,
+      box-shadow 0.15s,
+      background 0.15s;
 
-    &::placeholder { color: var(--txt-3); }
+    &::placeholder {
+      color: var(--txt-3);
+    }
 
     &:focus {
       outline: none;
@@ -104,7 +109,9 @@
 
     &.is-invalid {
       border-color: var(--red);
-      &:focus { box-shadow: 0 0 0 3px var(--red-dim); }
+      &:focus {
+        box-shadow: 0 0 0 3px var(--red-dim);
+      }
     }
   }
 
@@ -133,7 +140,9 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: opacity 0.15s, transform 0.1s;
+  transition:
+    opacity 0.15s,
+    transform 0.1s;
   margin-top: var(--sp-2);
 
   &:hover:not(:disabled) {
@@ -141,7 +150,9 @@
     transform: translateY(-1px);
   }
 
-  &:active:not(:disabled) { transform: translateY(0); }
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
 
   &:disabled {
     opacity: 0.5;
@@ -152,10 +163,14 @@
 .spinner {
   width: 14px;
   height: 14px;
-  border: 2px solid rgba(255,255,255,0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: #fff;
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

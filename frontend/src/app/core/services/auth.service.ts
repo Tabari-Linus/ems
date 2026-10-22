@@ -22,11 +22,11 @@ export class AuthService {
   }
 
   hasAnyPermission(permissions: Permission[]): boolean {
-    return permissions.some(p => this.hasPermission(p));
+    return permissions.some((p) => this.hasPermission(p));
   }
 
   hasAllPermissions(permissions: Permission[]): boolean {
-    return permissions.every(p => this.hasPermission(p));
+    return permissions.every((p) => this.hasPermission(p));
   }
 
   login(credentials: LoginRequest): Observable<AuthResponse> {
@@ -35,7 +35,7 @@ export class AuthService {
         withCredentials: true,
       })
       .pipe(
-        tap(response => {
+        tap((response) => {
           this.tokenService.set(response.accessToken);
           this.redirectAfterLogin();
         }),
@@ -53,10 +53,14 @@ export class AuthService {
 
   refreshToken(): Observable<AuthResponse> {
     return this.http
-      .post<AuthResponse>(`${this.authUrl}/refresh-token`, {}, {
-        withCredentials: true,
-      })
-      .pipe(tap(response => this.tokenService.set(response.accessToken)));
+      .post<AuthResponse>(
+        `${this.authUrl}/refresh-token`,
+        {},
+        {
+          withCredentials: true,
+        },
+      )
+      .pipe(tap((response) => this.tokenService.set(response.accessToken)));
   }
 
   redirectAfterLogin(): void {

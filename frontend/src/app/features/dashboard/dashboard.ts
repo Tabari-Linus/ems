@@ -17,11 +17,11 @@ import { EmployeeListItem } from '../../core/models/employee.model';
 
 interface DashboardSummary {
   getDashboardSummary: {
-    companyCount:        number;
-    officeCount:         number;
-    departmentCount:     number;
+    companyCount: number;
+    officeCount: number;
+    departmentCount: number;
     activeEmployeeCount: number;
-    headcountTrend:      { trend: string } | null;
+    headcountTrend: { trend: string } | null;
   };
 }
 
@@ -38,8 +38,14 @@ const DASHBOARD_SUMMARY = `
 `;
 
 const AVATAR_COLORS = [
-  '#fe7f2d', '#619b8a', '#fcca46', '#a1c181',
-  '#5e7a8a', '#e07070', '#233d4d', '#2e4e60',
+  '#fe7f2d',
+  '#619b8a',
+  '#fcca46',
+  '#a1c181',
+  '#5e7a8a',
+  '#e07070',
+  '#233d4d',
+  '#2e4e60',
 ];
 
 @Component({
@@ -50,9 +56,9 @@ const AVATAR_COLORS = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Dashboard {
-  private readonly gql             = inject(GraphqlService);
+  private readonly gql = inject(GraphqlService);
   private readonly employeeService = inject(EmployeeService);
-  private readonly authService     = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   protected readonly canManageEmployees = computed(() =>
     this.authService.hasPermission(Permission.MANAGE_EMPLOYEE),
@@ -67,12 +73,7 @@ export class Dashboard {
   protected readonly recentResource = resource({
     loader: () => {
       const status = this.recentStatusFilter();
-      return firstValueFrom(
-        this.employeeService.getEmployees(
-          status ? { status } : {},
-          0, 8,
-        ),
-      );
+      return firstValueFrom(this.employeeService.getEmployees(status ? { status } : {}, 0, 8));
     },
   });
 
@@ -80,24 +81,48 @@ export class Dashboard {
     const s = this.statsResource.value()?.getDashboardSummary;
     const trend = s?.headcountTrend?.trend ?? null;
     return [
-      { iconKey: 'employees',   value: s?.activeEmployeeCount ?? null, label: 'Active Employees', colorVar: '--ps', trend },
-      { iconKey: 'departments', value: s?.departmentCount    ?? null, label: 'Departments',       colorVar: '--sg', trend: null },
-      { iconKey: 'offices',     value: s?.officeCount        ?? null, label: 'Offices',           colorVar: '--gp', trend: null },
-      { iconKey: 'companies',   value: s?.companyCount       ?? null, label: 'Companies',         colorVar: '--mo', trend: null },
+      {
+        iconKey: 'employees',
+        value: s?.activeEmployeeCount ?? null,
+        label: 'Active Employees',
+        colorVar: '--ps',
+        trend,
+      },
+      {
+        iconKey: 'departments',
+        value: s?.departmentCount ?? null,
+        label: 'Departments',
+        colorVar: '--sg',
+        trend: null,
+      },
+      {
+        iconKey: 'offices',
+        value: s?.officeCount ?? null,
+        label: 'Offices',
+        colorVar: '--gp',
+        trend: null,
+      },
+      {
+        iconKey: 'companies',
+        value: s?.companyCount ?? null,
+        label: 'Companies',
+        colorVar: '--mo',
+        trend: null,
+      },
     ];
   });
 
   protected readonly statusOptions = [
-    { label: 'All',      value: '' },
-    { label: 'Active',   value: 'ACTIVE' },
-    { label: 'Pending',  value: 'PENDING' },
+    { label: 'All', value: '' },
+    { label: 'Active', value: 'ACTIVE' },
+    { label: 'Pending', value: 'PENDING' },
     { label: 'Inactive', value: 'INACTIVE' },
     { label: 'Archived', value: 'ARCHIVE' },
   ];
 
   // ── Quick-action menu ─────────────────────────────────────────
-  protected readonly openMenuId  = signal<string | null>(null);
-  protected readonly busyId      = signal<string | null>(null);
+  protected readonly openMenuId = signal<string | null>(null);
+  protected readonly busyId = signal<string | null>(null);
   protected readonly actionError = signal('');
 
   @HostListener('document:click')
@@ -106,7 +131,7 @@ export class Dashboard {
   }
 
   protected toggleMenu(empId: string): void {
-    this.openMenuId.update(id => id === empId ? null : empId);
+    this.openMenuId.update((id) => (id === empId ? null : empId));
   }
 
   protected async onActivate(emp: EmployeeListItem): Promise<void> {
@@ -117,7 +142,9 @@ export class Dashboard {
       await firstValueFrom(this.employeeService.activateEmployee(emp.id));
       this.recentResource.reload();
     } catch (err: unknown) {
-      this.actionError.set((err as { message?: string })?.message ?? 'Failed to activate employee.');
+      this.actionError.set(
+        (err as { message?: string })?.message ?? 'Failed to activate employee.',
+      );
     } finally {
       this.busyId.set(null);
     }
@@ -131,7 +158,9 @@ export class Dashboard {
       await firstValueFrom(this.employeeService.deactivateEmployee(emp.id));
       this.recentResource.reload();
     } catch (err: unknown) {
-      this.actionError.set((err as { message?: string })?.message ?? 'Failed to deactivate employee.');
+      this.actionError.set(
+        (err as { message?: string })?.message ?? 'Failed to deactivate employee.',
+      );
     } finally {
       this.busyId.set(null);
     }
@@ -152,7 +181,10 @@ export class Dashboard {
   }
 
   protected readonly today = new Intl.DateTimeFormat('en-GB', {
-    weekday: 'long', day: 'numeric', month: 'long', year: 'numeric',
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
   }).format(new Date());
 
   protected readonly skeletons = [1, 2, 3, 4];

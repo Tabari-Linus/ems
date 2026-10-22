@@ -6,11 +6,7 @@
 
   <div class="tab-bar">
     @for (tab of tabs; track tab.id) {
-      <button
-        class="tab-btn"
-        [class.active]="activeTab() === tab.id"
-        (click)="setTab(tab.id)"
-      >
+      <button class="tab-btn" [class.active]="activeTab() === tab.id" (click)="setTab(tab.id)">
         {{ tab.label }}
       </button>
     }
@@ -18,11 +14,21 @@
 
   <div class="tab-body">
     @switch (activeTab()) {
-      @case ('companies')     { <app-settings-companies /> }
-      @case ('offices')       { <app-settings-offices /> }
-      @case ('departments')   { <app-settings-departments /> }
-      @case ('positions')     { <app-settings-positions /> }
-      @case ('access-levels') { <app-settings-access-levels /> }
+      @case ('companies') {
+        <app-settings-companies />
+      }
+      @case ('offices') {
+        <app-settings-offices />
+      }
+      @case ('departments') {
+        <app-settings-departments />
+      }
+      @case ('positions') {
+        <app-settings-positions />
+      }
+      @case ('access-levels') {
+        <app-settings-access-levels />
+      }
     }
   </div>
 </div>

@@ -13,9 +13,9 @@ import { CompanyListItem } from '../../../../core/models/settings.models';
 export class SettingsCompanies {
   private readonly companyService = inject(CompanyService);
 
-  protected readonly showForm  = signal(false);
-  protected readonly editId    = signal<string | null>(null);
-  protected readonly saving    = signal(false);
+  protected readonly showForm = signal(false);
+  protected readonly editId = signal<string | null>(null);
+  protected readonly saving = signal(false);
   protected readonly formError = signal('');
 
   protected readonly model = signal({
@@ -26,11 +26,11 @@ export class SettingsCompanies {
     companyAddress: '',
   });
 
-  protected readonly companyForm = form(this.model, s => {
-    required(s.companyName,  { message: 'Company name is required' });
-    required(s.companyCode,  { message: 'Company code is required' });
+  protected readonly companyForm = form(this.model, (s) => {
+    required(s.companyName, { message: 'Company name is required' });
+    required(s.companyCode, { message: 'Company code is required' });
     required(s.companyEmail, { message: 'Email is required' });
-    email(s.companyEmail,    { message: 'Enter a valid email address' });
+    email(s.companyEmail, { message: 'Enter a valid email address' });
   });
 
   protected readonly listResource = resource({
@@ -39,19 +39,25 @@ export class SettingsCompanies {
 
   protected toggleForm(): void {
     this.editId.set(null);
-    this.model.set({ companyName: '', companyCode: '', companyEmail: '', companyPhoneNumber: '', companyAddress: '' });
-    this.showForm.update(v => !v);
+    this.model.set({
+      companyName: '',
+      companyCode: '',
+      companyEmail: '',
+      companyPhoneNumber: '',
+      companyAddress: '',
+    });
+    this.showForm.update((v) => !v);
     this.formError.set('');
   }
 
   protected startEdit(item: CompanyListItem): void {
     this.editId.set(item.id);
     this.model.set({
-      companyName:        item.companyName,
-      companyCode:        item.companyCode,
-      companyEmail:       item.companyEmail       ?? '',
+      companyName: item.companyName,
+      companyCode: item.companyCode,
+      companyEmail: item.companyEmail ?? '',
       companyPhoneNumber: item.companyPhoneNumber ?? '',
-      companyAddress:     item.companyAddress     ?? '',
+      companyAddress: item.companyAddress ?? '',
     });
     this.showForm.set(true);
     this.formError.set('');
@@ -67,25 +73,31 @@ export class SettingsCompanies {
         if (id) {
           await firstValueFrom(
             this.companyService.updateCompany(id, {
-              companyName:        m.companyName,
-              companyCode:        m.companyCode,
-              companyEmail:       m.companyEmail,
+              companyName: m.companyName,
+              companyCode: m.companyCode,
+              companyEmail: m.companyEmail,
               ...(m.companyPhoneNumber && { companyPhoneNumber: m.companyPhoneNumber }),
-              ...(m.companyAddress     && { companyAddress:     m.companyAddress }),
+              ...(m.companyAddress && { companyAddress: m.companyAddress }),
             }),
           );
         } else {
           await firstValueFrom(
             this.companyService.createCompany({
-              companyName:  m.companyName,
-              companyCode:  m.companyCode,
+              companyName: m.companyName,
+              companyCode: m.companyCode,
               companyEmail: m.companyEmail,
               ...(m.companyPhoneNumber && { companyPhoneNumber: m.companyPhoneNumber }),
-              ...(m.companyAddress     && { companyAddress:     m.companyAddress }),
+              ...(m.companyAddress && { companyAddress: m.companyAddress }),
             }),
           );
         }
-        this.model.set({ companyName: '', companyCode: '', companyEmail: '', companyPhoneNumber: '', companyAddress: '' });
+        this.model.set({
+          companyName: '',
+          companyCode: '',
+          companyEmail: '',
+          companyPhoneNumber: '',
+          companyAddress: '',
+        });
         this.editId.set(null);
         this.showForm.set(false);
         this.listResource.reload();

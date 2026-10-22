@@ -18,9 +18,17 @@
       <form (submit)="onSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label for="positions-position-form-position-name">Position Name <span class="req">*</span></label>
-            <input id="positions-position-form-position-name" [formField]="positionForm.positionName" placeholder="Software Engineer" />
-            @if (positionForm.positionName().touched() && positionForm.positionName().errors().length) {
+            <label for="positions-position-form-position-name"
+              >Position Name <span class="req">*</span></label
+            >
+            <input
+              id="positions-position-form-position-name"
+              [formField]="positionForm.positionName"
+              placeholder="Software Engineer"
+            />
+            @if (
+              positionForm.positionName().touched() && positionForm.positionName().errors().length
+            ) {
               <span class="field-err">{{ positionForm.positionName().errors()[0].message }}</span>
             }
           </div>
@@ -34,11 +42,15 @@
           </div>
           <div class="field span-2">
             <label for="positions-position-form-description">Description</label>
-            <input id="positions-position-form-description" [formField]="positionForm.description" placeholder="Brief description of the role" />
+            <input
+              id="positions-position-form-description"
+              [formField]="positionForm.description"
+              placeholder="Brief description of the role"
+            />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : (editId() ? 'Save Changes' : 'Create Position') }}
+          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Position' }}
         </button>
       </form>
     </div>
@@ -52,29 +64,45 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>Position Name</th><th>Level</th><th>Description</th><th>Status</th><th></th>
+          <th>Position Name</th>
+          <th>Level</th>
+          <th>Description</th>
+          <th>Status</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         @for (item of listResource.value()?.data ?? []; track item.id) {
           <tr>
             <td class="name-cell">{{ item.positionName }}</td>
-            <td><span class="level-badge">{{ item.level }}</span></td>
+            <td>
+              <span class="level-badge">{{ item.level }}</span>
+            </td>
             <td>{{ item.description ?? '' }}</td>
-            <td><span class="status-chip" [attr.data-status]="item.status">{{ item.status }}</span></td>
+            <td>
+              <span class="status-chip" [attr.data-status]="item.status">{{ item.status }}</span>
+            </td>
             <td class="action-cell">
               <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                 </svg>
                 Edit
               </button>
             </td>
           </tr>
         } @empty {
-          <tr><td colspan="5" class="empty-row">No positions yet.</td></tr>
+          <tr>
+            <td colspan="5" class="empty-row">No positions yet.</td>
+          </tr>
         }
       </tbody>
     </table>

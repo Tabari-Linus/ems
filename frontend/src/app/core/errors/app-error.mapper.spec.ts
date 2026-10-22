@@ -88,10 +88,15 @@ describe('toAppErrors / toAppError', () => {
   it('prefers GraphQL errors in an HttpErrorResponse body', () => {
     const error = new HttpErrorResponse({
       status: 400,
-      error: { errors: [{ message: 'Bad sort', extensions: { code: 'INVALID_PROPERTY_REFERENCE' } }] },
+      error: {
+        errors: [{ message: 'Bad sort', extensions: { code: 'INVALID_PROPERTY_REFERENCE' } }],
+      },
     });
 
-    expect(toAppError(error)).toMatchObject({ code: 'INVALID_PROPERTY_REFERENCE', message: 'Bad sort' });
+    expect(toAppError(error)).toMatchObject({
+      code: 'INVALID_PROPERTY_REFERENCE',
+      message: 'Bad sort',
+    });
   });
 
   it('treats a fetch TypeError as a network error', () => {

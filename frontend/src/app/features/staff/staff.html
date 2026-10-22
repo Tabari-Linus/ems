@@ -1,5 +1,4 @@
 <div class="staff-page">
-
   <!-- ── Page header ──────────────────────────────────────── -->
   <div class="page-header">
     <div>
@@ -11,11 +10,7 @@
       }
     </div>
     @if (canManage()) {
-      <button
-        class="add-btn"
-        [class.cancel]="showAddForm()"
-        (click)="toggleAddForm()"
-      >
+      <button class="add-btn" [class.cancel]="showAddForm()" (click)="toggleAddForm()">
         {{ showAddForm() ? 'Cancel' : '+ Add Employee' }}
       </button>
     }
@@ -32,7 +27,11 @@
         <div class="form-grid">
           <div class="field">
             <label for="staff-add-form-first-name">First Name <span class="req">*</span></label>
-            <input id="staff-add-form-first-name" [formField]="addForm.firstName" placeholder="John" />
+            <input
+              id="staff-add-form-first-name"
+              [formField]="addForm.firstName"
+              placeholder="John"
+            />
             @if (addForm.firstName().touched() && addForm.firstName().errors().length) {
               <span class="field-err">{{ addForm.firstName().errors()[0].message }}</span>
             }
@@ -46,7 +45,12 @@
           </div>
           <div class="field span-2">
             <label for="staff-add-form-work-email">Work Email <span class="req">*</span></label>
-            <input id="staff-add-form-work-email" type="email" [formField]="addForm.workEmail" placeholder="john.doe@company.com" />
+            <input
+              id="staff-add-form-work-email"
+              type="email"
+              [formField]="addForm.workEmail"
+              placeholder="john.doe@company.com"
+            />
             @if (addForm.workEmail().touched() && addForm.workEmail().errors().length) {
               <span class="field-err">{{ addForm.workEmail().errors()[0].message }}</span>
             }
@@ -89,10 +93,17 @@
   <!-- ── Search toolbar ───────────────────────────────────── -->
   <div class="toolbar">
     <div class="search-wrap">
-      <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <path d="m21 21-4.35-4.35"/>
+      <svg
+        class="search-icon"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.35-4.35" />
       </svg>
       <input
         class="search-input"
@@ -122,15 +133,21 @@
       }
     </div>
 
-  <!-- ── Empty state ───────────────────────────────────────── -->
+    <!-- ── Empty state ───────────────────────────────────────── -->
   } @else if (employees().length === 0 && !loading()) {
     <div class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
       </svg>
       <h3>No employees found</h3>
       @if (searchValue()) {
@@ -140,13 +157,18 @@
       }
     </div>
 
-  <!-- ── Cards grid ────────────────────────────────────────── -->
+    <!-- ── Cards grid ────────────────────────────────────────── -->
   } @else {
     <div class="cards-grid">
       @for (emp of employees(); track emp.id) {
-        <div class="employee-card" (click)="selectedEmployee.set(emp)" role="button" tabindex="0"
-          (keydown.enter)="selectedEmployee.set(emp)" (keydown.space)="selectedEmployee.set(emp); $event.preventDefault()">
-
+        <div
+          class="employee-card"
+          (click)="selectedEmployee.set(emp)"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="selectedEmployee.set(emp)"
+          (keydown.space)="selectedEmployee.set(emp); $event.preventDefault()"
+        >
           <!-- Top: avatar + name + role + status badge -->
           <div class="card-top">
             <div
@@ -157,7 +179,10 @@
             </div>
             <div class="card-info">
               <p class="emp-name">{{ emp.firstName }} {{ emp.lastName }}</p>
-              <p class="emp-role">{{ emp.jobTitle ?? 'No position' }}{{ emp.department ? ' · ' + emp.department : '' }}</p>
+              <p class="emp-role">
+                {{ emp.jobTitle ?? 'No position'
+                }}{{ emp.department ? ' · ' + emp.department : '' }}
+              </p>
             </div>
             <span class="badge" [attr.data-status]="emp.status ?? 'PENDING'">
               {{ emp.status ?? 'PENDING' }}
@@ -177,7 +202,6 @@
               <dd>{{ emp.jobTitle ?? '' }}</dd>
             </div>
           </dl>
-
         </div>
       }
     </div>
@@ -185,11 +209,7 @@
     <!-- Load more -->
     @if (hasNext() || loading()) {
       <div class="load-more-row">
-        <button
-          class="load-more-btn"
-          [disabled]="loading()"
-          (click)="loadMore()"
-        >
+        <button class="load-more-btn" [disabled]="loading()" (click)="loadMore()">
           @if (loading()) {
             <span class="spinner"></span> Loading…
           } @else {
@@ -199,18 +219,28 @@
       </div>
     }
   }
-
 </div>
 
 <!-- ── Employee modal ────────────────────────────────────────────── -->
 @if (selectedEmployee(); as emp) {
-  <div class="modal-overlay" (click)="selectedEmployee.set(null)" (keydown.escape)="selectedEmployee.set(null)" role="dialog" aria-modal="true">
+  <div
+    class="modal-overlay"
+    (click)="selectedEmployee.set(null)"
+    (keydown.escape)="selectedEmployee.set(null)"
+    role="dialog"
+    aria-modal="true"
+  >
     <div class="modal-card" role="presentation" (click)="$event.stopPropagation()">
-
       <button class="modal-close" (click)="selectedEmployee.set(null)" aria-label="Close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-          stroke-linecap="round" stroke-linejoin="round">
-          <path d="M18 6 6 18M6 6l12 12"/>
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M18 6 6 18M6 6l12 12" />
         </svg>
       </button>
 
@@ -232,9 +262,15 @@
       <dl class="modal-fields">
         <div class="modal-field">
           <dt>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 9h18M3 15h18M9 3v18M15 3v18"/>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
             </svg>
             Department
           </dt>
@@ -242,10 +278,16 @@
         </div>
         <div class="modal-field">
           <dt>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-              stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="7" width="20" height="14" rx="2"/>
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
             </svg>
             Position
           </dt>
@@ -257,14 +299,19 @@
         <div class="modal-actions">
           <a class="modal-profile-btn" [routerLink]="['/staff', emp.id]">
             View full profile
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path d="M3 8h10M9 4l4 4-4 4"/>
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 8h10M9 4l4 4-4 4" />
             </svg>
           </a>
         </div>
       }
-
     </div>
   </div>
 }

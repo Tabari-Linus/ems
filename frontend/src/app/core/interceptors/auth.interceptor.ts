@@ -9,9 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
 
   const token = tokenService.get();
-  const authReq = token
-    ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
-    : req;
+  const authReq = token ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } }) : req;
 
   return next(authReq).pipe(
     catchError((error: unknown) => {
@@ -21,7 +19,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         !req.url.includes('/auth/')
       ) {
         return authService.refreshToken().pipe(
-          switchMap(response =>
+          switchMap((response) =>
             next(req.clone({ setHeaders: { Authorization: `Bearer ${response.accessToken}` } })),
           ),
           catchError((refreshErr: unknown) => {

@@ -72,7 +72,9 @@
     font-size: 13px;
     font-weight: 400;
     border-radius: var(--r-md);
-    transition: background 0.12s, color 0.12s;
+    transition:
+      background 0.12s,
+      color 0.12s;
 
     svg {
       width: 16px;
@@ -84,7 +86,9 @@
     &:hover {
       background: var(--bg-3);
       color: var(--txt);
-      svg { opacity: 1; }
+      svg {
+        opacity: 1;
+      }
     }
 
     &.active {
@@ -92,7 +96,9 @@
       color: var(--accent);
       font-weight: 500;
       border: 0.5px solid var(--accent-border);
-      svg { opacity: 1; }
+      svg {
+        opacity: 1;
+      }
     }
   }
 }
@@ -120,7 +126,9 @@
   font-size: 13px;
   font-weight: 400;
   cursor: pointer;
-  transition: background 0.12s, color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s;
 
   svg {
     width: 16px;

@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 .staff-page {
   padding: var(--sp-8);
@@ -20,7 +22,11 @@
     margin: 0 0 var(--sp-1);
   }
 
-  p { color: var(--txt-3); font-size: 13px; margin: 0; }
+  p {
+    color: var(--txt-3);
+    font-size: 13px;
+    margin: 0;
+  }
 }
 
 .add-btn {
@@ -36,8 +42,14 @@
   white-space: nowrap;
   flex-shrink: 0;
   transition: opacity 0.15s;
-  &:hover { opacity: 0.88; }
-  &.cancel { background: var(--bg-3); color: var(--txt-2); border: 0.5px solid var(--border-mid); }
+  &:hover {
+    opacity: 0.88;
+  }
+  &.cancel {
+    background: var(--bg-3);
+    color: var(--txt-2);
+    border: 0.5px solid var(--border-mid);
+  }
 }
 
 /* ── Add Employee form ───────────────────────────────────────────── */
@@ -49,7 +61,13 @@
   padding: var(--sp-5) var(--sp-6);
   margin-bottom: var(--sp-6);
 
-  h3 { font-size: 13px; font-weight: 500; color: var(--txt); margin: 0 0 var(--sp-4); letter-spacing: -0.01em; }
+  h3 {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--txt);
+    margin: 0 0 var(--sp-4);
+    letter-spacing: -0.01em;
+  }
 }
 
 .form-api-error {
@@ -73,7 +91,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
-  &.span-2 { grid-column: span 2; }
+  &.span-2 {
+    grid-column: span 2;
+  }
 
   label {
     font-size: 11px;
@@ -82,9 +102,12 @@
     text-transform: uppercase;
     color: var(--txt-3);
   }
-  .req { color: var(--ps); }
+  .req {
+    color: var(--ps);
+  }
 
-  input, select {
+  input,
+  select {
     padding: var(--sp-3) var(--sp-4);
     border: 0.5px solid var(--border-mid);
     border-radius: var(--r-md);
@@ -92,18 +115,28 @@
     font-size: 13px;
     color: var(--txt);
     background: var(--bg-2);
-    transition: border-color 0.15s, background 0.15s;
-    &::placeholder { color: var(--txt-3); }
+    transition:
+      border-color 0.15s,
+      background 0.15s;
+    &::placeholder {
+      color: var(--txt-3);
+    }
     &:focus {
       outline: none;
       border-color: var(--accent-border);
       background: var(--bg-3);
       box-shadow: 0 0 0 3px var(--accent-dim);
     }
-    option { background: var(--bg-2); color: var(--txt); }
+    option {
+      background: var(--bg-2);
+      color: var(--txt);
+    }
   }
 
-  .field-err { font-size: 11px; color: var(--red); }
+  .field-err {
+    font-size: 11px;
+    color: var(--red);
+  }
 }
 
 .save-btn {
@@ -117,8 +150,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.15s;
-  &:hover:not(:disabled) { opacity: 0.88; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    opacity: 0.88;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 /* ── Toolbar ────────────────────────────────────────────────────── */
@@ -158,16 +196,19 @@
   font-size: 13px;
   color: var(--txt);
   background: var(--bg-1);
-  transition: border-color 0.15s, background 0.15s;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
   &:focus {
     outline: none;
     border-color: var(--accent-border);
     background: var(--bg-2);
     box-shadow: 0 0 0 3px var(--accent-dim);
   }
-  &::placeholder { color: var(--txt-3); }
+  &::placeholder {
+    color: var(--txt-3);
+  }
 }
-
 
 /* ── Error banner ───────────────────────────────────────────────── */
 
@@ -197,10 +238,13 @@
   border-radius: var(--r-xl);
   overflow: hidden;
   cursor: pointer;
-  transition: border-color 0.15s, box-shadow 0.15s;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
   outline: none;
 
-  &:hover, &:focus-visible {
+  &:hover,
+  &:focus-visible {
     border-color: var(--border-mid);
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
   }
@@ -257,13 +301,28 @@
   padding: 2px var(--sp-3);
   border-radius: var(--r-pill);
   flex-shrink: 0;
-  &[data-status="ACTIVE"]   { background: var(--mo-dim); color: var(--mo); }
-  &[data-status="PENDING"]  { background: var(--gp-dim); color: var(--gp); }
-  &[data-status="INACTIVE"] { background: var(--bg-3);   color: var(--txt-3); }
-  &[data-status="ARCHIVE"]  { background: var(--red-dim); color: var(--red); }
+  &[data-status='ACTIVE'] {
+    background: var(--mo-dim);
+    color: var(--mo);
+  }
+  &[data-status='PENDING'] {
+    background: var(--gp-dim);
+    color: var(--gp);
+  }
+  &[data-status='INACTIVE'] {
+    background: var(--bg-3);
+    color: var(--txt-3);
+  }
+  &[data-status='ARCHIVE'] {
+    background: var(--red-dim);
+    color: var(--red);
+  }
 }
 
-.card-divider { height: 0.5px; background: var(--border); }
+.card-divider {
+  height: 0.5px;
+  background: var(--border);
+}
 
 .card-meta {
   display: grid;
@@ -278,7 +337,11 @@
     letter-spacing: 0.06em;
     margin-bottom: 2px;
   }
-  dd { font-size: 12px; font-weight: 500; color: var(--txt-2); }
+  dd {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--txt-2);
+  }
 }
 
 /* ── Modal ──────────────────────────────────────────────────────── */
@@ -319,9 +382,17 @@
   justify-content: center;
   cursor: pointer;
   color: var(--txt-3);
-  transition: color 0.12s, background 0.12s;
-  svg { width: 14px; height: 14px; }
-  &:hover { background: var(--bg-2); color: var(--txt); }
+  transition:
+    color 0.12s,
+    background 0.12s;
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+  &:hover {
+    background: var(--bg-2);
+    color: var(--txt);
+  }
 }
 
 .modal-top {
@@ -365,7 +436,10 @@
   margin: 0;
 }
 
-.modal-divider { height: 0.5px; background: var(--border); }
+.modal-divider {
+  height: 0.5px;
+  background: var(--border);
+}
 
 .modal-fields {
   margin: 0;
@@ -381,7 +455,9 @@
   gap: var(--sp-3);
   padding: var(--sp-2) 0;
   border-bottom: 0.5px solid var(--border);
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 
   dt {
     display: flex;
@@ -391,7 +467,10 @@
     flex-shrink: 0;
     font-size: 12px;
     color: var(--txt-3);
-    svg { width: 13px; height: 13px; }
+    svg {
+      width: 13px;
+      height: 13px;
+    }
   }
 
   dd {
@@ -421,18 +500,33 @@
   font-weight: 500;
   text-decoration: none;
   transition: opacity 0.15s;
-  svg { width: 13px; height: 13px; }
-  &:hover { opacity: 0.88; }
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+  &:hover {
+    opacity: 0.88;
+  }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slide-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ── Skeleton ───────────────────────────────────────────────────── */
@@ -467,17 +561,30 @@
   height: 11px;
   border-radius: var(--r-sm);
   background: var(--bg-3);
-  &.w70 { width: 70%; }
-  &.w50 { width: 50%; }
-  &.w40 { width: 40%; }
+  &.w70 {
+    width: 70%;
+  }
+  &.w50 {
+    width: 50%;
+  }
+  &.w40 {
+    width: 40%;
+  }
 }
 
 @keyframes pulse-anim {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
 
-.pulse { animation: pulse-anim 1.6s ease-in-out infinite; }
+.pulse {
+  animation: pulse-anim 1.6s ease-in-out infinite;
+}
 
 /* ── Empty state ────────────────────────────────────────────────── */
 
@@ -488,9 +595,22 @@
   padding: var(--sp-16) var(--sp-8);
   color: var(--txt-3);
 
-  svg { width: 48px; height: 48px; margin-bottom: var(--sp-4); opacity: 0.4; }
-  h3  { font-size: 14px; font-weight: 500; color: var(--txt-2); margin: 0 0 var(--sp-1); }
-  p   { font-size: 13px; margin: 0; }
+  svg {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--sp-4);
+    opacity: 0.4;
+  }
+  h3 {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--txt-2);
+    margin: 0 0 var(--sp-1);
+  }
+  p {
+    font-size: 13px;
+    margin: 0;
+  }
 }
 
 /* ── Load More ──────────────────────────────────────────────────── */
@@ -514,9 +634,17 @@
   font-weight: 400;
   color: var(--txt-2);
   cursor: pointer;
-  transition: border-color 0.15s, color 0.15s;
-  &:hover:not(:disabled) { border-color: var(--accent-border); color: var(--accent); }
-  &:disabled { opacity: 0.4; cursor: not-allowed; }
+  transition:
+    border-color 0.15s,
+    color 0.15s;
+  &:hover:not(:disabled) {
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
 }
 
 .spinner {
@@ -528,4 +656,8 @@
   animation: spin 0.65s linear infinite;
 }
 
-@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

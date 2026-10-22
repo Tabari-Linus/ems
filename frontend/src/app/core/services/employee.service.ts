@@ -71,8 +71,13 @@ export interface UpdateEmployeeInput {
 }
 
 const EMPTY_PAGE: EmployeePageResult = {
-  data: [], currentPage: 0, totalPages: 0,
-  totalElements: 0, pageSize: 12, hasNext: false, hasPrevious: false,
+  data: [],
+  currentPage: 0,
+  totalPages: 0,
+  totalElements: 0,
+  pageSize: 12,
+  hasNext: false,
+  hasPrevious: false,
 };
 
 @Injectable({ providedIn: 'root' })
@@ -84,56 +89,56 @@ export class EmployeeService {
       pageInput: { page, size },
     };
     const gqlFilter: Record<string, unknown> = {};
-    if (filter.search)       gqlFilter['search']       = filter.search;
-    if (filter.status)       gqlFilter['status']       = filter.status;
+    if (filter.search) gqlFilter['search'] = filter.search;
+    if (filter.status) gqlFilter['status'] = filter.status;
     if (filter.departmentId) gqlFilter['departmentId'] = filter.departmentId;
-    if (filter.positionId)   gqlFilter['positionId']   = filter.positionId;
+    if (filter.positionId) gqlFilter['positionId'] = filter.positionId;
     if (Object.keys(gqlFilter).length) variables['filter'] = gqlFilter;
 
-    return this.gql
-      .request<{ getEmployees: EmployeePageResult }>(GET_EMPLOYEES, variables)
-      .pipe(map(r => {
+    return this.gql.request<{ getEmployees: EmployeePageResult }>(GET_EMPLOYEES, variables).pipe(
+      map((r) => {
         const p = r.getEmployees ?? EMPTY_PAGE;
         return { ...p, data: p.data ?? [] };
-      }));
+      }),
+    );
   }
 
   getEmployee(id: string): Observable<EmployeeDetail> {
-    return this.gql
-      .request<{ getEmployee: EmployeeDetail | null }>(GET_EMPLOYEE, { id })
-      .pipe(map(r => {
+    return this.gql.request<{ getEmployee: EmployeeDetail | null }>(GET_EMPLOYEE, { id }).pipe(
+      map((r) => {
         if (!r.getEmployee) throw new Error('Employee not found or access denied.');
         return r.getEmployee;
-      }));
+      }),
+    );
   }
 
   createEmployee(input: CreateEmployeeInput): Observable<ActionResult> {
     return this.gql
       .request<{ createEmployee: ActionResult }>(CREATE_EMPLOYEE, { input })
-      .pipe(map(r => r.createEmployee));
+      .pipe(map((r) => r.createEmployee));
   }
 
   activateEmployee(id: string): Observable<ActionResult> {
     return this.gql
       .request<{ activateEmployee: ActionResult }>(ACTIVATE_EMPLOYEE, { id })
-      .pipe(map(r => r.activateEmployee));
+      .pipe(map((r) => r.activateEmployee));
   }
 
   deactivateEmployee(id: string): Observable<ActionResult> {
     return this.gql
       .request<{ deactivateEmployee: ActionResult }>(DEACTIVATE_EMPLOYEE, { id })
-      .pipe(map(r => r.deactivateEmployee));
+      .pipe(map((r) => r.deactivateEmployee));
   }
 
   archiveEmployee(id: string): Observable<ActionResult> {
     return this.gql
       .request<{ archiveEmployee: ActionResult }>(ARCHIVE_EMPLOYEE, { id })
-      .pipe(map(r => r.archiveEmployee));
+      .pipe(map((r) => r.archiveEmployee));
   }
 
   updateEmployee(id: string, input: UpdateEmployeeInput): Observable<ActionResult> {
     return this.gql
       .request<{ updateEmployee: ActionResult }>(UPDATE_EMPLOYEE, { id, input })
-      .pipe(map(r => r.updateEmployee));
+      .pipe(map((r) => r.updateEmployee));
   }
 }

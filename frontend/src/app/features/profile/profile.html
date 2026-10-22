@@ -1,10 +1,15 @@
 <div class="profile-page">
-
   <!-- ── Back nav ─────────────────────────────────────────────── -->
   <a routerLink="/staff" class="back-link">
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
-      stroke-linecap="round" stroke-linejoin="round">
-      <path d="M13 8H3M7 4L3 8l4 4"/>
+    <svg
+      viewBox="0 0 16 16"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      <path d="M13 8H3M7 4L3 8l4 4" />
     </svg>
     All employees
   </a>
@@ -19,10 +24,10 @@
       </div>
     </div>
     <div class="content-grid">
-      @for (n of [1,2,3]; track n) {
+      @for (n of [1, 2, 3]; track n) {
         <div class="section-card">
-          <div class="sk-line w30 pulse" style="height:14px; margin-bottom: 16px;"></div>
-          @for (m of [1,2,3]; track m) {
+          <div class="sk-line w30 pulse" style="height: 14px; margin-bottom: 16px"></div>
+          @for (m of [1, 2, 3]; track m) {
             <div class="sk-row">
               <div class="sk-line w25 pulse"></div>
               <div class="sk-line w45 pulse"></div>
@@ -32,13 +37,19 @@
       }
     </div>
 
-  <!-- ── Error / not found ─────────────────────────────────────── -->
+    <!-- ── Error / not found ─────────────────────────────────────── -->
   } @else if (profileResource.error() || !profileResource.value()) {
     <div class="empty-state">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-        stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="10"/>
-        <path d="M12 8v4M12 16h.01"/>
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4M12 16h.01" />
       </svg>
       @if (profileResource.error()) {
         <p>{{ $any(profileResource.error()).message ?? 'Failed to load employee.' }}</p>
@@ -47,7 +58,6 @@
       }
       <a routerLink="/staff" class="btn-outline">Back to employees</a>
     </div>
-
   } @else {
     @let emp = profileResource.value()!;
 
@@ -57,7 +67,7 @@
         {{ getInitials(emp.firstName, emp.lastName) }}
       </div>
       <div class="banner-text">
-        <h1>{{ emp.bio?.fullName ?? (emp.firstName + ' ' + emp.lastName) }}</h1>
+        <h1>{{ emp.bio?.fullName ?? emp.firstName + ' ' + emp.lastName }}</h1>
         <p class="banner-sub">
           {{ emp.position?.positionName ?? 'No position' }}
           @if (emp.department?.departmentName) {
@@ -96,7 +106,6 @@
 
     <!-- ── Content grid ────────────────────────────────────────── -->
     <div class="content-grid">
-
       <!-- Work Info -->
       <div class="section-card">
         <h2 class="section-title">Work Info</h2>
@@ -139,10 +148,20 @@
                         <option [value]="dept.id">{{ dept.departmentName }}</option>
                       }
                     </select>
-                    <button class="picker-save" [disabled]="savingDepartment()" (click)="saveDepartment()">
+                    <button
+                      class="picker-save"
+                      [disabled]="savingDepartment()"
+                      (click)="saveDepartment()"
+                    >
                       {{ savingDepartment() ? 'Saving…' : 'Save' }}
                     </button>
-                    <button class="picker-cancel" [disabled]="savingDepartment()" (click)="cancelEditDepartment()">Cancel</button>
+                    <button
+                      class="picker-cancel"
+                      [disabled]="savingDepartment()"
+                      (click)="cancelEditDepartment()"
+                    >
+                      Cancel
+                    </button>
                   }
                   @if (departmentError()) {
                     <span class="picker-err">{{ departmentError() }}</span>
@@ -162,10 +181,7 @@
                   <span class="field-empty">No position</span>
                 }
                 @if (canManage()) {
-                  <button
-                    class="inline-edit-btn"
-                    (click)="startEditPosition(emp.position?.id)"
-                  >
+                  <button class="inline-edit-btn" (click)="startEditPosition(emp.position?.id)">
                     {{ emp.position ? 'Change' : 'Assign' }}
                   </button>
                 }
@@ -183,21 +199,23 @@
                     >
                       <option value="">— No position —</option>
                       @for (pos of positionsResource.value()?.data ?? []; track pos.id) {
-                        <option [value]="pos.id">
-                          {{ pos.positionName }} ({{ pos.level }})
-                        </option>
+                        <option [value]="pos.id">{{ pos.positionName }} ({{ pos.level }})</option>
                       }
                     </select>
                     <button
                       class="picker-save"
                       [disabled]="savingPosition()"
                       (click)="savePosition()"
-                    >{{ savingPosition() ? 'Saving…' : 'Save' }}</button>
+                    >
+                      {{ savingPosition() ? 'Saving…' : 'Save' }}
+                    </button>
                     <button
                       class="picker-cancel"
                       [disabled]="savingPosition()"
                       (click)="cancelEditPosition()"
-                    >Cancel</button>
+                    >
+                      Cancel
+                    </button>
                   }
                   @if (positionError()) {
                     <span class="picker-err">{{ positionError() }}</span>
@@ -216,7 +234,10 @@
                   <span class="field-empty">No access level</span>
                 }
                 @if (canManage()) {
-                  <button class="inline-edit-btn" (click)="startEditAccessLevel(emp.accessLevel?.id)">
+                  <button
+                    class="inline-edit-btn"
+                    (click)="startEditAccessLevel(emp.accessLevel?.id)"
+                  >
                     {{ emp.accessLevel ? 'Change' : 'Assign' }}
                   </button>
                 }
@@ -237,10 +258,20 @@
                         <option [value]="lvl.id">{{ lvl.accessLevelName }}</option>
                       }
                     </select>
-                    <button class="picker-save" [disabled]="savingAccessLevel()" (click)="saveAccessLevel()">
+                    <button
+                      class="picker-save"
+                      [disabled]="savingAccessLevel()"
+                      (click)="saveAccessLevel()"
+                    >
                       {{ savingAccessLevel() ? 'Saving…' : 'Save' }}
                     </button>
-                    <button class="picker-cancel" [disabled]="savingAccessLevel()" (click)="cancelEditAccessLevel()">Cancel</button>
+                    <button
+                      class="picker-cancel"
+                      [disabled]="savingAccessLevel()"
+                      (click)="cancelEditAccessLevel()"
+                    >
+                      Cancel
+                    </button>
                   }
                   @if (accessLevelError()) {
                     <span class="picker-err">{{ accessLevelError() }}</span>
@@ -304,7 +335,10 @@
       <!-- Contact -->
       <div class="section-card">
         <h2 class="section-title">Contact</h2>
-        @if ((emp.contact?.phoneNumbers?.length ?? 0) === 0 && (emp.contact?.personalEmails?.length ?? 0) === 0) {
+        @if (
+          (emp.contact?.phoneNumbers?.length ?? 0) === 0 &&
+          (emp.contact?.personalEmails?.length ?? 0) === 0
+        ) {
           <p class="empty-msg">No contact info on file.</p>
         } @else {
           <dl class="field-list">
@@ -360,8 +394,6 @@
           </dl>
         </div>
       }
-
     </div>
   }
-
 </div>

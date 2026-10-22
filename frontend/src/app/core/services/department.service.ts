@@ -47,18 +47,29 @@ export class DepartmentService {
   getDepartments(): Observable<PageResult<DepartmentListItem>> {
     return this.gql
       .request<{ getDepartments: PageResult<DepartmentListItem> }>(GET_DEPARTMENTS)
-      .pipe(map(r => r.getDepartments));
+      .pipe(map((r) => r.getDepartments));
   }
 
-  createDepartment(input: CreateDepartmentInput): Observable<ApiResponse<{ id: string; departmentName: string }>> {
+  createDepartment(
+    input: CreateDepartmentInput,
+  ): Observable<ApiResponse<{ id: string; departmentName: string }>> {
     return this.gql
-      .request<{ createDepartment: ApiResponse<{ id: string; departmentName: string }> }>(CREATE_DEPARTMENT, { input })
-      .pipe(map(r => r.createDepartment));
+      .request<{ createDepartment: ApiResponse<{ id: string; departmentName: string }> }>(
+        CREATE_DEPARTMENT,
+        { input },
+      )
+      .pipe(map((r) => r.createDepartment));
   }
 
-  updateDepartment(id: string, input: UpdateDepartmentInput): Observable<ApiResponse<{ id: string; departmentName: string }>> {
+  updateDepartment(
+    id: string,
+    input: UpdateDepartmentInput,
+  ): Observable<ApiResponse<{ id: string; departmentName: string }>> {
     return this.gql
-      .request<{ updateDepartment: ApiResponse<{ id: string; departmentName: string }> }>(UPDATE_DEPARTMENT, { id, input })
-      .pipe(map(r => r.updateDepartment));
+      .request<{ updateDepartment: ApiResponse<{ id: string; departmentName: string }> }>(
+        UPDATE_DEPARTMENT,
+        { id, input },
+      )
+      .pipe(map((r) => r.updateDepartment));
   }
 }

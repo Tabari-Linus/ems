@@ -15,7 +15,7 @@ export class Login {
 
   protected readonly model = signal({ email: '', password: '' });
 
-  protected readonly loginForm = form(this.model, s => {
+  protected readonly loginForm = form(this.model, (s) => {
     required(s.email, { message: 'Email is required' });
     email(s.email, { message: 'Please enter a valid email address' });
     required(s.password, { message: 'Password is required' });

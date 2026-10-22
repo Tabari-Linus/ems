@@ -56,18 +56,23 @@ describe('parseAppConfig', () => {
 
 describe('loadAppConfig', () => {
   it('fetches the config without the HTTP cache and validates it', async () => {
-    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
-      jsonResponse({ apiUrl: 'http://localhost:8080' }),
-    );
+    const fetchFn = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(jsonResponse({ apiUrl: 'http://localhost:8080' }));
 
     await expect(loadAppConfig(fetchFn, CONFIG_URL)).resolves.toEqual({
       apiUrl: 'http://localhost:8080',
     });
-    expect(fetchFn).toHaveBeenCalledWith(CONFIG_URL, expect.objectContaining({ cache: 'no-store' }));
+    expect(fetchFn).toHaveBeenCalledWith(
+      CONFIG_URL,
+      expect.objectContaining({ cache: 'no-store' }),
+    );
   });
 
   it('fails clearly when the file is missing', async () => {
-    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(new Response('Not found', { status: 404 }));
+    const fetchFn = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response('Not found', { status: 404 }));
 
     await expect(loadAppConfig(fetchFn, CONFIG_URL)).rejects.toThrow(/HTTP 404/);
   });
@@ -79,7 +84,9 @@ describe('loadAppConfig', () => {
   });
 
   it('fails clearly when the file is not JSON', async () => {
-    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(new Response('<html>', { status: 200 }));
+    const fetchFn = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(new Response('<html>', { status: 200 }));
 
     await expect(loadAppConfig(fetchFn, CONFIG_URL)).rejects.toThrow(/not valid JSON/);
   });
@@ -91,9 +98,9 @@ describe('loadAppConfig', () => {
   });
 
   it('defaults to config.json next to the document base URI', async () => {
-    const fetchFn = vi.fn<typeof fetch>().mockResolvedValue(
-      jsonResponse({ apiUrl: 'http://localhost:8080' }),
-    );
+    const fetchFn = vi
+      .fn<typeof fetch>()
+      .mockResolvedValue(jsonResponse({ apiUrl: 'http://localhost:8080' }));
 
     await loadAppConfig(fetchFn);
 

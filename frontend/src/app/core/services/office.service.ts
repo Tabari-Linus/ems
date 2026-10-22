@@ -47,18 +47,28 @@ export class OfficeService {
   getOffices(): Observable<PageResult<OfficeListItem>> {
     return this.gql
       .request<{ getOffices: PageResult<OfficeListItem> }>(GET_OFFICES)
-      .pipe(map(r => r.getOffices));
+      .pipe(map((r) => r.getOffices));
   }
 
-  createOffice(input: CreateOfficeInput): Observable<ApiResponse<{ id: string; officeName: string }>> {
+  createOffice(
+    input: CreateOfficeInput,
+  ): Observable<ApiResponse<{ id: string; officeName: string }>> {
     return this.gql
-      .request<{ createOffice: ApiResponse<{ id: string; officeName: string }> }>(CREATE_OFFICE, { input })
-      .pipe(map(r => r.createOffice));
+      .request<{ createOffice: ApiResponse<{ id: string; officeName: string }> }>(CREATE_OFFICE, {
+        input,
+      })
+      .pipe(map((r) => r.createOffice));
   }
 
-  updateOffice(id: string, input: UpdateOfficeInput): Observable<ApiResponse<{ id: string; officeName: string }>> {
+  updateOffice(
+    id: string,
+    input: UpdateOfficeInput,
+  ): Observable<ApiResponse<{ id: string; officeName: string }>> {
     return this.gql
-      .request<{ updateOffice: ApiResponse<{ id: string; officeName: string }> }>(UPDATE_OFFICE, { id, input })
-      .pipe(map(r => r.updateOffice));
+      .request<{ updateOffice: ApiResponse<{ id: string; officeName: string }> }>(UPDATE_OFFICE, {
+        id,
+        input,
+      })
+      .pipe(map((r) => r.updateOffice));
   }
 }

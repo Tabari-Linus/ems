@@ -2,7 +2,12 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { GraphqlService } from './graphql.service';
-import { ActionResult, PageResult, PositionLevel, PositionListItem } from '../models/settings.models';
+import {
+  ActionResult,
+  PageResult,
+  PositionLevel,
+  PositionListItem,
+} from '../models/settings.models';
 
 const GET_POSITIONS = `
   query {
@@ -44,18 +49,18 @@ export class PositionService {
   getPositions(): Observable<PageResult<PositionListItem>> {
     return this.gql
       .request<{ getPositions: PageResult<PositionListItem> }>(GET_POSITIONS)
-      .pipe(map(r => r.getPositions));
+      .pipe(map((r) => r.getPositions));
   }
 
   createPosition(input: CreatePositionInput): Observable<ActionResult> {
     return this.gql
       .request<{ createPosition: ActionResult }>(CREATE_POSITION, { input })
-      .pipe(map(r => r.createPosition));
+      .pipe(map((r) => r.createPosition));
   }
 
   updatePosition(id: string, input: UpdatePositionInput): Observable<ActionResult> {
     return this.gql
       .request<{ updatePosition: ActionResult }>(UPDATE_POSITION, { id, input })
-      .pipe(map(r => r.updatePosition));
+      .pipe(map((r) => r.updatePosition));
   }
 }

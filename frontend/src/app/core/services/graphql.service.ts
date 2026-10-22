@@ -20,7 +20,7 @@ export class GraphqlService {
         { withCredentials: true },
       )
       .pipe(
-        map(res => {
+        map((res) => {
           if (res.errors?.length) {
             // Hard error: no data at all — throw so callers see the real message.
             // Field-level errors (partial data still present) are passed through;

@@ -54,9 +54,7 @@ export async function loadAppConfig(
     throw new AppConfigError(`Could not fetch runtime config from ${url}.`, { cause });
   }
   if (!response.ok) {
-    throw new AppConfigError(
-      `Could not load runtime config from ${url}: HTTP ${response.status}.`,
-    );
+    throw new AppConfigError(`Could not load runtime config from ${url}: HTTP ${response.status}.`);
   }
   let body: unknown;
   try {

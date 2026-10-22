@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 .profile-page {
   padding: var(--sp-8);
@@ -17,8 +19,13 @@
   margin-bottom: var(--sp-6);
   transition: color 0.15s;
 
-  svg { width: 14px; height: 14px; }
-  &:hover { color: var(--txt); }
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+  &:hover {
+    color: var(--txt);
+  }
 }
 
 /* ── Banner ─────────────────────────────────────────────────────── */
@@ -33,7 +40,9 @@
   gap: var(--sp-5);
   margin-bottom: var(--sp-6);
 
-  &--skeleton { min-height: 96px; }
+  &--skeleton {
+    min-height: 96px;
+  }
 }
 
 .banner-avi {
@@ -83,10 +92,22 @@
   padding: 3px 10px;
   border-radius: var(--r-pill);
 
-  &[data-status="ACTIVE"]   { background: var(--mo-dim);  color: var(--mo); }
-  &[data-status="PENDING"]  { background: var(--gp-dim);  color: var(--gp); }
-  &[data-status="INACTIVE"] { background: var(--bg-3);    color: var(--txt-3); }
-  &[data-status="ARCHIVE"]  { background: var(--red-dim); color: var(--red); }
+  &[data-status='ACTIVE'] {
+    background: var(--mo-dim);
+    color: var(--mo);
+  }
+  &[data-status='PENDING'] {
+    background: var(--gp-dim);
+    color: var(--gp);
+  }
+  &[data-status='INACTIVE'] {
+    background: var(--bg-3);
+    color: var(--txt-3);
+  }
+  &[data-status='ARCHIVE'] {
+    background: var(--red-dim);
+    color: var(--red);
+  }
 }
 
 .action-row {
@@ -105,8 +126,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.15s;
-  &:hover:not(:disabled) { opacity: 0.85; }
-  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 }
 
 .btn-warn {
@@ -120,8 +146,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
-  &:hover:not(:disabled) { background: color-mix(in srgb, var(--gp) 22%, transparent); }
-  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--gp) 22%, transparent);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 }
 
 .btn-danger {
@@ -135,8 +166,13 @@
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
-  &:hover:not(:disabled) { background: color-mix(in srgb, var(--red) 22%, transparent); }
-  &:disabled { opacity: 0.45; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--red) 22%, transparent);
+  }
+  &:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
 }
 
 .btn-outline {
@@ -149,7 +185,9 @@
   font-size: 13px;
   text-decoration: none;
   transition: background 0.15s;
-  &:hover { background: var(--bg-2); }
+  &:hover {
+    background: var(--bg-2);
+  }
 }
 
 .action-error {
@@ -204,7 +242,9 @@
   padding: var(--sp-2) 0;
   border-bottom: 0.5px solid var(--border);
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 
   dt {
     width: 110px;
@@ -245,7 +285,9 @@
   padding: var(--sp-3) 0;
   border-bottom: 0.5px solid var(--border);
 
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .addr-line {
@@ -276,7 +318,10 @@
   font-weight: 500;
   color: var(--txt-3);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  transition:
+    background 0.12s,
+    color 0.12s,
+    border-color 0.12s;
   &:hover {
     background: var(--accent-dim);
     color: var(--accent);
@@ -308,7 +353,10 @@
     border-color: var(--accent-border);
     box-shadow: 0 0 0 3px var(--accent-dim);
   }
-  option { background: var(--bg-2); color: var(--txt); }
+  option {
+    background: var(--bg-2);
+    color: var(--txt);
+  }
 }
 
 .picker-save {
@@ -323,8 +371,13 @@
   cursor: pointer;
   white-space: nowrap;
   transition: opacity 0.15s;
-  &:hover:not(:disabled) { opacity: 0.85; }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    opacity: 0.85;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .picker-cancel {
@@ -338,8 +391,13 @@
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.12s;
-  &:hover:not(:disabled) { background: var(--bg-3); }
-  &:disabled { opacity: 0.5; cursor: not-allowed; }
+  &:hover:not(:disabled) {
+    background: var(--bg-3);
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 }
 
 .picker-loading {
@@ -370,8 +428,17 @@
   padding: var(--sp-12) var(--sp-8);
   text-align: center;
 
-  svg { width: 40px; height: 40px; color: var(--txt-3); opacity: 0.4; }
-  p   { font-size: 14px; color: var(--txt-3); margin: 0; }
+  svg {
+    width: 40px;
+    height: 40px;
+    color: var(--txt-3);
+    opacity: 0.4;
+  }
+  p {
+    font-size: 14px;
+    color: var(--txt-3);
+    margin: 0;
+  }
 }
 
 /* ── Skeleton ───────────────────────────────────────────────────── */
@@ -389,7 +456,9 @@
   gap: var(--sp-3);
   padding: var(--sp-2) 0;
   border-bottom: 0.5px solid var(--border);
-  &:last-child { border-bottom: none; }
+  &:last-child {
+    border-bottom: none;
+  }
 }
 
 .sk-line {
@@ -397,14 +466,29 @@
   border-radius: var(--r-sm);
   background: var(--bg-3);
 
-  &.w25 { width: 25%; }
-  &.w30 { width: 30%; }
-  &.w40 { width: 40%; }
-  &.w45 { width: 45%; }
+  &.w25 {
+    width: 25%;
+  }
+  &.w30 {
+    width: 30%;
+  }
+  &.w40 {
+    width: 40%;
+  }
+  &.w45 {
+    width: 45%;
+  }
 }
 
 @keyframes pulse-anim {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.35; }
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
 }
-.pulse { animation: pulse-anim 1.6s ease-in-out infinite; }
+.pulse {
+  animation: pulse-anim 1.6s ease-in-out infinite;
+}

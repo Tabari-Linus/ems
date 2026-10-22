@@ -89,6 +89,8 @@ function graphQLErrorsFromBody(body: unknown): GraphQLFormattedError[] {
   if (!Array.isArray(errors)) return [];
   return errors.filter(
     (e: unknown): e is GraphQLFormattedError =>
-      typeof e === 'object' && e !== null && typeof (e as { message?: unknown }).message === 'string',
+      typeof e === 'object' &&
+      e !== null &&
+      typeof (e as { message?: unknown }).message === 'string',
   );
 }

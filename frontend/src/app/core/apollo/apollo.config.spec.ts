@@ -69,7 +69,9 @@ describe('Apollo setup (provideAppApollo)', () => {
   it('sends the generated Positions query to {apiUrl}/graphql with auth + preflight headers', async () => {
     TestBed.inject(TokenService).set('test-access-token');
 
-    const result = firstValueFrom(positions.fetch({ variables: { pageInput: { page: 0, size: 20 } } }));
+    const result = firstValueFrom(
+      positions.fetch({ variables: { pageInput: { page: 0, size: 20 } } }),
+    );
 
     const req = await nextGraphqlRequest();
     expect(req.request.method).toBe('POST');
