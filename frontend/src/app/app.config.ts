@@ -1,9 +1,15 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import {
+  ApplicationConfig,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideAppApollo } from './core/apollo/apollo.config';
+import { AuthService } from './core/services/auth.service';
 
 /**
  * Root providers. `APP_CONFIG` is not listed here: `main.ts` adds it after loading
@@ -15,5 +21,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideAppApollo(),
+    // Restore the session from the refresh cookie before the first navigation runs the guards.
+    provideAppInitializer(() => inject(AuthService).restoreSession()),
   ],
 };

@@ -1,11 +1,14 @@
 import { Injectable, computed, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap } from 'rxjs';
+import { Observable, firstValueFrom, tap, timeout } from 'rxjs';
 import { TokenService } from './token.service';
 import { AuthResponse, LoginRequest } from '../models/auth.model';
 import { Permission } from '../models/permission.model';
 import { APP_CONFIG } from '../config/app-config';
+
+/** Upper bound on how long startup waits for the session refresh before showing the app. */
+export const RESTORE_SESSION_TIMEOUT_MS = 5000;
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -61,6 +64,20 @@ export class AuthService {
         },
       )
       .pipe(tap((response) => this.tokenService.set(response.accessToken)));
+  }
+
+  /**
+   * Restores the session after a page reload. The access token lives only in memory, so on
+   * startup we exchange the HttpOnly refresh cookie for a new one. Runs as an app initializer,
+   * i.e. before the first navigation, so guards see the restored session. Never rejects: no
+   * cookie, an expired session, or an unreachable API all simply mean "signed out".
+   */
+  async restoreSession(): Promise<void> {
+    try {
+      await firstValueFrom(this.refreshToken().pipe(timeout(RESTORE_SESSION_TIMEOUT_MS)));
+    } catch {
+      this.tokenService.clear();
+    }
   }
 
   redirectAfterLogin(): void {
