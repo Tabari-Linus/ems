@@ -1,0 +1,401 @@
+<div class="my-profile-page">
+
+  <!-- ── Loading skeleton ──────────────────────────────────────── -->
+  @if (profileResource.isLoading()) {
+    <div class="banner banner--skeleton">
+      <div class="sk-avi-lg pulse"></div>
+      <div class="banner-text">
+        <div class="sk-line w40 pulse"></div>
+        <div class="sk-line w25 pulse"></div>
+      </div>
+    </div>
+    <div class="content-grid">
+      @for (n of [1,2,3]; track n) {
+        <div class="section-card">
+          <div class="sk-line w30 pulse" style="height:14px; margin-bottom:16px;"></div>
+          @for (m of [1,2,3]; track m) {
+            <div class="sk-row">
+              <div class="sk-line w25 pulse"></div>
+              <div class="sk-line w45 pulse"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  <!-- ── Error / not found ─────────────────────────────────────── -->
+  } @else if (profileResource.error() || !profileResource.value()) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4M12 16h.01"/>
+      </svg>
+      <p>Could not load your profile. Please try again later.</p>
+    </div>
+
+  } @else {
+    @let emp = profileResource.value()!;
+
+    <!-- ── Banner ──────────────────────────────────────────────── -->
+    <div class="banner" [style.--avi-color]="getAvatarColor(emp.firstName + emp.lastName)">
+      <div class="banner-avi">{{ getInitials(emp.firstName, emp.lastName) }}</div>
+      <div class="banner-text">
+        <h1>{{ emp.bio?.fullName ?? (emp.firstName + ' ' + emp.lastName) }}</h1>
+        <p class="banner-sub">
+          {{ emp.position?.positionName ?? 'No position' }}
+          @if (emp.department?.departmentName) { · {{ emp.department!.departmentName }} }
+        </p>
+      </div>
+      <span class="status-badge" [attr.data-status]="emp.status">{{ emp.status }}</span>
+    </div>
+
+    <!-- ── Global section error ────────────────────────────────── -->
+    @if (sectionError()) {
+      <div class="section-error">{{ sectionError() }}</div>
+    }
+
+    <div class="content-grid">
+
+      <!-- ── Work Info (read-only) ─────────────────────────────── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2 class="section-title">Work Info</h2>
+        </div>
+        <dl class="field-list">
+          <div class="field-row"><dt>Work Email</dt><dd>{{ emp.workEmail }}</dd></div>
+          <div class="field-row"><dt>Department</dt><dd>{{ emp.department?.departmentName ?? '' }}</dd></div>
+          <div class="field-row">
+            <dt>Position</dt>
+            <dd>
+              {{ emp.position?.positionName ?? '' }}
+              @if (emp.position?.level) {
+                <span class="meta-tag">{{ emp.position!.level }}</span>
+              }
+            </dd>
+          </div>
+          <div class="field-row"><dt>Access Level</dt><dd>{{ emp.accessLevel?.accessLevelName ?? '' }}</dd></div>
+          <div class="field-row"><dt>Hired</dt><dd>{{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}</dd></div>
+        </dl>
+      </div>
+
+      <!-- ── Personal Bio ───────────────────────────────────────── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2 class="section-title">Personal Info</h2>
+          @if (canEdit() && editSection() !== 'bio') {
+            <button class="edit-btn" (click)="openBioEdit()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              Edit
+            </button>
+          }
+        </div>
+
+        @if (editSection() === 'bio') {
+          <form class="inline-form" (submit)="saveBio(); $event.preventDefault()">
+            <div class="form-grid">
+              <div class="field">
+                <label>Full Name</label>
+                <input [formField]="bioForm.fullName" placeholder="Full legal name" />
+              </div>
+              <div class="field">
+                <label>Other Name</label>
+                <input [formField]="bioForm.otherName" placeholder="Nickname or alias" />
+              </div>
+              <div class="field">
+                <label>Gender</label>
+                <select [formField]="bioForm.gender">
+                  <option value="">Select</option>
+                  <option value="MALE">Male</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="OTHER">Other</option>
+                  <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Marital Status</label>
+                <select [formField]="bioForm.maritalStatus">
+                  <option value="">Select</option>
+                  <option value="SINGLE">Single</option>
+                  <option value="MARRIED">Married</option>
+                  <option value="DIVORCED">Divorced</option>
+                  <option value="WIDOWED">Widowed</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Date of Birth</label>
+                <input type="date" [formField]="bioForm.dateOfBirth" />
+              </div>
+              <div class="field">
+                <label>Place of Birth</label>
+                <input [formField]="bioForm.placeOfBirth" placeholder="City, Country" />
+              </div>
+              <div class="field span-2">
+                <label>Nationality</label>
+                <input [formField]="bioForm.nationality" placeholder="e.g. Ghanaian" />
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="save-btn" [disabled]="saving()">
+                {{ saving() ? 'Saving…' : 'Save' }}
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </form>
+        } @else {
+          <dl class="field-list">
+            <div class="field-row"><dt>Full Name</dt><dd>{{ emp.bio?.fullName ?? '' }}</dd></div>
+            <div class="field-row"><dt>Other Name</dt><dd>{{ emp.bio?.otherName ?? '' }}</dd></div>
+            <div class="field-row"><dt>Gender</dt><dd>{{ emp.bio?.gender ?? '' }}</dd></div>
+            <div class="field-row"><dt>Date of Birth</dt><dd>{{ formatDate(emp.bio?.dateOfBirth) }}</dd></div>
+            <div class="field-row"><dt>Place of Birth</dt><dd>{{ emp.bio?.placeOfBirth ?? '' }}</dd></div>
+            <div class="field-row"><dt>Nationality</dt><dd>{{ emp.bio?.nationality ?? '' }}</dd></div>
+            <div class="field-row"><dt>Marital Status</dt><dd>{{ emp.bio?.maritalStatus ?? '' }}</dd></div>
+          </dl>
+        }
+      </div>
+
+      <!-- ── Contact ────────────────────────────────────────────── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2 class="section-title">Contact</h2>
+          @if (canEdit() && editSection() !== 'contact') {
+            <button class="edit-btn" (click)="openContactEdit()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+              </svg>
+              Edit
+            </button>
+          }
+        </div>
+
+        @if (editSection() === 'contact') {
+          <div class="contact-edit">
+            <div class="contact-group">
+              <label class="contact-label">Phone Numbers</label>
+              @for (phone of phoneNumbers(); track phone) {
+                <div class="contact-chip">
+                  <span>{{ phone }}</span>
+                  <button type="button" class="chip-remove" (click)="removePhone(phone)" aria-label="Remove">×</button>
+                </div>
+              }
+              <div class="contact-add-row">
+                <input class="contact-input" type="tel" placeholder="+1 555 0000"
+                  [value]="newPhone()" (input)="newPhone.set($any($event.target).value)"
+                  (keydown.enter)="addPhone(); $event.preventDefault()" />
+                <button type="button" class="add-chip-btn" (click)="addPhone()">Add</button>
+              </div>
+            </div>
+
+            <div class="contact-group">
+              <label class="contact-label">Personal Emails</label>
+              @for (mail of personalEmails(); track mail) {
+                <div class="contact-chip">
+                  <span>{{ mail }}</span>
+                  <button type="button" class="chip-remove" (click)="removeEmail(mail)" aria-label="Remove">×</button>
+                </div>
+              }
+              <div class="contact-add-row">
+                <input class="contact-input" type="email" placeholder="personal@email.com"
+                  [value]="newEmail()" (input)="newEmail.set($any($event.target).value)"
+                  (keydown.enter)="addEmail(); $event.preventDefault()" />
+                <button type="button" class="add-chip-btn" (click)="addEmail()">Add</button>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="save-btn" (click)="saveContact()" [disabled]="saving()">
+                {{ saving() ? 'Saving…' : 'Save' }}
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </div>
+        } @else {
+          @if ((emp.contact?.phoneNumbers?.length ?? 0) === 0 && (emp.contact?.personalEmails?.length ?? 0) === 0) {
+            <p class="empty-msg">No contact info on file.</p>
+          } @else {
+            <dl class="field-list">
+              @for (phone of emp.contact?.phoneNumbers ?? []; track phone) {
+                <div class="field-row"><dt>Phone</dt><dd>{{ phone }}</dd></div>
+              }
+              @for (mail of emp.contact?.personalEmails ?? []; track mail) {
+                <div class="field-row"><dt>Personal Email</dt><dd>{{ mail }}</dd></div>
+              }
+            </dl>
+          }
+        }
+      </div>
+
+      <!-- ── Addresses ──────────────────────────────────────────── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2 class="section-title">Addresses</h2>
+          @if (canEdit() && editSection() !== 'address') {
+            <button class="edit-btn" (click)="openAddAddress()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              Add
+            </button>
+          }
+        </div>
+
+        @if (editSection() === 'address') {
+          <form class="inline-form" (submit)="saveAddress(); $event.preventDefault()">
+            <div class="form-grid">
+              <div class="field span-2">
+                <label>Street</label>
+                <input [formField]="addressForm.street" placeholder="123 Main St" />
+              </div>
+              <div class="field">
+                <label>City <span class="req">*</span></label>
+                <input [formField]="addressForm.city" placeholder="Accra" />
+                @if (addressForm.city().touched() && addressForm.city().errors().length) {
+                  <span class="field-err">{{ addressForm.city().errors()[0].message }}</span>
+                }
+              </div>
+              <div class="field">
+                <label>State / Region</label>
+                <input [formField]="addressForm.state" placeholder="Greater Accra" />
+              </div>
+              <div class="field">
+                <label>Zip / Postal Code</label>
+                <input [formField]="addressForm.zipCode" placeholder="GA-123" />
+              </div>
+              <div class="field">
+                <label>Country <span class="req">*</span></label>
+                <input [formField]="addressForm.country" placeholder="Ghana" />
+                @if (addressForm.country().touched() && addressForm.country().errors().length) {
+                  <span class="field-err">{{ addressForm.country().errors()[0].message }}</span>
+                }
+              </div>
+              <div class="field span-2">
+                <label>Digital Address</label>
+                <input [formField]="addressForm.digitalAddress" placeholder="GA-123-4567" />
+              </div>
+              <div class="field span-2">
+                <label class="checkbox-label">
+                  <input type="checkbox"
+                    [checked]="addressModel().isCurrentAddress"
+                    (change)="addressModel.update(m => ({ ...m, isCurrentAddress: $any($event.target).checked }))" />
+                  This is my current address
+                </label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="save-btn" [disabled]="saving()">
+                {{ saving() ? 'Saving…' : (editAddressId() ? 'Save Changes' : 'Add Address') }}
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </form>
+        }
+
+        @for (addr of emp.addresses; track addr.id; let last = $last) {
+          <div class="address-block" [class.last]="last && editSection() !== 'address'">
+            <div class="address-line">
+              <span class="addr-text">
+                {{ addressLine(addr) }}
+              </span>
+              @if (addr.isCurrentAddress) {
+                <span class="meta-tag">Current</span>
+              }
+            </div>
+            @if (addr.digitalAddress) {
+              <span class="addr-digital">{{ addr.digitalAddress }}</span>
+            }
+            @if (canEdit()) {
+              <div class="addr-actions">
+                <button class="addr-btn" (click)="openEditAddress(addr)">Edit</button>
+                <button class="addr-btn addr-btn--danger" (click)="removeAddress(addr.id)">Remove</button>
+              </div>
+            }
+          </div>
+        } @empty {
+          @if (editSection() !== 'address') {
+            <p class="empty-msg">No addresses on file.</p>
+          }
+        }
+      </div>
+
+      <!-- ── Identifications ─────────────────────────────────────── -->
+      <div class="section-card">
+        <div class="section-head">
+          <h2 class="section-title">Identification</h2>
+          @if (canEdit() && editSection() !== 'id') {
+            <button class="edit-btn" (click)="openAddId()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 5v14M5 12h14"/>
+              </svg>
+              Add
+            </button>
+          }
+        </div>
+
+        @if (editSection() === 'id') {
+          <form class="inline-form" (submit)="saveId(); $event.preventDefault()">
+            <div class="form-grid">
+              <div class="field">
+                <label>ID Type <span class="req">*</span></label>
+                <select [formField]="idForm.identificationType">
+                  @for (type of ID_TYPES; track type) {
+                    <option [value]="type">{{ formatIdType(type) }}</option>
+                  }
+                </select>
+              </div>
+              <div class="field">
+                <label>ID Number <span class="req">*</span></label>
+                <input [formField]="idForm.identificationNumber" placeholder="GHA-12345678-9" />
+                @if (idForm.identificationNumber().touched() && idForm.identificationNumber().errors().length) {
+                  <span class="field-err">{{ idForm.identificationNumber().errors()[0].message }}</span>
+                }
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="save-btn" [disabled]="saving()">
+                {{ saving() ? 'Saving…' : 'Add ID' }}
+              </button>
+              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+            </div>
+          </form>
+        }
+
+        @if (emp.identifications.length > 0) {
+          <dl class="field-list">
+            @for (id of emp.identifications; track id.id) {
+              <div class="field-row">
+                <dt>{{ formatIdType(id.identificationType) }}</dt>
+                <dd>
+                  {{ id.identificationNumber }}
+                  @if (canEdit()) {
+                    <button class="inline-remove-btn" (click)="removeId(id.id)" aria-label="Remove">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"/>
+                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+                        <path d="M10 11v6M14 11v6"/>
+                        <path d="M9 6V4h6v2"/>
+                      </svg>
+                    </button>
+                  }
+                </dd>
+              </div>
+            }
+          </dl>
+        } @else if (editSection() !== 'id') {
+          <p class="empty-msg">No IDs on file.</p>
+        }
+      </div>
+
+    </div>
+  }
+
+</div>

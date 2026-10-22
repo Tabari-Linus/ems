@@ -1,0 +1,93 @@
+<div class="tab-panel">
+  <div class="panel-header">
+    <div>
+      <h2>Companies</h2>
+      <p>Manage company records</p>
+    </div>
+    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
+      {{ showForm() ? 'Cancel' : '+ New Company' }}
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <div class="create-form-card">
+      <h3>{{ editId() ? 'Edit Company' : 'New Company' }}</h3>
+      @if (formError()) {
+        <div class="form-api-error">{{ formError() }}</div>
+      }
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        <div class="form-grid">
+          <div class="field">
+            <label>Company Name <span class="req">*</span></label>
+            <input [formField]="companyForm.companyName" placeholder="Acme Corporation" />
+            @if (companyForm.companyName().touched() && companyForm.companyName().errors().length) {
+              <span class="field-err">{{ companyForm.companyName().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label>Company Code <span class="req">*</span></label>
+            <input [formField]="companyForm.companyCode" placeholder="ACME" />
+            @if (companyForm.companyCode().touched() && companyForm.companyCode().errors().length) {
+              <span class="field-err">{{ companyForm.companyCode().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label>Email <span class="req">*</span></label>
+            <input type="email" [formField]="companyForm.companyEmail" placeholder="info@acme.com" />
+            @if (companyForm.companyEmail().touched() && companyForm.companyEmail().errors().length) {
+              <span class="field-err">{{ companyForm.companyEmail().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label>Phone</label>
+            <input [formField]="companyForm.companyPhoneNumber" placeholder="+1 555 0000" />
+          </div>
+          <div class="field span-2">
+            <label>Address</label>
+            <input [formField]="companyForm.companyAddress" placeholder="123 Main St, City" />
+          </div>
+        </div>
+        <button type="submit" class="save-btn" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : (editId() ? 'Save Changes' : 'Create Company') }}
+        </button>
+      </form>
+    </div>
+  }
+
+  @if (listResource.isLoading()) {
+    <div class="loading-state">Loading companies...</div>
+  } @else if (listResource.error()) {
+    <div class="error-state">Failed to load companies. Check your connection.</div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th><th>Code</th><th>Email</th><th>Phone</th><th>Status</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of listResource.value()?.data ?? []; track item.id) {
+          <tr>
+            <td class="name-cell">{{ item.companyName }}</td>
+            <td><span class="code-badge">{{ item.companyCode }}</span></td>
+            <td>{{ item.companyEmail ?? '' }}</td>
+            <td>{{ item.companyPhoneNumber ?? '' }}</td>
+            <td><span class="status-chip" [attr.data-status]="item.companyStatus ?? 'PENDING'">{{ item.companyStatus ?? 'PENDING' }}</span></td>
+            <td class="action-cell">
+              <button class="row-edit-btn" (click)="startEdit(item)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6" class="empty-row">No companies yet. Create the first one above.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

@@ -1,0 +1,207 @@
+<div class="tab-panel">
+  <div class="panel-header">
+    <div>
+      <h2>Access Levels</h2>
+      <p>Define permission bundles assigned to employees</p>
+    </div>
+    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
+      {{ showForm() ? 'Cancel' : '+ New Access Level' }}
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <div class="create-form-card">
+      <h3>{{ editId() ? 'Edit Access Level' : 'New Access Level' }}</h3>
+      @if (formError()) {
+        <div class="form-api-error">{{ formError() }}</div>
+      }
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        <div class="form-grid">
+          <div class="field">
+            <label>Name <span class="req">*</span></label>
+            <input [formField]="accessLevelForm.accessLevelName" placeholder="e.g. HR Manager" />
+            @if (accessLevelForm.accessLevelName().touched() && accessLevelForm.accessLevelName().errors().length) {
+              <span class="field-err">{{ accessLevelForm.accessLevelName().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <input [formField]="accessLevelForm.description" placeholder="Short description" />
+          </div>
+
+          <!-- Permissions -->
+          <div class="field span-2">
+            <label>
+              Permissions
+              @if (!editId()) { <span class="req">*</span> }
+              @if (editId()) { <span class="field-hint">Permissions are view-only when editing</span> }
+            </label>
+
+            @if (loadingPerms()) {
+              <div class="perm-loading">Loading permissions…</div>
+            } @else {
+              <div class="perm-grid">
+                <div class="perm-col">
+                  <div class="perm-col-head">
+                    <span class="perm-col-label">View</span>
+                    @if (!editId()) {
+                      <div class="perm-col-actions">
+                        <button type="button" class="perm-bulk-btn" (click)="selectAll(VIEW_PERMISSIONS)">All</button>
+                        <button type="button" class="perm-bulk-btn" (click)="deselectAll(VIEW_PERMISSIONS)">None</button>
+                      </div>
+                    }
+                  </div>
+                  @for (perm of VIEW_PERMISSIONS; track perm) {
+                    <label class="perm-item" [class.selected]="isPermSelected(perm)" [class.readonly]="!!editId()">
+                      <input
+                        type="checkbox"
+                        [checked]="isPermSelected(perm)"
+                        [disabled]="!!editId()"
+                        (change)="togglePerm(perm)"
+                      />
+                      {{ formatPerm(perm) }}
+                    </label>
+                  }
+                </div>
+                <div class="perm-col">
+                  <div class="perm-col-head">
+                    <span class="perm-col-label">Manage</span>
+                    @if (!editId()) {
+                      <div class="perm-col-actions">
+                        <button type="button" class="perm-bulk-btn" (click)="selectAll(MANAGE_PERMISSIONS)">All</button>
+                        <button type="button" class="perm-bulk-btn" (click)="deselectAll(MANAGE_PERMISSIONS)">None</button>
+                      </div>
+                    }
+                  </div>
+                  @for (perm of MANAGE_PERMISSIONS; track perm) {
+                    <label class="perm-item" [class.selected]="isPermSelected(perm)" [class.readonly]="!!editId()">
+                      <input
+                        type="checkbox"
+                        [checked]="isPermSelected(perm)"
+                        [disabled]="!!editId()"
+                        (change)="togglePerm(perm)"
+                      />
+                      {{ formatPerm(perm) }}
+                    </label>
+                  }
+                </div>
+              </div>
+            }
+
+            @if (permError()) {
+              <span class="field-err">{{ permError() }}</span>
+            }
+          </div>
+
+          <!-- Employee picker -->
+          <div class="field span-2">
+            <label>
+              Employees
+              <span class="field-hint">optional — add members to this access level</span>
+            </label>
+
+            <!-- Selected chips -->
+            @if (selectedEmployees().length) {
+              <div class="emp-chips">
+                @for (emp of selectedEmployees(); track emp.id) {
+                  <span class="emp-chip">
+                    {{ emp.firstName }} {{ emp.lastName }}
+                    <button type="button" class="emp-chip-remove" (click)="removeEmployee(emp.id)" aria-label="Remove">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                    </button>
+                  </span>
+                }
+              </div>
+            }
+
+            <!-- Search input -->
+            <div class="emp-search-wrap">
+              <input
+                type="text"
+                class="emp-search-input"
+                placeholder="Search employees by name…"
+                [value]="employeeSearch()"
+                (input)="onSearchInput($any($event.target).value)"
+                autocomplete="off"
+              />
+              @if (searchLoading()) {
+                <span class="emp-search-spinner"></span>
+              }
+            </div>
+
+            <!-- Results dropdown -->
+            @if (employeeSearch().trim().length >= 2) {
+              <div class="emp-results">
+                @if (searchLoading()) {
+                  <div class="emp-result-msg">Searching…</div>
+                } @else if (!searchResults()?.length) {
+                  <div class="emp-result-msg">No employees found</div>
+                } @else {
+                  @for (emp of searchResults()!; track emp.id) {
+                    <button
+                      type="button"
+                      class="emp-result-row"
+                      [class.is-added]="selectedEmployees().some(s => s.id === emp.id)"
+                      (click)="addEmployee(emp)"
+                    >
+                      <span class="emp-result-avi">{{ emp.firstName[0] }}{{ emp.lastName[0] }}</span>
+                      <span class="emp-result-name">{{ emp.firstName }} {{ emp.lastName }}</span>
+                      @if (emp.jobTitle) {
+                        <span class="emp-result-role">{{ emp.jobTitle }}</span>
+                      }
+                      @if (selectedEmployees().some(s => s.id === emp.id)) {
+                        <span class="emp-result-badge">Added</span>
+                      }
+                    </button>
+                  }
+                }
+              </div>
+            }
+          </div>
+        </div>
+
+        <button type="submit" class="save-btn" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : (editId() ? 'Save Changes' : 'Create Access Level') }}
+        </button>
+      </form>
+    </div>
+  }
+
+  @if (listResource.isLoading()) {
+    <div class="loading-state">Loading access levels...</div>
+  } @else if (listResource.error()) {
+    <div class="error-state">Failed to load access levels.</div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th><th>Description</th><th>Status</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of listResource.value()?.data ?? []; track item.id) {
+          <tr>
+            <td class="name-cell">{{ item.accessLevelName }}</td>
+            <td>{{ item.description ?? '' }}</td>
+            <td><span class="status-chip" [attr.data-status]="item.status">{{ item.status }}</span></td>
+            <td class="action-cell">
+              <button class="row-edit-btn" (click)="startEdit(item)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
+                  stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+                Edit
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="empty-row">No access levels yet.</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

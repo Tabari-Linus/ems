@@ -1,0 +1,367 @@
+<div class="profile-page">
+
+  <!-- ── Back nav ─────────────────────────────────────────────── -->
+  <a routerLink="/staff" class="back-link">
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"
+      stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 8H3M7 4L3 8l4 4"/>
+    </svg>
+    All employees
+  </a>
+
+  <!-- ── Loading skeleton ──────────────────────────────────────── -->
+  @if (profileResource.isLoading()) {
+    <div class="banner banner--skeleton">
+      <div class="sk-avi-lg pulse"></div>
+      <div class="banner-text">
+        <div class="sk-line w40 pulse"></div>
+        <div class="sk-line w25 pulse"></div>
+      </div>
+    </div>
+    <div class="content-grid">
+      @for (n of [1,2,3]; track n) {
+        <div class="section-card">
+          <div class="sk-line w30 pulse" style="height:14px; margin-bottom: 16px;"></div>
+          @for (m of [1,2,3]; track m) {
+            <div class="sk-row">
+              <div class="sk-line w25 pulse"></div>
+              <div class="sk-line w45 pulse"></div>
+            </div>
+          }
+        </div>
+      }
+    </div>
+
+  <!-- ── Error / not found ─────────────────────────────────────── -->
+  } @else if (profileResource.error() || !profileResource.value()) {
+    <div class="empty-state">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+        stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M12 8v4M12 16h.01"/>
+      </svg>
+      @if (profileResource.error()) {
+        <p>{{ $any(profileResource.error()).message ?? 'Failed to load employee.' }}</p>
+      } @else {
+        <p>Employee not found.</p>
+      }
+      <a routerLink="/staff" class="btn-outline">Back to employees</a>
+    </div>
+
+  } @else {
+    @let emp = profileResource.value()!;
+
+    <!-- ── Banner ──────────────────────────────────────────────── -->
+    <div class="banner" [style.--avi-color]="getAvatarColor(emp.firstName + emp.lastName)">
+      <div class="banner-avi">
+        {{ getInitials(emp.firstName, emp.lastName) }}
+      </div>
+      <div class="banner-text">
+        <h1>{{ emp.bio?.fullName ?? (emp.firstName + ' ' + emp.lastName) }}</h1>
+        <p class="banner-sub">
+          {{ emp.position?.positionName ?? 'No position' }}
+          @if (emp.department?.departmentName) {
+            · {{ emp.department!.departmentName }}
+          }
+        </p>
+      </div>
+      <div class="banner-right">
+        <span class="badge" [attr.data-status]="emp.status">{{ emp.status }}</span>
+
+        @if (canManage()) {
+          <div class="action-row">
+            @if (emp.status !== 'ACTIVE') {
+              <button class="btn-primary" [disabled]="activating()" (click)="onActivate()">
+                {{ activating() ? 'Activating…' : 'Activate' }}
+              </button>
+            }
+            @if (emp.status === 'ACTIVE') {
+              <button class="btn-warn" [disabled]="deactivating()" (click)="onDeactivate()">
+                {{ deactivating() ? 'Deactivating…' : 'Deactivate' }}
+              </button>
+            }
+            @if (emp.status !== 'ARCHIVE') {
+              <button class="btn-danger" [disabled]="archiving()" (click)="onArchive()">
+                {{ archiving() ? 'Archiving…' : 'Archive' }}
+              </button>
+            }
+          </div>
+        }
+
+        @if (actionError()) {
+          <p class="action-error">{{ actionError() }}</p>
+        }
+      </div>
+    </div>
+
+    <!-- ── Content grid ────────────────────────────────────────── -->
+    <div class="content-grid">
+
+      <!-- Work Info -->
+      <div class="section-card">
+        <h2 class="section-title">Work Info</h2>
+        <dl class="field-list">
+          <div class="field-row">
+            <dt>Work Email</dt>
+            <dd>{{ emp.workEmail }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Department</dt>
+            <dd>
+              @if (!editingDepartment()) {
+                @if (emp.department) {
+                  {{ emp.department.departmentName }}
+                  @if (emp.department.departmentCode) {
+                    <span class="meta-tag">{{ emp.department.departmentCode }}</span>
+                  }
+                } @else {
+                  <span class="field-empty">No department</span>
+                }
+                @if (canManage()) {
+                  <button class="inline-edit-btn" (click)="startEditDepartment(emp.department?.id)">
+                    {{ emp.department ? 'Change' : 'Assign' }}
+                  </button>
+                }
+              } @else {
+                <div class="position-picker">
+                  @if (departmentsResource.isLoading()) {
+                    <span class="picker-loading">Loading departments…</span>
+                  } @else if (departmentsResource.error()) {
+                    <span class="picker-err">Failed to load departments</span>
+                  } @else {
+                    <select
+                      class="picker-select"
+                      [value]="selectedDepartmentId()"
+                      (change)="selectedDepartmentId.set($any($event.target).value)"
+                    >
+                      <option value="">— No department —</option>
+                      @for (dept of departmentsResource.value()?.data ?? []; track dept.id) {
+                        <option [value]="dept.id">{{ dept.departmentName }}</option>
+                      }
+                    </select>
+                    <button class="picker-save" [disabled]="savingDepartment()" (click)="saveDepartment()">
+                      {{ savingDepartment() ? 'Saving…' : 'Save' }}
+                    </button>
+                    <button class="picker-cancel" [disabled]="savingDepartment()" (click)="cancelEditDepartment()">Cancel</button>
+                  }
+                  @if (departmentError()) {
+                    <span class="picker-err">{{ departmentError() }}</span>
+                  }
+                </div>
+              }
+            </dd>
+          </div>
+          <div class="field-row">
+            <dt>Position</dt>
+            <dd>
+              @if (!editingPosition()) {
+                @if (emp.position) {
+                  {{ emp.position.positionName }}
+                  <span class="meta-tag">{{ emp.position.level }}</span>
+                } @else {
+                  <span class="field-empty">No position</span>
+                }
+                @if (canManage()) {
+                  <button
+                    class="inline-edit-btn"
+                    (click)="startEditPosition(emp.position?.id)"
+                  >
+                    {{ emp.position ? 'Change' : 'Assign' }}
+                  </button>
+                }
+              } @else {
+                <div class="position-picker">
+                  @if (positionsResource.isLoading()) {
+                    <span class="picker-loading">Loading positions…</span>
+                  } @else if (positionsResource.error()) {
+                    <span class="picker-err">Failed to load positions</span>
+                  } @else {
+                    <select
+                      class="picker-select"
+                      [value]="selectedPositionId()"
+                      (change)="selectedPositionId.set($any($event.target).value)"
+                    >
+                      <option value="">— No position —</option>
+                      @for (pos of positionsResource.value()?.data ?? []; track pos.id) {
+                        <option [value]="pos.id">
+                          {{ pos.positionName }} ({{ pos.level }})
+                        </option>
+                      }
+                    </select>
+                    <button
+                      class="picker-save"
+                      [disabled]="savingPosition()"
+                      (click)="savePosition()"
+                    >{{ savingPosition() ? 'Saving…' : 'Save' }}</button>
+                    <button
+                      class="picker-cancel"
+                      [disabled]="savingPosition()"
+                      (click)="cancelEditPosition()"
+                    >Cancel</button>
+                  }
+                  @if (positionError()) {
+                    <span class="picker-err">{{ positionError() }}</span>
+                  }
+                </div>
+              }
+            </dd>
+          </div>
+          <div class="field-row">
+            <dt>Access Level</dt>
+            <dd>
+              @if (!editingAccessLevel()) {
+                @if (emp.accessLevel) {
+                  {{ emp.accessLevel.accessLevelName }}
+                } @else {
+                  <span class="field-empty">No access level</span>
+                }
+                @if (canManage()) {
+                  <button class="inline-edit-btn" (click)="startEditAccessLevel(emp.accessLevel?.id)">
+                    {{ emp.accessLevel ? 'Change' : 'Assign' }}
+                  </button>
+                }
+              } @else {
+                <div class="position-picker">
+                  @if (accessLevelsResource.isLoading()) {
+                    <span class="picker-loading">Loading access levels…</span>
+                  } @else if (accessLevelsResource.error()) {
+                    <span class="picker-err">Failed to load access levels</span>
+                  } @else {
+                    <select
+                      class="picker-select"
+                      [value]="selectedAccessLevelId()"
+                      (change)="selectedAccessLevelId.set($any($event.target).value)"
+                    >
+                      <option value="">— No access level —</option>
+                      @for (lvl of accessLevelsResource.value()?.data ?? []; track lvl.id) {
+                        <option [value]="lvl.id">{{ lvl.accessLevelName }}</option>
+                      }
+                    </select>
+                    <button class="picker-save" [disabled]="savingAccessLevel()" (click)="saveAccessLevel()">
+                      {{ savingAccessLevel() ? 'Saving…' : 'Save' }}
+                    </button>
+                    <button class="picker-cancel" [disabled]="savingAccessLevel()" (click)="cancelEditAccessLevel()">Cancel</button>
+                  }
+                  @if (accessLevelError()) {
+                    <span class="picker-err">{{ accessLevelError() }}</span>
+                  }
+                </div>
+              }
+            </dd>
+          </div>
+          <div class="field-row">
+            <dt>Date Hired</dt>
+            <dd>{{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Last Updated</dt>
+            <dd>{{ formatDate(emp.lastModifiedDate) }}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Personal Bio -->
+      <div class="section-card">
+        <h2 class="section-title">Personal Info</h2>
+        <dl class="field-list">
+          <div class="field-row">
+            <dt>Full Name</dt>
+            <dd>{{ emp.bio?.fullName ?? '' }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Other Name</dt>
+            <dd>{{ emp.bio?.otherName ?? '' }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Gender</dt>
+            <dd>{{ emp.bio?.gender ?? '' }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Date of Birth</dt>
+            <dd>{{ formatDate(emp.bio?.dateOfBirth) }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Place of Birth</dt>
+            <dd>{{ emp.bio?.placeOfBirth ?? '' }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Nationality</dt>
+            <dd>{{ emp.bio?.nationality ?? '' }}</dd>
+          </div>
+          <div class="field-row">
+            <dt>Marital Status</dt>
+            <dd>{{ emp.bio?.maritalStatus ?? '' }}</dd>
+          </div>
+          @if (emp.bio?.isExpert) {
+            <div class="field-row">
+              <dt>Expert</dt>
+              <dd>{{ emp.bio!.isExpert }}</dd>
+            </div>
+          }
+        </dl>
+      </div>
+
+      <!-- Contact -->
+      <div class="section-card">
+        <h2 class="section-title">Contact</h2>
+        @if ((emp.contact?.phoneNumbers?.length ?? 0) === 0 && (emp.contact?.personalEmails?.length ?? 0) === 0) {
+          <p class="empty-msg">No contact info on file.</p>
+        } @else {
+          <dl class="field-list">
+            @if ((emp.contact?.phoneNumbers?.length ?? 0) > 0) {
+              @for (phone of emp.contact!.phoneNumbers!; track phone) {
+                <div class="field-row">
+                  <dt>Phone</dt>
+                  <dd>{{ phone }}</dd>
+                </div>
+              }
+            }
+            @if ((emp.contact?.personalEmails?.length ?? 0) > 0) {
+              @for (mail of emp.contact!.personalEmails!; track mail) {
+                <div class="field-row">
+                  <dt>Personal Email</dt>
+                  <dd>{{ mail }}</dd>
+                </div>
+              }
+            }
+          </dl>
+        }
+      </div>
+
+      <!-- Addresses -->
+      @if (emp.addresses.length > 0) {
+        <div class="section-card">
+          <h2 class="section-title">Addresses</h2>
+          @for (addr of emp.addresses; track addr.id) {
+            <div class="address-block">
+              <span class="addr-line">{{ addressLine(addr) }}</span>
+              @if (addr.digitalAddress) {
+                <span class="addr-digital">{{ addr.digitalAddress }}</span>
+              }
+              @if (addr.isCurrentAddress) {
+                <span class="meta-tag">Current</span>
+              }
+            </div>
+          }
+        </div>
+      }
+
+      <!-- Identifications -->
+      @if (emp.identifications.length > 0) {
+        <div class="section-card">
+          <h2 class="section-title">Identification</h2>
+          <dl class="field-list">
+            @for (id of emp.identifications; track id.id) {
+              <div class="field-row">
+                <dt>{{ id.identificationType.replace(/_/g, ' ') }}</dt>
+                <dd>{{ id.identificationNumber }}</dd>
+              </div>
+            }
+          </dl>
+        </div>
+      }
+
+    </div>
+  }
+
+</div>
