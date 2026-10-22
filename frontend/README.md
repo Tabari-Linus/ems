@@ -1,59 +1,115 @@
-# EmsFrontend
+# EMS frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.13.
+Angular 21 single-page app for the Employee Management System: standalone components, signals,
+signal forms, `OnPush` everywhere, Apollo Angular for GraphQL. It is deployed independently of the
+backend and talks to it cross-origin; the API URL is runtime configuration, not part of the build.
+
+## Prerequisites
+
+- Node.js 22 LTS (CI and the container use 22; newer versions work locally) and npm 10+
+- The backend API running on `http://localhost:8080` for anything beyond the login page
+  (`docker compose up` from the repo root, or `./mvnw spring-boot:run` in `backend/`)
+- Docker, only to build or run the production image
+
+## Install
+
+```bash
+npm ci
+```
+
+## Runtime configuration (`config.json`)
+
+`main.ts` fetches `/config.json` **before** bootstrapping and exposes it through the `APP_CONFIG`
+injection token (`src/app/core/config/app-config.ts`). Nothing reads the API URL from the build.
+
+```json
+{ "apiUrl": "http://localhost:8080" }
+```
+
+- Local development uses `public/config.json` (served as `/config.json`). Edit it to point at
+  another API.
+- `apiUrl` must be an absolute `http(s)` URL; if the file is missing or invalid, the app logs an
+  `AppConfigError` in the console and does not start.
+- GraphQL goes to `{apiUrl}/graphql`; auth goes to `{apiUrl}/api/v1/auth/{login,refresh-token,logout}`
+  with credentials (the refresh token is an HttpOnly cookie).
+- In the container the file is generated at start-up from `API_URL` (see below).
 
 ## Development server
 
-To start a local development server, run:
-
 ```bash
-ng serve
+npm start            # ng serve on http://localhost:4200
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+There is no dev proxy: the browser calls the API on its own origin, exactly like production, so
+the backend must allow `http://localhost:4200` in `ALLOWED_ORIGINS`.
 
-## Code scaffolding
+## GraphQL code generation
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Operations live in `src/app/**/*.graphql`. GraphQL Code Generator reads the schema straight from
+`../backend/src/main/resources/graphql/**/*.graphqls` (no running server needed) and writes typed
+Apollo Angular services to `src/app/graphql/generated.ts`, which is committed.
 
 ```bash
-ng generate --help
+npm run codegen          # regenerate after changing a .graphql document or the backend schema
+npm run codegen:check    # regenerate and fail if generated.ts differs from git (used in CI)
 ```
 
-## Building
+Inject the generated service (e.g. `PositionsGQL`) instead of writing query strings by hand.
+`core/apollo/apollo.config.ts` configures the client: HTTP link to `{apiUrl}/graphql`, bearer token
+and `apollo-require-preflight` headers, and an error link that maps errors to `AppError`
+(`core/errors/`). Use `toAppError(err)` to turn any Apollo/HTTP error into that typed shape.
 
-To build the project run:
+## Lint and format
 
 ```bash
-ng build
+npm run lint             # ng lint (angular-eslint, incl. template accessibility rules)
+npm run format           # prettier --write .
+npm run format:check     # prettier --check .
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+## Tests
 
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### Unit (Vitest)
 
 ```bash
-ng test
+npm test                 # ng test, watch mode
+npm run test:ci          # single headless run with v8 coverage -> coverage/ems-frontend/
 ```
 
-## Running end-to-end tests
+### End-to-end (Playwright)
 
-For end-to-end (e2e) testing, run:
+The E2E suite runs against an already running stack; it does not start a server.
 
 ```bash
-ng e2e
+npx playwright install chromium     # once
+docker compose up -d                # from the repo root (or run the app yourself)
+npm run e2e                         # base URL: E2E_BASE_URL or http://localhost:4200
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Production build
 
-## Additional Resources
+```bash
+npm run build            # dist/ems-frontend/browser
+```
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Container
+
+`Dockerfile` builds the app on `node:22-alpine` and serves it with unprivileged nginx on port
+8080 (`nginx.conf`): SPA fallback to `index.html`, `/healthz`, immutable caching for hashed assets,
+`no-cache` for `index.html` and `config.json`, gzip and security headers. There is no API proxy.
+
+At start-up `docker/40-ems-runtime-config.sh` writes `config.json` from `API_URL` and builds the
+Content-Security-Policy with the API origin in `connect-src` (extra sources via
+`CSP_CONNECT_EXTRA`, space-separated). The container refuses to start without a valid `API_URL`.
+
+```bash
+docker build -t ems-frontend:local .
+docker run --rm -e API_URL=http://localhost:8080 -p 4200:8080 ems-frontend:local
+# http://localhost:4200, health check: http://localhost:4200/healthz
+```
+
+## CI
+
+`.github/workflows/frontend.yml` runs on changes to `frontend/**` or the backend GraphQL schema:
+`npm ci`, lint, codegen check, unit tests with coverage (artifact), build. On `main` it also
+publishes `ghcr.io/<owner>/ems-frontend`.
