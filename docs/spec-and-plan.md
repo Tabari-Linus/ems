@@ -40,6 +40,7 @@
 | D27 | `certificates.zip` and all key material are deleted and gitignored. Keys are generated locally by script. |
 | D28 | The project moves out of OneDrive to **`C:\Users\LinusTabari\Downloads\ems`**. |
 | D29 | ~~Visual direction: B — Kente Modern~~ **Withdrawn** (owner rejected it). Round 2 brief: clean, minimal, light-first, Rippling/Deel-like, blue/indigo accent (`docs/design/direction-board/BRIEF-round2.md`). Original entry: (Direction Board, `docs/design/direction-board/`). Kente gold is the single action colour (ink lettering); forest green and oxblood are structure only (woven band, department colours, avatar rings); Syne / Manrope / IBM Plex Mono; crisp 4–6px radii; woven-band, stepped-notch and kente-panel motifs used sparingly. |
+| D30 | Visual direction: **D — Daylight** (`docs/design/direction-board/direction-d.html`). Light-first, friendly HR software: faint indigo-tinted canvas, white rounded cards (12–14px) with soft layered shadows, pill buttons and filters, one indigo accent (oklch ~52% 0.2 272; lifted in dark) used only as solid fill on the next step, soft indigo tint for selected/secondary, subtle pastel department tints on avatars; Plus Jakarta Sans + Geist Mono. Signature: the employee Home (greeting + "Needs your attention"). |
 | D19 | Production runs on a **custom domain**: frontend at `app.<domain>`, API at `api.<domain>`. These are same-site, so the refresh cookie is first-party: `HttpOnly; Secure; SameSite=Lax; Path=/api/v1/auth`, host-only on `api.<domain>`. The `SameSite=None` fallback is not used. |
 
 ---
