@@ -14,23 +14,29 @@ export class SettingsPositions {
   private readonly positionService = inject(PositionService);
 
   protected readonly LEVELS: PositionLevel[] = [
-    'INTERN', 'JUNIOR', 'MID', 'SENIOR', 'LEAD', 'PRINCIPAL', 'STAFF',
+    'INTERN',
+    'JUNIOR',
+    'MID',
+    'SENIOR',
+    'LEAD',
+    'PRINCIPAL',
+    'STAFF',
   ];
 
-  protected readonly showForm  = signal(false);
-  protected readonly editId    = signal<string | null>(null);
-  protected readonly saving    = signal(false);
+  protected readonly showForm = signal(false);
+  protected readonly editId = signal<string | null>(null);
+  protected readonly saving = signal(false);
   protected readonly formError = signal('');
 
   protected readonly model = signal({
     positionName: '',
-    level:        'JUNIOR' as PositionLevel,
-    description:  '',
+    level: 'JUNIOR' as PositionLevel,
+    description: '',
   });
 
-  protected readonly positionForm = form(this.model, s => {
+  protected readonly positionForm = form(this.model, (s) => {
     required(s.positionName, { message: 'Position name is required' });
-    required(s.level,        { message: 'Level is required' });
+    required(s.level, { message: 'Level is required' });
   });
 
   protected readonly listResource = resource({
@@ -40,7 +46,7 @@ export class SettingsPositions {
   protected toggleForm(): void {
     this.editId.set(null);
     this.model.set({ positionName: '', level: 'JUNIOR', description: '' });
-    this.showForm.update(v => !v);
+    this.showForm.update((v) => !v);
     this.formError.set('');
   }
 
@@ -48,8 +54,8 @@ export class SettingsPositions {
     this.editId.set(item.id);
     this.model.set({
       positionName: item.positionName,
-      level:        item.level,
-      description:  item.description ?? '',
+      level: item.level,
+      description: item.description ?? '',
     });
     this.showForm.set(true);
     this.formError.set('');
@@ -66,7 +72,7 @@ export class SettingsPositions {
           await firstValueFrom(
             this.positionService.updatePosition(id, {
               positionName: m.positionName,
-              level:        m.level,
+              level: m.level,
               ...(m.description && { description: m.description }),
             }),
           );
@@ -74,7 +80,7 @@ export class SettingsPositions {
           await firstValueFrom(
             this.positionService.createPosition({
               positionName: m.positionName,
-              level:        m.level,
+              level: m.level,
               ...(m.description && { description: m.description }),
             }),
           );

@@ -9,7 +9,13 @@ type Tab = 'companies' | 'offices' | 'departments' | 'positions' | 'access-level
 
 @Component({
   selector: 'app-settings',
-  imports: [SettingsCompanies, SettingsOffices, SettingsDepartments, SettingsPositions, SettingsAccessLevels],
+  imports: [
+    SettingsCompanies,
+    SettingsOffices,
+    SettingsDepartments,
+    SettingsPositions,
+    SettingsAccessLevels,
+  ],
   templateUrl: './settings.html',
   styleUrl: './settings.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -18,37 +18,66 @@
       <form (submit)="onSubmit(); $event.preventDefault()">
         <div class="form-grid">
           <div class="field">
-            <label>Company Name <span class="req">*</span></label>
-            <input [formField]="companyForm.companyName" placeholder="Acme Corporation" />
+            <label for="companies-company-form-company-name"
+              >Company Name <span class="req">*</span></label
+            >
+            <input
+              id="companies-company-form-company-name"
+              [formField]="companyForm.companyName"
+              placeholder="Acme Corporation"
+            />
             @if (companyForm.companyName().touched() && companyForm.companyName().errors().length) {
               <span class="field-err">{{ companyForm.companyName().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Company Code <span class="req">*</span></label>
-            <input [formField]="companyForm.companyCode" placeholder="ACME" />
+            <label for="companies-company-form-company-code"
+              >Company Code <span class="req">*</span></label
+            >
+            <input
+              id="companies-company-form-company-code"
+              [formField]="companyForm.companyCode"
+              placeholder="ACME"
+            />
             @if (companyForm.companyCode().touched() && companyForm.companyCode().errors().length) {
               <span class="field-err">{{ companyForm.companyCode().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Email <span class="req">*</span></label>
-            <input type="email" [formField]="companyForm.companyEmail" placeholder="info@acme.com" />
-            @if (companyForm.companyEmail().touched() && companyForm.companyEmail().errors().length) {
+            <label for="companies-company-form-company-email"
+              >Email <span class="req">*</span></label
+            >
+            <input
+              id="companies-company-form-company-email"
+              type="email"
+              [formField]="companyForm.companyEmail"
+              placeholder="info@acme.com"
+            />
+            @if (
+              companyForm.companyEmail().touched() && companyForm.companyEmail().errors().length
+            ) {
               <span class="field-err">{{ companyForm.companyEmail().errors()[0].message }}</span>
             }
           </div>
           <div class="field">
-            <label>Phone</label>
-            <input [formField]="companyForm.companyPhoneNumber" placeholder="+1 555 0000" />
+            <label for="companies-company-form-company-phone-number">Phone</label>
+            <input
+              id="companies-company-form-company-phone-number"
+              [formField]="companyForm.companyPhoneNumber"
+              placeholder="+1 555 0000"
+            />
           </div>
           <div class="field span-2">
-            <label>Address</label>
-            <input [formField]="companyForm.companyAddress" placeholder="123 Main St, City" />
+            <label for="companies-company-form-company-address">Address</label>
+            <input
+              id="companies-company-form-company-address"
+              [formField]="companyForm.companyAddress"
+              placeholder="123 Main St, City"
+            />
           </div>
         </div>
         <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : (editId() ? 'Save Changes' : 'Create Company') }}
+          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Company' }}
         </button>
       </form>
     </div>
@@ -62,30 +91,49 @@
     <table class="data-table">
       <thead>
         <tr>
-          <th>Name</th><th>Code</th><th>Email</th><th>Phone</th><th>Status</th><th></th>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         @for (item of listResource.value()?.data ?? []; track item.id) {
           <tr>
             <td class="name-cell">{{ item.companyName }}</td>
-            <td><span class="code-badge">{{ item.companyCode }}</span></td>
+            <td>
+              <span class="code-badge">{{ item.companyCode }}</span>
+            </td>
             <td>{{ item.companyEmail ?? '' }}</td>
             <td>{{ item.companyPhoneNumber ?? '' }}</td>
-            <td><span class="status-chip" [attr.data-status]="item.companyStatus ?? 'PENDING'">{{ item.companyStatus ?? 'PENDING' }}</span></td>
+            <td>
+              <span class="status-chip" [attr.data-status]="item.companyStatus ?? 'PENDING'">{{
+                item.companyStatus ?? 'PENDING'
+              }}</span>
+            </td>
             <td class="action-cell">
               <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
                 </svg>
                 Edit
               </button>
             </td>
           </tr>
         } @empty {
-          <tr><td colspan="6" class="empty-row">No companies yet. Create the first one above.</td></tr>
+          <tr>
+            <td colspan="6" class="empty-row">No companies yet. Create the first one above.</td>
+          </tr>
         }
       </tbody>
     </table>

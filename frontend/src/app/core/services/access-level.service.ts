@@ -71,24 +71,24 @@ export class AccessLevelService {
   getAccessLevels(): Observable<PageResult<AccessLevelListItem>> {
     return this.gql
       .request<{ getAccessLevels: PageResult<AccessLevelListItem> }>(GET_ACCESS_LEVELS)
-      .pipe(map(r => r.getAccessLevels));
+      .pipe(map((r) => r.getAccessLevels));
   }
 
   getAccessLevel(id: string): Observable<AccessLevelDetail | null> {
     return this.gql
       .request<{ getAccessLevel: AccessLevelDetail | null }>(GET_ACCESS_LEVEL, { id })
-      .pipe(map(r => r.getAccessLevel ?? null));
+      .pipe(map((r) => r.getAccessLevel ?? null));
   }
 
   createAccessLevel(input: CreateAccessLevelInput): Observable<ActionResult> {
     return this.gql
       .request<{ createAccessLevel: ActionResult }>(CREATE_ACCESS_LEVEL, { input })
-      .pipe(map(r => r.createAccessLevel));
+      .pipe(map((r) => r.createAccessLevel));
   }
 
   updateAccessLevel(id: string, input: UpdateAccessLevelInput): Observable<ActionResult> {
     return this.gql
       .request<{ updateAccessLevel: ActionResult }>(UPDATE_ACCESS_LEVEL, { id, input })
-      .pipe(map(r => r.updateAccessLevel));
+      .pipe(map((r) => r.updateAccessLevel));
   }
 }

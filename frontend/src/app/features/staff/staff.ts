@@ -20,9 +20,16 @@ import { RouterLink } from '@angular/router';
 import { EmployeeListItem } from '../../core/models/employee.model';
 
 const AVATAR_COLORS = [
-  '#667eea', '#764ba2', '#f97316', '#10b981',
-  '#3b82f6', '#8b5cf6', '#ef4444', '#06b6d4',
-  '#84cc16', '#f59e0b',
+  '#667eea',
+  '#764ba2',
+  '#f97316',
+  '#10b981',
+  '#3b82f6',
+  '#8b5cf6',
+  '#ef4444',
+  '#06b6d4',
+  '#84cc16',
+  '#f59e0b',
 ];
 
 @Component({
@@ -33,22 +40,22 @@ const AVATAR_COLORS = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Staff implements OnInit {
-  private readonly authService    = inject(AuthService);
+  private readonly authService = inject(AuthService);
   private readonly employeeService = inject(EmployeeService);
   private readonly positionService = inject(PositionService);
-  private readonly deptService     = inject(DepartmentService);
-  private readonly accessService   = inject(AccessLevelService);
+  private readonly deptService = inject(DepartmentService);
+  private readonly accessService = inject(AccessLevelService);
 
   protected readonly canManage = computed(() =>
     this.authService.hasPermission(Permission.MANAGE_EMPLOYEE),
   );
 
   // ── List state ────────────────────────────────────────────────
-  protected readonly employees     = signal<EmployeeListItem[]>([]);
+  protected readonly employees = signal<EmployeeListItem[]>([]);
   protected readonly totalElements = signal(0);
-  protected readonly hasNext       = signal(false);
-  protected readonly loading       = signal(false);
-  protected readonly loadError     = signal('');
+  protected readonly hasNext = signal(false);
+  protected readonly loading = signal(false);
+  protected readonly loadError = signal('');
   private page = 0;
 
   // ── Filter state ──────────────────────────────────────────────
@@ -64,23 +71,23 @@ export class Staff implements OnInit {
 
   // ── Add Employee form ─────────────────────────────────────────
   protected readonly showAddForm = signal(false);
-  protected readonly saving      = signal(false);
-  protected readonly addError    = signal('');
+  protected readonly saving = signal(false);
+  protected readonly addError = signal('');
 
   protected readonly addModel = signal({
-    firstName:     '',
-    lastName:      '',
-    workEmail:     '',
-    positionId:    '',
-    departmentId:  '',
+    firstName: '',
+    lastName: '',
+    workEmail: '',
+    positionId: '',
+    departmentId: '',
     accessLevelId: '',
   });
 
-  protected readonly addForm = form(this.addModel, s => {
-    required(s.firstName,  { message: 'First name is required' });
-    required(s.lastName,   { message: 'Last name is required' });
-    required(s.workEmail,  { message: 'Work email is required' });
-    email(s.workEmail,     { message: 'Enter a valid work email address' });
+  protected readonly addForm = form(this.addModel, (s) => {
+    required(s.firstName, { message: 'First name is required' });
+    required(s.lastName, { message: 'Last name is required' });
+    required(s.workEmail, { message: 'Work email is required' });
+    email(s.workEmail, { message: 'Enter a valid work email address' });
   });
 
   // ── Dropdown resources ────────────────────────────────────────
@@ -123,27 +130,22 @@ export class Staff implements OnInit {
     this.loadError.set('');
 
     firstValueFrom(
-      this.employeeService.getEmployees(
-        { search: this.searchValue() || undefined },
-        this.page,
-      ),
+      this.employeeService.getEmployees({ search: this.searchValue() || undefined }, this.page),
     )
-      .then(result => {
-        this.employees.update(prev => reset ? result.data : [...prev, ...result.data]);
+      .then((result) => {
+        this.employees.update((prev) => (reset ? result.data : [...prev, ...result.data]));
         this.totalElements.set(result.totalElements);
         this.hasNext.set(result.hasNext);
         this.page = result.currentPage + 1;
       })
       .catch((err: unknown) => {
-        this.loadError.set(
-          (err as { message?: string })?.message ?? 'Failed to load employees.',
-        );
+        this.loadError.set((err as { message?: string })?.message ?? 'Failed to load employees.');
       })
       .finally(() => this.loading.set(false));
   }
 
   protected toggleAddForm(): void {
-    this.showAddForm.update(v => !v);
+    this.showAddForm.update((v) => !v);
     this.addError.set('');
   }
 
@@ -156,23 +158,25 @@ export class Staff implements OnInit {
         await firstValueFrom(
           this.employeeService.createEmployee({
             firstName: m.firstName,
-            lastName:  m.lastName,
+            lastName: m.lastName,
             workEmail: m.workEmail,
-            ...(m.positionId    && { positionId:    m.positionId }),
-            ...(m.departmentId  && { departmentId:  m.departmentId }),
+            ...(m.positionId && { positionId: m.positionId }),
+            ...(m.departmentId && { departmentId: m.departmentId }),
             ...(m.accessLevelId && { accessLevelId: m.accessLevelId }),
           }),
         );
         this.addModel.set({
-          firstName: '', lastName: '', workEmail: '',
-          positionId: '', departmentId: '', accessLevelId: '',
+          firstName: '',
+          lastName: '',
+          workEmail: '',
+          positionId: '',
+          departmentId: '',
+          accessLevelId: '',
         });
         this.showAddForm.set(false);
         this.fetch(true);
       } catch (err: unknown) {
-        this.addError.set(
-          (err as { message?: string })?.message ?? 'Failed to add employee.',
-        );
+        this.addError.set((err as { message?: string })?.message ?? 'Failed to add employee.');
       } finally {
         this.saving.set(false);
       }

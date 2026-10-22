@@ -16,8 +16,14 @@ import { AccessLevelService } from '../../core/services/access-level.service';
 import { Permission } from '../../core/models/permission.model';
 
 const AVATAR_COLORS = [
-  '#fe7f2d', '#619b8a', '#fcca46', '#a1c181',
-  '#5e7a8a', '#e07070', '#233d4d', '#2e4e60',
+  '#fe7f2d',
+  '#619b8a',
+  '#fcca46',
+  '#a1c181',
+  '#5e7a8a',
+  '#e07070',
+  '#233d4d',
+  '#2e4e60',
 ];
 
 @Component({
@@ -28,14 +34,13 @@ const AVATAR_COLORS = [
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Profile {
-  private readonly employeeService   = inject(EmployeeService);
-  private readonly positionService   = inject(PositionService);
+  private readonly employeeService = inject(EmployeeService);
+  private readonly positionService = inject(PositionService);
   private readonly departmentService = inject(DepartmentService);
   private readonly accessLevelService = inject(AccessLevelService);
-  private readonly authService       = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
-  protected readonly employeeId =
-    inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
+  protected readonly employeeId = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
 
   protected readonly canManage = computed(() =>
     this.authService.hasPermission(Permission.MANAGE_EMPLOYEE),
@@ -46,10 +51,10 @@ export class Profile {
   });
 
   // ── Status actions ────────────────────────────────────────────
-  protected readonly actionError  = signal('');
-  protected readonly activating   = signal(false);
+  protected readonly actionError = signal('');
+  protected readonly activating = signal(false);
   protected readonly deactivating = signal(false);
-  protected readonly archiving    = signal(false);
+  protected readonly archiving = signal(false);
 
   protected async onActivate(): Promise<void> {
     this.activating.set(true);
@@ -58,8 +63,12 @@ export class Profile {
       await firstValueFrom(this.employeeService.activateEmployee(this.employeeId));
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.actionError.set((err as { message?: string })?.message ?? 'Failed to activate employee.');
-    } finally { this.activating.set(false); }
+      this.actionError.set(
+        (err as { message?: string })?.message ?? 'Failed to activate employee.',
+      );
+    } finally {
+      this.activating.set(false);
+    }
   }
 
   protected async onDeactivate(): Promise<void> {
@@ -69,8 +78,12 @@ export class Profile {
       await firstValueFrom(this.employeeService.deactivateEmployee(this.employeeId));
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.actionError.set((err as { message?: string })?.message ?? 'Failed to deactivate employee.');
-    } finally { this.deactivating.set(false); }
+      this.actionError.set(
+        (err as { message?: string })?.message ?? 'Failed to deactivate employee.',
+      );
+    } finally {
+      this.deactivating.set(false);
+    }
   }
 
   protected async onArchive(): Promise<void> {
@@ -81,14 +94,16 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.actionError.set((err as { message?: string })?.message ?? 'Failed to archive employee.');
-    } finally { this.archiving.set(false); }
+    } finally {
+      this.archiving.set(false);
+    }
   }
 
   // ── Assign position ───────────────────────────────────────────
-  protected readonly editingPosition    = signal(false);
+  protected readonly editingPosition = signal(false);
   protected readonly selectedPositionId = signal('');
-  protected readonly savingPosition     = signal(false);
-  protected readonly positionError      = signal('');
+  protected readonly savingPosition = signal(false);
+  protected readonly positionError = signal('');
 
   private readonly positionsEnabled = signal(false);
   protected readonly positionsResource = resource({
@@ -122,15 +137,19 @@ export class Profile {
       this.editingPosition.set(false);
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.positionError.set((err as { message?: string })?.message ?? 'Failed to assign position.');
-    } finally { this.savingPosition.set(false); }
+      this.positionError.set(
+        (err as { message?: string })?.message ?? 'Failed to assign position.',
+      );
+    } finally {
+      this.savingPosition.set(false);
+    }
   }
 
   // ── Assign department ─────────────────────────────────────────
-  protected readonly editingDepartment    = signal(false);
+  protected readonly editingDepartment = signal(false);
   protected readonly selectedDepartmentId = signal('');
-  protected readonly savingDepartment     = signal(false);
-  protected readonly departmentError      = signal('');
+  protected readonly savingDepartment = signal(false);
+  protected readonly departmentError = signal('');
 
   private readonly departmentsEnabled = signal(false);
   protected readonly departmentsResource = resource({
@@ -164,15 +183,19 @@ export class Profile {
       this.editingDepartment.set(false);
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.departmentError.set((err as { message?: string })?.message ?? 'Failed to assign department.');
-    } finally { this.savingDepartment.set(false); }
+      this.departmentError.set(
+        (err as { message?: string })?.message ?? 'Failed to assign department.',
+      );
+    } finally {
+      this.savingDepartment.set(false);
+    }
   }
 
   // ── Assign access level ───────────────────────────────────────
-  protected readonly editingAccessLevel    = signal(false);
+  protected readonly editingAccessLevel = signal(false);
   protected readonly selectedAccessLevelId = signal('');
-  protected readonly savingAccessLevel     = signal(false);
-  protected readonly accessLevelError      = signal('');
+  protected readonly savingAccessLevel = signal(false);
+  protected readonly accessLevelError = signal('');
 
   private readonly accessLevelsEnabled = signal(false);
   protected readonly accessLevelsResource = resource({
@@ -206,8 +229,12 @@ export class Profile {
       this.editingAccessLevel.set(false);
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.accessLevelError.set((err as { message?: string })?.message ?? 'Failed to assign access level.');
-    } finally { this.savingAccessLevel.set(false); }
+      this.accessLevelError.set(
+        (err as { message?: string })?.message ?? 'Failed to assign access level.',
+      );
+    } finally {
+      this.savingAccessLevel.set(false);
+    }
   }
 
   // ── Helpers ───────────────────────────────────────────────────
@@ -227,7 +254,9 @@ export class Profile {
     if (!dateStr) return '';
     try {
       return new Intl.DateTimeFormat('en-GB', {
-        day: 'numeric', month: 'short', year: 'numeric',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
       }).format(new Date(dateStr));
     } catch {
       return dateStr;
@@ -235,10 +264,14 @@ export class Profile {
   }
 
   protected addressLine(addr: {
-    street?: string; city?: string; state?: string;
-    country?: string; zipCode?: string;
+    street?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    zipCode?: string;
   }): string {
     return [addr.street, addr.city, addr.state, addr.country, addr.zipCode]
-      .filter(Boolean).join(', ');
+      .filter(Boolean)
+      .join(', ');
   }
 }

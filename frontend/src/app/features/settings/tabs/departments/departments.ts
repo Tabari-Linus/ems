@@ -13,26 +13,26 @@ import { DepartmentListItem } from '../../../../core/models/settings.models';
 })
 export class SettingsDepartments {
   private readonly departmentService = inject(DepartmentService);
-  private readonly officeService     = inject(OfficeService);
+  private readonly officeService = inject(OfficeService);
 
-  protected readonly showForm  = signal(false);
-  protected readonly editId    = signal<string | null>(null);
-  protected readonly saving    = signal(false);
+  protected readonly showForm = signal(false);
+  protected readonly editId = signal<string | null>(null);
+  protected readonly saving = signal(false);
   protected readonly formError = signal('');
 
   protected readonly model = signal({
-    officeId:              '',
-    departmentName:        '',
-    departmentEmail:       '',
+    officeId: '',
+    departmentName: '',
+    departmentEmail: '',
     departmentPhoneNumber: '',
-    departmentAddress:     '',
+    departmentAddress: '',
   });
 
-  protected readonly deptForm = form(this.model, s => {
-    required(s.officeId,        { message: 'Please select an office' });
-    required(s.departmentName,  { message: 'Department name is required' });
+  protected readonly deptForm = form(this.model, (s) => {
+    required(s.officeId, { message: 'Please select an office' });
+    required(s.departmentName, { message: 'Department name is required' });
     required(s.departmentEmail, { message: 'Email is required' });
-    email(s.departmentEmail,    { message: 'Enter a valid email address' });
+    email(s.departmentEmail, { message: 'Enter a valid email address' });
   });
 
   protected readonly listResource = resource({
@@ -45,19 +45,25 @@ export class SettingsDepartments {
 
   protected toggleForm(): void {
     this.editId.set(null);
-    this.model.set({ officeId: '', departmentName: '', departmentEmail: '', departmentPhoneNumber: '', departmentAddress: '' });
-    this.showForm.update(v => !v);
+    this.model.set({
+      officeId: '',
+      departmentName: '',
+      departmentEmail: '',
+      departmentPhoneNumber: '',
+      departmentAddress: '',
+    });
+    this.showForm.update((v) => !v);
     this.formError.set('');
   }
 
   protected startEdit(item: DepartmentListItem): void {
     this.editId.set(item.id);
     this.model.set({
-      officeId:              '',
-      departmentName:        item.departmentName,
-      departmentEmail:       item.departmentEmail       ?? '',
+      officeId: '',
+      departmentName: item.departmentName,
+      departmentEmail: item.departmentEmail ?? '',
       departmentPhoneNumber: item.departmentPhoneNumber ?? '',
-      departmentAddress:     item.departmentAddress     ?? '',
+      departmentAddress: item.departmentAddress ?? '',
     });
     this.showForm.set(true);
     this.formError.set('');
@@ -73,24 +79,30 @@ export class SettingsDepartments {
         if (id) {
           await firstValueFrom(
             this.departmentService.updateDepartment(id, {
-              departmentName:        m.departmentName,
-              departmentEmail:       m.departmentEmail,
+              departmentName: m.departmentName,
+              departmentEmail: m.departmentEmail,
               ...(m.departmentPhoneNumber && { departmentPhoneNumber: m.departmentPhoneNumber }),
-              ...(m.departmentAddress     && { departmentAddress:     m.departmentAddress }),
+              ...(m.departmentAddress && { departmentAddress: m.departmentAddress }),
             }),
           );
         } else {
           await firstValueFrom(
             this.departmentService.createDepartment({
-              officeId:        m.officeId,
-              departmentName:  m.departmentName,
+              officeId: m.officeId,
+              departmentName: m.departmentName,
               departmentEmail: m.departmentEmail,
               ...(m.departmentPhoneNumber && { departmentPhoneNumber: m.departmentPhoneNumber }),
-              ...(m.departmentAddress     && { departmentAddress:     m.departmentAddress }),
+              ...(m.departmentAddress && { departmentAddress: m.departmentAddress }),
             }),
           );
         }
-        this.model.set({ officeId: '', departmentName: '', departmentEmail: '', departmentPhoneNumber: '', departmentAddress: '' });
+        this.model.set({
+          officeId: '',
+          departmentName: '',
+          departmentEmail: '',
+          departmentPhoneNumber: '',
+          departmentAddress: '',
+        });
         this.editId.set(null);
         this.showForm.set(false);
         this.listResource.reload();

@@ -1,0 +1,18 @@
+query Positions($pageInput: PageInput, $sortInput: SortInput, $filter: PositionFilterInput) {
+  getPositions(pageInput: $pageInput, sortInput: $sortInput, filter: $filter) {
+    data {
+      id
+      positionName
+      level
+      description
+      status
+      createdDate
+    }
+    currentPage
+    totalPages
+    totalElements
+    pageSize
+    hasNext
+    hasPrevious
+  }
+}

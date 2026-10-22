@@ -7,43 +7,43 @@ import { Permission } from './core/models/permission.model';
 export const routes: Routes = [
   {
     path: 'login',
-    loadComponent: () => import('./features/auth/login/login').then(m => m.Login),
+    loadComponent: () => import('./features/auth/login/login').then((m) => m.Login),
     canActivate: [guestGuard],
   },
   {
     path: '',
-    loadComponent: () => import('./features/shell/shell').then(m => m.Shell),
+    loadComponent: () => import('./features/shell/shell').then((m) => m.Shell),
     canActivate: [authGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'staff' },
       {
         path: 'dashboard',
-        loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard),
+        loadComponent: () => import('./features/dashboard/dashboard').then((m) => m.Dashboard),
         canActivate: [permissionGuard([Permission.VIEW_MANAGER, Permission.VIEW_ADMIN])],
       },
       {
         path: 'staff',
         pathMatch: 'full',
-        loadComponent: () => import('./features/staff/staff').then(m => m.Staff),
+        loadComponent: () => import('./features/staff/staff').then((m) => m.Staff),
       },
       {
         path: 'staff/:id',
-        loadComponent: () => import('./features/profile/profile').then(m => m.Profile),
+        loadComponent: () => import('./features/profile/profile').then((m) => m.Profile),
       },
       {
         path: 'my-profile',
-        loadComponent: () => import('./features/my-profile/my-profile').then(m => m.MyProfile),
+        loadComponent: () => import('./features/my-profile/my-profile').then((m) => m.MyProfile),
         canActivate: [permissionGuard([Permission.VIEW_SELF, Permission.MANAGE_SELF])],
       },
       {
         path: 'settings',
-        loadComponent: () => import('./features/settings/settings').then(m => m.Settings),
+        loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
         canActivate: [permissionGuard([Permission.VIEW_ADMIN, Permission.MANAGE_ADMIN], true)],
       },
       {
         path: 'unauthorized',
         loadComponent: () =>
-          import('./features/unauthorized/unauthorized').then(m => m.Unauthorized),
+          import('./features/unauthorized/unauthorized').then((m) => m.Unauthorized),
       },
     ],
   },

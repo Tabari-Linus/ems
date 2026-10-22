@@ -1,4 +1,6 @@
-:host { display: block; }
+:host {
+  display: block;
+}
 
 .settings-page {
   padding: var(--sp-8);
@@ -16,7 +18,11 @@
     margin: 0 0 var(--sp-1);
   }
 
-  p { color: var(--txt-3); font-size: 13px; margin: 0; }
+  p {
+    color: var(--txt-3);
+    font-size: 13px;
+    margin: 0;
+  }
 }
 
 /* ── Tab bar ─────────────────────────────────────────────────────── */
@@ -40,10 +46,14 @@
   font-weight: 400;
   color: var(--txt-3);
   cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
   white-space: nowrap;
 
-  &:hover { color: var(--txt-2); }
+  &:hover {
+    color: var(--txt-2);
+  }
 
   &.active {
     color: var(--accent);

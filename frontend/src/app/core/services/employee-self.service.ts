@@ -109,48 +109,50 @@ export class EmployeeSelfService {
   getMyProfile(): Observable<EmployeeDetail | null> {
     return this.gql
       .request<{ getMyProfile: EmployeeDetail | null }>(GET_MY_PROFILE)
-      .pipe(map(r => r.getMyProfile ?? null));
+      .pipe(map((r) => r.getMyProfile ?? null));
   }
 
   updateMyBio(input: EmployeeBioInput): Observable<ActionResult> {
     return this.gql
       .request<{ updateMyBio: ActionResult }>(UPDATE_MY_BIO, { input })
-      .pipe(map(r => r.updateMyBio));
+      .pipe(map((r) => r.updateMyBio));
   }
 
   updateMyContact(input: EmployeeContactInput): Observable<ActionResult> {
     return this.gql
       .request<{ updateMyContact: ActionResult }>(UPDATE_MY_CONTACT, { input })
-      .pipe(map(r => r.updateMyContact));
+      .pipe(map((r) => r.updateMyContact));
   }
 
   addMyAddress(input: EmployeeAddressInput): Observable<ActionResult> {
     return this.gql
       .request<{ addMyAddress: ActionResult }>(ADD_MY_ADDRESS, { input })
-      .pipe(map(r => r.addMyAddress));
+      .pipe(map((r) => r.addMyAddress));
   }
 
   updateMyAddress(addressId: string, input: EmployeeAddressInput): Observable<ActionResult> {
     return this.gql
       .request<{ updateMyAddress: ActionResult }>(UPDATE_MY_ADDRESS, { addressId, input })
-      .pipe(map(r => r.updateMyAddress));
+      .pipe(map((r) => r.updateMyAddress));
   }
 
   removeMyAddress(addressId: string): Observable<ActionResult> {
     return this.gql
       .request<{ removeMyAddress: ActionResult }>(REMOVE_MY_ADDRESS, { addressId })
-      .pipe(map(r => r.removeMyAddress));
+      .pipe(map((r) => r.removeMyAddress));
   }
 
   addMyIdentification(input: EmployeeIdentificationInput): Observable<ActionResult> {
     return this.gql
       .request<{ addMyIdentification: ActionResult }>(ADD_MY_IDENTIFICATION, { input })
-      .pipe(map(r => r.addMyIdentification));
+      .pipe(map((r) => r.addMyIdentification));
   }
 
   removeMyIdentification(identificationId: string): Observable<ActionResult> {
     return this.gql
-      .request<{ removeMyIdentification: ActionResult }>(REMOVE_MY_IDENTIFICATION, { identificationId })
-      .pipe(map(r => r.removeMyIdentification));
+      .request<{ removeMyIdentification: ActionResult }>(REMOVE_MY_IDENTIFICATION, {
+        identificationId,
+      })
+      .pipe(map((r) => r.removeMyIdentification));
   }
 }

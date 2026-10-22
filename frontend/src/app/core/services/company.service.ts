@@ -48,18 +48,29 @@ export class CompanyService {
   getCompanies(): Observable<PageResult<CompanyListItem>> {
     return this.gql
       .request<{ getCompanies: PageResult<CompanyListItem> }>(GET_COMPANIES)
-      .pipe(map(r => r.getCompanies));
+      .pipe(map((r) => r.getCompanies));
   }
 
-  createCompany(input: CreateCompanyInput): Observable<ApiResponse<{ id: string; companyName: string }>> {
+  createCompany(
+    input: CreateCompanyInput,
+  ): Observable<ApiResponse<{ id: string; companyName: string }>> {
     return this.gql
-      .request<{ createCompany: ApiResponse<{ id: string; companyName: string }> }>(CREATE_COMPANY, { input })
-      .pipe(map(r => r.createCompany));
+      .request<{ createCompany: ApiResponse<{ id: string; companyName: string }> }>(
+        CREATE_COMPANY,
+        { input },
+      )
+      .pipe(map((r) => r.createCompany));
   }
 
-  updateCompany(id: string, input: UpdateCompanyInput): Observable<ApiResponse<{ id: string; companyName: string }>> {
+  updateCompany(
+    id: string,
+    input: UpdateCompanyInput,
+  ): Observable<ApiResponse<{ id: string; companyName: string }>> {
     return this.gql
-      .request<{ updateCompany: ApiResponse<{ id: string; companyName: string }> }>(UPDATE_COMPANY, { id, input })
-      .pipe(map(r => r.updateCompany));
+      .request<{ updateCompany: ApiResponse<{ id: string; companyName: string }> }>(
+        UPDATE_COMPANY,
+        { id, input },
+      )
+      .pipe(map((r) => r.updateCompany));
   }
 }
