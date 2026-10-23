@@ -1,0 +1,31 @@
+/*
+ * ui-search-input. Contract tokens only. The pill frame comes from ui-input-group.
+ */
+@layer components {
+  .ui-search-input {
+    display: block;
+    min-inline-size: 0;
+  }
+
+  .ui-search-input__kbd {
+    margin-inline-end: var(--ems-space-1);
+    padding-block: var(--ems-space-1);
+    padding-inline: var(--ems-space-2);
+    border-radius: var(--ems-radius-sm);
+    background-color: var(--ems-color-bg-sunken);
+    box-shadow: inset 0 0 0 var(--ems-border-width-hairline) var(--ems-color-border-subtle);
+    color: var(--ems-color-text-muted);
+    font-family: var(--ems-font-family-mono);
+    font-size: var(--ems-type-mono-size);
+    font-weight: var(--ems-type-mono-weight);
+    line-height: var(--ems-type-mono-line-height);
+    letter-spacing: var(--ems-type-mono-letter-spacing);
+    white-space: nowrap;
+  }
+
+  @media (forced-colors: active) {
+    .ui-search-input__kbd {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}
