@@ -1,0 +1,85 @@
+/*
+ * Listbox panel shown in the CDK overlay by ui-select and ui-filter-pill. Contract tokens only.
+ * Unencapsulated (the panel lives in the overlay container); scoped by .ui-select__* classes.
+ */
+@layer components {
+  .ui-select__panel {
+    box-sizing: border-box;
+    max-block-size: calc(var(--ems-space-16) * 4);
+    margin-block: var(--ems-space-1);
+    padding: var(--ems-space-1);
+    overflow-y: auto;
+    border-radius: var(--ems-radius-lg);
+    background-color: var(--ems-color-bg-raised);
+    box-shadow: var(--ems-elevation-raised);
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+    outline: none;
+  }
+
+  .ui-select__option {
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-2);
+    min-block-size: var(--ems-space-8);
+    padding-block: var(--ems-space-1);
+    padding-inline: var(--ems-space-3);
+    border-radius: var(--ems-radius-sm);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .ui-select__option:hover,
+  .ui-select__option.cdk-option-active {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-select__option:focus-visible {
+    box-shadow: inset 0 0 0 var(--ems-border-width-hairline) var(--ems-color-border-focus);
+  }
+
+  .ui-select__option[aria-selected='true'] {
+    font-weight: var(--ems-type-body-strong-weight);
+  }
+
+  .ui-select__option[aria-disabled='true'] {
+    background: transparent;
+    color: var(--ems-color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .ui-select__option-label {
+    flex: 1 1 auto;
+  }
+
+  .ui-select__check {
+    flex: none;
+    inline-size: var(--ems-space-4);
+    block-size: var(--ems-space-4);
+    color: var(--ems-color-accent-soft-text);
+    visibility: hidden;
+  }
+
+  .ui-select__option[aria-selected='true'] .ui-select__check {
+    visibility: visible;
+  }
+
+  .ui-select__empty {
+    padding-block: var(--ems-space-2);
+    padding-inline: var(--ems-space-3);
+    color: var(--ems-color-text-muted);
+  }
+
+  @media (forced-colors: active) {
+    .ui-select__panel {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+
+    .ui-select__option.cdk-option-active {
+      outline: var(--ems-border-width-hairline) solid Highlight;
+    }
+  }
+}
