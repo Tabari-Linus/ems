@@ -4,7 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum EmailTemplateType {
-    EMPLOYEE_WELCOME("employee-welcome", "Welcome to EMS – Your Login Details");
+    EMPLOYEE_WELCOME("employee-welcome", "Welcome to EMS – set up your account");
 
     private final String templateName;
     private final String subject;

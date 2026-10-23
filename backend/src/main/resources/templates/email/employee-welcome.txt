@@ -1,16 +1,20 @@
 EMPLOYEE MANAGEMENT SYSTEM
-===========================
+==========================
 
-Welcome aboard!
+Hi [[${firstName}]],
 
-Your employee account has been created. Use the credentials below to sign in.
+Welcome aboard! An account has been created for you on the Employee Management System.
 
-  Email Address      : [[${email}]]
-  Temporary Password : [[${temporaryPassword}]]
+To get started, choose your password using this link:
 
-IMPORTANT: Please change your password immediately after your first login.
+  [[${setPasswordUrl}]]
 
-If you did not expect this email, please contact your system administrator.
+You will sign in with your work email: [[${email}]]
+
+The link works once and expires in [[${validForHours}]] hours. If it has expired, ask your
+administrator to send you a new one.
+
+If you did not expect this email, you can ignore it or let your administrator know.
 
 ---
 This is an automated message. Please do not reply to this email.
