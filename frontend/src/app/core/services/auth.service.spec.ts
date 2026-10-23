@@ -33,6 +33,7 @@ describe('AuthService endpoints', () => {
     const req = http.expectOne(`${API}/api/v1/auth/refresh-token`);
     expect(req.request.method).toBe('POST');
     expect(req.request.withCredentials).toBe(true);
+    expect(req.request.headers.get('X-Requested-With')).toBe('ems-web');
     req.flush({}, { status: 401, statusText: 'Unauthorized' });
   });
 
@@ -100,6 +101,7 @@ describe('AuthService endpoints', () => {
 
     const req = http.expectOne(`${API}/api/v1/auth/logout`);
     expect(req.request.withCredentials).toBe(true);
+    expect(req.request.headers.get('X-Requested-With')).toBe('ems-web');
     req.flush(null);
   });
 });

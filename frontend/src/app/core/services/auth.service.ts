@@ -10,6 +10,12 @@ import { APP_CONFIG } from '../config/app-config';
 /** Upper bound on how long startup waits for the session refresh before showing the app. */
 export const RESTORE_SESSION_TIMEOUT_MS = 5000;
 
+/**
+ * Required by the backend's CSRF check on the cookie-authenticated endpoints (refresh, logout).
+ * See docs/api/auth.md.
+ */
+export const CSRF_HEADERS = { 'X-Requested-With': 'ems-web' } as const;
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -48,7 +54,7 @@ export class AuthService {
   logout(): void {
     this.tokenService.clear();
     this.http
-      .post(`${this.authUrl}/logout`, {}, { withCredentials: true })
+      .post(`${this.authUrl}/logout`, {}, { withCredentials: true, headers: CSRF_HEADERS })
       // Best effort: the local session is already cleared; a failed server logout is ignored.
       .subscribe({ error: () => undefined });
     void this.router.navigate(['/login']);
@@ -61,6 +67,7 @@ export class AuthService {
         {},
         {
           withCredentials: true,
+          headers: CSRF_HEADERS,
         },
       )
       .pipe(tap((response) => this.tokenService.set(response.accessToken)));
