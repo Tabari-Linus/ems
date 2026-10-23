@@ -1,0 +1,24 @@
+# Test profile. The datasource comes from the Testcontainers PostgreSQL container
+# (@ServiceConnection) and the JWT key pair is generated per test JVM
+# (TestJwtKeysEnvironmentPostProcessor), so no local keys or database are needed.
+
+spring:
+  datasource:
+    # Overridden by the container's connection details; set so no DB_* env var is needed.
+    password: unused
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+admin:
+  email: admin@ems.test
+  password: Integration-Test-Admin-1!
+
+app:
+  cors:
+    allowed-origins: http://localhost:4200
+  auth:
+    cookie:
+      secure: false
+      same-site: Lax
+      path: /api/v1/auth

@@ -1,0 +1,142 @@
+<div class="tab-panel">
+  <div class="panel-header">
+    <div>
+      <h2>Departments</h2>
+      <p>Manage departments within offices</p>
+    </div>
+    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
+      {{ showForm() ? 'Cancel' : '+ New Department' }}
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <div class="create-form-card">
+      <h3>{{ editId() ? 'Edit Department' : 'New Department' }}</h3>
+      @if (formError()) {
+        <div class="form-api-error">{{ formError() }}</div>
+      }
+      <form (submit)="onSubmit(); $event.preventDefault()">
+        <div class="form-grid">
+          @if (!editId()) {
+            <div class="field span-2">
+              <label for="departments-dept-form-office-id">Office <span class="req">*</span></label>
+              <select id="departments-dept-form-office-id" [formField]="deptForm.officeId">
+                <option value="">Select an office</option>
+                @for (o of officesResource.value()?.data ?? []; track o.id) {
+                  <option [value]="o.id">{{ o.officeName }}</option>
+                }
+              </select>
+              @if (deptForm.officeId().touched() && deptForm.officeId().errors().length) {
+                <span class="field-err">{{ deptForm.officeId().errors()[0].message }}</span>
+              }
+            </div>
+          }
+          <div class="field">
+            <label for="departments-dept-form-department-name"
+              >Department Name <span class="req">*</span></label
+            >
+            <input
+              id="departments-dept-form-department-name"
+              [formField]="deptForm.departmentName"
+              placeholder="Engineering"
+            />
+            @if (deptForm.departmentName().touched() && deptForm.departmentName().errors().length) {
+              <span class="field-err">{{ deptForm.departmentName().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label for="departments-dept-form-department-email"
+              >Email <span class="req">*</span></label
+            >
+            <input
+              id="departments-dept-form-department-email"
+              type="email"
+              [formField]="deptForm.departmentEmail"
+              placeholder="eng@acme.com"
+            />
+            @if (
+              deptForm.departmentEmail().touched() && deptForm.departmentEmail().errors().length
+            ) {
+              <span class="field-err">{{ deptForm.departmentEmail().errors()[0].message }}</span>
+            }
+          </div>
+          <div class="field">
+            <label for="departments-dept-form-department-phone-number">Phone</label>
+            <input
+              id="departments-dept-form-department-phone-number"
+              [formField]="deptForm.departmentPhoneNumber"
+              placeholder="+1 555 0002"
+            />
+          </div>
+          <div class="field">
+            <label for="departments-dept-form-department-address">Address</label>
+            <input
+              id="departments-dept-form-department-address"
+              [formField]="deptForm.departmentAddress"
+              placeholder="Floor 3, Block B"
+            />
+          </div>
+        </div>
+        <button type="submit" class="save-btn" [disabled]="saving()">
+          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Department' }}
+        </button>
+      </form>
+    </div>
+  }
+
+  @if (listResource.isLoading()) {
+    <div class="loading-state">Loading departments...</div>
+  } @else if (listResource.error()) {
+    <div class="error-state">Failed to load departments.</div>
+  } @else {
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Code</th>
+          <th>Email</th>
+          <th>Phone</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of listResource.value()?.data ?? []; track item.id) {
+          <tr>
+            <td class="name-cell">{{ item.departmentName }}</td>
+            <td>
+              <span class="code-badge">{{ item.departmentCode }}</span>
+            </td>
+            <td>{{ item.departmentEmail ?? '' }}</td>
+            <td>{{ item.departmentPhoneNumber ?? '' }}</td>
+            <td>
+              <span class="status-chip" [attr.data-status]="item.departmentStatus ?? 'PENDING'">{{
+                item.departmentStatus ?? 'PENDING'
+              }}</span>
+            </td>
+            <td class="action-cell">
+              <button class="row-edit-btn" (click)="startEdit(item)">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.75"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                </svg>
+                Edit
+              </button>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="6" class="empty-row">No departments yet.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

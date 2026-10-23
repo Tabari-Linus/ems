@@ -1,0 +1,23 @@
+{
+  "name": "@ems/tokens",
+  "version": "0.0.0",
+  "private": true,
+  "description": "EMS design tokens (W3C DTCG) built with Style Dictionary: CSS custom properties, TS and JSON.",
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "exports": {
+    "./css/*": {
+      "default": "./css/*"
+    },
+    "./tokens.json": {
+      "default": "./tokens.json"
+    },
+    "./dtcg/*": {
+      "default": "./dtcg/*"
+    }
+  }
+}

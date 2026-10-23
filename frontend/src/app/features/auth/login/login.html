@@ -1,0 +1,66 @@
+<div class="login-card">
+  <div class="login-header">
+    <div class="logo">
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+        <circle cx="9" cy="7" r="4" />
+        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+      </svg>
+    </div>
+    <h1>EMS Portal</h1>
+    <p>Employee Management System</p>
+  </div>
+
+  @if (apiError()) {
+    <div class="api-error" role="alert">{{ apiError() }}</div>
+  }
+
+  <form (submit)="onSubmit(); $event.preventDefault()">
+    <div class="form-group">
+      <label for="login-email">Work Email</label>
+      <input
+        id="login-email"
+        type="email"
+        [formField]="loginForm.email"
+        placeholder="you@company.com"
+        autocomplete="email"
+        [class.is-invalid]="loginForm.email().touched() && loginForm.email().errors().length"
+      />
+      @if (loginForm.email().touched() && loginForm.email().errors().length) {
+        <span class="field-error">{{ loginForm.email().errors()[0].message }}</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label for="login-password">Password</label>
+      <input
+        id="login-password"
+        type="password"
+        [formField]="loginForm.password"
+        placeholder="Enter your password"
+        autocomplete="current-password"
+        [class.is-invalid]="loginForm.password().touched() && loginForm.password().errors().length"
+      />
+      @if (loginForm.password().touched() && loginForm.password().errors().length) {
+        <span class="field-error">{{ loginForm.password().errors()[0].message }}</span>
+      }
+    </div>
+
+    <button type="submit" class="submit-btn" [disabled]="loading()">
+      @if (loading()) {
+        <span class="spinner"></span>
+        Signing in...
+      } @else {
+        Sign in
+      }
+    </button>
+  </form>
+</div>

@@ -1,0 +1,294 @@
+<div class="dashboard">
+  <!-- ── Header ───────────────────────────────────────────── -->
+  <div class="dash-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>{{ today }}</p>
+    </div>
+    @if (canManageEmployees()) {
+      <a routerLink="/staff" class="cta-btn">+ Add Employee</a>
+    }
+  </div>
+
+  <!-- ── Stat cards ────────────────────────────────────────── -->
+  <div class="stat-grid">
+    @if (statsResource.isLoading()) {
+      @for (n of skeletons; track n) {
+        <div class="stat-card stat-card--skeleton">
+          <div class="sk-icon pulse"></div>
+          <div class="sk-val pulse"></div>
+          <div class="sk-lbl pulse"></div>
+        </div>
+      }
+    } @else {
+      @for (card of statCards(); track card.label) {
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon" [style.--card-color]="'var(' + card.colorVar + ')'">
+              @switch (card.iconKey) {
+                @case ('employees') {
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                  </svg>
+                }
+                @case ('departments') {
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
+                  </svg>
+                }
+                @case ('offices') {
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M3 21h18M9 21V7l6-4v18M3 21V11l6-4" />
+                    <path d="M12 7v1M12 11v1M12 15v1" />
+                  </svg>
+                }
+                @case ('companies') {
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <rect x="2" y="7" width="20" height="14" rx="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                  </svg>
+                }
+              }
+            </div>
+            @if (card.trend) {
+              <span class="trend-chip" [attr.data-trend]="card.trend">
+                {{ card.trend === 'INCREASE' ? '↑' : card.trend === 'DECREASE' ? '↓' : '→' }}
+                {{ card.trend.toLowerCase() }}
+              </span>
+            }
+          </div>
+          <div class="stat-val">
+            @if (card.value !== null) {
+              {{ card.value }}
+            } @else {
+              <span class="stat-err">–</span>
+            }
+          </div>
+          <div class="stat-lbl">{{ card.label }}</div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- ── Recent Employees ──────────────────────────────────── -->
+  <div class="section">
+    <div class="section-head">
+      <h2>Recent Employees</h2>
+      <div class="section-head-actions">
+        <select
+          class="filter-select"
+          [value]="recentStatusFilter()"
+          (change)="recentStatusFilter.set($any($event.target).value)"
+        >
+          @for (opt of statusOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+        <a routerLink="/staff" class="view-all">
+          View all
+          <svg
+            viewBox="0 0 16 16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M3 8h10M9 4l4 4-4 4" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    @if (recentResource.isLoading()) {
+      <div class="emp-list">
+        @for (n of rowSkeletons; track n) {
+          <div class="emp-row-wrap">
+            <div class="emp-row emp-row--skeleton">
+              <div class="sk-avi pulse"></div>
+              <div class="sk-info">
+                <div class="sk-line w55 pulse"></div>
+                <div class="sk-line w35 pulse"></div>
+              </div>
+              <div class="sk-badge pulse"></div>
+            </div>
+          </div>
+        }
+      </div>
+    } @else if ((recentResource.value()?.data ?? []).length === 0) {
+      <div class="empty-hint">
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <span
+          >No employees{{
+            recentStatusFilter() ? ' with status ' + recentStatusFilter().toLowerCase() : ''
+          }}.</span
+        >
+        @if (canManageEmployees() && !recentStatusFilter()) {
+          <a routerLink="/staff" class="hint-link">Add the first one →</a>
+        }
+      </div>
+    } @else {
+      <div class="emp-list">
+        @for (emp of recentResource.value()?.data ?? []; track emp.id) {
+          <div class="emp-row-wrap">
+            <a class="emp-row" [routerLink]="['/staff', emp.id]">
+              <div
+                class="emp-avi"
+                [style.background]="getAvatarColor(emp.firstName + emp.lastName)"
+              >
+                {{ getInitials(emp.firstName, emp.lastName) }}
+              </div>
+              <div class="emp-info">
+                <span class="emp-name">{{ emp.firstName }} {{ emp.lastName }}</span>
+                <span class="emp-sub">
+                  {{ emp.jobTitle ?? 'No position'
+                  }}{{ emp.department ? ' · ' + emp.department : '' }}
+                </span>
+              </div>
+              <span class="status-badge" [attr.data-status]="emp.status ?? 'PENDING'">
+                {{ emp.status ?? 'PENDING' }}
+              </span>
+            </a>
+
+            @if (canManageEmployees()) {
+              <div class="row-menu" role="presentation" (click)="$event.stopPropagation()">
+                <button
+                  class="row-menu-btn"
+                  [class.is-open]="openMenuId() === emp.id"
+                  [disabled]="busyId() === emp.id"
+                  (click)="toggleMenu(emp.id)"
+                  title="Actions"
+                >
+                  @if (busyId() === emp.id) {
+                    <span class="row-spinner"></span>
+                  } @else {
+                    <svg viewBox="0 0 16 16" fill="currentColor" width="14" height="14">
+                      <circle cx="8" cy="2.5" r="1.5" />
+                      <circle cx="8" cy="8" r="1.5" />
+                      <circle cx="8" cy="13.5" r="1.5" />
+                    </svg>
+                  }
+                </button>
+
+                @if (openMenuId() === emp.id) {
+                  <div class="row-dropdown">
+                    <a class="row-dd-item" [routerLink]="['/staff', emp.id]">
+                      <svg
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M1 8s2.5-5 7-5 7 5 7 5-2.5 5-7 5-7-5-7-5z" />
+                        <circle cx="8" cy="8" r="2" />
+                      </svg>
+                      View profile
+                    </a>
+                    @if ((emp.status ?? 'PENDING') !== 'ACTIVE') {
+                      <button class="row-dd-item" (click)="onActivate(emp)">
+                        <svg
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="8" cy="8" r="6" />
+                          <path d="M5 8l2 2 4-4" />
+                        </svg>
+                        Activate
+                      </button>
+                    }
+                    @if ((emp.status ?? 'PENDING') === 'ACTIVE') {
+                      <button class="row-dd-item row-dd-item--warn" (click)="onDeactivate(emp)">
+                        <svg
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="8" cy="8" r="6" />
+                          <path d="M6 6h1v4H6zM9 6h1v4H9z" />
+                        </svg>
+                        Deactivate
+                      </button>
+                    }
+                    @if ((emp.status ?? 'PENDING') !== 'ARCHIVE') {
+                      <button class="row-dd-item row-dd-item--danger" (click)="onArchive(emp)">
+                        <svg
+                          viewBox="0 0 16 16"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <rect x="1" y="3" width="14" height="3" rx="1" />
+                          <path d="M2 6v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V6" />
+                          <path d="M6 10h4" />
+                        </svg>
+                        Archive
+                      </button>
+                    }
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+      </div>
+
+      @if (actionError()) {
+        <p class="action-err">{{ actionError() }}</p>
+      }
+    }
+  </div>
+</div>

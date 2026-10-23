@@ -1,0 +1,81 @@
+# Local development stack. Mirrors production topology: the frontend and the API
+# are separate origins (localhost:4200 and localhost:8080), exactly like
+# app.<domain> and api.<domain>. Nothing here is used in production deployments.
+#
+#   1. backend/scripts/generate-jwt-keys.sh      (once — writes backend/.keys/)
+#   2. cp backend/.env.example backend/.env       (set ADMIN_PASSWORD at least)
+#   3. docker compose up --build
+#
+# App: http://localhost:4200   API: http://localhost:8080   Mail: http://localhost:8025
+
+name: ems
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ems
+      POSTGRES_USER: ems
+      POSTGRES_PASSWORD: ems
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ems -d ems"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # Web UI
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "-", "http://localhost:8025/livez"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backend:
+    build: ./backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      DB_URL: jdbc:postgresql://postgres:5432/ems
+      DB_USERNAME: ems
+      DB_PASSWORD: ems
+      MAIL_HOST: mailpit
+      MAIL_PORT: "1025"
+      MAIL_SMTP_AUTH: "false"
+      MAIL_SMTP_STARTTLS: "false"
+      ALLOWED_ORIGINS: http://localhost:4200
+      APP_FRONTEND_URL: http://localhost:4200
+      AUTH_COOKIE_SECURE: "false"
+      JWT_PRIVATE_KEY_PATH: /run/keys/jwt-private-key.pem
+      JWT_PUBLIC_KEY_PATH: /run/keys/jwt-public-key.pem
+    volumes:
+      - ./backend/.keys:/run/keys:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mailpit:
+        condition: service_healthy
+
+  frontend:
+    build: ./frontend
+    environment:
+      API_URL: http://localhost:8080
+    ports:
+      - "4200:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  pgdata:

@@ -1,0 +1,20 @@
+# Local development conveniences only. Everything required lives in application.yaml.
+
+spring:
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+
+  graphql:
+    graphiql:
+      enabled: true
+    schema:
+      introspection:
+        enabled: true
+
+logging:
+  level:
+    com.mrlii.ems: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"

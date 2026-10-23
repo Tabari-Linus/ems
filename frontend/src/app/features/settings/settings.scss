@@ -1,0 +1,63 @@
+:host {
+  display: block;
+}
+
+.settings-page {
+  padding: var(--sp-8);
+  max-width: 1100px;
+}
+
+.settings-header {
+  margin-bottom: var(--sp-6);
+
+  h1 {
+    font-size: 24px;
+    font-weight: 300;
+    letter-spacing: -0.03em;
+    color: var(--txt);
+    margin: 0 0 var(--sp-1);
+  }
+
+  p {
+    color: var(--txt-3);
+    font-size: 13px;
+    margin: 0;
+  }
+}
+
+/* ── Tab bar ─────────────────────────────────────────────────────── */
+
+.tab-bar {
+  display: flex;
+  gap: var(--sp-1);
+  border-bottom: 0.5px solid var(--border);
+  margin-bottom: var(--sp-6);
+  padding-bottom: 0;
+}
+
+.tab-btn {
+  padding: var(--sp-3) var(--sp-4);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--txt-3);
+  cursor: pointer;
+  transition:
+    color 0.15s,
+    border-color 0.15s;
+  white-space: nowrap;
+
+  &:hover {
+    color: var(--txt-2);
+  }
+
+  &.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,158 @@
+{
+  "color": {
+    "$type": "color",
+    "bg": {
+      "canvas": {
+        "$value": "{color.neutral.50}",
+        "$description": "Page background."
+      },
+      "surface": {
+        "$value": "{color.neutral.0}",
+        "$description": "Cards, panels, inputs."
+      },
+      "subtle": {
+        "$value": "{color.neutral.100}",
+        "$description": "Hover / zebra rows."
+      },
+      "muted": {
+        "$value": "{color.neutral.200}",
+        "$description": "Pressed / selected."
+      },
+      "inverse": {
+        "$value": "{color.neutral.900}",
+        "$description": "Tooltips, toasts."
+      }
+    },
+    "text": {
+      "default": {
+        "$value": "{color.neutral.900}"
+      },
+      "muted": {
+        "$value": "{color.neutral.600}"
+      },
+      "disabled": {
+        "$value": "{color.neutral.400}",
+        "$description": "Exempt from contrast (WCAG 1.4.3 inactive UI)."
+      },
+      "inverse": {
+        "$value": "{color.neutral.0}"
+      },
+      "on-accent": {
+        "$value": "{color.neutral.0}"
+      }
+    },
+    "border": {
+      "default": {
+        "$value": "{color.neutral.200}",
+        "$description": "Decorative dividers; not a contrast-bearing boundary."
+      },
+      "strong": {
+        "$value": "{color.neutral.500}",
+        "$description": "Control boundaries (inputs, secondary buttons): >= 3:1."
+      },
+      "focus": {
+        "$value": "{color.accent.600}",
+        "$description": "Focus ring: >= 3:1."
+      }
+    },
+    "accent": {
+      "bg": {
+        "$value": "{color.accent.700}"
+      },
+      "bg-hover": {
+        "$value": "{color.accent.800}"
+      },
+      "subtle": {
+        "$value": "{color.accent.50}"
+      },
+      "text": {
+        "$value": "{color.accent.700}"
+      },
+      "border": {
+        "$value": "{color.accent.600}"
+      }
+    },
+    "status": {
+      "success": {
+        "text": {
+          "$value": "{color.green.700}"
+        },
+        "bg": {
+          "$value": "{color.green.50}"
+        },
+        "border": {
+          "$value": "{color.green.600}"
+        },
+        "solid": {
+          "$value": "{color.green.700}"
+        },
+        "solid-hover": {
+          "$value": "{color.green.800}"
+        },
+        "on-solid": {
+          "$value": "{color.neutral.0}"
+        }
+      },
+      "warning": {
+        "text": {
+          "$value": "{color.amber.700}"
+        },
+        "bg": {
+          "$value": "{color.amber.50}"
+        },
+        "border": {
+          "$value": "{color.amber.600}"
+        },
+        "solid": {
+          "$value": "{color.amber.700}"
+        },
+        "solid-hover": {
+          "$value": "{color.amber.800}"
+        },
+        "on-solid": {
+          "$value": "{color.neutral.0}"
+        }
+      },
+      "danger": {
+        "text": {
+          "$value": "{color.red.700}"
+        },
+        "bg": {
+          "$value": "{color.red.50}"
+        },
+        "border": {
+          "$value": "{color.red.600}"
+        },
+        "solid": {
+          "$value": "{color.red.700}"
+        },
+        "solid-hover": {
+          "$value": "{color.red.800}"
+        },
+        "on-solid": {
+          "$value": "{color.neutral.0}"
+        }
+      },
+      "info": {
+        "text": {
+          "$value": "{color.blue.700}"
+        },
+        "bg": {
+          "$value": "{color.blue.50}"
+        },
+        "border": {
+          "$value": "{color.blue.600}"
+        },
+        "solid": {
+          "$value": "{color.blue.700}"
+        },
+        "solid-hover": {
+          "$value": "{color.blue.800}"
+        },
+        "on-solid": {
+          "$value": "{color.neutral.0}"
+        }
+      }
+    }
+  }
+}

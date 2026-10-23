@@ -1,0 +1,190 @@
+name: Frontend CI
+
+on:
+  push:
+    paths:
+      - 'frontend/**'
+      - 'backend/src/main/resources/graphql/**'
+      - '.github/workflows/frontend.yml'
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - 'backend/src/main/resources/graphql/**'
+      - '.github/workflows/frontend.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  verify:
+    name: Lint, codegen check, test, build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      # The schema in backend/ drives codegen: a schema change that breaks the generated
+      # client (or the committed generated.ts being stale) fails here, in the same PR.
+      - name: GraphQL codegen check
+        run: npm run codegen:check
+
+      - name: Unit tests with coverage
+        run: npm run test:ci
+
+      - name: Upload coverage
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: frontend-coverage
+          path: frontend/coverage/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Build
+        run: npm run build
+
+  design-system:
+    name: Design system (tokens, libraries, Storybook)
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Node 22
+        uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Rebuilds tokens.css/ts/json from the DTCG sources and fails if the committed output is stale.
+      - name: Build tokens (drift check)
+        run: npm run tokens:check
+
+      - name: Contrast gate (WCAG, light + dark)
+        run: npm run tokens:check-contrast
+
+      - name: Build libraries (tokens, icons, ui)
+        run: npm run lib:build
+
+      - name: Library unit tests with coverage (>= 90% lines)
+        run: npm run lib:test
+
+      - name: Upload library coverage
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: design-system-coverage
+          path: |
+            frontend/coverage/ui/
+            frontend/coverage/icons/
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Build Storybook
+        run: npm run storybook:build
+
+      - name: Upload Storybook
+        uses: actions/upload-artifact@v7
+        with:
+          name: storybook-static
+          path: frontend/storybook-static/
+          retention-days: 14
+
+      # Every story runs in Chromium: render, play function (interactions) and axe (0 violations).
+      - name: Storybook tests (interactions + a11y)
+        run: npm run storybook:test
+
+      # Baselines are per platform (system fonts differ). Until Linux baselines are committed,
+      # `missing` writes them instead of failing; they are uploaded below for review and commit.
+      # Existing baselines are always compared.
+      - name: Visual regression (light + dark)
+        run: npm run test:visual -- --update-snapshots=missing
+
+      - name: Upload visual report and Linux baselines
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: visual-regression
+          path: |
+            frontend/playwright-report/visual/
+            frontend/test-results/visual/
+            frontend/visual/baselines/*-linux.png
+          if-no-files-found: ignore
+          retention-days: 14
+
+  image:
+    name: Build and push image
+    needs: [verify, design-system]
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Image references must be lowercase; the owner (Tabari-Linus) is not.
+      - name: Image name
+        id: image
+        run: echo "name=ghcr.io/${GITHUB_REPOSITORY_OWNER,,}/ems-frontend" >> "$GITHUB_OUTPUT"
+
+      - name: Image metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ steps.image.outputs.name }}
+          tags: |
+            type=sha
+            type=raw,value=latest
+
+      - name: Build and push
+        uses: docker/build-push-action@v7
+        with:
+          context: frontend
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
