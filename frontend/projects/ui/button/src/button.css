@@ -1,13 +1,15 @@
 /*
- * ui-button. Consumes only --ems-* semantic and component tokens (no raw values for colour,
- * spacing, radius or type). Lives in the `components` cascade layer so app/utility styles win.
+ * ui-button (Daylight): pill-shaped, label-weight type. Consumes only --ems-* foundation,
+ * semantic and component tokens (no raw colour, spacing, radius or type values). Lives in the
+ * `components` cascade layer so app and utility styles win.
  */
 @layer components {
   :host {
     --_bg: var(--ems-button-primary-bg);
     --_bg-hover: var(--ems-button-primary-bg-hover);
+    --_bg-active: var(--ems-button-primary-bg-active);
     --_fg: var(--ems-button-primary-fg);
-    --_border: transparent;
+    --_border: var(--ems-button-primary-border);
     --_height: var(--ems-button-md-height);
     --_padding-inline: var(--ems-button-md-padding-inline);
     --_font-size: var(--ems-button-md-font-size);
@@ -26,22 +28,27 @@
     border-radius: var(--ems-button-radius);
     background-color: var(--_bg);
     color: var(--_fg);
-    font-family: inherit;
+    font-family: var(--ems-font-family-sans);
     font-size: var(--_font-size);
     font-weight: var(--ems-button-font-weight);
-    line-height: 1;
+    line-height: var(--ems-type-label-line-height);
+    letter-spacing: var(--ems-type-label-letter-spacing);
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
     user-select: none;
+    -webkit-tap-highlight-color: transparent;
     transition:
-      background-color var(--ems-motion-duration-control) var(--ems-motion-easing-standard),
-      border-color var(--ems-motion-duration-control) var(--ems-motion-easing-standard),
-      color var(--ems-motion-duration-control) var(--ems-motion-easing-standard);
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
   }
 
   :host(:hover) {
     background-color: var(--_bg-hover);
+  }
+
+  :host(:active) {
+    background-color: var(--_bg-active);
   }
 
   :host(:focus-visible) {
@@ -53,20 +60,25 @@
   :host([data-variant='secondary']) {
     --_bg: var(--ems-button-secondary-bg);
     --_bg-hover: var(--ems-button-secondary-bg-hover);
+    --_bg-active: var(--ems-button-secondary-bg-active);
     --_fg: var(--ems-button-secondary-fg);
     --_border: var(--ems-button-secondary-border);
   }
 
   :host([data-variant='ghost']) {
-    --_bg: transparent;
+    --_bg: var(--ems-button-ghost-bg);
     --_bg-hover: var(--ems-button-ghost-bg-hover);
+    --_bg-active: var(--ems-button-ghost-bg-active);
     --_fg: var(--ems-button-ghost-fg);
+    --_border: var(--ems-button-ghost-border);
   }
 
   :host([data-variant='danger']) {
     --_bg: var(--ems-button-danger-bg);
     --_bg-hover: var(--ems-button-danger-bg-hover);
+    --_bg-active: var(--ems-button-danger-bg-active);
     --_fg: var(--ems-button-danger-fg);
+    --_border: var(--ems-button-danger-border);
   }
 
   /* Sizes */
@@ -85,16 +97,18 @@
   /* States */
   :host([disabled]),
   :host([aria-disabled='true']:not([aria-busy='true'])) {
-    --_bg: var(--ems-color-bg-subtle);
-    --_bg-hover: var(--ems-color-bg-subtle);
-    --_fg: var(--ems-color-text-disabled);
-    --_border: var(--ems-color-border-default);
+    --_bg: var(--ems-button-disabled-bg);
+    --_bg-hover: var(--ems-button-disabled-bg);
+    --_bg-active: var(--ems-button-disabled-bg);
+    --_fg: var(--ems-button-disabled-fg);
+    --_border: var(--ems-button-disabled-border);
 
     cursor: not-allowed;
   }
 
   :host([aria-busy='true']) {
     --_bg-hover: var(--_bg);
+    --_bg-active: var(--_bg);
 
     cursor: progress;
   }
@@ -114,9 +128,9 @@
     position: absolute;
     inset: 0;
     margin: auto;
-    inline-size: 1em;
-    block-size: 1em;
-    border: 0.125em solid currentColor;
+    inline-size: 1.1em;
+    block-size: 1.1em;
+    border: 0.15em solid currentColor;
     border-inline-end-color: transparent;
     border-radius: 50%;
     animation: ui-button-spin var(--ems-motion-duration-spinner) linear infinite;
