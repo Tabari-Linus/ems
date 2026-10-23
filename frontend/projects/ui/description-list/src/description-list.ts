@@ -12,6 +12,7 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { Icon } from '@ems/icons';
 
 export type DescriptionListColumns = 1 | 2 | 3;
 export type DescriptionItemSpan = 1 | 2 | 3 | 'full';
@@ -69,6 +70,7 @@ export class DescriptionList {
   // Attribute selector on purpose: a <div> is the only valid wrapper of <dt>/<dd> inside <dl>.
   // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'div[uiDescriptionItem]',
+  imports: [Icon],
   exportAs: 'uiDescriptionItem',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -83,16 +85,7 @@ export class DescriptionList {
           [attr.data-state]="state()"
           (click)="copy()"
         >
-          @if (state() === 'copied') {
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
-          } @else {
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <rect x="9" y="9" width="12" height="12" rx="2" />
-              <path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" />
-            </svg>
-          }
+          <ui-icon [name]="state() === 'copied' ? 'check' : 'copy'" size="sm" />
         </button>
         <span class="ui-description-item__feedback" role="status">{{ feedback() }}</span>
       }

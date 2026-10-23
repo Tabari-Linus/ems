@@ -13,6 +13,7 @@ import {
   type DataTableRowEvent,
   type DataTableSort,
 } from './data-table';
+import { press } from '../../testing/keyboard';
 
 interface Person {
   name: string;
@@ -96,11 +97,7 @@ async function setup() {
     change(fixture.componentInstance);
     await settle();
   };
-  const key = (target: Element, k: string) => {
-    const event = new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true });
-    target.dispatchEvent(event);
-    return event;
-  };
+  const key = (target: Element, k: string) => press(k, target);
   return { fixture, el, settle, update, key, host: fixture.componentInstance };
 }
 

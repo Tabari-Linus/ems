@@ -1,5 +1,5 @@
-import { Icon } from '../../../icons/src/public-api';
-import { Button } from '../../button/src/public-api';
+import { Icon } from '@ems/icons';
+import { Button } from '@ems/ui/button';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, fn } from 'storybook/test';
 import { EmptyState } from './empty-state';
@@ -11,7 +11,7 @@ interface EmptyStateArgs {
 }
 
 const meta: Meta<EmptyStateArgs> = {
-  title: 'Components/Empty state',
+  title: 'Feedback/Empty state',
   component: EmptyState,
   decorators: [moduleMetadata({ imports: [EmptyState, Icon, Button] })],
   args: {
@@ -25,9 +25,9 @@ const meta: Meta<EmptyStateArgs> = {
     props: args,
     template: `
       <ui-empty-state [heading]="heading" [description]="description">
-        <ui-icon uiEmptyStateIcon name="users" [size]="24" />
+        <ui-icon uiEmptyStateIcon name="users" />
         <button uiEmptyStateActions uiButton type="button" (click)="onAction()">
-          <ui-icon name="plus" [size]="16" /> Add person
+          <ui-icon name="plus" /> Add person
         </button>
       </ui-empty-state>
     `,
@@ -71,7 +71,7 @@ export const NoAction: Story = {
     template: `
       <ui-empty-state heading="No requests to review"
         description="You're all caught up. New password reset requests will appear here.">
-        <ui-icon uiEmptyStateIcon name="circle-check" [size]="24" />
+        <ui-icon uiEmptyStateIcon name="circle-check" />
       </ui-empty-state>
     `,
   }),
@@ -86,7 +86,7 @@ export const SearchNoResults: Story = {
     template: `
       <ui-empty-state heading="No one matches “Kwabena”" headingLevel="3"
         description="Check the spelling, or clear the Office and Status filters to search everyone.">
-        <ui-icon uiEmptyStateIcon name="search" [size]="24" />
+        <ui-icon uiEmptyStateIcon name="search" />
         <button uiEmptyStateActions uiButton variant="secondary" type="button">Clear filters</button>
       </ui-empty-state>
     `,

@@ -1,5 +1,5 @@
-import { Icon } from '../../../icons/src/public-api';
-import { Button } from '../../button/src/public-api';
+import { Icon } from '@ems/icons';
+import { Button } from '@ems/ui/button';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, waitFor, within } from 'storybook/test';
 import { Tooltip, type TooltipPosition } from './tooltip';
@@ -10,7 +10,7 @@ interface TooltipArgs {
 }
 
 const meta: Meta<TooltipArgs> = {
-  title: 'Components/Tooltip',
+  title: 'Overlays/Tooltip',
   decorators: [moduleMetadata({ imports: [Tooltip, Button, Icon] })],
   args: { text: 'Copy GH-ACC-0042', position: 'above' },
   argTypes: { position: { control: 'inline-radio', options: ['above', 'below', 'start', 'end'] } },
@@ -20,7 +20,7 @@ const meta: Meta<TooltipArgs> = {
       <div style="padding: 3rem 6rem;">
         <button uiButton variant="ghost" type="button" aria-label="Copy employee number"
           [uiTooltip]="text" [uiTooltipPosition]="position">
-          <ui-icon name="external-link" [size]="16" />
+          <ui-icon name="copy" />
         </button>
       </div>
     `,

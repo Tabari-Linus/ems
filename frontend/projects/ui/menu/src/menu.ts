@@ -41,7 +41,7 @@ export class MenuTrigger {}
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        min-inline-size: calc(var(--ems-space-16) * 3);
+        min-inline-size: var(--ems-size-popover-min-width);
         max-inline-size: calc(100vw - var(--ems-space-8));
         padding: var(--ems-space-1);
         border-radius: var(--ems-radius-lg);
@@ -52,7 +52,7 @@ export class MenuTrigger {}
         font-size: var(--ems-type-body-size);
         line-height: var(--ems-type-body-line-height);
         outline: none;
-        animation: ui-menu-in var(--ems-duration-fast) var(--ems-easing-standard);
+        animation: ui-menu-in var(--ems-duration-base) var(--ems-easing-emphasized);
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -142,17 +142,19 @@ export class Menu {}
       }
 
       :host(:focus-visible) {
-        outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-        outline-offset: calc(var(--ems-border-width-hairline) * -2);
+        outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+        outline-offset: calc(var(--ems-focus-ring-width) * -1);
       }
 
       :host([aria-disabled='true']) {
         background: transparent;
-        color: var(--ems-color-text-muted);
+        color: var(--ems-color-text-disabled);
         cursor: not-allowed;
       }
 
       .ui-menu-item__icon {
+        --ui-icon-size: var(--ems-icon-size-sm);
+
         display: inline-flex;
         color: inherit;
       }

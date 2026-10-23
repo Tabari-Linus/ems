@@ -13,7 +13,7 @@ interface InputStoryArgs {
 }
 
 const meta: Meta<InputStoryArgs> = {
-  title: 'Forms/Input',
+  title: 'Actions & inputs/Input',
   component: Input,
   decorators: [moduleMetadata({ imports: [Input, InputGroup, FormField] })],
   args: {

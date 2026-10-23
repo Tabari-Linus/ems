@@ -35,8 +35,15 @@ const preview: Preview = {
       storySort: {
         order: [
           'Foundations',
-          ['Colour', 'Typography', 'Space and shape', 'Motion', 'Token reference'],
-          'Components',
+          ['Colour', 'Typography', 'Space and shape', 'Motion', 'Icon', 'Token reference'],
+          'Actions & inputs',
+          'Feedback',
+          'Overlays',
+          'Navigation',
+          'Data display',
+          'Layout',
+          'Patterns',
+          ['Home', 'People directory'],
         ],
       },
     },

@@ -1,6 +1,6 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect } from 'storybook/test';
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import { Card } from './card';
 
 interface CardArgs {

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { AppShell, APP_SHELL_COMPACT_QUERY } from './app-shell';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [AppShell],
@@ -133,10 +134,10 @@ describe('AppShell', () => {
     expect(sidebar().contains(document.activeElement)).toBe(true);
 
     // Other keys are ignored; Escape closes and returns focus.
-    sidebar().dispatchEvent(new KeyboardEvent('keydown', { key: 'a', bubbles: true }));
+    press('a', sidebar());
     await settle();
     expect(host.open()).toBe(true);
-    sidebar().dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    press('Escape', sidebar());
     await settle();
     expect(host.open()).toBe(false);
     expect(document.activeElement).toBe(shell.querySelector('.ui-app-shell__menu'));

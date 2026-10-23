@@ -3,6 +3,7 @@ import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import type { SelectOption } from '@ems/ui/select';
 import { FilterPill } from './filter-pill';
+import { press } from '../../testing/keyboard';
 
 const OFFICES: SelectOption<string>[] = [
   { value: 'acc', label: 'Accra' },
@@ -34,16 +35,6 @@ class Host {
   readonly changes: unknown[] = [];
 }
 
-const KEY_CODES: Record<string, number> = {
-  Tab: 9,
-  Enter: 13,
-  Escape: 27,
-  End: 35,
-  Home: 36,
-  ArrowUp: 38,
-  ArrowDown: 40,
-};
-
 const flush = () => new Promise<void>((resolve) => setTimeout(resolve));
 
 async function settle(fixture: ComponentFixture<unknown>) {
@@ -63,11 +54,7 @@ async function setup() {
   const listbox = () => document.querySelector('[role="listbox"]') as HTMLElement | null;
   const options = () => [...document.querySelectorAll<HTMLElement>('[role="option"]')];
   const key = async (target: Element, key: string) => {
-    // CDK key managers read keyCode.
-    const keyCode = KEY_CODES[key];
-    target.dispatchEvent(
-      new KeyboardEvent('keydown', { key, keyCode, bubbles: true, cancelable: true }),
-    );
+    press(key, target);
     await settle(fixture);
   };
   return { fixture, host: fixture.componentInstance, root, single, multi, listbox, options, key };

@@ -12,7 +12,7 @@ interface AvatarArgs {
 }
 
 const meta: Meta<AvatarArgs> = {
-  title: 'Components/Avatar',
+  title: 'Data display/Avatar',
   component: Avatar,
   decorators: [moduleMetadata({ imports: [Avatar] })],
   args: {

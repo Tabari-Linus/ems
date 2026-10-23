@@ -1,13 +1,11 @@
 /*
  * input[uiInput], textarea[uiInput]. Contract tokens only (docs/design/token-contract.md).
  * Unencapsulated (the host is a void element); every selector is scoped by .ui-input.
- *
- * The contract has no control-height token yet: md uses --ems-space-10 (40px, the height of
- * search fields and filter pills in Daylight), sm uses --ems-space-8 (32px).
+ * Heights are control.{md,sm}.height, so inputs line up with buttons, selects and filter pills.
  */
 @layer components {
   .ui-input {
-    --_height: var(--ems-space-10);
+    --_height: var(--ems-control-md-height);
     --_padding-inline: var(--ems-space-3);
 
     box-sizing: border-box;
@@ -33,7 +31,7 @@
   }
 
   .ui-input[data-size='sm'] {
-    --_height: var(--ems-space-8);
+    --_height: var(--ems-control-sm-height);
     --_padding-inline: var(--ems-space-2);
   }
 
@@ -75,7 +73,7 @@
   .ui-input:disabled {
     border-color: var(--ems-color-border-subtle);
     background-color: var(--ems-color-bg-sunken);
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 

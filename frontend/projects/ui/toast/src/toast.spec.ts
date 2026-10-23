@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TOAST_CONFIG, ToastService } from './toast.service';
 import { Toaster } from './toaster';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [Toaster],
@@ -149,10 +150,10 @@ describe('Toaster', () => {
     const { toasts, toaster, render } = await setup();
     toasts.show({ message: 'Saved' });
     await render();
-    toaster.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    press('Escape', toaster);
     expect(toaster.querySelectorAll('li')).toHaveLength(1);
     const li = toaster.querySelector('li') as HTMLElement;
-    li.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    press('Escape', li);
     await render();
     expect(toaster.querySelectorAll('li')).toHaveLength(0);
   });

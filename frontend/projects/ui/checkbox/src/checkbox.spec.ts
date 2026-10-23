@@ -68,12 +68,13 @@ describe('Checkbox', () => {
     const { input, host, update, fixture, root } = await setup();
     await update((h) => h.mixed.set(true));
     expect(input.indeterminate).toBe(true);
-    expect(root.querySelector('svg path')?.getAttribute('d')).toBe('M6 12h12');
+    expect(root.querySelector('.ui-checkbox__mark')?.getAttribute('data-icon')).toBe('minus');
 
     input.click();
     fixture.detectChanges();
     expect(host.mixed()).toBe(false);
     expect(input.indeterminate).toBe(false);
+    expect(root.querySelector('.ui-checkbox__mark')?.getAttribute('data-icon')).toBe('check');
   });
 
   it('reflects disabled and invalid', async () => {

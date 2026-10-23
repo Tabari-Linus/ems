@@ -67,9 +67,9 @@ export const Gallery: Story = {
         @for (name of names; track name) {
           <li style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
             padding: 0.75rem; border: 1px solid var(--ems-color-border-default);
-            border-radius: var(--ems-radius-md); color: var(--ems-color-text-default);">
+            border-radius: var(--ems-radius-md); color: var(--ems-color-text-primary);">
             <ui-icon [name]="name" [size]="24" />
-            <code style="font-size: var(--ems-font-size-xs);">{{ name }}</code>
+            <code style="font-size: var(--ems-type-caption-size);">{{ name }}</code>
           </li>
         }
       </ul>

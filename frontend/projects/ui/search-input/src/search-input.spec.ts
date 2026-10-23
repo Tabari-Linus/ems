@@ -3,6 +3,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormField } from '@ems/ui/form-field';
 import { SearchInput, type ShortcutPlatform } from './search-input';
+import { press, type PressOptions } from '../../testing/keyboard';
 
 @Component({
   imports: [SearchInput],
@@ -43,9 +44,8 @@ async function setup() {
     change(fixture.componentInstance);
     fixture.detectChanges();
   };
-  const key = (target: EventTarget, init: KeyboardEventInit) => {
-    const event = new KeyboardEvent('keydown', { bubbles: true, cancelable: true, ...init });
-    target.dispatchEvent(event);
+  const key = (target: EventTarget, init: { key: string } & PressOptions) => {
+    const event = press(init.key, target, init);
     fixture.detectChanges();
     return event;
   };

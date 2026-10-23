@@ -7,7 +7,7 @@ interface StatusPillArgs {
 }
 
 const meta: Meta<StatusPillArgs> = {
-  title: 'Components/Status pill',
+  title: 'Feedback/Status pill',
   component: StatusPill,
   decorators: [moduleMetadata({ imports: [StatusPill] })],
   args: { status: 'ACTIVE' },

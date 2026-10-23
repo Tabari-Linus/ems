@@ -10,6 +10,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { type FormFieldContext, UI_FORM_FIELD, uniqueId } from './form-field-control';
+import { Icon } from '@ems/icons';
 
 /**
  * A labelled form control: label, optional hint, error message and required marker, with the
@@ -31,6 +32,7 @@ import { type FormFieldContext, UI_FORM_FIELD, uniqueId } from './form-field-con
  */
 @Component({
   selector: 'ui-form-field',
+  imports: [Icon],
   exportAs: 'uiFormField',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -48,21 +50,7 @@ import { type FormFieldContext, UI_FORM_FIELD, uniqueId } from './form-field-con
     <ng-content />
     @if (error(); as message) {
       <p class="ui-form-field__error" [id]="errorId" [attr.role]="announce() ? 'alert' : null">
-        <!-- Lucide "circle-alert" (inline: @ems/ui cannot depend on @ems/icons yet). -->
-        <svg
-          class="ui-form-field__error-icon"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 8v4M12 16h.01" />
-        </svg>
+        <ui-icon class="ui-form-field__error-icon" name="circle-alert" size="sm" />
         <span>{{ message }}</span>
       </p>
     } @else if (hint(); as text) {

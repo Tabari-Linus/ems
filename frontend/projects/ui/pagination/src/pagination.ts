@@ -14,6 +14,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { Button } from '@ems/ui/button';
+import { Icon } from '@ems/icons';
 
 export type PaginationVariant = 'pages' | 'load-more';
 
@@ -34,7 +35,7 @@ const formatter = new Intl.NumberFormat('en-GB');
 @Component({
   selector: 'ui-pagination',
   exportAs: 'uiPagination',
-  imports: [Button],
+  imports: [Button, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <nav class="ui-pagination__nav" [attr.aria-label]="label()">
@@ -64,9 +65,7 @@ const formatter = new Intl.NumberFormat('en-GB');
             [disabled]="!hasPrevious() || loading()"
             (click)="step(-1)"
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
+            <ui-icon name="chevron-left" size="sm" />
             {{ previousLabel() }}
           </button>
           <button
@@ -79,9 +78,7 @@ const formatter = new Intl.NumberFormat('en-GB');
             (click)="step(1)"
           >
             {{ nextLabel() }}
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="m9 18 6-6-6-6" />
-            </svg>
+            <ui-icon name="chevron-right" size="sm" />
           </button>
         </div>
       }

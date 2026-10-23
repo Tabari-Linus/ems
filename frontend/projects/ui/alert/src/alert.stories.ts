@@ -1,4 +1,4 @@
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import {
   componentWrapperDecorator,
   moduleMetadata,
@@ -17,7 +17,7 @@ interface AlertArgs {
 }
 
 const meta: Meta<AlertArgs> = {
-  title: 'Components/Alert',
+  title: 'Feedback/Alert',
   component: Alert,
   decorators: [
     moduleMetadata({ imports: [Alert, Button] }),

@@ -51,7 +51,7 @@
     margin: calc(var(--ems-space-1) * -1) calc(var(--ems-space-2) * -1) 0 0;
     padding: 0;
     border: 0;
-    border-radius: 50%;
+    border-radius: var(--ems-radius-pill);
     background: transparent;
     color: var(--ems-color-text-secondary);
     cursor: pointer;
@@ -59,22 +59,13 @@
   }
 
   .ui-dialog__close:hover {
-    background-color: var(--ems-color-bg-sunken);
-    color: var(--ems-color-text-primary);
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
   }
 
   .ui-dialog__close:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: 0;
-  }
-
-  .ui-dialog__close svg {
-    inline-size: var(--ems-icon-size-md);
-    block-size: var(--ems-icon-size-md);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   .ui-dialog__body {

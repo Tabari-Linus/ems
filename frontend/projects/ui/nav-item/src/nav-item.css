@@ -28,8 +28,8 @@
   }
 
   :host(:focus-visible) {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   /* Current page: the one solid indigo element in the sidebar. */
@@ -44,6 +44,8 @@
   }
 
   .ui-nav-item__icon {
+    --ui-icon-size: var(--ems-icon-size-md);
+
     display: inline-flex;
     flex: none;
     color: var(--ems-color-text-muted);
@@ -98,8 +100,8 @@
 
   :host-context([data-sidebar='collapsed']) .ui-nav-item__label {
     position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
+    inline-size: 1px; /* ds-lint-allow: visually hidden */
+    block-size: 1px; /* ds-lint-allow: visually hidden */
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
@@ -122,8 +124,8 @@
 
   @media (forced-colors: active) {
     :host([aria-current='page']) {
-      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
-      outline-offset: calc(var(--ems-border-width-hairline) * -2);
+      outline: var(--ems-focus-ring-width) solid Highlight;
+      outline-offset: calc(var(--ems-focus-ring-width) * -1);
     }
 
     .ui-nav-item__badge {

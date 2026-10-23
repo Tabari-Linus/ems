@@ -14,11 +14,13 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { Icon } from '@ems/icons';
+import { MEDIA_QUERIES } from '@ems/tokens';
 
 let nextId = 0;
 
-/** Below this width the sidebar becomes an off-canvas drawer (keep in sync with app-shell.css). */
-export const APP_SHELL_COMPACT_QUERY = '(max-width: 899.98px)';
+/** Below `breakpoint.compact` (900px) the sidebar becomes an off-canvas drawer. */
+export const APP_SHELL_COMPACT_QUERY = MEDIA_QUERIES.compact;
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -43,6 +45,7 @@ const FOCUSABLE =
  */
 @Component({
   selector: 'ui-app-shell',
+  imports: [Icon],
   exportAs: 'uiAppShell',
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './app-shell.html',

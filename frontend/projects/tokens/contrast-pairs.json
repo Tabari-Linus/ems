@@ -1,5 +1,5 @@
 {
-  "$comment": "Token pairs checked by scripts/check-contrast.mjs in BOTH themes. kind: text = 4.5:1 (WCAG 1.4.3), large-text = 3:1, ui = 3:1 (WCAG 1.4.11 control borders, focus rings, solid fills that identify a control). Decorative tokens (border.subtle, text.disabled, bg.overlay) are intentionally absent. Secondary/soft fills are identified by their label, not their edge, so they are checked as text pairs only.",
+  "$comment": "Token pairs checked by scripts/check-contrast.mjs in BOTH themes. kind: text = 4.5:1 (WCAG 1.4.3), large-text = 3:1, ui = 3:1 (WCAG 1.4.11 control borders, focus rings, solid fills that identify a control). Decorative tokens (border.subtle, text.disabled, bg.overlay, status.neutral.border, skeleton.*) are intentionally absent. Secondary/soft fills are identified by their label, not their edge, so they are checked as text pairs only.",
   "pairs": [
     {
       "fg": "color.text.primary",
@@ -460,6 +460,16 @@
       "fg": "button.danger.bg",
       "bg": "color.bg.surface",
       "kind": "ui"
+    },
+    {
+      "fg": "color.status.neutral.text",
+      "bg": "color.status.neutral.bg",
+      "kind": "text"
+    },
+    {
+      "fg": "color.status.neutral.text",
+      "bg": "color.bg.surface",
+      "kind": "text"
     }
   ]
 }

@@ -45,7 +45,13 @@ const GROUPS: readonly Omit<Group, 'tokens'>[] = [
     id: 'color.status.',
     title: 'Status',
     usage:
-      'Alerts, toasts and validation. Pair the colour with an icon and words; never colour alone.',
+      'Alerts, toasts and validation. Pair the colour with an icon and words; never colour alone. neutral is for tags and neutral pills.',
+  },
+  {
+    id: 'color.skeleton.',
+    title: 'Skeleton',
+    usage:
+      'Loading placeholder shapes pulse between base and highlight. Decorative: no contrast requirement, and they stay still with reduced motion.',
   },
 ];
 

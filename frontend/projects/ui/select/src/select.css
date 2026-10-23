@@ -10,7 +10,7 @@
   }
 
   .ui-select__control {
-    --_height: var(--ems-space-10);
+    --_height: var(--ems-control-md-height);
     --_padding-inline: var(--ems-space-3);
 
     position: relative;
@@ -27,7 +27,7 @@
   }
 
   .ui-select__control[data-size='sm'] {
-    --_height: var(--ems-space-8);
+    --_height: var(--ems-control-sm-height);
     --_padding-inline: var(--ems-space-2);
   }
 
@@ -75,7 +75,7 @@
   }
 
   .ui-select__trigger:disabled {
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 
@@ -93,8 +93,6 @@
 
   .ui-select__chevron {
     flex: none;
-    inline-size: var(--ems-space-4);
-    block-size: var(--ems-space-4);
     color: var(--ems-color-text-muted);
   }
 
@@ -120,13 +118,8 @@
   }
 
   .ui-select__clear:focus-visible {
-    outline: var(--ems-border-width-hairline) solid var(--ems-color-border-focus);
-    box-shadow: var(--ems-elevation-focus);
-  }
-
-  .ui-select__clear > svg {
-    inline-size: var(--ems-space-4);
-    block-size: var(--ems-space-4);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {

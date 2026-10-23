@@ -1,8 +1,9 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { expect, fireEvent, fn, screen, waitFor } from 'storybook/test';
+import { expect, fn, screen, waitFor } from 'storybook/test';
 import { FormField } from '@ems/ui/form-field';
 import { NativeSelect } from './native-select';
 import { Select, type SelectOption } from './select';
+import { press } from '../../testing/keyboard';
 
 const OFFICES: SelectOption<string>[] = [
   { value: 'ACC', label: 'Accra' },
@@ -20,7 +21,7 @@ interface SelectStoryArgs {
 }
 
 const meta: Meta<SelectStoryArgs> = {
-  title: 'Forms/Select',
+  title: 'Actions & inputs/Select',
   component: Select,
   decorators: [moduleMetadata({ imports: [Select, NativeSelect, FormField] })],
   args: { value: null, clearable: false, disabled: false, error: '', onChange: fn() },
@@ -61,15 +62,6 @@ Disabled options are skipped. \`clearable\` adds a separate "Clear selection" bu
 
 export default meta;
 type Story = StoryObj<SelectStoryArgs>;
-
-/**
- * CDK key managers read `KeyboardEvent.keyCode`, which real browsers set but user-event does not,
- * so keys inside the open list are dispatched with it.
- */
-const KEY_CODES = { End: 35, Home: 36, Enter: 13, k: 75 } as const;
-function press(key: keyof typeof KEY_CODES): void {
-  fireEvent.keyDown(document.activeElement as Element, { key, keyCode: KEY_CODES[key] });
-}
 
 export const Default: Story = {
   play: async ({ canvas, userEvent, args }) => {

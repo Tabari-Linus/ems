@@ -1,4 +1,4 @@
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, fn } from 'storybook/test';
 import { ErrorState, type ErrorStateKind } from './error-state';
@@ -9,7 +9,7 @@ interface ErrorStateArgs {
 }
 
 const meta: Meta<ErrorStateArgs> = {
-  title: 'Components/Error state',
+  title: 'Feedback/Error state',
   component: ErrorState,
   decorators: [moduleMetadata({ imports: [ErrorState, Button] })],
   args: { kind: 'server', onAction: fn() },

@@ -7,20 +7,21 @@ import {
   type StoryObj,
 } from '@storybook/angular-vite';
 import { expect, waitFor } from 'storybook/test';
+import { Icon } from '@ems/icons';
 import { NavItem } from './nav-item';
 
 @Component({ template: '', changeDetection: ChangeDetectionStrategy.OnPush })
 class EmptyRoute {}
 
-const ICON_HOME = `<svg uiNavIcon width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>`;
-const ICON_PEOPLE = `<svg uiNavIcon width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M22 21a7 7 0 0 0-4-6.3"/></svg>`;
-const ICON_REQUESTS = `<svg uiNavIcon width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>`;
-const ICON_PROFILE = `<svg uiNavIcon width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>`;
+const ICON_HOME = '<ui-icon uiNavIcon name="home" />';
+const ICON_PEOPLE = '<ui-icon uiNavIcon name="users" />';
+const ICON_REQUESTS = '<ui-icon uiNavIcon name="inbox" />';
+const ICON_PROFILE = '<ui-icon uiNavIcon name="user" />';
 
 const meta: Meta<NavItem> = {
-  title: 'Layout/Nav item',
+  title: 'Navigation/Nav item',
   component: NavItem,
-  decorators: [moduleMetadata({ imports: [NavItem] })],
+  decorators: [moduleMetadata({ imports: [NavItem, Icon] })],
   parameters: {
     docs: {
       description: {

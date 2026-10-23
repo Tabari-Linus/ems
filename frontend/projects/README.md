@@ -27,24 +27,28 @@ projects/
 ├── icons/src/{icon.ts,registry.ts}
 └── ui/
     ├── styles/{index,fonts,reset,base,overlay,utilities}.css   global stylesheet (cascade layers)
-    ├── button/src/                                     @ems/ui/button
-    └── theme/src/                                      @ems/ui/theme (ThemeService, no-flash snippet)
+    ├── <name>/src/                                     @ems/ui/<name>, one per component (catalogue below)
+    ├── src/public-api.ts                               EMS_UI_ENTRY_POINTS (every entry point)
+    ├── patterns/                                       composed page stories (Home, People) + demo chrome
+    ├── testing/keyboard.ts                             shared keydown helper for specs and play functions
+    └── scripts/lint-css.mjs                            `npm run ds:lint-css`
 ```
 
 ## Commands (run in `frontend/`)
 
-| Command                         | Does                                                                                     |
-| ------------------------------- | ---------------------------------------------------------------------------------------- |
-| `npm run tokens:build`          | DTCG sources → `projects/tokens/src/generated/`                                          |
-| `npm run tokens:check`          | rebuild and fail if the committed output is stale (CI)                                   |
-| `npm run tokens:check-contrast` | contrast table for every declared pair, both themes; exit 1 on a failure                 |
-| `npm run lib:build`             | tokens → icons → ui into `dist/{tokens,icons,ui}`                                        |
-| `npm run lib:test`              | Vitest unit tests for ui and icons, coverage gate 90% lines                              |
-| `npm run storybook`             | docs site on http://localhost:6006 (light/dark toolbar toggle)                           |
-| `npm run storybook:build`       | static site in `storybook-static/`                                                       |
-| `npm run storybook:test`        | every story in Chromium, **light and dark**: render + `play` + axe (any violation fails) |
-| `npm run test:visual`           | Playwright screenshots of Button stories, light + dark, + axe (needs `storybook:build`)  |
-| `npm run changeset`             | record a change to a package (Changesets)                                                |
+| Command                         | Does                                                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `npm run tokens:build`          | DTCG sources → `projects/tokens/src/generated/`                                                            |
+| `npm run tokens:check`          | rebuild and fail if the committed output is stale (CI)                                                     |
+| `npm run tokens:check-contrast` | contrast table for every declared pair, both themes; exit 1 on a failure                                   |
+| `npm run ds:lint-css`           | tokens-only gate for component CSS and inline styles (see "Tokens-only CSS lint")                          |
+| `npm run lib:build`             | tokens → icons → ui into `dist/{tokens,icons,ui}`                                                          |
+| `npm run lib:test`              | Vitest unit tests for ui and icons, coverage gate 90% lines                                                |
+| `npm run storybook`             | docs site on http://localhost:6006 (light/dark toolbar toggle)                                             |
+| `npm run storybook:build`       | static site in `storybook-static/`                                                                         |
+| `npm run storybook:test`        | every story in Chromium, **light and dark**: render + `play` + axe (any violation fails)                   |
+| `npm run test:visual`           | Playwright screenshots of every component and pattern story, light + dark, + axe (needs `storybook:build`) |
+| `npm run changeset`             | record a change to a package (Changesets)                                                                  |
 
 Playwright needs Chromium once: `npx playwright install chromium`.
 
@@ -71,40 +75,45 @@ Playwright needs Chromium once: `npx playwright install chromium`.
 
 All names below are CSS variables, `--ems-` + the dotted path with dashes.
 
-| Group           | Tokens                                                                                                       | Use                                                                                                         |
-| --------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
-| Surfaces        | `color-bg-canvas`                                                                                            | the page behind everything (faint indigo tint)                                                              |
-|                 | `color-bg-surface`                                                                                           | cards, panels, inputs, sidebar (white in light)                                                             |
-|                 | `color-bg-sunken`                                                                                            | wells inside a card: tracks, notes, segmented controls, row hover                                           |
-|                 | `color-bg-raised`                                                                                            | menus, popovers, dialogs, drawers (lighter than surface in dark)                                            |
-|                 | `color-bg-overlay`                                                                                           | translucent scrim behind modal layers                                                                       |
-|                 | `color-bg-inverse`                                                                                           | tooltips, toasts (with `color-text-inverse`)                                                                |
-| Text            | `color-text-primary` / `-secondary` / `-muted`                                                               | content / supporting lines / meta and hints. All ≥ 4.5:1 on every surface                                   |
-|                 | `color-text-link`                                                                                            | inline links, ghost buttons                                                                                 |
-|                 | `color-text-on-accent`                                                                                       | text on `color-accent-solid`                                                                                |
-|                 | `color-text-disabled`                                                                                        | disabled controls only (exempt from contrast)                                                               |
-| Borders         | `color-border-subtle`                                                                                        | dividers (decorative, not a boundary)                                                                       |
-|                 | `color-border-default`                                                                                       | control outlines: inputs, selects, filter pills (≥ 3:1)                                                     |
-|                 | `color-border-strong`                                                                                        | hovered control outline                                                                                     |
-|                 | `color-border-focus`                                                                                         | focus ring and focused-field outline (≥ 3:1)                                                                |
-| Accent          | `color-accent-solid` (+ `-hover`, `-active`, `-on-solid`)                                                    | the one primary action, the current nav item, badges                                                        |
-|                 | `color-accent-soft` (+ `-hover`, `-soft-text`)                                                               | selected tabs, filters, secondary buttons, counts, icon tiles                                               |
-| Status          | `color-status-{success,warning,danger,info}-{text,bg,border,solid,solid-hover,on-solid}`                     | alerts, toasts, validation; always with an icon and words                                                   |
-| Employee status | `color-employee-status-{active,pending,inactive,archived}-{bg,text}`                                         | status pills, with a dot shape and the word                                                                 |
-| Avatars         | `color-avatar-{1..6}-{bg,text}`                                                                              | department pastel tint for initials avatars; the only place department colour appears                       |
-| Selection       | `color-selection-bg`                                                                                         | `::selection`                                                                                               |
-| Elevation       | `elevation-card` / `-raised` / `-overlay`                                                                    | box-shadow for cards / menus, popovers / dialogs, drawers                                                   |
-|                 | `elevation-focus`                                                                                            | outer glow around a focused text field (with a `color-border-focus` outline)                                |
-| Radius          | `radius-sm` 6 · `radius-md` 10 · `radius-lg` 12 · `radius-xl` 14 · `radius-pill`                             | tags · inputs · inner panels, menus · cards, dialogs · buttons, filters, tabs, pills, avatars               |
-| Space           | `space-{0,1,2,3,4,5,6,8,10,12,16}`                                                                           | 4-pt scale, `space-N` = N × 4px                                                                             |
-| Lines           | `border-width-hairline` (1px), `border-width-thick` (2px)                                                    | dividers and outlines; focus ring                                                                           |
-| Motion          | `duration-{fast,base,slow}` (120/180/240 ms), `easing-{standard,emphasized}`                                 | colour/hover: fast + standard; overlays entering: base/slow + emphasized                                    |
-| Layers          | `z-{sticky,dropdown,overlay,modal,toast}`                                                                    | 100 / 900 / 1000 (CDK overlay container) / 1100 / 1200                                                      |
-| Fonts           | `font-family-sans` (Plus Jakarta Sans), `font-family-mono` (Geist Mono)                                      | everything / employee numbers, codes, dates, counts (tabular)                                               |
-| Type roles      | `type-{display,title,headline,body,body-strong,label,caption,mono}-{size,weight,line-height,letter-spacing}` | see below; or the `.ui-type-<role>` utility class                                                           |
-| Focus           | `focus-ring-{color,width,offset}`                                                                            | `:focus-visible` outline (already global)                                                                   |
-| Controls        | `control-{sm,md,lg}-height` (32/40/48px), `control-border-width`, `control-min-target` (24px)                | buttons, inputs, selects and pills share heights so a filter bar lines up; outlines; WCAG 2.5.8 target size |
-| Icons           | `icon-size-{sm,md,lg}` (16/20/24px)                                                                          | in buttons and meta lines / nav, icon buttons, inputs / empty states                                        |
+| Group           | Tokens                                                                                                                                               | Use                                                                                                         |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Surfaces        | `color-bg-canvas`                                                                                                                                    | the page behind everything (faint indigo tint)                                                              |
+|                 | `color-bg-surface`                                                                                                                                   | cards, panels, inputs, sidebar (white in light)                                                             |
+|                 | `color-bg-sunken`                                                                                                                                    | wells inside a card: tracks, notes, segmented controls, row hover                                           |
+|                 | `color-bg-raised`                                                                                                                                    | menus, popovers, dialogs, drawers (lighter than surface in dark)                                            |
+|                 | `color-bg-overlay`                                                                                                                                   | translucent scrim behind modal layers                                                                       |
+|                 | `color-bg-inverse`                                                                                                                                   | tooltips, toasts (with `color-text-inverse`)                                                                |
+| Text            | `color-text-primary` / `-secondary` / `-muted`                                                                                                       | content / supporting lines / meta and hints. All ≥ 4.5:1 on every surface                                   |
+|                 | `color-text-link`                                                                                                                                    | inline links, ghost buttons                                                                                 |
+|                 | `color-text-on-accent`                                                                                                                               | text on `color-accent-solid`                                                                                |
+|                 | `color-text-disabled`                                                                                                                                | disabled controls only (exempt from contrast)                                                               |
+| Borders         | `color-border-subtle`                                                                                                                                | dividers (decorative, not a boundary)                                                                       |
+|                 | `color-border-default`                                                                                                                               | control outlines: inputs, selects, filter pills (≥ 3:1)                                                     |
+|                 | `color-border-strong`                                                                                                                                | hovered control outline                                                                                     |
+|                 | `color-border-focus`                                                                                                                                 | focus ring and focused-field outline (≥ 3:1)                                                                |
+| Accent          | `color-accent-solid` (+ `-hover`, `-active`, `-on-solid`)                                                                                            | the one primary action, the current nav item, badges                                                        |
+|                 | `color-accent-soft` (+ `-hover`, `-soft-text`)                                                                                                       | selected tabs, filters, secondary buttons, counts, icon tiles                                               |
+| Status          | `color-status-{success,warning,danger,info}-{text,bg,border,solid,solid-hover,on-solid}`                                                             | alerts, toasts, validation; always with an icon and words                                                   |
+| Employee status | `color-employee-status-{active,pending,inactive,archived}-{bg,text}`                                                                                 | status pills, with a dot shape and the word                                                                 |
+| Avatars         | `color-avatar-{1..6}-{bg,text}`                                                                                                                      | department pastel tint for initials avatars; the only place department colour appears                       |
+| Selection       | `color-selection-bg`                                                                                                                                 | `::selection`                                                                                               |
+| Elevation       | `elevation-card` / `-raised` / `-overlay`                                                                                                            | box-shadow for cards / menus, popovers / dialogs, drawers                                                   |
+|                 | `elevation-focus`                                                                                                                                    | outer glow around a focused text field (with a `color-border-focus` outline)                                |
+| Radius          | `radius-sm` 6 · `radius-md` 10 · `radius-lg` 12 · `radius-xl` 14 · `radius-pill`                                                                     | tags · inputs · inner panels, menus · cards, dialogs · buttons, filters, tabs, pills, avatars               |
+| Space           | `space-{0,1,2,3,4,5,6,8,10,12,16}`                                                                                                                   | 4-pt scale, `space-N` = N × 4px                                                                             |
+| Lines           | `border-width-hairline` (1px), `border-width-thick` (2px)                                                                                            | dividers and outlines; focus ring                                                                           |
+| Motion          | `duration-{fast,base,slow}` (120/180/240 ms), `easing-{standard,emphasized}`                                                                         | colour/hover: fast + standard; overlays entering: base/slow + emphasized                                    |
+| Layers          | `z-{sticky,dropdown,overlay,modal,toast}`                                                                                                            | 100 / 900 / 1000 (CDK overlay container) / 1100 / 1200                                                      |
+| Fonts           | `font-family-sans` (Plus Jakarta Sans), `font-family-mono` (Geist Mono)                                                                              | everything / employee numbers, codes, dates, counts (tabular)                                               |
+| Type roles      | `type-{display,title,headline,body,body-strong,label,caption,mono}-{size,weight,line-height,letter-spacing}`                                         | see below; or the `.ui-type-<role>` utility class                                                           |
+| Focus           | `focus-ring-{color,width,offset}`                                                                                                                    | `:focus-visible` outline (already global)                                                                   |
+| Controls        | `control-{sm,md,lg}-height` (32/40/48px), `control-border-width`, `control-min-target` (24px)                                                        | buttons, inputs, selects and pills share heights so a filter bar lines up; outlines; WCAG 2.5.8 target size |
+| Icons           | `icon-size-{sm,md,lg}` (16/20/24px)                                                                                                                  | in buttons and meta lines / nav, icon buttons, inputs / empty states                                        |
+| Neutral status  | `color-status-neutral-{bg,text,border}`                                                                                                              | tags, neutral status pills                                                                                  |
+| Skeleton        | `color-skeleton-{base,highlight}`                                                                                                                    | loading shapes pulse between the two (decorative)                                                           |
+| Layout          | `layout-sidebar-width` 232 · `-sidebar-collapsed-width` 72 · `layout-drawer-width` 288 · `layout-topbar-height` 68 · `layout-content-max-width` 1120 | the app shell                                                                                               |
+| Sizes           | `size-dialog-{sm,md,lg}` 416/512/704 · `size-drawer-{md,lg}` 480/640 · `size-tooltip-max-width` 256 · `size-popover-min-width` 192                   | overlay widths                                                                                              |
+| Breakpoints     | `breakpoint-{narrow,compact}` 640/900 (reference only; `BREAKPOINTS` / `MEDIA_QUERIES` in TS)                                                        | compact: shell drawer; narrow: full-screen dialogs/drawers, table cards, full-width toasts                  |
 
 | Type role     | Size / weight / line-height / tracking | For                                                                      |
 | ------------- | -------------------------------------- | ------------------------------------------------------------------------ |
@@ -185,6 +194,121 @@ is `role="img"` with an accessible name. Only icons listed in `EMS_ICONS` (`regi
 bundled; add one by importing its `Lucide<Name>` class there. Brand glyphs can be added as
 `LucideIconData` objects.
 
+Size with `size="sm|md|lg"` (the icon-size tokens), a px number or any CSS length. Without `size`
+the icon takes `--ui-icon-size` from its context, which is how components size what they project:
+`uiButton` sets `sm`, nav items `md`, empty states `lg`. `--ui-icon-stroke-width` overrides the
+stroke (checkbox mark: 3). `STATUS_ICONS` maps a status tone to its one icon (alerts, toasts).
+
+`@ems/ui` imports `@ems/icons` and `@ems/tokens` like any consumer. The library build resolves them
+to `dist/` (`projects/ui/tsconfig.lib.json`; `npm run lib:build` builds tokens → icons → ui): a TS
+path to another package's **sources** makes ng-packagr compile them inside a secondary entry point,
+which crashes with "Cannot destructure property 'pos' of 'file.referencedFiles[index]'". The app,
+unit tests and Storybook keep the source mappings.
+
+## Component catalogue (`@ems/ui/<entry>`)
+
+| Entry point        | Selector(s)                                                | Purpose                                               | Accessibility pattern                                                      |
+| ------------------ | ---------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------- |
+| `button`           | `button[uiButton]`, `a[uiButton]`                          | primary / secondary / ghost / danger actions, loading | native button/link; `aria-disabled`, `aria-busy`                           |
+| `form-field`       | `ui-form-field`                                            | label, hint, error, required for one control          | `<label for>`, `aria-describedby`, error `role="alert"` on submit          |
+| `input`            | `input[uiInput]`, `textarea[uiInput]`, `ui-input-group`    | text entry, with leading/trailing slots               | native input; `aria-invalid`                                               |
+| `select`           | `ui-select`, `select[uiSelect]`                            | single select (CDK listbox) and styled native select  | APG select-only combobox + listbox                                         |
+| `checkbox`         | `ui-checkbox`                                              | boolean / indeterminate choice                        | native checkbox                                                            |
+| `switch`           | `ui-switch`                                                | instant on/off setting                                | native checkbox `role="switch"`                                            |
+| `password-input`   | `ui-password-input`                                        | password with reveal and strength meter               | toggle button `aria-pressed`; strength as text                             |
+| `search-input`     | `ui-search-input`                                          | debounced search, ⌘K shortcut, clear                  | `type="search"`, `aria-keyshortcuts`                                       |
+| `filter-pill`      | `ui-filter-pill`                                           | "Office · All" filter, single or multiple             | button + CDK listbox popup (APG listbox)                                   |
+| `view-toggle`      | `ui-view-toggle`                                           | grid / list switch                                    | APG radio group (roving tabindex)                                          |
+| `alert`            | `ui-alert`                                                 | inline notice with icon, heading, actions, dismiss    | `role="alert"` (danger/warning) or `status`; `live="off"` for page content |
+| `toast`            | `ToastService`, `ui-toaster`                               | transient confirmation with optional action           | labelled region + polite live region; Escape closes; timers pause on focus |
+| `spinner`          | `ui-spinner`                                               | indeterminate progress                                | `role="status"` with a label, else `aria-hidden`                           |
+| `skeleton`         | `ui-skeleton`                                              | loading placeholders (lines, avatar, card)            | `aria-hidden`; the region carries `aria-busy`                              |
+| `empty-state`      | `ui-empty-state`                                           | nothing here yet, invite the next action              | heading + text; action is a real button/link                               |
+| `error-state`      | `ui-error-state`                                           | 403 / 404 / 500 / offline with one recovery action    | focusable heading (`focus()` after rendering)                              |
+| `status-pill`      | `ui-status-pill`                                           | employee status or tone: dot shape + label            | text label (colour never alone)                                            |
+| `tag`              | `ui-tag`                                                   | short metadata, optionally removable                  | remove button "Remove {label}"                                             |
+| `dialog`           | `DialogService`, `ui-dialog`, confirm                      | modal task or yes/no question                         | APG dialog (modal) on CDK Dialog; focus trap and restore; Escape           |
+| `drawer`           | `DrawerService`, `ui-drawer`                               | side sheet for create/edit forms                      | APG dialog (modal) on CDK Dialog                                           |
+| `menu`             | `[uiMenuTrigger]`, `ui-menu`, `button[uiMenuItem]`         | actions menu, user menu                               | APG menu button on CDK Menu                                                |
+| `tooltip`          | `[uiTooltip]`                                              | short label for an icon-only control                  | `aria-describedby`; hover + focus; Escape                                  |
+| `nav-item`         | `a[uiNavItem]`                                             | sidebar link with badge count                         | link, `aria-current="page"`                                                |
+| `tabs`             | `ui-tabs` (in-page), `nav[uiTabNav]` + `a[uiTab]` (routed) | pill tabs                                             | APG tabs (in-page) / links with `aria-current` (routed)                    |
+| `pagination`       | `ui-pagination`                                            | previous/next with summary, or "load more"            | `<nav>` with a label; live summary                                         |
+| `avatar`           | `ui-avatar`                                                | initials on department pastel, photo, status dot      | `role="img"` with the name, or `decorative`                                |
+| `person-card`      | `a[uiPersonCard]`                                          | directory grid card                                   | one link; status projected                                                 |
+| `data-table`       | `ui-data-table` + `DATA_TABLE` column directives           | table with templates, sort UI, row actions, card mode | native `<table>`, `aria-sort`, activatable rows                            |
+| `description-list` | `dl[uiDescriptionList]`, `div[uiDescriptionItem]`          | label/value pairs, copyable values                    | native `<dl>`; copy feedback in `role="status"`                            |
+| `app-shell`        | `ui-app-shell`                                             | sidebar + top bar + main                              | skip link, landmarks, modal drawer below 900px                             |
+| `page-header`      | `ui-page-header`                                           | page title (h1), count, description, actions          | heading level input                                                        |
+| `card`             | `ui-card`                                                  | titled section card with count, actions, footer       | heading level input                                                        |
+| `theme`            | `ThemeService`, `THEME_NO_FLASH_SCRIPT`                    | light / dark / system                                 | `color-scheme`, `prefers-color-scheme`                                     |
+
+The list of entry points is `EMS_UI_ENTRY_POINTS` in `ui/src/public-api.ts` (`ds:lint-css` checks it).
+
+### Usage rules
+
+- **One family per role.** Controls are 40px (`control-md-height`, 32 for `sm`) with `radius-md`
+  (text fields) or `radius-pill` (buttons, filters, search, tabs, status pills); cards `radius-xl`;
+  floating panels `radius-lg` with `radius-md` items; tags `radius-sm`.
+- **Focus.** Non-text controls use the `focus-ring-*` outline; text fields (input, select, the
+  search/password group) show `border-focus` + `elevation-focus` instead.
+- **Disabled** controls: `bg-sunken`, `border-subtle`, `text-disabled`, `cursor: not-allowed`.
+  **Invalid**: `status-danger-border` outline plus a `ui-form-field` error with the icon and words.
+- **Icon-only buttons** are round, `accent-soft` on hover, and always have an `aria-label`.
+- **Overlays** render in the CDK overlay container (`z-overlay`) on `bg-raised` with `elevation-raised`
+  (menus, listboxes) or `elevation-overlay` (dialogs, drawers) over the `bg-overlay` scrim; the
+  toaster is above them (`z-toast`), the shell's top bar below (`z-sticky`).
+- **Motion**: colour changes `duration-fast` + `easing-standard`; overlays entering `duration-base`
+  (drawers `slow`) + `easing-emphasized` (drawers stay `standard`: no overshoot at a screen edge).
+- One primary (`accent-solid`) action per view; stories import sibling entry points as
+  `@ems/ui/<entry>`, never by relative path.
+
+### Compose a page
+
+```html
+<ui-app-shell>
+  <a uiShellBrand href="/">…</a>
+  <ng-container uiShellNav>
+    <a uiNavItem routerLink="/people" routerLinkActive ariaCurrentWhenActive="page">
+      <ui-icon uiNavIcon name="users" /> People
+    </a>
+  </ng-container>
+  <ui-search-input uiShellSearch placeholder="Search people, offices, requests" shortcut />
+  <button uiShellUser type="button" [uiMenuTrigger]="userMenu">…</button>
+
+  <ui-page-header title="People" count="9 people">
+    <button uiPageHeaderActions uiButton><ui-icon name="plus" /> Add person</button>
+  </ui-page-header>
+  <ui-card flush>
+    <ui-data-table caption="People" [rows]="people">…</ui-data-table>
+    <ui-pagination uiCardFooter … />
+  </ui-card>
+</ui-app-shell>
+<ui-toaster />
+```
+
+The shell bounds the page at `layout-content-max-width`. Storybook → **Patterns** has the two
+reference pages (Home, People directory), built only from these components with Akwaaba Labs data;
+their chrome lives in `ui/patterns/chrome.ts`.
+
+### Tokens-only CSS lint
+
+`npm run ds:lint-css` (CI, design-system job) reads every component stylesheet and inline `styles:`
+block under `projects/{ui,icons}/**/src` and rejects: raw colours (hex, `rgb()`, `oklch()`, named),
+literal `px`/`rem`/`em`/`ms`/`s` values (zero is fine), numeric `z-index`, `!important`, `--ems-*`
+names that are not tokens or are primitives, and `@media` widths other than the breakpoint queries.
+When a literal is unavoidable, say why on the line or the line above:
+`/* ds-lint-allow: visually hidden */`.
+
+### Tests
+
+Specs and `play` functions dispatch CDK-handled keys with `press()` from `ui/testing/keyboard.ts`
+(CDK key managers read the legacy `keyCode`, which `userEvent` leaves at 0). Storybook pre-bundles
+every dependency the stories import (`PREBUNDLED_DEPS` in `.storybook/main.ts`), and
+`storybook:test` scans every story for dependencies up front (`optimizeDeps.entries`, one cache dir
+per theme project in `vitest.storybook.config.mts`), so a cold Vite cache does not re-optimise and
+reload mid-run ("Failed to fetch dynamically imported module").
+
 ## Design rules that apply to every component
 
 From `docs/design/redesign-plan.md` (Daylight):
@@ -222,7 +346,8 @@ From `docs/design/redesign-plan.md` (Daylight):
    description with a11y notes and do/don't, and `play` tests for keyboard interaction and ARIA
    state. `npm run storybook:test` passes with **zero axe violations in light and in dark** (the
    runner executes every story once per theme).
-5. **Visual baseline**: light + dark screenshots (extend `visual/` if it is not a Button story),
+5. **Visual baseline**: light + dark screenshots (stories are picked up by their sidebar group in
+   `visual/*.visual.spec.ts`, built on `visual/support.ts`),
    `npm run test:visual -- --update-snapshots` for win32, and the Linux ones in Docker (below);
    review and commit both.
 6. **Unit tests** (`*.spec.ts`, Vitest): inputs → DOM/ARIA, edge cases; `npm run lib:test` keeps

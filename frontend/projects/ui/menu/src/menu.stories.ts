@@ -1,15 +1,16 @@
-import { Icon } from '../../../icons/src/public-api';
-import { Button } from '../../button/src/public-api';
+import { Icon } from '@ems/icons';
+import { Button } from '@ems/ui/button';
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { expect, fireEvent, fn, waitFor, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from './menu';
+import { press } from '../../testing/keyboard';
 
 interface MenuArgs {
   onPick: (action: string) => void;
 }
 
 const meta: Meta<MenuArgs> = {
-  title: 'Components/Menu',
+  title: 'Overlays/Menu',
   decorators: [
     moduleMetadata({ imports: [Menu, MenuItem, MenuSeparator, MenuTrigger, Button, Icon] }),
   ],
@@ -19,22 +20,22 @@ const meta: Meta<MenuArgs> = {
     props: args,
     template: `
       <button uiButton variant="secondary" type="button" [uiMenuTrigger]="actions">
-        More actions <ui-icon name="chevron-down" [size]="16" />
+        More actions <ui-icon name="chevron-down" />
       </button>
       <ng-template #actions>
         <ui-menu>
           <button uiMenuItem (triggered)="onPick('edit')">
-            <ui-icon uiMenuItemIcon name="pencil" [size]="16" /> Edit profile
+            <ui-icon uiMenuItemIcon name="pencil" /> Edit profile
           </button>
           <button uiMenuItem (triggered)="onPick('email')">
-            <ui-icon uiMenuItemIcon name="mail" [size]="16" /> Send invitation again
+            <ui-icon uiMenuItemIcon name="mail" /> Send invitation again
           </button>
           <button uiMenuItem disabled>
-            <ui-icon uiMenuItemIcon name="eye-off" [size]="16" /> Deactivate (already inactive)
+            <ui-icon uiMenuItemIcon name="eye-off" /> Deactivate (already inactive)
           </button>
           <ui-menu-separator />
           <button uiMenuItem variant="danger" (triggered)="onPick('archive')">
-            <ui-icon uiMenuItemIcon name="trash" [size]="16" /> Archive Kwame Asante
+            <ui-icon uiMenuItemIcon name="trash" /> Archive Kwame Asante
           </button>
         </ui-menu>
       </ng-template>
@@ -62,18 +63,6 @@ export default meta;
 type Story = StoryObj<MenuArgs>;
 
 const body = () => within(document.body);
-
-/**
- * Angular CDK reads KeyboardEvent.keyCode, which the play-function userEvent.keyboard() leaves at 0
- * (real keyboards set it; checked with Playwright). Dispatch CDK-handled keys with their key code.
- */
-const KEY_CODES = { Enter: 13, Escape: 27, ArrowDown: 40, ArrowUp: 38, Home: 36, End: 35 } as const;
-const press = (key: keyof typeof KEY_CODES) =>
-  fireEvent.keyDown(document.activeElement ?? document.body, {
-    key,
-    code: key,
-    keyCode: KEY_CODES[key],
-  });
 
 export const KeyboardNavigation: Story = {
   name: 'Profile actions (keyboard)',

@@ -8,7 +8,7 @@
   }
 
   .ui-drawer-container {
-    --_inline-size: calc(var(--ems-space-16) * 7.5);
+    --_inline-size: var(--ems-size-drawer-md);
     --_from: 100%;
 
     display: flex;
@@ -19,7 +19,7 @@
     overflow: hidden;
     border-start-start-radius: var(--ems-radius-xl);
     border-end-start-radius: var(--ems-radius-xl);
-    background-color: var(--ems-color-bg-surface);
+    background-color: var(--ems-color-bg-raised);
     box-shadow: var(--ems-elevation-overlay);
     color: var(--ems-color-text-primary);
     font-family: var(--ems-font-family-sans);
@@ -43,11 +43,12 @@
   }
 
   .ui-drawer-pane--lg .ui-drawer-container {
-    --_inline-size: calc(var(--ems-space-16) * 10);
+    --_inline-size: var(--ems-size-drawer-lg);
   }
 
   /* Full screen on phones: no room for a sheet beside the page. */
-  @media (max-width: 40rem) {
+  /* breakpoint.narrow (MEDIA_QUERIES.narrow) */
+  @media (max-width: 639.98px) {
     .ui-drawer-container {
       inline-size: 100vw;
       border-radius: 0;

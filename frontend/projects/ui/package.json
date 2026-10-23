@@ -4,9 +4,12 @@
   "private": true,
   "description": "EMS Angular component library (Daylight): standalone, signal-based, OnPush, secondary entry points per component.",
   "peerDependencies": {
-    "@angular/cdk": "^21.2.0",
+    "@angular/cdk": "^21.2.14",
     "@angular/common": "^21.2.0",
     "@angular/core": "^21.2.0",
+    "@angular/forms": "^21.2.0",
+    "@ems/icons": "*",
+    "@ems/tokens": "*",
     "rxjs": "~7.8.0"
   },
   "dependencies": {

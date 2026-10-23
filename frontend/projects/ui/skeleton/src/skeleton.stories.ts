@@ -8,7 +8,7 @@ interface SkeletonArgs {
 }
 
 const meta: Meta<SkeletonArgs> = {
-  title: 'Components/Skeleton',
+  title: 'Feedback/Skeleton',
   component: Skeleton,
   decorators: [moduleMetadata({ imports: [Skeleton] })],
   args: { shape: 'text', lines: 3 },

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal, viewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Tooltip, type TooltipPosition } from './tooltip';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [Tooltip],
@@ -81,11 +82,10 @@ describe('Tooltip', () => {
     host.tooltip().show();
     host.tooltip().show();
     await render();
-    const escape = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
-    document.body.dispatchEvent(escape);
+    press('Escape', document.body);
     expect(bubble()).toBeNull();
     // Escape is only consumed while the tooltip is open.
-    document.body.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+    press('Escape', document.body);
   });
 
   it.each<TooltipPosition>(['below', 'start', 'end'])('opens in position %s', async (position) => {

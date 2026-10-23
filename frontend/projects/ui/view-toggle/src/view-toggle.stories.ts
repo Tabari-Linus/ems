@@ -9,7 +9,7 @@ interface ViewToggleArgs {
 }
 
 const meta: Meta<ViewToggleArgs> = {
-  title: 'Layout/View toggle',
+  title: 'Actions & inputs/View toggle',
   component: ViewToggle,
   decorators: [moduleMetadata({ imports: [ViewToggle] })],
   args: { view: 'grid', iconOnly: false, viewChange: fn() },

@@ -90,6 +90,11 @@ jobs:
       - name: Contrast gate (WCAG, light + dark)
         run: npm run tokens:check-contrast
 
+      # Component styles use tokens only: no raw colours, lengths, durations or z-indexes, no
+      # unknown or primitive --ems-* variables, and @media widths only from breakpoint.*.
+      - name: Tokens-only CSS lint
+        run: npm run ds:lint-css
+
       - name: Build libraries (tokens, icons, ui)
         run: npm run lib:build
 

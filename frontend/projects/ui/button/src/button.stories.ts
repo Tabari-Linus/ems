@@ -12,7 +12,7 @@ interface ButtonStoryArgs {
 }
 
 const meta: Meta<ButtonStoryArgs> = {
-  title: 'Components/Button',
+  title: 'Actions & inputs/Button',
   component: Button,
   decorators: [moduleMetadata({ imports: [Button] })],
   args: {

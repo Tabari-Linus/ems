@@ -49,18 +49,8 @@
   }
 
   .ui-view-toggle__option:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: var(--ems-border-width-hairline);
-  }
-
-  .ui-view-toggle__option svg {
-    inline-size: var(--ems-icon-size-sm);
-    block-size: var(--ems-icon-size-sm);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -71,7 +61,7 @@
 
   @media (forced-colors: active) {
     .ui-view-toggle__option[aria-checked='true'] {
-      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
+      outline: var(--ems-focus-ring-width) solid Highlight;
     }
   }
 }

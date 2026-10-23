@@ -59,6 +59,8 @@ export class DialogService {
       restoreFocus: true,
       disableClose: options.disableClose ?? false,
       hasBackdrop: true,
+      // The container sizes itself (size.dialog.*, full screen below breakpoint.narrow).
+      maxWidth: '100vw',
       backdropClass: 'ui-dialog-backdrop',
       panelClass: ['ui-dialog-pane', `ui-dialog-pane--${size}`],
       viewContainerRef: options.viewContainerRef,

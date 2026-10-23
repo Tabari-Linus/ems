@@ -45,10 +45,7 @@
       "control": { "$value": "{duration.fast}" },
       "spinner": { "$value": { "value": 800, "unit": "ms" } }
     },
-    "easing": {
-      "$type": "cubicBezier",
-      "standard": { "$value": "{easing.standard}" }
-    }
+    "easing": { "$type": "cubicBezier", "standard": { "$value": "{easing.standard}" } }
   },
   "type": {
     "display": {
@@ -106,6 +103,76 @@
       "weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" },
       "line-height": { "$type": "number", "$value": "{font.line-height.normal}" },
       "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
+    }
+  },
+  "layout": {
+    "$type": "dimension",
+    "sidebar": {
+      "width": {
+        "$value": { "value": 232, "unit": "px" },
+        "$description": "App-shell sidebar, expanded."
+      },
+      "collapsed-width": {
+        "$value": { "value": 72, "unit": "px" },
+        "$description": "App-shell sidebar collapsed to icons."
+      }
+    },
+    "drawer": {
+      "width": {
+        "$value": { "value": 288, "unit": "px" },
+        "$description": "App-shell navigation drawer below breakpoint.compact."
+      }
+    },
+    "topbar": {
+      "height": {
+        "$value": { "value": 68, "unit": "px" },
+        "$description": "App-shell top bar (search, actions, user menu)."
+      }
+    },
+    "content": {
+      "max-width": {
+        "$value": { "value": 1120, "unit": "px" },
+        "$description": "Page content width inside the app shell: the 1200px direction-d frame minus the sidebar, with room to breathe at 1440."
+      }
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "dialog": {
+      "sm": {
+        "$value": { "value": 416, "unit": "px" },
+        "$description": "Confirmations."
+      },
+      "md": {
+        "$value": { "value": 512, "unit": "px" },
+        "$description": "Default dialog."
+      },
+      "lg": {
+        "$value": { "value": 704, "unit": "px" },
+        "$description": "Dialogs with a form or a table."
+      }
+    },
+    "drawer": {
+      "md": {
+        "$value": { "value": 480, "unit": "px" },
+        "$description": "Default side sheet (create and edit forms)."
+      },
+      "lg": {
+        "$value": { "value": 640, "unit": "px" },
+        "$description": "Wide side sheet (permission matrix, long forms)."
+      }
+    },
+    "tooltip": {
+      "max-width": {
+        "$value": { "value": 256, "unit": "px" },
+        "$description": "Tooltips wrap beyond this width."
+      }
+    },
+    "popover": {
+      "min-width": {
+        "$value": { "value": 192, "unit": "px" },
+        "$description": "Menus, listboxes and filter panels."
+      }
     }
   }
 }

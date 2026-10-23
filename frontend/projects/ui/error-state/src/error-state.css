@@ -22,16 +22,6 @@
     color: var(--ems-color-text-secondary);
   }
 
-  .ui-error-state__icon svg {
-    inline-size: var(--ems-icon-size-lg);
-    block-size: var(--ems-icon-size-lg);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
   .ui-error-state__code {
     margin: 0;
     color: var(--ems-color-text-muted);

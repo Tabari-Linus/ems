@@ -12,7 +12,7 @@ interface CheckboxStoryArgs {
 }
 
 const meta: Meta<CheckboxStoryArgs> = {
-  title: 'Forms/Checkbox',
+  title: 'Actions & inputs/Checkbox',
   component: Checkbox,
   decorators: [moduleMetadata({ imports: [Checkbox] })],
   args: {
