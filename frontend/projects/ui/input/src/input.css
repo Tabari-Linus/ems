@@ -1,0 +1,122 @@
+/*
+ * input[uiInput], textarea[uiInput]. Contract tokens only (docs/design/token-contract.md).
+ * Unencapsulated (the host is a void element); every selector is scoped by .ui-input.
+ *
+ * The contract has no control-height token yet: md uses --ems-space-10 (40px, the height of
+ * search fields and filter pills in Daylight), sm uses --ems-space-8 (32px).
+ */
+@layer components {
+  .ui-input {
+    --_height: var(--ems-space-10);
+    --_padding-inline: var(--ems-space-3);
+
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    block-size: var(--_height);
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--_padding-inline);
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-md);
+    background-color: var(--ems-color-bg-surface);
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    letter-spacing: var(--ems-type-body-letter-spacing);
+    outline: none;
+    transition:
+      border-color var(--ems-duration-fast) var(--ems-easing-standard),
+      box-shadow var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-input[data-size='sm'] {
+    --_height: var(--ems-space-8);
+    --_padding-inline: var(--ems-space-2);
+  }
+
+  textarea.ui-input {
+    block-size: auto;
+    min-block-size: calc(var(--_height) * 2);
+    padding-block: var(--ems-space-2);
+    resize: vertical;
+  }
+
+  .ui-input::placeholder {
+    color: var(--ems-color-text-muted);
+    opacity: 1;
+  }
+
+  .ui-input:hover:not(:disabled, [readonly]) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-input:focus-visible,
+  .ui-input:focus {
+    border-color: var(--ems-color-border-focus);
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-input[aria-invalid='true'] {
+    border-color: var(--ems-color-status-danger-border);
+  }
+
+  .ui-input[aria-invalid='true']:focus {
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-input[readonly] {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+  }
+
+  .ui-input:disabled {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-muted);
+    cursor: not-allowed;
+  }
+
+  /* Inside ui-input-group the group draws the frame, ring and states. */
+  .ui-input[data-grouped] {
+    flex: 1 1 auto;
+    block-size: 100%;
+    padding-inline: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .ui-input[data-grouped]:focus,
+  .ui-input[data-grouped]:disabled,
+  .ui-input[data-grouped][readonly] {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  /* Native search decorations are replaced by our own clear button. */
+  .ui-input[type='search']::-webkit-search-cancel-button,
+  .ui-input[type='search']::-webkit-search-decoration {
+    appearance: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-input {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-input:focus {
+      outline: var(--ems-border-width-hairline) solid Highlight;
+      outline-offset: var(--ems-border-width-hairline);
+    }
+
+    .ui-input[data-grouped]:focus {
+      outline: none;
+    }
+  }
+}
