@@ -17,6 +17,7 @@ parallel with the token values. DTCG path `a.b.c` becomes `--ems-a-b-c`. Compone
 | Elevation (box-shadow) | `--ems-elevation-card`, `-raised`, `-overlay`, `-focus` |
 | Radius | `--ems-radius-sm` (6), `-md` (10), `-lg` (12), `-xl` (14), `-pill` |
 | Border width | `--ems-border-width-hairline` (1px) |
+| Controls | `--ems-control-{sm,md,lg}-height` (32 / 40 / 48px), `--ems-icon-size-{sm,md,lg}` (16 / 20 / 24px) |
 | Spacing (4-pt) | `--ems-space-{0,1,2,3,4,5,6,8,10,12,16}` (`space-1` = 4px) |
 | Motion | `--ems-duration-{fast,base,slow}`, `--ems-easing-{standard,emphasized}` |
 | Layers | `--ems-z-{dropdown,sticky,overlay,modal,toast}` |
