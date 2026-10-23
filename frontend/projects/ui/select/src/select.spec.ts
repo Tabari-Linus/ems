@@ -5,6 +5,7 @@ import { form, FormField as SignalFormField } from '@angular/forms/signals';
 import { FormField } from '@ems/ui/form-field';
 import { NativeSelect } from './native-select';
 import { Select, type SelectOption } from './select';
+import { press } from '../../testing/keyboard';
 
 const OFFICES: SelectOption<string>[] = [
   { value: 'acc', label: 'Accra' },
@@ -37,16 +38,6 @@ class Host {
   readonly error = signal<string | null>(null);
 }
 
-const KEY_CODES: Record<string, number> = {
-  Tab: 9,
-  Enter: 13,
-  Escape: 27,
-  End: 35,
-  Home: 36,
-  ArrowUp: 38,
-  ArrowDown: 40,
-};
-
 const flush = () => new Promise<void>((resolve) => setTimeout(resolve));
 
 async function settle(fixture: ComponentFixture<unknown>) {
@@ -65,11 +56,7 @@ async function setup() {
   const listbox = () => document.querySelector('[role="listbox"]') as HTMLElement | null;
   const options = () => [...document.querySelectorAll<HTMLElement>('[role="option"]')];
   const key = async (target: Element, key: string) => {
-    // CDK key managers read keyCode.
-    const keyCode = KEY_CODES[key];
-    target.dispatchEvent(
-      new KeyboardEvent('keydown', { key, keyCode, bubbles: true, cancelable: true }),
-    );
+    press(key, target);
     await settle(fixture);
   };
   const component = fixture.debugElement.query((el) => el.componentInstance instanceof Select)

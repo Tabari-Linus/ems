@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TabLink, TabNav } from './tab-nav';
 import { TabPanel, Tabs } from './tabs';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [Tabs, TabPanel, TabNav, TabLink],
@@ -33,7 +34,7 @@ async function setup() {
     await fixture.whenStable();
   };
   const key = async (target: HTMLElement, k: string) => {
-    target.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
+    press(k, target);
     await settle();
   };
   return { fixture, root, tabs, panels, settle, key, host: fixture.componentInstance };

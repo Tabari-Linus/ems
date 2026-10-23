@@ -10,6 +10,7 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { DialogLayout } from './dialog';
 import { DialogService } from './dialog.service';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [DialogLayout],
@@ -140,9 +141,7 @@ describe('DialogService', () => {
     expect(buttons[1].textContent?.trim()).toBe('Confirm');
     expect(buttons[1].dataset['variant']).toBe('primary');
 
-    document.body.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Escape', keyCode: 27, bubbles: true }),
-    );
+    press('Escape', document.body);
     await expect(answer).resolves.toBe(false);
   });
 });

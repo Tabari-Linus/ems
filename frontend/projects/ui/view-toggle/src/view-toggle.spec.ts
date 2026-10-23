@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ViewToggle, type ViewToggleValue } from './view-toggle';
+import { press } from '../../testing/keyboard';
 
 @Component({
   imports: [ViewToggle],
@@ -22,7 +23,7 @@ async function setup() {
     await fixture.whenStable();
   };
   const key = async (target: HTMLElement, k: string) => {
-    target.dispatchEvent(new KeyboardEvent('keydown', { key: k, bubbles: true, cancelable: true }));
+    press(k, target);
     await settle();
   };
   return { el, radios, settle, key, host: fixture.componentInstance };
