@@ -17,6 +17,7 @@
     "tokens:build": "node projects/tokens/scripts/build-tokens.mjs",
     "tokens:check": "npm run tokens:build && git diff --exit-code -- projects/tokens/src/generated",
     "tokens:check-contrast": "node projects/tokens/scripts/check-contrast.mjs",
+    "ds:lint-css": "node projects/ui/scripts/lint-css.mjs",
     "lib:build": "npm run tokens:build && ng build tokens && ng build icons && ng build ui",
     "lib:test": "ng test ui --configuration ci && ng test icons --configuration ci",
     "storybook": "storybook dev -p 6006 -c .storybook",
