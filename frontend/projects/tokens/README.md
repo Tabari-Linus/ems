@@ -1,7 +1,7 @@
 # @ems/tokens
 
-EMS design tokens in W3C DTCG format, built with Style Dictionary. **Values are placeholders** until
-the Slice DS Direction Board.
+EMS design tokens in W3C DTCG format, built with Style Dictionary: the Daylight direction (D30).
+Variable names are fixed in `docs/design/token-contract.md`.
 
 - `css/tokens.css`: `--ems-*` custom properties in `@layer tokens` (light on `:root`, dark on
   `[data-theme='dark']` and `prefers-color-scheme: dark`).
