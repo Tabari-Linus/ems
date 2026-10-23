@@ -1,0 +1,16 @@
+EMPLOYEE MANAGEMENT SYSTEM
+===========================
+
+Welcome aboard!
+
+Your employee account has been created. Use the credentials below to sign in.
+
+  Email Address      : [[${email}]]
+  Temporary Password : [[${temporaryPassword}]]
+
+IMPORTANT: Please change your password immediately after your first login.
+
+If you did not expect this email, please contact your system administrator.
+
+---
+This is an automated message. Please do not reply to this email.
