@@ -96,11 +96,6 @@
     inline-size: var(--ems-space-4);
     block-size: var(--ems-space-4);
     color: var(--ems-color-text-muted);
-    transition: rotate var(--ems-duration-fast) var(--ems-easing-standard);
-  }
-
-  .ui-select__control[data-open] .ui-select__chevron {
-    rotate: 0.5turn;
   }
 
   .ui-select__clear {
@@ -135,8 +130,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ui-select__control,
-    .ui-select__chevron {
+    .ui-select__control {
       transition: none;
     }
   }

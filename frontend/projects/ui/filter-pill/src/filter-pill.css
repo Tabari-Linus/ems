@@ -59,11 +59,6 @@
     block-size: var(--ems-space-4);
     margin-inline-start: var(--ems-space-1);
     color: var(--ems-color-text-muted);
-    transition: rotate var(--ems-duration-fast) var(--ems-easing-standard);
-  }
-
-  .ui-filter-pill__trigger[aria-expanded='true'] .ui-filter-pill__chevron {
-    rotate: 0.5turn;
   }
 
   /* A filter is applied: soft indigo tint (Daylight rule 3). */
@@ -100,8 +95,7 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ui-filter-pill__trigger,
-    .ui-filter-pill__chevron {
+    .ui-filter-pill__trigger {
       transition: none;
     }
   }
