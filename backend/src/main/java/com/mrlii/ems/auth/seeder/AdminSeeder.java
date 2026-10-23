@@ -4,6 +4,7 @@ import com.mrlii.ems.accesslevel.entity.AccessLevel;
 import com.mrlii.ems.accesslevel.repository.AccessLevelRepository;
 import com.mrlii.ems.auth.entity.UserAccount;
 import com.mrlii.ems.auth.repository.UserAccountRepository;
+import com.mrlii.ems.auth.util.EmailNormalizer;
 import com.mrlii.ems.common.config.AdminProperties;
 import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.organization.employee.entity.Employee;
@@ -16,6 +17,8 @@ import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.Instant;
 
 @Component
 @Order(2)
@@ -32,7 +35,8 @@ public class AdminSeeder implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
-        if (userAccountRepository.existsByEmail(adminProperties.email())) {
+        String adminEmail = EmailNormalizer.normalize(adminProperties.email());
+        if (userAccountRepository.existsByEmail(adminEmail)) {
             return;
         }
 
@@ -55,18 +59,20 @@ public class AdminSeeder implements ApplicationRunner {
         Employee adminEmployee = Employee.builder()
                 .firstName("System")
                 .lastName("Administrator")
+                .workEmail(adminEmail)
                 .status(CommonStatus.ACTIVE)
                 .accessLevel(adminAccessLevel)
                 .build();
         adminEmployee = employeeRepository.save(adminEmployee);
 
         UserAccount admin = UserAccount.builder()
-                .email(adminProperties.email())
+                .email(adminEmail)
                 .passwordHash(passwordEncoder.encode(adminPassword))
+                .passwordChangedAt(Instant.now())
                 .enabled(true)
                 .employee(adminEmployee)
                 .build();
         userAccountRepository.save(admin);
-        log.info("Admin account seeded: {}", adminProperties.email());
+        log.info("Admin account seeded: {}", adminEmail);
     }
 }

@@ -1,17 +1,19 @@
 package com.mrlii.ems.auth.entity;
 
+import com.mrlii.ems.auth.util.EmailNormalizer;
 import com.mrlii.ems.common.entity.AuditableEntity;
 import com.mrlii.ems.organization.employee.entity.Employee;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.List;
+import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Login identity of an employee. {@code publicId} is the JWT subject and the id exposed to clients;
+ * the numeric id never leaves the backend. {@code passwordHash} is {@code null} until the employee
+ * sets a password through the welcome link.
+ */
 @Entity
 @Table(name = "user_accounts")
 @Getter
@@ -19,72 +21,52 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserAccount extends AuditableEntity implements UserDetails {
+public class UserAccount extends AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, updatable = false)
-    private UUID userId;
+    @Column(name = "public_id", nullable = false, unique = true, updatable = false)
+    private UUID publicId;
 
+    /** Always stored lower-case (see {@link EmailNormalizer}). */
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String passwordHash;
 
     @Builder.Default
     private boolean enabled = true;
 
+    @Builder.Default
+    @Column(nullable = false)
+    private int failedLoginAttempts = 0;
+
+    private Instant lockedUntil;
+
+    private Instant lastLoginAt;
+
+    private Instant passwordChangedAt;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
     private Employee employee;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (employee == null || employee.getAccessLevel() == null) {
-            return List.of();
-        }
-        return employee.getAccessLevel().getPermissions().stream()
-                .map(ps -> new SimpleGrantedAuthority(ps.getPermissionName().name()))
-                .toList();
+    public boolean hasPassword() {
+        return passwordHash != null && !passwordHash.isBlank();
     }
 
-    @Override
-    public String getPassword() {
-        return passwordHash;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return enabled;
+    public boolean isLockedAt(Instant now) {
+        return lockedUntil != null && lockedUntil.isAfter(now);
     }
 
     @PrePersist
-    private void prePersist() {
-        if (this.userId == null) {
-            this.userId = UUID.randomUUID();
+    @PreUpdate
+    void normalize() {
+        if (this.publicId == null) {
+            this.publicId = UUID.randomUUID();
         }
+        this.email = EmailNormalizer.normalize(this.email);
     }
 }
