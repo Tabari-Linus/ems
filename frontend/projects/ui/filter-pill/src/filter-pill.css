@@ -1,0 +1,118 @@
+/*
+ * ui-filter-pill. Contract tokens only. The list panel reuses select/listbox-panel.css.
+ */
+@layer components {
+  .ui-filter-pill {
+    display: inline-flex;
+  }
+
+  .ui-filter-pill__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-1);
+    box-sizing: border-box;
+    block-size: var(--ems-space-10);
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--ems-space-4) var(--ems-space-3);
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-bg-surface);
+    color: var(--ems-color-text-secondary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: 1;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      border-color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-filter-pill__trigger:hover:not(:disabled) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-filter-pill__trigger:focus-visible {
+    outline: var(--ems-border-width-hairline) solid var(--ems-color-border-focus);
+    outline-offset: 0;
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-filter-pill__trigger[aria-expanded='true'] {
+    border-color: var(--ems-color-border-focus);
+  }
+
+  .ui-filter-pill__summary {
+    color: var(--ems-color-text-primary);
+    font-weight: var(--ems-type-body-strong-weight);
+  }
+
+  .ui-filter-pill__dot {
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-filter-pill__chevron {
+    flex: none;
+    inline-size: var(--ems-space-4);
+    block-size: var(--ems-space-4);
+    margin-inline-start: var(--ems-space-1);
+    color: var(--ems-color-text-muted);
+    transition: rotate var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-filter-pill__trigger[aria-expanded='true'] .ui-filter-pill__chevron {
+    rotate: 0.5turn;
+  }
+
+  /* A filter is applied: soft indigo tint (Daylight rule 3). */
+  .ui-filter-pill__trigger[data-active] {
+    border-color: var(--ems-color-accent-soft);
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-filter-pill__trigger[data-active]:hover:not(:disabled) {
+    border-color: var(--ems-color-accent-soft-hover);
+    background-color: var(--ems-color-accent-soft-hover);
+  }
+
+  .ui-filter-pill__trigger[data-active] .ui-filter-pill__summary,
+  .ui-filter-pill__trigger[data-active] .ui-filter-pill__dot,
+  .ui-filter-pill__trigger[data-active] .ui-filter-pill__chevron {
+    color: inherit;
+  }
+
+  .ui-filter-pill__trigger:disabled {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .ui-filter-pill__trigger:disabled .ui-filter-pill__summary {
+    color: inherit;
+  }
+
+  .ui-filter-pill__panel {
+    min-inline-size: calc(var(--ems-space-16) * 3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-filter-pill__trigger,
+    .ui-filter-pill__chevron {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-filter-pill__trigger {
+      border-color: ButtonText;
+    }
+
+    .ui-filter-pill__trigger:focus-visible {
+      outline-color: Highlight;
+    }
+  }
+}
