@@ -4,9 +4,10 @@ Three packages, built and versioned independently, consumed by the app through p
 (from source in development) so the design system can later leave the repo unchanged. Spec:
 `docs/spec-and-plan.md` §2.6 and Slice DS.
 
-> **Status (Slice 0.8): infrastructure only.** Every token value is a **placeholder** (neutral
-> greys, one teal accent, system fonts). The visual identity is decided in Slice DS from the
-> Direction Board and then frozen into the token sources; nothing else should need to change.
+> **Status (Slice DS foundation): Daylight.** Direction D, "Daylight" (decision D30): clean,
+> light-first, friendly HR software with one indigo accent. Approved reference:
+> `docs/design/direction-board/direction-d.html`. Rules: `docs/design/redesign-plan.md`. The CSS
+> variable names are fixed in `docs/design/token-contract.md`; components build against those.
 
 | Package       | Path               | What                                                            | Build                                  |
 | ------------- | ------------------ | --------------------------------------------------------------- | -------------------------------------- |
@@ -17,33 +18,33 @@ Three packages, built and versioned independently, consumed by the app through p
 ```text
 projects/
 ├── tokens/
-│   ├── tokens/{primitive,semantic,component}/*.json   DTCG sources (edit these)
+│   ├── tokens/{primitive,foundation,semantic,component}/*.json   DTCG sources (edit these)
 │   ├── contrast-pairs.json                             pairs the contrast gate checks
 │   ├── scripts/build-tokens.mjs                        Style Dictionary build
 │   ├── scripts/check-contrast.mjs                      WCAG gate (culori)
 │   ├── src/generated/tokens.{css,ts,json}              build output (committed, do not edit)
-│   └── stories/                                        generated token gallery (Storybook)
+│   └── stories/                                        Foundations pages (generated from tokens.json)
 ├── icons/src/{icon.ts,registry.ts}
 └── ui/
-    ├── styles/{index,reset,base,utilities}.css          global stylesheet (cascade layers)
+    ├── styles/{index,fonts,reset,base,overlay,utilities}.css   global stylesheet (cascade layers)
     ├── button/src/                                     @ems/ui/button
     └── theme/src/                                      @ems/ui/theme (ThemeService, no-flash snippet)
 ```
 
 ## Commands (run in `frontend/`)
 
-| Command                         | Does                                                                                    |
-| ------------------------------- | --------------------------------------------------------------------------------------- |
-| `npm run tokens:build`          | DTCG sources → `projects/tokens/src/generated/`                                         |
-| `npm run tokens:check`          | rebuild and fail if the committed output is stale (CI)                                  |
-| `npm run tokens:check-contrast` | contrast table for every declared pair, both themes; exit 1 on a failure                |
-| `npm run lib:build`             | tokens → icons → ui into `dist/{tokens,icons,ui}`                                       |
-| `npm run lib:test`              | Vitest unit tests for ui and icons, coverage gate 90% lines                             |
-| `npm run storybook`             | docs site on http://localhost:6006 (light/dark toolbar toggle)                          |
-| `npm run storybook:build`       | static site in `storybook-static/`                                                      |
-| `npm run storybook:test`        | every story in Chromium: render + `play` + axe (any violation fails)                    |
-| `npm run test:visual`           | Playwright screenshots of Button stories, light + dark, + axe (needs `storybook:build`) |
-| `npm run changeset`             | record a change to a package (Changesets)                                               |
+| Command                         | Does                                                                                     |
+| ------------------------------- | ---------------------------------------------------------------------------------------- |
+| `npm run tokens:build`          | DTCG sources → `projects/tokens/src/generated/`                                          |
+| `npm run tokens:check`          | rebuild and fail if the committed output is stale (CI)                                   |
+| `npm run tokens:check-contrast` | contrast table for every declared pair, both themes; exit 1 on a failure                 |
+| `npm run lib:build`             | tokens → icons → ui into `dist/{tokens,icons,ui}`                                        |
+| `npm run lib:test`              | Vitest unit tests for ui and icons, coverage gate 90% lines                              |
+| `npm run storybook`             | docs site on http://localhost:6006 (light/dark toolbar toggle)                           |
+| `npm run storybook:build`       | static site in `storybook-static/`                                                       |
+| `npm run storybook:test`        | every story in Chromium, **light and dark**: render + `play` + axe (any violation fails) |
+| `npm run test:visual`           | Playwright screenshots of Button stories, light + dark, + axe (needs `storybook:build`)  |
+| `npm run changeset`             | record a change to a package (Changesets)                                                |
 
 Playwright needs Chromium once: `npx playwright install chromium`.
 
@@ -51,54 +52,118 @@ Playwright needs Chromium once: `npx playwright install chromium`.
 
 ### Tiers
 
-1. **Primitive** (`tokens/primitive/`): raw scales with no meaning: colour ramps in OKLCH
-   (`color.neutral.*`, `color.accent.*`, `color.{green,amber,red,blue}.*`), `space.*`, `radius.*`,
-   `border-width.*`, `font.{family,size,weight,line-height}.*`, `duration.*`, `easing.*`.
-   **Components never use these.**
-2. **Semantic** (`tokens/semantic/`): roles. `light.json` and `dark.json` must declare exactly the
-   same paths (the build fails otherwise): `color.bg.*`, `color.text.*`, `color.border.*`,
-   `color.accent.*`, `color.status.{success,warning,danger,info}.{text,bg,border,solid,solid-hover,on-solid}`.
-   `base.json` holds theme-independent roles (`focus.ring.*`, `control.*`, `motion.*`, `text.body.*`)
-   and is part of both theme builds, so a reference like `focus.ring.color` still resolves per theme.
-3. **Component** (`tokens/component/`): per-component decisions that reference semantic tokens,
-   e.g. `button.primary.bg → {color.accent.bg}`. Only `button.json` exists so far.
+1. **Primitive** (`tokens/primitive/`): raw material for the build only. Colour ramps in OKLCH named
+   by hue (`color.neutral.*` indigo-tinted at hue 272, `color.indigo.*`, `color.{green,amber,red,blue}.*`,
+   `color.pastel.{indigo,rose,sky,mint,sand,lime}.*`, `color.scrim.*`, `color.transparent`), literal
+   shadow stacks (`shadow.{light,dark}.*`) and type scales (`font.size.<px>`, `font.weight.*`,
+   `font.line-height.*`, `font.tracking.*`). **Components never use these.**
+2. **Foundation** (`tokens/foundation/`): theme-independent scales that components **may** use:
+   `space.*`, `radius.*`, `border-width.*`, `duration.*`, `easing.*`, `z.*`, `font.family.*`.
+   Emitted once on `:root`.
+3. **Semantic** (`tokens/semantic/`): roles. `light.json` and `dark.json` must declare exactly the
+   same paths (the build fails otherwise): `color.*` roles and `elevation.*`. `base.json` holds
+   theme-independent roles (`focus.ring.*`, `control.*`, `motion.*`, `type.*`) and is part of both
+   theme builds, so a reference like `focus.ring.color` still resolves per theme.
+4. **Component** (`tokens/component/`): per-component decisions that reference semantic tokens,
+   e.g. `button.primary.bg → {color.accent.solid}`.
+
+### Catalogue (what to use when)
+
+All names below are CSS variables, `--ems-` + the dotted path with dashes.
+
+| Group           | Tokens                                                                                                       | Use                                                                                                         |
+| --------------- | ------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------- |
+| Surfaces        | `color-bg-canvas`                                                                                            | the page behind everything (faint indigo tint)                                                              |
+|                 | `color-bg-surface`                                                                                           | cards, panels, inputs, sidebar (white in light)                                                             |
+|                 | `color-bg-sunken`                                                                                            | wells inside a card: tracks, notes, segmented controls, row hover                                           |
+|                 | `color-bg-raised`                                                                                            | menus, popovers, dialogs, drawers (lighter than surface in dark)                                            |
+|                 | `color-bg-overlay`                                                                                           | translucent scrim behind modal layers                                                                       |
+|                 | `color-bg-inverse`                                                                                           | tooltips, toasts (with `color-text-inverse`)                                                                |
+| Text            | `color-text-primary` / `-secondary` / `-muted`                                                               | content / supporting lines / meta and hints. All ≥ 4.5:1 on every surface                                   |
+|                 | `color-text-link`                                                                                            | inline links, ghost buttons                                                                                 |
+|                 | `color-text-on-accent`                                                                                       | text on `color-accent-solid`                                                                                |
+|                 | `color-text-disabled`                                                                                        | disabled controls only (exempt from contrast)                                                               |
+| Borders         | `color-border-subtle`                                                                                        | dividers (decorative, not a boundary)                                                                       |
+|                 | `color-border-default`                                                                                       | control outlines: inputs, selects, filter pills (≥ 3:1)                                                     |
+|                 | `color-border-strong`                                                                                        | hovered control outline                                                                                     |
+|                 | `color-border-focus`                                                                                         | focus ring and focused-field outline (≥ 3:1)                                                                |
+| Accent          | `color-accent-solid` (+ `-hover`, `-active`, `-on-solid`)                                                    | the one primary action, the current nav item, badges                                                        |
+|                 | `color-accent-soft` (+ `-hover`, `-soft-text`)                                                               | selected tabs, filters, secondary buttons, counts, icon tiles                                               |
+| Status          | `color-status-{success,warning,danger,info}-{text,bg,border,solid,solid-hover,on-solid}`                     | alerts, toasts, validation; always with an icon and words                                                   |
+| Employee status | `color-employee-status-{active,pending,inactive,archived}-{bg,text}`                                         | status pills, with a dot shape and the word                                                                 |
+| Avatars         | `color-avatar-{1..6}-{bg,text}`                                                                              | department pastel tint for initials avatars; the only place department colour appears                       |
+| Selection       | `color-selection-bg`                                                                                         | `::selection`                                                                                               |
+| Elevation       | `elevation-card` / `-raised` / `-overlay`                                                                    | box-shadow for cards / menus, popovers / dialogs, drawers                                                   |
+|                 | `elevation-focus`                                                                                            | outer glow around a focused text field (with a `color-border-focus` outline)                                |
+| Radius          | `radius-sm` 6 · `radius-md` 10 · `radius-lg` 12 · `radius-xl` 14 · `radius-pill`                             | tags · inputs · inner panels, menus · cards, dialogs · buttons, filters, tabs, pills, avatars               |
+| Space           | `space-{0,1,2,3,4,5,6,8,10,12,16}`                                                                           | 4-pt scale, `space-N` = N × 4px                                                                             |
+| Lines           | `border-width-hairline` (1px), `border-width-thick` (2px)                                                    | dividers and outlines; focus ring                                                                           |
+| Motion          | `duration-{fast,base,slow}` (120/180/240 ms), `easing-{standard,emphasized}`                                 | colour/hover: fast + standard; overlays entering: base/slow + emphasized                                    |
+| Layers          | `z-{sticky,dropdown,overlay,modal,toast}`                                                                    | 100 / 900 / 1000 (CDK overlay container) / 1100 / 1200                                                      |
+| Fonts           | `font-family-sans` (Plus Jakarta Sans), `font-family-mono` (Geist Mono)                                      | everything / employee numbers, codes, dates, counts (tabular)                                               |
+| Type roles      | `type-{display,title,headline,body,body-strong,label,caption,mono}-{size,weight,line-height,letter-spacing}` | see below; or the `.ui-type-<role>` utility class                                                           |
+| Focus           | `focus-ring-{color,width,offset}`                                                                            | `:focus-visible` outline (already global)                                                                   |
+| Controls        | `control-{sm,md,lg}-height` (32/40/48px), `control-border-width`, `control-min-target` (24px)                | buttons, inputs, selects and pills share heights so a filter bar lines up; outlines; WCAG 2.5.8 target size |
+| Icons           | `icon-size-{sm,md,lg}` (16/20/24px)                                                                          | in buttons and meta lines / nav, icon buttons, inputs / empty states                                        |
+
+| Type role     | Size / weight / line-height / tracking | For                                                                      |
+| ------------- | -------------------------------------- | ------------------------------------------------------------------------ |
+| `display`     | 46 / 800 / 1.05 / −0.045em             | the Home greeting only                                                   |
+| `title`       | 28 / 800 / 1.15 / −0.035em             | page titles, the name on a profile (h1)                                  |
+| `headline`    | 17 / 700 / 1.3 / −0.01em               | section, card and dialog titles                                          |
+| `body`        | 15 / 400 / 1.55                        | running text, table cells                                                |
+| `body-strong` | 15 / 600 / 1.55                        | names and values inside body text                                        |
+| `label`       | 14 / 600 / 1.2                         | buttons, nav items, tabs, form labels                                    |
+| `caption`     | 13 / 500 / 1.4                         | hints, meta lines, timestamps, table headers                             |
+| `mono`        | 13 / 500 / 1.4 (Geist Mono)            | employee numbers, codes, dates; add `font-variant-numeric: tabular-nums` |
+
+Storybook → **Foundations** shows all of this generated from `tokens.json`: Colour (both themes
+side by side, with every contrast ratio), Typography, Space and shape, Motion, Token reference.
 
 ### Output
 
 `tokens.css` (all names prefixed `--ems-`, everything inside `@layer tokens`):
 
-- primitives on `:root`, with an sRGB hex fallback block under `@supports not (color: oklch(0% 0 0))`
-  (Style Dictionary's `color/hex` transform, gamut-mapped);
+- primitives and foundation scales on `:root`, with an sRGB hex fallback block for colours under
+  `@supports not (color: oklch(0% 0 0))` (Style Dictionary's `color/hex` transform, gamut-mapped);
 - light semantic + component tokens on `:root, [data-theme='light']`;
 - dark on `[data-theme='dark']` and under `@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) }`.
 
 Semantic and component tokens are emitted as `var(--ems-…)` references, so only primitives carry
 literal values. Component tokens are re-declared in every theme block because a custom property's
 `var()` is resolved on the element that declares it; this also makes nested `[data-theme]`
-scopes work.
+scopes work. Shadows use DTCG `shadow` (layered arrays, `inset` supported).
 
 `tokens.json` and `tokens.ts` (`tokens`, `cssVar(name)`, `TokenName`) list every token with its
 CSS variable, tier and resolved value(s) per theme (OKLCH and hex), plus the referenced token.
 
 ### Add or change a token
 
-1. Edit the DTCG JSON (`$value`, `$type`; colours as
+1. Check `docs/design/token-contract.md`: add names, never rename or drop contract names.
+2. Edit the DTCG JSON (`$value`, `$type`; colours as
    `{ "colorSpace": "oklch", "components": [L, C, H] }`, dimensions as `{ "value": 1, "unit": "rem" }`).
    New semantic colour: add it to **both** `light.json` and `dark.json`.
-2. If it is a foreground/background or boundary pair, add it to `contrast-pairs.json`
+3. If it is a foreground/background or boundary pair, add it to `contrast-pairs.json`
    (`text` 4.5:1, `large-text` 3:1, `ui` 3:1).
-3. `npm run tokens:build && npm run tokens:check-contrast`, then commit the sources **and**
+4. `npm run tokens:build && npm run tokens:check-contrast`, then commit the sources **and**
    `src/generated/`.
-4. Add a changeset (`npm run changeset`) for `@ems/tokens`.
+5. Add a changeset (`npm run changeset`) for `@ems/tokens`.
 
 ## Global styles (`@ems/ui/styles/index.css`)
 
 Load order in an app: `tokens.css`, then `ui/styles/index.css`, then app styles (see
 `angular.json`). Layers, lowest precedence first: `reset, tokens, base, components, utilities`.
 Unlayered CSS beats every layer, which is why the legacy `src/styles.scss` still wins everywhere
-it has an opinion; the login screen was checked pixel-identical with and without these files.
-The reset deliberately omits `display: block` on media and `font: inherit` on form controls for
-that reason (see the comment in `reset.css`).
+it has an opinion. The reset deliberately omits `display: block` on media and `font: inherit` on
+form controls, and `base.css` gives headings no type role, for the same reason.
+
+| File                | What                                                                                                                                                                                                                                                                                                                                                                                      |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fonts.css`         | `@font-face` for Plus Jakarta Sans (variable 200–800, latin + latin-ext) and Geist Mono (variable, latin), `font-display: swap`, from `@fontsource-variable/*` (the bundler copies the woff2 files; no third-party requests). Metric-matched local fallbacks (`… Fallback`: Arial / Courier New with `size-adjust` and ascent/descent overrides from Capsize) limit layout shift on swap. |
+| `reset.css`         | minimal reset (`@layer reset`)                                                                                                                                                                                                                                                                                                                                                            |
+| `base.css`          | body type and colours from tokens, `color-scheme` per theme, `:focus-visible` ring, `::selection`, scrollbar colour, `prefers-reduced-motion`, `forced-colors`                                                                                                                                                                                                                            |
+| `overlay.css` + CDK | Angular CDK `overlay-prebuilt.css` and `a11y-prebuilt.css` (in `@layer components`), `.cdk-overlay-container` on `z-overlay`, and `.ui-overlay-backdrop` (scrim) / `.ui-overlay-panel` (raised surface) to pass as `backdropClass` / `panelClass`                                                                                                                                         |
+| `utilities.css`     | `.ui-visually-hidden`, `.ui-type-<role>`, `.ui-tabular`                                                                                                                                                                                                                                                                                                                                   |
 
 ## Theming (`@ems/ui/theme`)
 
@@ -106,22 +171,12 @@ that reason (see the comment in `reset.css`).
 `light`/`dark` set `<html data-theme>` and persist in `localStorage` (`ems-theme`); `system`
 removes the attribute so the media query decides. Storage errors are ignored.
 
-To avoid a flash of the wrong theme, put the snippet exported as `THEME_NO_FLASH_SCRIPT` inline
-in `<head>` of `index.html`, before the stylesheets:
-
-```html
-<script>
-  (function () {
-    try {
-      var t = localStorage.getItem('ems-theme');
-      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
-    } catch (e) {}
-  })();
-</script>
-```
-
-The nginx Content-Security-Policy must then allow it by hash (`script-src 'sha256-…'`). Not wired
-into the app yet (the legacy UI is dark-first and would ignore it).
+The app has the no-flash snippet (`THEME_NO_FLASH_SCRIPT`) inline in `<head>` of
+`src/index.html`. The production CSP (`docker/40-ems-runtime-config.sh`) allows it by hash
+(`script-src 'self' 'sha256-…'`), and `src/theme-no-flash.spec.ts` recomputes the hash from
+`index.html` and fails if the CSP is stale. **If you touch that script (even whitespace), update
+`THEME_SCRIPT_HASH`**; the failing test prints the expected value. The legacy pages still follow the
+OS theme until they move to the design system.
 
 ## Icons (`@ems/icons`)
 
@@ -130,38 +185,69 @@ is `role="img"` with an accessible name. Only icons listed in `EMS_ICONS` (`regi
 bundled; add one by importing its `Lucide<Name>` class there. Brand glyphs can be added as
 `LucideIconData` objects.
 
+## Design rules that apply to every component
+
+From `docs/design/redesign-plan.md` (Daylight):
+
+- **Calm by default.** White cards on the faint canvas, separated by `elevation-card`, not
+  borders. No gradients, decoration or illustrations. Boldness lives in one place (the Home greeting).
+- **Type carries the personality.** Use the type roles; 800 only for `display`/`title`. Geist Mono
+  with tabular numerals for employee numbers, codes, dates and counts. Sentence case.
+- **Indigo is the next step.** `accent-solid` only for the one primary action per view and the
+  current nav item; selected tabs, filters and secondary actions use `accent-soft`. Pills for
+  buttons, filters and tabs. Department colour only as avatar tints. Status pills pair colour with
+  a dot shape and a label.
+- **Copy from the employee's side.** People (not Staff), Requests, Access levels. Buttons say what
+  happens ("Add person", "Save changes", "Approve", "Decline"); errors say what went wrong and how
+  to fix it; empty states invite the next action.
+- **Quality floor.** Tokens only, both themes designed, WCAG 2.2 AA, visible focus, keyboard paths,
+  reduced motion, responsive to 360px, no horizontal page scroll.
+- **Critique visually.** Screenshot in light and dark, look, and remove one accessory before handing back.
+
 ## Add a component (definition of done)
 
 1. **Entry point**: `projects/ui/<name>/ng-package.json` + `src/public-api.ts`; import it as
    `@ems/ui/<name>`. Standalone, `ChangeDetectionStrategy.OnPush`, signal APIs
    (`input()`, `model()`, `output()`), host bindings in `host: {}` (no `@HostBinding`/`@HostListener`).
    Prefer enhancing native elements (attribute selectors) where semantics come for free; behaviour
-   for complex widgets on Angular CDK.
+   for complex widgets on Angular CDK (`@angular/cdk` is a peer dependency of `@ems/ui`).
 2. **Tokens-only styling**: the component stylesheet is wrapped in `@layer components` and uses
-   only `--ems-*` **semantic or component** tokens (add component tokens in
-   `tokens/component/<name>.json` when a decision is component-specific). No raw colours, no
-   primitives, no `!important`; logical properties; `prefers-reduced-motion` and `forced-colors`
-   handled; 24×24 px minimum target.
+   only `--ems-*` **foundation, semantic or component** tokens from the catalogue above (add
+   component tokens in `tokens/component/<name>.json` when a decision is component-specific). No
+   raw colours, no primitives, no `!important`; logical properties; `prefers-reduced-motion` and
+   `forced-colors` handled; 24×24 px minimum target.
 3. **Accessibility**: follow the WAI-ARIA APG pattern for the widget; visible `:focus-visible`;
    new colour pairs added to `contrast-pairs.json` and passing in both themes.
-4. **Story** (`<name>.stories.ts`, CSF3): every variant and state, docs description with a11y notes
-   and do/don't, and `play` tests for keyboard interaction and ARIA state. `npm run storybook:test`
-   passes with **zero axe violations**.
+4. **Story** (`<name>.stories.ts`, CSF3): every variant and state with realistic EMS copy, docs
+   description with a11y notes and do/don't, and `play` tests for keyboard interaction and ARIA
+   state. `npm run storybook:test` passes with **zero axe violations in light and in dark** (the
+   runner executes every story once per theme).
 5. **Visual baseline**: light + dark screenshots (extend `visual/` if it is not a Button story),
-   `npm run test:visual -- --update-snapshots`, review and commit the images.
+   `npm run test:visual -- --update-snapshots` for win32, and the Linux ones in Docker (below);
+   review and commit both.
 6. **Unit tests** (`*.spec.ts`, Vitest): inputs → DOM/ARIA, edge cases; `npm run lib:test` keeps
    **≥ 90% line coverage**.
 7. **Changeset** for `@ems/ui` (and `@ems/tokens` if tokens changed).
 
+### Linux visual baselines (Docker)
+
+CI compares against committed `*-chromium-linux.png` baselines and fails on a missing one. Generate
+them with the Playwright image matching `@playwright/test` (currently 1.64.1), from `frontend/`
+after `npm run storybook:build`. A named volume keeps Linux `node_modules` apart from the Windows
+ones, and `--output /tmp/…` keeps traces off the slow Windows bind mount:
+
+```powershell
+docker run --rm -v "${PWD}:/work" -v ems-ds-linux-node-modules:/work/node_modules -w /work `
+  mcr.microsoft.com/playwright:v1.64.1-noble `
+  bash -lc "npm ci && npx playwright test -c playwright.visual.config.ts --update-snapshots --output /tmp/visual"
+```
+
 ## Known limits
 
-- Visual baselines are per platform (system fonts). Only `*-chromium-win32.png` baselines are
-  committed; CI writes the Linux ones on its first run (`--update-snapshots=missing`) and uploads
-  them as the `visual-regression` artifact, to be reviewed and committed. Until then the Linux
-  visual job cannot catch regressions.
-- `storybook:test` runs axe in the light theme; the dark theme is axe-checked by `test:visual` for
-  Button stories only.
 - Clicks on a disabled/loading `uiButton` are blocked by a capture-phase listener on the host,
   which runs before the consumer's `(click)` bindings (unit-tested). Listeners added by other
   directives on the same element (e.g. `routerLink`) should be blocked the same way but are not
   tested yet.
+- The legacy app (`src/styles.scss`) keeps its own palette until Phase B; it now renders in Plus
+  Jakarta Sans (its Geist font came from Google Fonts, which the CSP no longer allows).
+- Shadows have no hex fallback: in engines without OKLCH support they are dropped (flat cards).
