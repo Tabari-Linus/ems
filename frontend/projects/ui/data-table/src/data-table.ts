@@ -16,6 +16,8 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { Icon, type IconName } from '@ems/icons';
+import { BREAKPOINTS } from '@ems/tokens';
 import {
   DataTableColumn,
   DataTableEmpty,
@@ -64,7 +66,7 @@ let nextId = 0;
 @Component({
   selector: 'ui-data-table',
   exportAs: 'uiDataTable',
-  imports: [NgTemplateOutlet],
+  imports: [NgTemplateOutlet, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './data-table.html',
   styleUrl: './data-table.css',
@@ -90,9 +92,11 @@ export class DataTable<T = unknown> {
   readonly skeletonRows = input(5, { transform: numberAttribute });
   /** Rows are focusable and emit `rowActivate` on click, Enter or Space. */
   readonly activatable = input(false, { transform: booleanAttribute });
-  /** `auto` switches to cards below `cardBreakpoint` (px of the table's own width). */
+  /** `auto` switches to cards below `cardBreakpoint` (px of the table's own width; default breakpoint.narrow). */
   readonly mode = input<DataTableMode>('auto');
-  readonly cardBreakpoint = input(640, { transform: numberAttribute });
+  readonly cardBreakpoint = input<number, unknown>(BREAKPOINTS.narrow, {
+    transform: numberAttribute,
+  });
   /** Keep the header row visible while the table's scroll area scrolls. */
   readonly stickyHeader = input(true, { transform: booleanAttribute });
   /** Max height of the scroll area (CSS length); set it to scroll rows under a sticky header.
@@ -156,6 +160,15 @@ export class DataTable<T = unknown> {
 
   protected cellContext(row: T, index: number): DataTableCellContext<T> {
     return { $implicit: row, row, index };
+  }
+
+  protected sortIcon(column: DataTableColumn): IconName {
+    const sort = this.ariaSort(column);
+    return sort === 'ascending'
+      ? 'arrow-up'
+      : sort === 'descending'
+        ? 'arrow-down'
+        : 'chevrons-up-down';
   }
 
   protected ariaSort(column: DataTableColumn): 'ascending' | 'descending' | null {

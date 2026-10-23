@@ -8,7 +8,7 @@
   }
 
   .ui-dialog-container {
-    --_inline-size: calc(var(--ems-space-16) * 8);
+    --_inline-size: var(--ems-size-dialog-md);
 
     display: flex;
     flex-direction: column;
@@ -17,7 +17,7 @@
     max-block-size: calc(100dvh - var(--ems-space-8));
     overflow: hidden;
     border-radius: var(--ems-radius-xl);
-    background-color: var(--ems-color-bg-surface);
+    background-color: var(--ems-color-bg-raised);
     box-shadow: var(--ems-elevation-overlay);
     color: var(--ems-color-text-primary);
     font-family: var(--ems-font-family-sans);
@@ -37,11 +37,23 @@
   }
 
   .ui-dialog-pane--sm .ui-dialog-container {
-    --_inline-size: calc(var(--ems-space-16) * 6.5);
+    --_inline-size: var(--ems-size-dialog-sm);
   }
 
   .ui-dialog-pane--lg .ui-dialog-container {
-    --_inline-size: calc(var(--ems-space-16) * 11);
+    --_inline-size: var(--ems-size-dialog-lg);
+  }
+
+  /* breakpoint.narrow (MEDIA_QUERIES.narrow): forms take the whole phone screen; a short
+     confirmation (sm) stays a centred card. */
+  @media (max-width: 639.98px) {
+    .ui-dialog-pane--md .ui-dialog-container,
+    .ui-dialog-pane--lg .ui-dialog-container {
+      inline-size: 100vw;
+      block-size: 100dvh;
+      max-block-size: none;
+      border-radius: 0;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {

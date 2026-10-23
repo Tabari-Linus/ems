@@ -1,8 +1,8 @@
 /* ui-status-pill. Contract tokens only (docs/design/token-contract.md). */
 @layer components {
   :host {
-    --_bg: var(--ems-color-bg-sunken);
-    --_fg: var(--ems-color-text-secondary);
+    --_bg: var(--ems-color-status-neutral-bg);
+    --_fg: var(--ems-color-status-neutral-text);
 
     display: inline-flex;
     align-items: center;

@@ -6,7 +6,20 @@
     "outDir": "../../out-tsc/lib",
     "declaration": true,
     "declarationMap": true,
-    "types": []
+    "types": [],
+    /*
+     * Library build only: the sibling packages resolve to their BUILT output (`npm run lib:build`
+     * builds tokens -> icons -> ui), never to their sources. ng-packagr compiles every file a path
+     * mapping reaches as part of the entry point being built; a source file of another package
+     * lies outside this package and crashes its diagnostics ("Cannot destructure property 'pos'
+     * of 'file.referencedFiles[index]'"). The app, unit tests and Storybook keep the source
+     * mappings from ../../tsconfig.json.
+     */
+    "paths": {
+      "@ems/tokens": ["../../dist/tokens"],
+      "@ems/icons": ["../../dist/icons"],
+      "@ems/ui/*": ["./*/src/public-api.ts"]
+    }
   },
   "include": ["src/**/*.ts", "*/src/**/*.ts"],
   "exclude": ["**/*.spec.ts", "**/*.stories.ts"]

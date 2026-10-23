@@ -6,6 +6,7 @@ import {
   input,
   output,
 } from '@angular/core';
+import { Icon } from '@ems/icons';
 
 export type TagVariant = 'neutral' | 'accent';
 
@@ -21,6 +22,7 @@ export type TagVariant = 'neutral' | 'accent';
  */
 @Component({
   selector: 'ui-tag',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="ui-tag__label">{{ label() }}<ng-content /></span>
@@ -31,9 +33,7 @@ export type TagVariant = 'neutral' | 'accent';
         [attr.aria-label]="removeName()"
         (click)="remove.emit()"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M18 6 6 18M6 6l12 12" />
-        </svg>
+        <ui-icon name="x" size="sm" />
       </button>
     }
   `,

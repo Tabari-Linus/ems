@@ -23,6 +23,7 @@ import {
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { injectFormFieldControl, uniqueId } from '@ems/ui/form-field';
 import type { InputSize } from '@ems/ui/input';
+import { Icon } from '@ems/icons';
 
 /** One choice in `ui-select` / `ui-filter-pill`. */
 export interface SelectOption<T = unknown> {
@@ -64,7 +65,7 @@ export const SELECT_PANEL_POSITIONS: ConnectedPosition[] = [
 @Component({
   selector: 'ui-select',
   exportAs: 'uiSelect',
-  imports: [CdkListbox, CdkOption, CdkConnectedOverlay, CdkOverlayOrigin],
+  imports: [CdkListbox, CdkOption, CdkConnectedOverlay, CdkOverlayOrigin, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => Select), multi: true }],
@@ -102,20 +103,7 @@ export const SELECT_PANEL_POSITIONS: ConnectedPosition[] = [
           [attr.data-placeholder]="selected() ? null : ''"
           >{{ displayText() }}</span
         >
-        <!-- Lucide "chevron-down" (inline: @ems/ui cannot depend on @ems/icons yet). -->
-        <svg
-          class="ui-select__chevron"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path d="m6 9 6 6 6-6" />
-        </svg>
+        <ui-icon class="ui-select__chevron" name="chevron-down" size="sm" />
       </button>
       @if (clearable() && selected() && !isDisabled()) {
         <button
@@ -124,18 +112,7 @@ export const SELECT_PANEL_POSITIONS: ConnectedPosition[] = [
           [attr.aria-label]="clearLabel()"
           (click)="clear()"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
+          <ui-icon name="x" size="sm" />
         </button>
       }
     </div>
@@ -171,19 +148,7 @@ export const SELECT_PANEL_POSITIONS: ConnectedPosition[] = [
             [cdkOptionTypeaheadLabel]="option.label"
           >
             <span class="ui-select__option-label">{{ option.label }}</span>
-            <svg
-              class="ui-select__check"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-              focusable="false"
-            >
-              <path d="M20 6 9 17l-5-5" />
-            </svg>
+            <ui-icon class="ui-select__check" name="check" size="sm" />
           </div>
         } @empty {
           <div class="ui-select__empty">{{ emptyText() }}</div>

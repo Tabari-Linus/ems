@@ -19,6 +19,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--ems-button-gap);
+    --ui-icon-size: var(--ems-icon-size-sm);
     box-sizing: border-box;
     min-block-size: max(var(--_height), var(--ems-control-min-target));
     min-inline-size: var(--ems-control-min-target);
@@ -128,9 +129,9 @@
     position: absolute;
     inset: 0;
     margin: auto;
-    inline-size: 1.1em;
-    block-size: 1.1em;
-    border: 0.15em solid currentColor;
+    inline-size: var(--ems-icon-size-sm);
+    block-size: var(--ems-icon-size-sm);
+    border: var(--ems-border-width-thick) solid currentColor;
     border-inline-end-color: transparent;
     border-radius: 50%;
     animation: ui-button-spin var(--ems-motion-duration-spinner) linear infinite;

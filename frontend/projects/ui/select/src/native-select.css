@@ -4,7 +4,7 @@
  */
 @layer components {
   .ui-native-select {
-    --_height: var(--ems-space-10);
+    --_height: var(--ems-control-md-height);
     --_padding-inline: var(--ems-space-3);
     --_chevron: calc(var(--ems-space-1) + var(--ems-space-1) / 4);
 
@@ -46,7 +46,7 @@
   }
 
   .ui-native-select[data-size='sm'] {
-    --_height: var(--ems-space-8);
+    --_height: var(--ems-control-sm-height);
     --_padding-inline: var(--ems-space-2);
   }
 
@@ -67,7 +67,7 @@
   .ui-native-select:disabled {
     border-color: var(--ems-color-border-subtle);
     background-color: var(--ems-color-bg-sunken);
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 

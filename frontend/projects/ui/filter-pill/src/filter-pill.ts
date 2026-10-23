@@ -21,6 +21,7 @@ import {
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { uniqueId } from '@ems/ui/form-field';
 import { SELECT_PANEL_POSITIONS, type SelectOption } from '@ems/ui/select';
+import { Icon } from '@ems/icons';
 
 /** Value of the "All" row in the list (never emitted). */
 const ALL = Symbol('ui-filter-pill-all');
@@ -46,7 +47,7 @@ type Row<T> = T | typeof ALL;
 @Component({
   selector: 'ui-filter-pill',
   exportAs: 'uiFilterPill',
-  imports: [CdkListbox, CdkOption, CdkConnectedOverlay, CdkOverlayOrigin, NgTemplateOutlet],
+  imports: [CdkListbox, CdkOption, CdkConnectedOverlay, CdkOverlayOrigin, NgTemplateOutlet, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   template: `
@@ -68,20 +69,7 @@ type Row<T> = T | typeof ALL;
       <span class="ui-filter-pill__label">{{ label() }}</span>
       <span class="ui-filter-pill__dot" aria-hidden="true">·</span>
       <span class="ui-filter-pill__summary">{{ summary() }}</span>
-      <!-- Lucide "chevron-down" (inline: @ems/ui cannot depend on @ems/icons yet). -->
-      <svg
-        class="ui-filter-pill__chevron"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d="m6 9 6 6 6-6" />
-      </svg>
+      <ui-icon class="ui-filter-pill__chevron" name="chevron-down" size="sm" />
     </button>
 
     <ng-template
@@ -124,19 +112,7 @@ type Row<T> = T | typeof ALL;
     </ng-template>
 
     <ng-template #check>
-      <svg
-        class="ui-select__check"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <path d="M20 6 9 17l-5-5" />
-      </svg>
+      <ui-icon class="ui-select__check" name="check" size="sm" />
     </ng-template>
   `,
   providers: [

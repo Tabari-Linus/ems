@@ -23,10 +23,10 @@
     display: flex;
     align-items: center;
     gap: var(--ems-space-2);
-    min-block-size: var(--ems-space-8);
+    min-block-size: var(--ems-control-sm-height);
     padding-block: var(--ems-space-1);
     padding-inline: var(--ems-space-3);
-    border-radius: var(--ems-radius-sm);
+    border-radius: var(--ems-radius-md);
     cursor: pointer;
     outline: none;
   }
@@ -47,7 +47,7 @@
 
   .ui-select__option[aria-disabled='true'] {
     background: transparent;
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 
@@ -57,8 +57,7 @@
 
   .ui-select__check {
     flex: none;
-    inline-size: var(--ems-space-4);
-    block-size: var(--ems-space-4);
+    --ui-icon-stroke-width: 2.5;
     color: var(--ems-color-accent-soft-text);
     visibility: hidden;
   }

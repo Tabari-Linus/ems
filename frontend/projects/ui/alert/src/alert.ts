@@ -7,8 +7,9 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { Icon, STATUS_ICONS, type StatusTone } from '@ems/icons';
 
-export type AlertTone = 'neutral' | 'info' | 'success' | 'warning' | 'danger';
+export type AlertTone = StatusTone;
 /** `auto`: warning/danger interrupt (`role="alert"`), the rest wait (`role="status"`). */
 export type AlertLive = 'auto' | 'polite' | 'assertive' | 'off';
 
@@ -33,39 +34,12 @@ export type AlertLive = 'auto' | 'polite' | 'assertive' | 'off';
  */
 @Component({
   selector: 'ui-alert',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <span class="ui-alert__icon" aria-hidden="true">
       <ng-content select="[uiAlertIcon]">
-        @switch (tone()) {
-          @case ('success') {
-            <svg viewBox="0 0 24 24" focusable="false">
-              <circle cx="12" cy="12" r="10" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
-          }
-          @case ('warning') {
-            <svg viewBox="0 0 24 24" focusable="false">
-              <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-              <path d="M12 9v4" />
-              <path d="M12 17h.01" />
-            </svg>
-          }
-          @case ('danger') {
-            <svg viewBox="0 0 24 24" focusable="false">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 8v4" />
-              <path d="M12 16h.01" />
-            </svg>
-          }
-          @default {
-            <svg viewBox="0 0 24 24" focusable="false">
-              <circle cx="12" cy="12" r="10" />
-              <path d="M12 16v-4" />
-              <path d="M12 8h.01" />
-            </svg>
-          }
-        }
+        <ui-icon [name]="toneIcon()" />
       </ng-content>
     </span>
     <div class="ui-alert__content">
@@ -87,9 +61,7 @@ export type AlertLive = 'auto' | 'polite' | 'assertive' | 'off';
         [attr.aria-label]="dismissLabel()"
         (click)="dismiss()"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <path d="M18 6 6 18M6 6l12 12" />
-        </svg>
+        <ui-icon name="x" size="sm" />
       </button>
     }
   `,
@@ -117,6 +89,7 @@ export class Alert {
   readonly dismissed = output<void>();
 
   protected readonly isDismissed = signal(false);
+  protected readonly toneIcon = computed(() => STATUS_ICONS[this.tone()]);
 
   protected readonly role = computed(() => {
     switch (this.live()) {

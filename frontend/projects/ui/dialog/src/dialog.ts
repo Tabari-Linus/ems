@@ -9,6 +9,7 @@ import {
   type OnInit,
 } from '@angular/core';
 import { DialogContainer } from './dialog-container';
+import { Icon } from '@ems/icons';
 
 let nextId = 0;
 
@@ -30,6 +31,7 @@ let nextId = 0;
  */
 @Component({
   selector: 'ui-dialog',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <header class="ui-dialog__header">
@@ -46,9 +48,7 @@ let nextId = 0;
           [attr.aria-label]="closeLabel()"
           (click)="close()"
         >
-          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
+          <ui-icon name="x" />
         </button>
       }
     </header>

@@ -8,6 +8,7 @@ import {
   model,
   viewChildren,
 } from '@angular/core';
+import { Icon } from '@ems/icons';
 
 export type ViewToggleValue = 'grid' | 'list';
 
@@ -33,6 +34,7 @@ const DEFAULT_OPTIONS: readonly ViewToggleOption[] = [
  */
 @Component({
   selector: 'ui-view-toggle',
+  imports: [Icon],
   exportAs: 'uiViewToggle',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
@@ -47,16 +49,7 @@ const DEFAULT_OPTIONS: readonly ViewToggleOption[] = [
         (click)="choose(option.value)"
         (keydown)="onKeydown($event, i)"
       >
-        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          @if (option.value === 'grid') {
-            <rect x="4" y="4" width="7" height="7" rx="1.5" />
-            <rect x="13" y="4" width="7" height="7" rx="1.5" />
-            <rect x="4" y="13" width="7" height="7" rx="1.5" />
-            <rect x="13" y="13" width="7" height="7" rx="1.5" />
-          } @else {
-            <path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01" />
-          }
-        </svg>
+        <ui-icon [name]="option.value === 'grid' ? 'layout-grid' : 'list'" size="sm" />
         <span [class.ui-visually-hidden]="iconOnly()">{{ option.label }}</span>
       </button>
     }

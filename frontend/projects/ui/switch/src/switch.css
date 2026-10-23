@@ -79,13 +79,12 @@
   }
 
   .ui-switch__input:focus-visible {
-    outline: var(--ems-border-width-hairline) solid var(--ems-color-border-focus);
-    outline-offset: var(--ems-border-width-hairline);
-    box-shadow: var(--ems-elevation-focus);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   .ui-switch[data-disabled] .ui-switch__row {
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 

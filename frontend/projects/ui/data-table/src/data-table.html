@@ -39,19 +39,7 @@
                   (click)="toggleSort(column.id())"
                 >
                   <ng-container *ngTemplateOutlet="headerContent; context: { $implicit: column }" />
-                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    @switch (ariaSort(column)) {
-                      @case ('ascending') {
-                        <path d="M12 19V5M5 12l7-7 7 7" />
-                      }
-                      @case ('descending') {
-                        <path d="M12 5v14M19 12l-7 7-7-7" />
-                      }
-                      @default {
-                        <path d="m7 9 5-5 5 5M7 15l5 5 5-5" />
-                      }
-                    }
-                  </svg>
+                  <ui-icon [name]="sortIcon(column)" size="sm" />
                 </button>
               } @else {
                 <span [class.ui-visually-hidden]="column.headerHidden()">

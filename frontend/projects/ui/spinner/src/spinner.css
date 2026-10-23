@@ -29,13 +29,13 @@
     border: var(--_stroke) solid var(--ems-color-accent-soft);
     border-block-start-color: currentColor;
     border-radius: 50%;
-    animation: ui-spinner-spin calc(var(--ems-duration-slow) * 2.5) linear infinite;
+    animation: ui-spinner-spin var(--ems-motion-duration-spinner) linear infinite;
   }
 
   @media (prefers-reduced-motion: reduce) {
     /* Keep a slow sign of progress rather than a frozen arc. */
     .ui-spinner__arc {
-      animation-duration: calc(var(--ems-duration-slow) * 10);
+      animation-duration: calc(var(--ems-motion-duration-spinner) * 4);
     }
   }
 

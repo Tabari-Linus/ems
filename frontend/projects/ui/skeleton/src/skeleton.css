@@ -12,7 +12,7 @@
   .ui-skeleton__bone {
     display: block;
     border-radius: var(--ems-radius-pill);
-    background-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-skeleton-base);
     animation: ui-skeleton-pulse calc(var(--ems-duration-slow) * 5) var(--ems-easing-standard)
       infinite alternate;
   }
@@ -81,7 +81,7 @@
 
   @keyframes ui-skeleton-pulse {
     to {
-      opacity: 0.45;
+      background-color: var(--ems-color-skeleton-highlight);
     }
   }
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, inject, input } from '@angular/core';
+import { Icon, STATUS_ICONS } from '@ems/icons';
 import { ToastService } from './toast.service';
 
 /**
@@ -15,43 +16,14 @@ import { ToastService } from './toast.service';
  */
 @Component({
   selector: 'ui-toaster',
+  imports: [Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <ol class="ui-toaster__list" aria-live="polite">
       @for (toast of toasts.visible(); track toast.id) {
         <li class="ui-toast" [attr.data-tone]="toast.tone" [attr.data-toast-id]="toast.id">
           <span class="ui-toast__icon" aria-hidden="true">
-            @switch (toast.tone) {
-              @case ('success') {
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              }
-              @case ('warning') {
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <path
-                    d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"
-                  />
-                  <path d="M12 9v4" />
-                  <path d="M12 17h.01" />
-                </svg>
-              }
-              @case ('danger') {
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 8v4" />
-                  <path d="M12 16h.01" />
-                </svg>
-              }
-              @default {
-                <svg viewBox="0 0 24 24" focusable="false">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4" />
-                  <path d="M12 8h.01" />
-                </svg>
-              }
-            }
+            <ui-icon [name]="statusIcons[toast.tone]" size="sm" />
           </span>
           <p class="ui-toast__message">{{ toast.message }}</p>
           @if (toast.action; as action) {
@@ -65,9 +37,7 @@ import { ToastService } from './toast.service';
             [attr.aria-label]="dismissLabel()"
             (click)="toasts.dismiss(toast.id)"
           >
-            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-              <path d="M18 6 6 18M6 6l12 12" />
-            </svg>
+            <ui-icon name="x" size="sm" />
           </button>
         </li>
       }
@@ -92,6 +62,7 @@ export class Toaster {
   readonly dismissLabel = input('Dismiss notification');
 
   protected readonly toasts = inject(ToastService);
+  protected readonly statusIcons = STATUS_ICONS;
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef).nativeElement;
   protected hovered = false;
 

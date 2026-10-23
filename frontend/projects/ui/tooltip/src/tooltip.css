@@ -3,7 +3,7 @@
   :host {
     display: block;
     box-sizing: border-box;
-    max-inline-size: calc(var(--ems-space-16) * 4);
+    max-inline-size: var(--ems-size-tooltip-max-width);
     padding: calc(var(--ems-space-1) * 1.5) var(--ems-space-2);
     border-radius: var(--ems-radius-sm);
     background-color: var(--ems-color-bg-inverse);

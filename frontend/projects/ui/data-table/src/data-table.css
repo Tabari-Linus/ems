@@ -18,8 +18,8 @@
   }
 
   .ui-data-table__scroll:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * -2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: calc(var(--ems-focus-ring-width) * -1);
   }
 
   .ui-data-table__table {
@@ -66,7 +66,7 @@
   :host([data-sticky]) th {
     position: sticky;
     inset-block-start: 0;
-    z-index: 1;
+    z-index: 1; /* ds-lint-allow: local stacking inside the isolated scroll area */
   }
 
   tbody tr:last-child td {
@@ -95,21 +95,11 @@
   }
 
   .ui-data-table__sort:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: var(--ems-border-width-hairline);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
-  .ui-data-table__sort svg {
-    inline-size: var(--ems-icon-size-sm);
-    block-size: var(--ems-icon-size-sm);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-
-  .ui-data-table__sort[data-sort='none'] svg {
+  .ui-data-table__sort[data-sort='none'] ui-icon {
     opacity: 0.6;
   }
 
@@ -126,8 +116,8 @@
 
   .ui-data-table__row:focus-visible,
   .ui-data-table__card:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * -2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: calc(var(--ems-focus-ring-width) * -1);
   }
 
   .ui-data-table__actions {
@@ -145,9 +135,9 @@
     inline-size: 70%;
     block-size: var(--ems-space-3);
     border-radius: var(--ems-radius-pill);
-    background-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-skeleton-base);
     animation: ui-data-table-pulse calc(var(--ems-duration-slow) * 5) var(--ems-easing-standard)
-      infinite;
+      infinite alternate;
   }
 
   .ui-data-table__skeleton[data-variant='1'] {
@@ -236,8 +226,8 @@
   }
 
   @keyframes ui-data-table-pulse {
-    50% {
-      opacity: 0.45;
+    to {
+      background-color: var(--ems-color-skeleton-highlight);
     }
   }
 

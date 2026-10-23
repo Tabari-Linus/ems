@@ -13,6 +13,7 @@ import {
 } from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { uniqueId } from '@ems/ui/form-field';
+import { Icon } from '@ems/icons';
 
 /**
  * Checkbox on a native `<input type="checkbox">` (WAI-ARIA APG *Checkbox*: Space toggles,
@@ -28,6 +29,7 @@ import { uniqueId } from '@ems/ui/form-field';
  */
 @Component({
   selector: 'ui-checkbox',
+  imports: [Icon],
   exportAs: 'uiCheckbox',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
@@ -51,24 +53,7 @@ import { uniqueId } from '@ems/ui/form-field';
           (change)="onNativeChange($event)"
           (blur)="onTouched()"
         />
-        <!-- Lucide "check" / "minus" (inline: @ems/ui cannot depend on @ems/icons yet). -->
-        <svg
-          class="ui-checkbox__mark"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="3"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          focusable="false"
-        >
-          @if (indeterminate()) {
-            <path d="M6 12h12" />
-          } @else {
-            <path d="M20 6 9 17l-5-5" />
-          }
-        </svg>
+        <ui-icon class="ui-checkbox__mark" [name]="indeterminate() ? 'minus' : 'check'" />
       </span>
       <span class="ui-checkbox__label"><ng-content /></span>
     </label>

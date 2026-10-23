@@ -30,8 +30,8 @@
   }
 
   :host(:focus-visible) {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   :host([aria-current='page']) {
@@ -52,8 +52,8 @@
 
   @media (forced-colors: active) {
     :host([aria-current='page']) {
-      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
-      outline-offset: calc(var(--ems-border-width-hairline) * -2);
+      outline: var(--ems-focus-ring-width) solid Highlight;
+      outline-offset: calc(var(--ems-focus-ring-width) * -1);
     }
   }
 }

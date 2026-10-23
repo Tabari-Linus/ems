@@ -42,14 +42,4 @@
   :host([data-variant='load-more']) .ui-pagination__summary {
     flex: none;
   }
-
-  svg {
-    inline-size: var(--ems-icon-size-sm);
-    block-size: var(--ems-icon-size-sm);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
 }

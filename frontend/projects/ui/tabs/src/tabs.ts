@@ -29,8 +29,8 @@ let nextId = 0;
       }
 
       :host(:focus-visible) {
-        outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-        outline-offset: calc(var(--ems-border-width-hairline) * 2);
+        outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+        outline-offset: var(--ems-focus-ring-offset);
         border-radius: var(--ems-radius-sm);
       }
     }

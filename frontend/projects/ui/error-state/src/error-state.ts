@@ -10,6 +10,7 @@ import {
   viewChild,
 } from '@angular/core';
 import { Button } from '@ems/ui/button';
+import { Icon, type IconName } from '@ems/icons';
 
 export type ErrorStateKind = 'forbidden' | 'not-found' | 'server' | 'network';
 export type ErrorStateHeadingLevel = 1 | 2 | 3;
@@ -53,6 +54,14 @@ export const ERROR_STATE_COPY: Readonly<Record<ErrorStateKind, ErrorStateCopy>> 
   },
 };
 
+/** One icon per kind: a lock for 403, a search for 404, no signal offline, a warning otherwise. */
+const ERROR_STATE_ICONS: Readonly<Record<ErrorStateKind, IconName>> = {
+  forbidden: 'lock',
+  'not-found': 'search',
+  network: 'wifi-off',
+  server: 'triangle-alert',
+};
+
 /**
  * A failure state for a page or section (403, 404, 500, network), with helpful default copy and
  * one recovery action.
@@ -66,42 +75,11 @@ export const ERROR_STATE_COPY: Readonly<Record<ErrorStateKind, ErrorStateCopy>> 
  */
 @Component({
   selector: 'ui-error-state',
-  imports: [Button],
+  imports: [Button, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="ui-error-state__icon" aria-hidden="true">
-      @switch (kind()) {
-        @case ('forbidden') {
-          <svg viewBox="0 0 24 24" focusable="false">
-            <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-        }
-        @case ('not-found') {
-          <svg viewBox="0 0 24 24" focusable="false">
-            <circle cx="11" cy="11" r="8" />
-            <path d="m21 21-4.3-4.3" />
-          </svg>
-        }
-        @case ('network') {
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="M12 20h.01" />
-            <path d="M8.5 16.429a5 5 0 0 1 7 0" />
-            <path d="M5 12.859a10 10 0 0 1 5.17-2.69" />
-            <path d="M19 12.859a10 10 0 0 0-2.007-1.523" />
-            <path d="M2 8.82a15 15 0 0 1 4.177-2.643" />
-            <path d="M22 8.82a15 15 0 0 0-11.288-3.764" />
-            <path d="m2 2 20 20" />
-          </svg>
-        }
-        @default {
-          <svg viewBox="0 0 24 24" focusable="false">
-            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3" />
-            <path d="M12 9v4" />
-            <path d="M12 17h.01" />
-          </svg>
-        }
-      }
+      <ui-icon [name]="kindIcon()" size="lg" />
     </div>
     @if (copy().code; as code) {
       <p class="ui-error-state__code">Error {{ code }}</p>
@@ -149,6 +127,7 @@ export class ErrorState {
   readonly action = output<void>();
 
   protected readonly copy = computed(() => ERROR_STATE_COPY[this.kind()]);
+  protected readonly kindIcon = computed<IconName>(() => ERROR_STATE_ICONS[this.kind()]);
   private readonly headingRef = viewChild.required<ElementRef<HTMLElement>>('headingEl');
 
   /** Moves focus to the heading so the error is announced and keyboard users start here. */

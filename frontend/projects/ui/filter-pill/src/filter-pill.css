@@ -11,7 +11,7 @@
     align-items: center;
     gap: var(--ems-space-1);
     box-sizing: border-box;
-    block-size: var(--ems-space-10);
+    block-size: var(--ems-control-md-height);
     margin: 0;
     padding-block: 0;
     padding-inline: var(--ems-space-4) var(--ems-space-3);
@@ -35,9 +35,8 @@
   }
 
   .ui-filter-pill__trigger:focus-visible {
-    outline: var(--ems-border-width-hairline) solid var(--ems-color-border-focus);
-    outline-offset: 0;
-    box-shadow: var(--ems-elevation-focus);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   .ui-filter-pill__trigger[aria-expanded='true'] {
@@ -55,8 +54,6 @@
 
   .ui-filter-pill__chevron {
     flex: none;
-    inline-size: var(--ems-space-4);
-    block-size: var(--ems-space-4);
     margin-inline-start: var(--ems-space-1);
     color: var(--ems-color-text-muted);
   }
@@ -82,7 +79,7 @@
   .ui-filter-pill__trigger:disabled {
     border-color: var(--ems-color-border-subtle);
     background-color: var(--ems-color-bg-sunken);
-    color: var(--ems-color-text-muted);
+    color: var(--ems-color-text-disabled);
     cursor: not-allowed;
   }
 
@@ -91,7 +88,7 @@
   }
 
   .ui-filter-pill__panel {
-    min-inline-size: calc(var(--ems-space-16) * 3);
+    min-inline-size: var(--ems-size-popover-min-width);
   }
 
   @media (prefers-reduced-motion: reduce) {

@@ -11,6 +11,8 @@
   }
 
   .ui-empty-state__icon {
+    --ui-icon-size: var(--ems-icon-size-lg);
+
     display: grid;
     place-items: center;
     inline-size: var(--ems-space-12);

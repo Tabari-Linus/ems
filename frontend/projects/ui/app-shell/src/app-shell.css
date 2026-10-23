@@ -1,12 +1,12 @@
 /*
- * ui-app-shell. Contract tokens only. Layout sizes are composed from the 4-pt space scale
- * (sidebar 232 / 72 collapsed, drawer 288, top bar 68) because the contract has no layout tokens.
- * The 900px breakpoint must match APP_SHELL_COMPACT_QUERY in app-shell.ts.
+ * ui-app-shell. Contract tokens only: layout.sidebar.*, layout.drawer.width, layout.topbar.height
+ * and layout.content.max-width. The compact query is breakpoint.compact (MEDIA_QUERIES.compact in
+ * @ems/tokens, used by APP_SHELL_COMPACT_QUERY in app-shell.ts).
  */
 @layer components {
   :host {
-    --_sidebar-width: calc(var(--ems-space-16) * 3 + var(--ems-space-10));
-    --_topbar-height: calc(var(--ems-space-16) + var(--ems-space-1));
+    --_sidebar-width: var(--ems-layout-sidebar-width);
+    --_topbar-height: var(--ems-layout-topbar-height);
     --_gutter: var(--ems-space-8);
 
     position: relative;
@@ -23,7 +23,7 @@
   }
 
   :host([data-sidebar='collapsed']) {
-    --_sidebar-width: calc(var(--ems-space-16) + var(--ems-space-2));
+    --_sidebar-width: var(--ems-layout-sidebar-collapsed-width);
   }
 
   /* Skip link: first focusable element, visible only on focus. */
@@ -52,8 +52,8 @@
   }
 
   .ui-app-shell__skip:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   /* Sidebar */
@@ -103,8 +103,8 @@
   /* Projected content marked `uiShellHideCollapsed` (brand name, org card text) hides when collapsed. */
   :host([data-sidebar='collapsed']) ::ng-deep [uiShellHideCollapsed] {
     position: absolute;
-    inline-size: 1px;
-    block-size: 1px;
+    inline-size: 1px; /* ds-lint-allow: visually hidden */
+    block-size: 1px; /* ds-lint-allow: visually hidden */
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
@@ -160,6 +160,11 @@
     padding-inline: var(--_gutter);
   }
 
+  /* Pages read best at a bounded width; left-aligned under the search field. */
+  .ui-app-shell__content {
+    max-inline-size: var(--ems-layout-content-max-width);
+  }
+
   /* Programmatic focus target of the skip link; a ring round the whole page helps nobody. */
   .ui-app-shell__main:focus {
     outline: none;
@@ -183,23 +188,17 @@
   }
 
   .ui-app-shell__icon-button:hover {
-    background-color: var(--ems-color-bg-sunken);
-    color: var(--ems-color-text-primary);
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
   }
 
   .ui-app-shell__icon-button:focus-visible {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
-  .ui-app-shell__icon-button svg {
-    inline-size: var(--ems-icon-size-md);
-    block-size: var(--ems-icon-size-md);
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .ui-app-shell__icon-button {
+    --ui-icon-size: var(--ems-icon-size-md);
   }
 
   .ui-app-shell__scrim {
@@ -210,6 +209,7 @@
   }
 
   /* Compact: the sidebar is an off-canvas drawer. */
+  /* breakpoint.compact (MEDIA_QUERIES.compact) */
   @media (max-width: 899.98px) {
     :host {
       --_gutter: var(--ems-space-4);
@@ -222,10 +222,7 @@
       inset-block: 0;
       inset-inline-start: 0;
       z-index: var(--ems-z-modal);
-      inline-size: min(
-        calc(var(--ems-space-16) * 4 + var(--ems-space-8)),
-        calc(100vw - var(--ems-space-12))
-      );
+      inline-size: min(var(--ems-layout-drawer-width), calc(100vw - var(--ems-space-12)));
       block-size: 100dvh;
       border-inline-end: 0;
       box-shadow: var(--ems-elevation-overlay);

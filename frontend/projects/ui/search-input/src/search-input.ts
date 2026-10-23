@@ -18,6 +18,7 @@ import {
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { UI_FORM_FIELD } from '@ems/ui/form-field';
 import { Input, InputGroup, type InputSize } from '@ems/ui/input';
+import { Icon } from '@ems/icons';
 
 export type ShortcutPlatform = 'auto' | 'mac' | 'other';
 
@@ -45,7 +46,7 @@ function detectMac(): boolean {
 @Component({
   selector: 'ui-search-input',
   exportAs: 'uiSearchInput',
-  imports: [Input, InputGroup],
+  imports: [Input, InputGroup, Icon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
   providers: [
@@ -53,22 +54,7 @@ function detectMac(): boolean {
   ],
   template: `
     <ui-input-group shape="pill" [size]="size()">
-      <!-- Lucide "search" / "x" (inline: @ems/ui cannot depend on @ems/icons yet). -->
-      <svg
-        uiInputLeading
-        class="ui-input-group__icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        aria-hidden="true"
-        focusable="false"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.34-4.34" />
-      </svg>
+      <ui-icon uiInputLeading class="ui-input-group__icon" name="search" size="sm" />
       <input
         #native
         uiInput
@@ -93,19 +79,7 @@ function detectMac(): boolean {
           [attr.aria-label]="clearLabel()"
           (click)="clear()"
         >
-          <svg
-            class="ui-input-group__icon"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path d="M18 6 6 18M6 6l12 12" />
-          </svg>
+          <ui-icon class="ui-input-group__icon" name="x" size="sm" />
         </button>
       } @else if (shortcut()) {
         <kbd uiInputTrailing class="ui-search-input__kbd" aria-hidden="true">{{ hint() }}</kbd>

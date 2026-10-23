@@ -23,8 +23,8 @@
   }
 
   :host(:focus-visible) {
-    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
-    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
   }
 
   .ui-person-card__top {
@@ -48,7 +48,7 @@
   }
 
   .ui-person-card__name {
-    font-size: var(--ems-type-headline-size);
+    font-size: var(--ems-type-body-strong-size);
     font-weight: var(--ems-type-headline-weight);
     line-height: var(--ems-type-headline-line-height);
     letter-spacing: var(--ems-type-headline-letter-spacing);
