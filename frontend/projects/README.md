@@ -304,8 +304,10 @@ When a literal is unavoidable, say why on the line or the line above:
 
 Specs and `play` functions dispatch CDK-handled keys with `press()` from `ui/testing/keyboard.ts`
 (CDK key managers read the legacy `keyCode`, which `userEvent` leaves at 0). Storybook pre-bundles
-every dependency the stories import (`PREBUNDLED_DEPS` in `.storybook/main.ts`), so the first
-`storybook:test` on a cold Vite cache does not re-optimise and reload mid-run.
+every dependency the stories import (`PREBUNDLED_DEPS` in `.storybook/main.ts`), and
+`storybook:test` scans every story for dependencies up front (`optimizeDeps.entries`, one cache dir
+per theme project in `vitest.storybook.config.mts`), so a cold Vite cache does not re-optimise and
+reload mid-run ("Failed to fetch dynamically imported module").
 
 ## Design rules that apply to every component
 
