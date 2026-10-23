@@ -1,0 +1,65 @@
+/*
+ * ui-dialog-container + scrim. Global on purpose (ViewEncapsulation.None): the CDK overlay pane and
+ * backdrop are created outside any component. Contract tokens only.
+ */
+@layer components {
+  .ui-dialog-backdrop {
+    background-color: var(--ems-color-bg-overlay);
+  }
+
+  .ui-dialog-container {
+    --_inline-size: calc(var(--ems-space-16) * 8);
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    inline-size: min(var(--_inline-size), calc(100vw - var(--ems-space-8)));
+    max-block-size: calc(100dvh - var(--ems-space-8));
+    overflow: hidden;
+    border-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-bg-surface);
+    box-shadow: var(--ems-elevation-overlay);
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+    outline: none;
+    animation: ui-dialog-in var(--ems-duration-base) var(--ems-easing-emphasized);
+  }
+
+  /* The opened component (whatever its element) fills the surface so the body can scroll and the
+     footer stays at the bottom. */
+  .ui-dialog-container > * {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .ui-dialog-pane--sm .ui-dialog-container {
+    --_inline-size: calc(var(--ems-space-16) * 6.5);
+  }
+
+  .ui-dialog-pane--lg .ui-dialog-container {
+    --_inline-size: calc(var(--ems-space-16) * 11);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-dialog-container {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-dialog-container {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+
+  @keyframes ui-dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(var(--ems-space-2)) scale(0.98);
+    }
+  }
+}

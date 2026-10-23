@@ -1,0 +1,36 @@
+/* ui-tooltip bubble. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    display: block;
+    box-sizing: border-box;
+    max-inline-size: calc(var(--ems-space-16) * 4);
+    padding: calc(var(--ems-space-1) * 1.5) var(--ems-space-2);
+    border-radius: var(--ems-radius-sm);
+    background-color: var(--ems-color-bg-inverse);
+    color: var(--ems-color-text-inverse);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-caption-weight);
+    line-height: var(--ems-type-caption-line-height);
+    overflow-wrap: anywhere;
+    animation: ui-tooltip-in var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+
+  @keyframes ui-tooltip-in {
+    from {
+      opacity: 0;
+    }
+  }
+}

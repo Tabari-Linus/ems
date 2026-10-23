@@ -1,0 +1,74 @@
+/*
+ * ui-drawer-container + scrim. Global on purpose (ViewEncapsulation.None): the CDK overlay pane and
+ * backdrop are created outside any component. Contract tokens only.
+ */
+@layer components {
+  .ui-drawer-backdrop {
+    background-color: var(--ems-color-bg-overlay);
+  }
+
+  .ui-drawer-container {
+    --_inline-size: calc(var(--ems-space-16) * 7.5);
+    --_from: 100%;
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    inline-size: min(var(--_inline-size), 100vw);
+    block-size: 100%;
+    overflow: hidden;
+    border-start-start-radius: var(--ems-radius-xl);
+    border-end-start-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-bg-surface);
+    box-shadow: var(--ems-elevation-overlay);
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+    outline: none;
+    animation: ui-drawer-in var(--ems-duration-slow) var(--ems-easing-standard);
+  }
+
+  /* The opened component (whatever its element) fills the surface so the body can scroll and the
+     footer stays at the bottom. */
+  .ui-drawer-container > * {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .ui-drawer-container:dir(rtl) {
+    --_from: -100%;
+  }
+
+  .ui-drawer-pane--lg .ui-drawer-container {
+    --_inline-size: calc(var(--ems-space-16) * 10);
+  }
+
+  /* Full screen on phones: no room for a sheet beside the page. */
+  @media (max-width: 40rem) {
+    .ui-drawer-container {
+      inline-size: 100vw;
+      border-radius: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-drawer-container {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-drawer-container {
+      border-inline-start: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+
+  @keyframes ui-drawer-in {
+    from {
+      transform: translateX(var(--_from));
+    }
+  }
+}

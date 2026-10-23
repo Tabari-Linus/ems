@@ -1,0 +1,54 @@
+/* ui-spinner. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    --_size: var(--ems-icon-size-lg);
+    --_stroke: calc(var(--ems-border-width-hairline) * 2.5);
+
+    display: inline-flex;
+    flex: none;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    color: var(--ems-color-accent-solid);
+    vertical-align: middle;
+  }
+
+  :host([data-size='sm']) {
+    --_size: var(--ems-icon-size-sm);
+    --_stroke: calc(var(--ems-border-width-hairline) * 2);
+  }
+
+  :host([data-size='lg']) {
+    --_size: var(--ems-space-10);
+    --_stroke: calc(var(--ems-border-width-hairline) * 3.5);
+  }
+
+  .ui-spinner__arc {
+    box-sizing: border-box;
+    inline-size: 100%;
+    block-size: 100%;
+    border: var(--_stroke) solid var(--ems-color-accent-soft);
+    border-block-start-color: currentColor;
+    border-radius: 50%;
+    animation: ui-spinner-spin calc(var(--ems-duration-slow) * 2.5) linear infinite;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    /* Keep a slow sign of progress rather than a frozen arc. */
+    .ui-spinner__arc {
+      animation-duration: calc(var(--ems-duration-slow) * 10);
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-spinner__arc {
+      border-color: GrayText;
+      border-block-start-color: CanvasText;
+    }
+  }
+
+  @keyframes ui-spinner-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+}
