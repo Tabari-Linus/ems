@@ -4,5 +4,15 @@
   "lib": {
     "entryFile": "src/public-api.ts"
   },
-  "assets": [{ "input": "styles", "glob": "**/*.css", "output": "styles" }]
+  "assets": [
+    {
+      "input": "styles",
+      "glob": "**/*.css",
+      "output": "styles"
+    }
+  ],
+  "allowedNonPeerDependencies": [
+    "@fontsource-variable/geist-mono",
+    "@fontsource-variable/plus-jakarta-sans"
+  ]
 }

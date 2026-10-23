@@ -3,7 +3,7 @@ import { expect } from 'storybook/test';
 import { TokenGallery } from './token-gallery';
 
 const meta: Meta<TokenGallery> = {
-  title: 'Foundations/Tokens',
+  title: 'Foundations/Token reference',
   component: TokenGallery,
   tags: ['!autodocs'],
   parameters: {
@@ -11,7 +11,7 @@ const meta: Meta<TokenGallery> = {
     docs: {
       description: {
         component:
-          'Generated from @ems/tokens (tokens.json). All values are placeholders until the Slice DS Direction Board.',
+          'Every @ems/tokens token with its CSS variable and value, generated from tokens.json.',
       },
     },
   },
@@ -20,9 +20,9 @@ const meta: Meta<TokenGallery> = {
 export default meta;
 type Story = StoryObj<TokenGallery>;
 
-export const Gallery: Story = {
+export const Reference: Story = {
   play: async ({ canvas }) => {
-    // Every declared pair passes in both themes (the CI gate checks the same data).
-    await expect(canvas.queryByText(/FAIL/)).not.toBeInTheDocument();
+    await expect(canvas.getByRole('heading', { name: /^Semantic/ })).toBeInTheDocument();
+    await expect(canvas.getByText('--ems-color-accent-solid')).toBeInTheDocument();
   },
 };

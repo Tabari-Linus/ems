@@ -44,7 +44,12 @@ API_ORIGIN="$(printf '%s' "$API_URL" | sed -E 's#^(https?://[^/?#]+).*#\1#')"
 
 printf '{ "apiUrl": "%s" }\n' "$API_URL" > "$HTML_DIR/config.json"
 
-CSP="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' ${API_ORIGIN}${CSP_CONNECT_EXTRA:+ $CSP_CONNECT_EXTRA}; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+# The inline theme no-flash script in src/index.html is allowed by its hash (no 'unsafe-inline').
+# src/theme-no-flash.spec.ts recomputes it from index.html and fails if this value is stale.
+# Fonts are self-hosted (@fontsource-variable/*), so no third-party font or style hosts.
+THEME_SCRIPT_HASH="'sha256-18vpAxRY+7LqnovP2uvrqZ/xoqpVL/qcvIa9Avqukkk='"
+
+CSP="default-src 'self'; script-src 'self' ${THEME_SCRIPT_HASH}; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; connect-src 'self' ${API_ORIGIN}${CSP_CONNECT_EXTRA:+ $CSP_CONNECT_EXTRA}; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
 
 mkdir -p "$SNIPPET_DIR"
 cat > "$SNIPPET_DIR/security-headers.conf" <<EOF

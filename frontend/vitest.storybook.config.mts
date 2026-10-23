@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import { storybookAngularVitest } from '@storybook/angular-vite/vitest';
 import { playwright } from '@vitest/browser-playwright';
-import { defineConfig } from 'vitest/config';
+import { defineConfig, type TestProjectInlineConfiguration } from 'vitest/config';
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -12,27 +12,34 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
  * render, its `play` function must pass, and axe must report no violations
  * (`parameters.a11y.test: 'error'` in .storybook/preview.ts).
  *
+ * Two projects, one per theme: `storybook-light` and `storybook-dark` run the same stories, the
+ * dark one with `<html data-theme="dark">` (via __EMS_STORY_THEME__, read in preview.ts), so axe
+ * (colour contrast included) is enforced in both themes.
+ *
  * Kept separate from the Angular unit-test builder (`ng test`), which owns `*.spec.ts`.
  */
+function themeProject(theme: 'light' | 'dark'): TestProjectInlineConfiguration {
+  return {
+    extends: true,
+    define: { __EMS_STORY_THEME__: JSON.stringify(theme) },
+    plugins: [
+      storybookAngularVitest({ tsConfig: '.storybook/tsconfig.json' }),
+      storybookTest({ configDir: path.join(dirname, '.storybook') }),
+    ],
+    test: {
+      name: `storybook-${theme}`,
+      browser: {
+        enabled: true,
+        headless: true,
+        provider: playwright({}),
+        instances: [{ browser: 'chromium' }],
+      },
+    },
+  };
+}
+
 export default defineConfig({
   test: {
-    projects: [
-      {
-        extends: true,
-        plugins: [
-          storybookAngularVitest({ tsConfig: '.storybook/tsconfig.json' }),
-          storybookTest({ configDir: path.join(dirname, '.storybook') }),
-        ],
-        test: {
-          name: 'storybook',
-          browser: {
-            enabled: true,
-            headless: true,
-            provider: playwright({}),
-            instances: [{ browser: 'chromium' }],
-          },
-        },
-      },
-    ],
+    projects: [themeProject('light'), themeProject('dark')],
   },
 });
