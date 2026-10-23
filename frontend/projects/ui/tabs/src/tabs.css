@@ -1,0 +1,73 @@
+/* ui-tabs layout. Tab look comes from tab.css. Contract tokens only. */
+@layer components {
+  :host {
+    display: grid;
+    gap: var(--ems-space-4);
+    min-inline-size: 0;
+  }
+
+  .ui-tabs__list {
+    display: flex;
+    gap: var(--ems-space-1);
+    min-inline-size: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .ui-tabs__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-2);
+    box-sizing: border-box;
+    min-block-size: var(--ems-control-sm-height);
+    padding-block: 0;
+    padding-inline: var(--ems-space-4);
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background-color: transparent;
+    color: var(--ems-color-text-muted);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-label-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-label-line-height);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-tabs__tab:hover {
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-primary);
+  }
+
+  .ui-tabs__tab:focus-visible {
+    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
+    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+  }
+
+  .ui-tabs__tab[aria-selected='true'] {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-tabs__tab[aria-selected='true']:hover {
+    background-color: var(--ems-color-accent-soft-hover);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-tabs__tab {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-tabs__tab[aria-selected='true'] {
+      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
+      outline-offset: calc(var(--ems-border-width-hairline) * -2);
+    }
+  }
+}

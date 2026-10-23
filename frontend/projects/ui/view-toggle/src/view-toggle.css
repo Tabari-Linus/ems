@@ -1,0 +1,77 @@
+/* ui-view-toggle. Contract tokens only. */
+@layer components {
+  :host {
+    display: inline-flex;
+    gap: var(--ems-space-1);
+    padding: var(--ems-space-1);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-bg-sunken);
+    box-shadow: inset 0 0 0 var(--ems-border-width-hairline) var(--ems-color-border-subtle);
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-view-toggle__option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--ems-space-2);
+    box-sizing: border-box;
+    min-inline-size: var(--ems-control-sm-height);
+    min-block-size: var(--ems-control-sm-height);
+    padding-block: 0;
+    padding-inline: var(--ems-space-3);
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background-color: transparent;
+    color: var(--ems-color-text-muted);
+    font: inherit;
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  :host([data-icon-only]) .ui-view-toggle__option {
+    padding-inline: var(--ems-space-2);
+  }
+
+  .ui-view-toggle__option:hover {
+    color: var(--ems-color-text-primary);
+  }
+
+  .ui-view-toggle__option[aria-checked='true'] {
+    background-color: var(--ems-color-bg-surface);
+    color: var(--ems-color-text-primary);
+    box-shadow: var(--ems-elevation-card);
+  }
+
+  .ui-view-toggle__option:focus-visible {
+    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
+    outline-offset: var(--ems-border-width-hairline);
+  }
+
+  .ui-view-toggle__option svg {
+    inline-size: var(--ems-icon-size-sm);
+    block-size: var(--ems-icon-size-sm);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-view-toggle__option {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-view-toggle__option[aria-checked='true'] {
+      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
+    }
+  }
+}

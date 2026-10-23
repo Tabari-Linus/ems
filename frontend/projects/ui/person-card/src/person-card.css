@@ -1,0 +1,142 @@
+/* a[uiPersonCard]. Contract tokens only. */
+@layer components {
+  :host {
+    display: grid;
+    gap: var(--ems-space-3);
+    box-sizing: border-box;
+    min-inline-size: 0;
+    padding-block: var(--ems-space-4) var(--ems-space-3);
+    padding-inline: var(--ems-space-4);
+    border-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-bg-surface);
+    box-shadow: var(--ems-elevation-card);
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+    text-decoration: none;
+    transition: box-shadow var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  :host(:hover) {
+    box-shadow: var(--ems-elevation-raised);
+  }
+
+  :host(:focus-visible) {
+    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
+    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+  }
+
+  .ui-person-card__top {
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-3);
+    min-inline-size: 0;
+  }
+
+  .ui-person-card__who {
+    display: grid;
+    min-inline-size: 0;
+  }
+
+  .ui-person-card__name,
+  .ui-person-card__position,
+  .ui-person-card__place {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-person-card__name {
+    font-size: var(--ems-type-headline-size);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: var(--ems-type-headline-line-height);
+    letter-spacing: var(--ems-type-headline-letter-spacing);
+  }
+
+  .ui-person-card__position {
+    color: var(--ems-color-text-muted);
+    font-size: var(--ems-type-caption-size);
+    line-height: var(--ems-type-caption-line-height);
+  }
+
+  .ui-person-card__details {
+    display: grid;
+    gap: var(--ems-space-3);
+    min-inline-size: 0;
+  }
+
+  .ui-person-card__place {
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-2);
+    color: var(--ems-color-text-secondary);
+    font-size: var(--ems-type-caption-size);
+    line-height: var(--ems-type-caption-line-height);
+  }
+
+  .ui-person-card__department,
+  .ui-person-card__office {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ui-person-card__department {
+    flex: 0 1 auto;
+    min-inline-size: 0;
+  }
+
+  .ui-person-card__office {
+    flex: none;
+  }
+
+  .ui-person-card__sep {
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-person-card__reports {
+    color: var(--ems-color-text-muted);
+    font-size: var(--ems-type-caption-size);
+    line-height: var(--ems-type-caption-line-height);
+  }
+
+  .ui-person-card__reports:empty {
+    display: none;
+  }
+
+  .ui-person-card__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ems-space-2);
+    min-block-size: var(--ems-space-6);
+    padding-block-start: var(--ems-space-3);
+    border-block-start: var(--ems-border-width-hairline) solid var(--ems-color-border-subtle);
+  }
+
+  .ui-person-card__number {
+    color: var(--ems-color-text-muted);
+    font-family: var(--ems-font-family-mono);
+    font-size: var(--ems-type-mono-size);
+    font-weight: var(--ems-type-mono-weight);
+    line-height: var(--ems-type-mono-line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-person-card__status {
+    margin-inline-start: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid LinkText;
+    }
+  }
+}

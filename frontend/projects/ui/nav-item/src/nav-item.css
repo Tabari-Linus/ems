@@ -1,0 +1,133 @@
+/* ui-nav-item (a[uiNavItem]). Contract tokens only. */
+@layer components {
+  :host {
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-3);
+    box-sizing: border-box;
+    min-block-size: var(--ems-control-md-height);
+    padding-block: var(--ems-space-2);
+    padding-inline: var(--ems-space-3);
+    border-radius: var(--ems-radius-pill);
+    color: var(--ems-color-text-secondary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-label-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-label-line-height);
+    letter-spacing: var(--ems-type-label-letter-spacing);
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  :host(:hover) {
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-primary);
+  }
+
+  :host(:focus-visible) {
+    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
+    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+  }
+
+  /* Current page: the one solid indigo element in the sidebar. */
+  :host([aria-current='page']) {
+    background-color: var(--ems-color-accent-solid);
+    color: var(--ems-color-accent-on-solid);
+  }
+
+  :host([aria-current='page']:hover) {
+    background-color: var(--ems-color-accent-solid-hover);
+    color: var(--ems-color-accent-on-solid);
+  }
+
+  .ui-nav-item__icon {
+    display: inline-flex;
+    flex: none;
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-nav-item__icon:empty {
+    display: none;
+  }
+
+  :host([aria-current='page']) .ui-nav-item__icon {
+    color: inherit;
+  }
+
+  .ui-nav-item__label {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-nav-item__badge {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    min-inline-size: var(--ems-space-5);
+    block-size: var(--ems-space-5);
+    padding-inline: var(--ems-space-2);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-accent-solid);
+    color: var(--ems-color-accent-on-solid);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-headline-weight);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  /* On the solid pill the badge flips to the soft tint so it stays visible. */
+  :host([aria-current='page']) .ui-nav-item__badge {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  /* Collapsed app-shell sidebar: icon only, label stays as the accessible name. */
+  :host-context([data-sidebar='collapsed']) {
+    position: relative;
+    justify-content: center;
+    padding-inline: 0;
+  }
+
+  :host-context([data-sidebar='collapsed']) .ui-nav-item__label {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :host-context([data-sidebar='collapsed']) .ui-nav-item__badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    min-inline-size: var(--ems-space-4);
+    block-size: var(--ems-space-4);
+    padding-inline: var(--ems-space-1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host([aria-current='page']) {
+      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
+      outline-offset: calc(var(--ems-border-width-hairline) * -2);
+    }
+
+    .ui-nav-item__badge {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}

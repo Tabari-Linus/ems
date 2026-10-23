@@ -1,0 +1,59 @@
+/* a[uiTab]: routed pill tab. Contract tokens only. Keep in sync with .ui-tabs__tab in tabs.css. */
+@layer components {
+  :host {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-2);
+    box-sizing: border-box;
+    min-block-size: var(--ems-control-sm-height);
+    padding-block: 0;
+    padding-inline: var(--ems-space-4);
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background-color: transparent;
+    color: var(--ems-color-text-muted);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-label-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-label-line-height);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  :host(:hover) {
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-primary);
+  }
+
+  :host(:focus-visible) {
+    outline: calc(var(--ems-border-width-hairline) * 2) solid var(--ems-color-border-focus);
+    outline-offset: calc(var(--ems-border-width-hairline) * 2);
+  }
+
+  :host([aria-current='page']) {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  :host([aria-current='page']:hover) {
+    background-color: var(--ems-color-accent-soft-hover);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :host {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host([aria-current='page']) {
+      outline: calc(var(--ems-border-width-hairline) * 2) solid Highlight;
+      outline-offset: calc(var(--ems-border-width-hairline) * -2);
+    }
+  }
+}
