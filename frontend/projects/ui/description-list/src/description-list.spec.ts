@@ -19,6 +19,7 @@ import { DescriptionItem, DescriptionList } from './description-list';
       >
         GH-ACC-0042
       </div>
+      <div uiDescriptionItem label="Work email" span="3">kwame.asante&#64;akwaabalabs.example</div>
     </dl>
   `,
 })
@@ -74,6 +75,8 @@ describe('DescriptionList', () => {
     const { dl, update } = await setup();
     await update((h) => h.columns.set(value));
     expect(dl.dataset['columns']).toBe(expected);
+    // A span never exceeds the column count.
+    expect(dl.querySelectorAll('[uiDescriptionItem]')[2].getAttribute('data-span')).toBe(expected);
   });
 
   it('names the copy button after the label', async () => {

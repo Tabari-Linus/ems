@@ -3,6 +3,7 @@ import {
   booleanAttribute,
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   ElementRef,
   inject,
@@ -13,6 +14,15 @@ import {
 } from '@angular/core';
 
 export type DescriptionListColumns = 1 | 2 | 3;
+export type DescriptionItemSpan = 1 | 2 | 3 | 'full';
+
+function toSpan(value: unknown): DescriptionItemSpan {
+  if (value === 'full') {
+    return 'full';
+  }
+  const n = numberAttribute(value, 1);
+  return (n === 2 || n === 3 ? n : 1) as DescriptionItemSpan;
+}
 
 function toColumns(value: unknown): DescriptionListColumns {
   const n = numberAttribute(value, 2);
@@ -92,7 +102,7 @@ export class DescriptionList {
   host: {
     class: 'ui-description-item',
     '[attr.data-mono]': 'mono() ? "" : null',
-    '[attr.data-span]': 'span()',
+    '[attr.data-span]': 'effectiveSpan()',
   },
 })
 export class DescriptionItem {
@@ -106,9 +116,17 @@ export class DescriptionItem {
   /** Accessible name of the copy button. Defaults to "Copy <label>". */
   readonly copyLabel = input<string | null>(null);
   /** Columns the pair spans. */
-  readonly span = input<1 | 2 | 3 | 'full'>(1);
+  readonly span = input<DescriptionItemSpan, unknown>(1, { transform: toSpan });
   /** How long the "Copied" feedback stays, in ms. */
   readonly feedbackDuration = input(2000, { transform: numberAttribute });
+
+  private readonly list = inject(DescriptionList, { optional: true });
+  /** Never span more columns than the list has (an implicit column would overflow). */
+  protected readonly effectiveSpan = computed(() => {
+    const span = this.span();
+    const columns = this.list?.columns() ?? 3;
+    return span === 'full' ? span : Math.min(span, columns);
+  });
 
   protected readonly state = signal<'idle' | 'copied' | 'failed'>('idle');
   protected readonly feedback = signal('');

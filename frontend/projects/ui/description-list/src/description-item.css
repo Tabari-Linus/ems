@@ -24,18 +24,6 @@
     }
   }
 
-  /* Never span more columns than the list has (an implicit column would overflow). */
-  :host-context(.ui-description-list[data-columns='1'])[data-span='2'],
-  :host-context(.ui-description-list[data-columns='1'])[data-span='3'] {
-    grid-column: auto;
-  }
-
-  @container ui-description-list (min-width: 45rem) {
-    :host-context(.ui-description-list[data-columns='2'])[data-span='3'] {
-      grid-column: span 2;
-    }
-  }
-
   .ui-description-item__label {
     color: var(--ems-color-text-muted);
     font-size: var(--ems-type-caption-size);
