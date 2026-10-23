@@ -32,7 +32,8 @@ const NAMED_COLOURS =
 const COLOUR_FN = /\b(rgba?|hsla?|hwb|lab|lch|oklab|oklch|color)\(/i;
 const HEX = /#[0-9a-f]{3,8}\b/i;
 // A number with a unit. Zero needs no token (0, 0px, 0s), so it is not reported.
-const LITERAL_UNIT = /(?<![\w.-])-?(?!0*\.?0+(?:px|rem|em|pt|ms|s)\b)\d*\.?\d+(px|rem|em|pt|ms|s)\b/;
+const LITERAL_UNIT =
+  /(?<![\w.-])-?(?!0*\.?0+(?:px|rem|em|pt|ms|s)\b)\d*\.?\d+(px|rem|em|pt|ms|s)\b/;
 const ALLOWED_MEDIA = /^@media\s*\((prefers-reduced-motion|prefers-color-scheme|forced-colors)\b/;
 
 /** Source files to lint, with the CSS text and the line it starts on. */
@@ -119,6 +120,28 @@ for (const { rel, css, offset } of sources()) {
       else if (tier === 'primitive') report(i, `${name} is a primitive: use a semantic token`);
     }
   });
+}
+
+// The EMS_UI_ENTRY_POINTS list in src/public-api.ts must match the folders with an ng-package.json.
+const uiRoot = join(frontend, 'projects/ui');
+const onDisk = readdirSync(uiRoot, { withFileTypes: true })
+  .filter((e) => e.isDirectory() && readdirSync(join(uiRoot, e.name)).includes('ng-package.json'))
+  .map((e) => `@ems/ui/${e.name}`)
+  .sort();
+const listed = [
+  ...(
+    readFileSync(join(uiRoot, 'src/public-api.ts'), 'utf8').split('EMS_UI_ENTRY_POINTS = [')[1] ??
+    ''
+  )
+    .split(']')[0]
+    .matchAll(/'(@ems\/ui\/[\w-]+)'/g),
+]
+  .map((m) => m[1])
+  .sort();
+if (onDisk.join() !== listed.join()) {
+  findings.push(
+    `projects/ui/src/public-api.ts  EMS_UI_ENTRY_POINTS is out of date\n    on disk: ${onDisk.join(', ')}\n    listed:  ${listed.join(', ')}`,
+  );
 }
 
 if (findings.length) {
