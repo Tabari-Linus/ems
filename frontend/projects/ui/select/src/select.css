@@ -1,0 +1,143 @@
+/*
+ * ui-select trigger. Contract tokens only. Unencapsulated like the panel (listbox-panel.css),
+ * which is rendered in the CDK overlay container; every selector is scoped by .ui-select*.
+ */
+@layer components {
+  .ui-select {
+    display: block;
+    min-inline-size: 0;
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-select__control {
+    --_height: var(--ems-space-10);
+    --_padding-inline: var(--ems-space-3);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    block-size: var(--_height);
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-md);
+    background-color: var(--ems-color-bg-surface);
+    transition:
+      border-color var(--ems-duration-fast) var(--ems-easing-standard),
+      box-shadow var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-select__control[data-size='sm'] {
+    --_height: var(--ems-space-8);
+    --_padding-inline: var(--ems-space-2);
+  }
+
+  .ui-select__control:hover:not([data-disabled]) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-select__control:has(.ui-select__trigger:focus-visible),
+  .ui-select__control[data-open] {
+    border-color: var(--ems-color-border-focus);
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-select__control[data-invalid] {
+    border-color: var(--ems-color-status-danger-border);
+  }
+
+  .ui-select__control[data-disabled] {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+  }
+
+  .ui-select__trigger {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--ems-space-2);
+    box-sizing: border-box;
+    min-inline-size: 0;
+    block-size: 100%;
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--_padding-inline);
+    border: 0;
+    border-radius: inherit;
+    background: transparent;
+    color: var(--ems-color-text-primary);
+    font-family: inherit;
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    text-align: start;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .ui-select__trigger:disabled {
+    color: var(--ems-color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .ui-select__value {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ui-select__value[data-placeholder] {
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-select__chevron {
+    flex: none;
+    inline-size: var(--ems-space-4);
+    block-size: var(--ems-space-4);
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-select__clear {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--ems-space-6);
+    block-size: var(--ems-space-6);
+    margin: 0;
+    margin-inline-end: var(--ems-space-2);
+    padding: 0;
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background: transparent;
+    color: var(--ems-color-text-muted);
+    cursor: pointer;
+  }
+
+  .ui-select__clear:hover {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-select__clear:focus-visible {
+    outline: var(--ems-border-width-hairline) solid var(--ems-color-border-focus);
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-select__clear > svg {
+    inline-size: var(--ems-space-4);
+    block-size: var(--ems-space-4);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-select__control {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-select__control:has(.ui-select__trigger:focus-visible) {
+      outline: var(--ems-border-width-hairline) solid Highlight;
+    }
+  }
+}

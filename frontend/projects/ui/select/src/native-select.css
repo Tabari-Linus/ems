@@ -1,0 +1,91 @@
+/*
+ * select[uiSelect]. Contract tokens only. The chevron is drawn with two gradients in
+ * currentColor, so it follows the text colour in both themes without an image.
+ */
+@layer components {
+  .ui-native-select {
+    --_height: var(--ems-space-10);
+    --_padding-inline: var(--ems-space-3);
+    --_chevron: calc(var(--ems-space-1) + var(--ems-space-1) / 4);
+
+    appearance: none;
+    box-sizing: border-box;
+    inline-size: 100%;
+    min-inline-size: 0;
+    block-size: var(--_height);
+    margin: 0;
+    padding-block: 0;
+    padding-inline: var(--_padding-inline) calc(var(--_padding-inline) + var(--ems-space-6));
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-md);
+    background-color: var(--ems-color-bg-surface);
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - var(--_padding-inline) - var(--_chevron)) 50%,
+      calc(100% - var(--_padding-inline)) 50%;
+    background-size: var(--_chevron) var(--_chevron);
+    background-repeat: no-repeat;
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    cursor: pointer;
+    outline: none;
+    transition:
+      border-color var(--ems-duration-fast) var(--ems-easing-standard),
+      box-shadow var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-native-select:dir(rtl) {
+    background-position:
+      calc(var(--_padding-inline) + var(--_chevron)) 50%,
+      var(--_padding-inline) 50%;
+  }
+
+  .ui-native-select[data-size='sm'] {
+    --_height: var(--ems-space-8);
+    --_padding-inline: var(--ems-space-2);
+  }
+
+  .ui-native-select:hover:not(:disabled) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-native-select:focus-visible,
+  .ui-native-select:focus {
+    border-color: var(--ems-color-border-focus);
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-native-select[aria-invalid='true'] {
+    border-color: var(--ems-color-status-danger-border);
+  }
+
+  .ui-native-select:disabled {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+    color: var(--ems-color-text-muted);
+    cursor: not-allowed;
+  }
+
+  .ui-native-select option {
+    background-color: var(--ems-color-bg-raised);
+    color: var(--ems-color-text-primary);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-native-select {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-native-select {
+      appearance: auto;
+      background-image: none;
+    }
+  }
+}
