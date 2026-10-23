@@ -73,8 +73,9 @@
   --sp-16: 64px;
 
   /* Typography */
-  --font: 'Geist', system-ui, sans-serif;
-  --mono: 'Geist Mono', monospace;
+  /* Geist is no longer loaded (no Google Fonts); fall back to the design-system sans. */
+  --font: 'Geist', var(--ems-font-family-sans);
+  --mono: var(--ems-font-family-mono);
 }
 
 /* Light-mode overrides */
