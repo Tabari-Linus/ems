@@ -34,6 +34,7 @@ class EmployeeServiceImplTest {
 
     @Mock private EmployeePersistenceHelper persistenceHelper;
     @Mock private EmployeeServiceHelper serviceHelper;
+    @Mock private org.springframework.context.ApplicationEventPublisher eventPublisher;
     @InjectMocks private EmployeeServiceImpl service;
 
     // ── mutations ─────────────────────────────────────────────────────────────
@@ -81,6 +82,7 @@ class EmployeeServiceImplTest {
 
         assertThat(result.id()).isEqualTo(1L);
         verify(persistenceHelper).archive(1L);
+        verify(eventPublisher).publishEvent(new com.mrlii.ems.common.event.EmployeeAccessChangedEvent(1L, buildEmployee(1L).getStatus()));
     }
 
     @Test
@@ -93,6 +95,7 @@ class EmployeeServiceImplTest {
         assertThat(result.id()).isEqualTo(1L);
         assertThat(result.name()).isEqualTo("John Doe");
         verify(persistenceHelper).softDelete(1L);
+        verify(eventPublisher).publishEvent(new com.mrlii.ems.common.event.EmployeeAccessChangedEvent(1L, CommonStatus.ARCHIVED));
     }
 
     @Test

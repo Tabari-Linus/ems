@@ -1,5 +1,7 @@
 package com.mrlii.ems.notification.listener;
 
+import com.mrlii.ems.auth.dto.WelcomeLink;
+import com.mrlii.ems.auth.service.OneTimeTokenService;
 import com.mrlii.ems.notification.cache.NotificationDeduplicationCache;
 import com.mrlii.ems.notification.dto.EmailRequest;
 import com.mrlii.ems.notification.enums.EmailTemplateType;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
 import org.springframework.transaction.event.TransactionalEventListener;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executor;
 
@@ -23,16 +26,19 @@ public class NotificationEventListener {
     private final EmailTemplateRenderer templateRenderer;
     private final NotificationDeduplicationCache deduplicationCache;
     private final Executor emailTaskExecutor;
+    private final OneTimeTokenService oneTimeTokenService;
 
     public NotificationEventListener(
             EmailService emailService,
             EmailTemplateRenderer templateRenderer,
             NotificationDeduplicationCache deduplicationCache,
-            @Qualifier("emailTaskExecutor") Executor emailTaskExecutor) {
+            @Qualifier("emailTaskExecutor") Executor emailTaskExecutor,
+            OneTimeTokenService oneTimeTokenService) {
         this.emailService = emailService;
         this.templateRenderer = templateRenderer;
         this.deduplicationCache = deduplicationCache;
         this.emailTaskExecutor = emailTaskExecutor;
+        this.oneTimeTokenService = oneTimeTokenService;
     }
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
@@ -49,10 +55,13 @@ public class NotificationEventListener {
         }
         deduplicationCache.markSent(dedupeKey);
 
-        Map<String, Object> vars = Map.of(
-                "email", event.email(),
-                "temporaryPassword", event.temporaryPassword()
-        );
+        // The link carries the raw one-time token: it goes into the email only, never into logs.
+        WelcomeLink link = oneTimeTokenService.issueWelcomeLink(event.userAccountId());
+        Map<String, Object> vars = new HashMap<>();
+        vars.put("firstName", event.firstName());
+        vars.put("email", event.email());
+        vars.put("setPasswordUrl", link.url());
+        vars.put("validForHours", link.validForHours());
 
         EmailRequest emailRequest = new EmailRequest(
                 event.email(),

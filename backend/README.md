@@ -5,7 +5,7 @@ Spring Boot 4 · Java 21 · Spring GraphQL · Spring Security (self-issued RSA J
 | Endpoint | Purpose |
 |---|---|
 | `POST /graphql` | GraphQL API (Bearer access token) |
-| `POST /api/v1/auth/login`, `/refresh-token`, `/logout` | REST auth; the refresh token travels in an `HttpOnly` cookie scoped to `/api/v1/auth` |
+| `POST /api/v1/auth/login`, `/refresh-token`, `/logout`, `/logout-all`, `/set-password`, `/change-password` | REST auth; the refresh token travels in an `HttpOnly` cookie scoped to `/api/v1/auth`. Contract: [`docs/api/auth.md`](../docs/api/auth.md) |
 | `GET /actuator/health/liveness`, `/readiness` | Health probes |
 | `GET /graphiql` | GraphiQL UI (`dev` profile only) |
 
@@ -47,7 +47,13 @@ secure cookie by default). No profile is active by default.
 | `DB_URL` / `DB_USERNAME` / `DB_PASSWORD` | `jdbc:postgresql://localhost:5432/ems` / `ems` / required | |
 | `JWT_PRIVATE_KEY_PATH` / `JWT_PUBLIC_KEY_PATH` | `./.keys/jwt-*-key.pem` | |
 | `JWT_PRIVATE_KEY` / `JWT_PUBLIC_KEY` | unset | inline PEM, overrides the paths |
-| `JWT_EXPIRATION_MS` / `JWT_REFRESH_EXPIRATION_MS` | 8 h / 7 d | |
+| `JWT_EXPIRATION_MS` / `JWT_REFRESH_EXPIRATION_MS` | 15 min / 7 d | access token / refresh session lifetime |
+| `JWT_ISSUER` / `JWT_AUDIENCE` | `ems-api` / `ems-web` | written to and required on every access token |
+| `AUTH_LEGACY_PERMISSIONS_CLAIM` | `true` | transition flag: also emit `permissions`/`account_id` claims (never used for authorization) |
+| `AUTH_PRINCIPAL_CACHE_TTL` | `60s` | per-request account/permission cache; evicted on access-level and employee changes |
+| `AUTH_LOCKOUT_MAX_ATTEMPTS` / `AUTH_LOCKOUT_DURATION` | `5` / `15m` | failed-login lockout per account |
+| `AUTH_RATE_LIMIT_CAPACITY` / `AUTH_RATE_LIMIT_PERIOD` | `10` / `1m` | per-IP limit on `/login` and `/set-password` (429 + `Retry-After`) |
+| `AUTH_WELCOME_TOKEN_TTL` / `AUTH_PASSWORD_RESET_TOKEN_TTL` | `72h` / `1h` | one-time set-password links |
 | `ADMIN_EMAIL` / `ADMIN_PASSWORD` | `admin@ems.local` / required for seeding | |
 | `ALLOWED_ORIGINS` | `http://localhost:4200` | comma-separated |
 | `APP_FRONTEND_URL` | `http://localhost:4200` | links in emails |
@@ -107,3 +113,25 @@ The image runs as a non-root user, exposes `8080`, honours `JAVA_OPTS` (default
 `-XX:MaxRAMPercentage=75.0 -XX:+ExitOnOutOfMemoryError`) and has a `HEALTHCHECK` on
 `/actuator/health/liveness`. CI (`.github/workflows/backend.yml`) runs `./mvnw verify` on every change
 under `backend/` and pushes `ghcr.io/<owner>/ems-backend` on `main`.
+
+## 6. Authentication and sessions
+
+The full frontend contract (requests, responses, error codes, cookie, CSRF header) is in
+[`docs/api/auth.md`](../docs/api/auth.md). In short:
+
+- **Access token**: RS256 JWT, 15 min, claims `sub` (account public id), `iss`, `aud`, `iat`, `exp`, `jti`,
+  `sid`. Authorization never trusts token claims: `AccountJwtAuthenticationConverter` loads the account per
+  request (Caffeine cache, 60 s, evicted by `AccessLevelChangedEvent` / `EmployeeAccessChangedEvent`), rejects
+  disabled/locked accounts and INACTIVE/ARCHIVED/deleted employees with 401, and grants the permissions of
+  the employee's access level only while that level is ACTIVE.
+- **Sessions** (`auth_sessions`): one family per login/device, the refresh token rotates on every refresh,
+  only its SHA-256 hash is stored, and presenting a rotated token revokes the whole family (audited).
+- **CSRF**: the cookie endpoints (`refresh-token`, `logout`, `logout-all`) require
+  `X-Requested-With: ems-web` and an `Origin`/`Referer` from `ALLOWED_ORIGINS`.
+- **Onboarding**: `createEmployee` creates a PENDING account with no password and, after commit, emails a
+  single-use 72 h link to `${APP_FRONTEND_URL}/set-password?token=...`. Setting the password activates the
+  employee. No password is ever emailed.
+- **Brute force**: 5 wrong passwords lock the account for 15 min; `/login` and `/set-password` are rate
+  limited per IP (in-memory Bucket4j buckets: per instance).
+- **Audit** (`audit_events`): logins (success/failure), lockouts, logout, logout-all, session reuse,
+  password set/change. Never passwords or raw tokens.

@@ -1,0 +1,15 @@
+"The signed-in user: login account, employee record and effective permissions."
+type Me {
+    account: Account!
+    "Null for accounts without an employee record."
+    employee: EmployeeDetailResult
+    "Effective permissions of the employee's ACTIVE access level (empty if none)."
+    permissions: [Permission!]!
+}
+
+"A login account. `id` is the account's public id (the access token's `sub`)."
+type Account {
+    id: ID!
+    email: String!
+    lastLoginAt: DateTime
+}

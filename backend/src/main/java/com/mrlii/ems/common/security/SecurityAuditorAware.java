@@ -1,34 +1,22 @@
 package com.mrlii.ems.common.security;
 
+import com.mrlii.ems.auth.security.AccountAuthenticationToken;
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
+/** {@code created_by}/{@code last_modified_by}: the caller's account id, resolved server-side (not from token claims). */
 @Component
 public class SecurityAuditorAware implements AuditorAware<Long> {
 
     @Override
     public Optional<Long> getCurrentAuditor() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth == null || !auth.isAuthenticated() || auth instanceof AnonymousAuthenticationToken) {
-            return Optional.empty();
-        }
-        if (auth instanceof JwtAuthenticationToken jwtAuth) {
-            Object accountId = jwtAuth.getToken().getClaim("account_id");
-            if (accountId instanceof Long id) {
-                return Optional.of(id);
-            }
-            if (accountId instanceof Integer id) {
-                return Optional.of(id.longValue());
-            }
-            if (accountId instanceof Number id) {
-                return Optional.of(id.longValue());
-            }
+        if (auth instanceof AccountAuthenticationToken token && token.isAuthenticated()) {
+            return Optional.ofNullable(token.getAccount().accountId());
         }
         return Optional.empty();
     }

@@ -4,6 +4,7 @@ import com.mrlii.ems.accesslevel.entity.AccessLevel;
 import com.mrlii.ems.accesslevel.repository.AccessLevelRepository;
 import com.mrlii.ems.auth.entity.UserAccount;
 import com.mrlii.ems.auth.repository.UserAccountRepository;
+import com.mrlii.ems.auth.util.EmailNormalizer;
 import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.common.exception.DuplicateEntityException;
 import com.mrlii.ems.common.exception.EntityNotFoundException;
@@ -20,10 +21,7 @@ import com.mrlii.ems.organization.position.repository.PositionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Slf4j
 @Component
@@ -41,7 +39,6 @@ public class EmployeePersistenceHelper {
     private final EmployeeValidator validator;
     private final CommonUtilHelper commonUtilHelper;
     private final UserAccountRepository userAccountRepository;
-    private final PasswordEncoder passwordEncoder;
     private final ApplicationEventPublisher eventPublisher;
 
     public Employee create(CreateEmployeeInput input) {
@@ -50,8 +47,8 @@ public class EmployeePersistenceHelper {
         Employee employee = Employee.builder()
                 .firstName(commonUtilHelper.normalizeName(input.firstName()))
                 .lastName(commonUtilHelper.normalizeName(input.lastName()))
-                .workEmail(input.workEmail().toLowerCase())
-                .status(CommonStatus.ACTIVE)
+                .workEmail(EmailNormalizer.normalize(input.workEmail()))
+                .status(CommonStatus.PENDING)
                 .position(resolvePosition(input.positionId()))
                 .department(resolveDepartment(input.departmentId()))
                 .accessLevel(resolveAccessLevel(input.accessLevelId()))
@@ -64,26 +61,23 @@ public class EmployeePersistenceHelper {
         persistAddress(input.address(), saved);
         persistIdentification(input.identification(), saved);
 
-        String temporaryPassword = createUserAccount(saved);
-        eventPublisher.publishEvent(new EmployeeCreatedEmailEvent(saved.getId(), saved.getWorkEmail(), temporaryPassword));
+        UserAccount account = createUserAccount(saved);
+        // The welcome email (with a one-time set-password link, no password) is sent after commit.
+        eventPublisher.publishEvent(new EmployeeCreatedEmailEvent(
+                saved.getId(), account.getId(), saved.getWorkEmail(), saved.getFirstName()));
 
         return saved;
     }
 
-    private String generateTemporaryPassword() {
-        return UUID.randomUUID().toString().replace("-", "");
-    }
-
-    private String createUserAccount(Employee employee) {
-        String raw = generateTemporaryPassword();
+    /** Creates the login account with no password: the employee stays PENDING until they set one. */
+    private UserAccount createUserAccount(Employee employee) {
         UserAccount account = UserAccount.builder()
                 .email(employee.getWorkEmail())
-                .passwordHash(passwordEncoder.encode(raw))
                 .employee(employee)
                 .build();
-        userAccountRepository.save(account);
+        UserAccount saved = userAccountRepository.save(account);
         log.info("UserAccount provisioned for employee id={}, email={}", employee.getId(), employee.getWorkEmail());
-        return raw;
+        return saved;
     }
 
     public Employee update(Long id, UpdateEmployeeInput input) {
@@ -97,7 +91,10 @@ public class EmployeePersistenceHelper {
         }
         if (input.workEmail() != null && !input.workEmail().isBlank()) {
             validator.validateEmailIsUniqueForUpdate(id, input.workEmail());
-            employee.setWorkEmail(input.workEmail().toLowerCase());
+            String workEmail = EmailNormalizer.normalize(input.workEmail());
+            employee.setWorkEmail(workEmail);
+            // The work email is the login email.
+            userAccountRepository.findByEmployee_Id(id).ifPresent(account -> account.setEmail(workEmail));
         }
         if (input.positionId() != null) {
             employee.setPosition(resolvePosition(input.positionId()));
