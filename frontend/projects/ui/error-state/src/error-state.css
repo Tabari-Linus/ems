@@ -1,0 +1,85 @@
+/* ui-error-state. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    display: grid;
+    justify-items: center;
+    gap: var(--ems-space-2);
+    padding: var(--ems-space-12) var(--ems-space-6);
+    text-align: center;
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-error-state__icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--ems-space-12);
+    block-size: var(--ems-space-12);
+    margin-block-end: var(--ems-space-2);
+    border-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-bg-sunken);
+    box-shadow: inset 0 0 0 var(--ems-border-width-hairline) var(--ems-color-border-subtle);
+    color: var(--ems-color-text-secondary);
+  }
+
+  .ui-error-state__icon svg {
+    inline-size: var(--ems-icon-size-lg);
+    block-size: var(--ems-icon-size-lg);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .ui-error-state__code {
+    margin: 0;
+    color: var(--ems-color-text-muted);
+    font-family: var(--ems-font-family-mono);
+    font-size: var(--ems-type-mono-size);
+    font-weight: var(--ems-type-mono-weight);
+    line-height: var(--ems-type-mono-line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-error-state__heading {
+    margin: 0;
+    font-size: var(--ems-type-title-size);
+    font-weight: var(--ems-type-title-weight);
+    line-height: var(--ems-type-title-line-height);
+    letter-spacing: var(--ems-type-title-letter-spacing);
+    text-wrap: balance;
+  }
+
+  /* Programmatic focus target only; it is not an interactive control. */
+  .ui-error-state__heading:focus {
+    outline: none;
+  }
+
+  .ui-error-state__description {
+    max-inline-size: 52ch;
+    margin: 0;
+    color: var(--ems-color-text-secondary);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+    text-wrap: pretty;
+  }
+
+  .ui-error-state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ems-space-2);
+    margin-block-start: var(--ems-space-4);
+  }
+
+  .ui-error-state__actions:empty {
+    display: none;
+  }
+
+  @media (forced-colors: active) {
+    .ui-error-state__icon {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}

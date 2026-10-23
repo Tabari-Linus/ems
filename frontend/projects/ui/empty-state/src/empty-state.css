@@ -1,0 +1,55 @@
+/* ui-empty-state. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    display: grid;
+    justify-items: center;
+    gap: var(--ems-space-2);
+    padding: var(--ems-space-10) var(--ems-space-6);
+    text-align: center;
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-empty-state__icon {
+    display: grid;
+    place-items: center;
+    inline-size: var(--ems-space-12);
+    block-size: var(--ems-space-12);
+    margin-block-end: var(--ems-space-2);
+    border-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-empty-state__icon:empty {
+    display: none;
+  }
+
+  .ui-empty-state__heading {
+    margin: 0;
+    font-size: var(--ems-type-headline-size);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: var(--ems-type-headline-line-height);
+    letter-spacing: var(--ems-type-headline-letter-spacing);
+  }
+
+  .ui-empty-state__description {
+    max-inline-size: 46ch;
+    margin: 0;
+    color: var(--ems-color-text-muted);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+  }
+
+  .ui-empty-state__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--ems-space-2);
+    margin-block-start: var(--ems-space-3);
+  }
+
+  .ui-empty-state__actions:empty {
+    display: none;
+  }
+}
