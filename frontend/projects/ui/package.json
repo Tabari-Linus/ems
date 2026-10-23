@@ -4,8 +4,10 @@
   "private": true,
   "description": "EMS Angular component library: standalone, signal-based, OnPush, secondary entry points per component.",
   "peerDependencies": {
+    "@angular/cdk": "^21.2.0",
     "@angular/common": "^21.2.0",
-    "@angular/core": "^21.2.0"
+    "@angular/core": "^21.2.0",
+    "rxjs": "~7.8.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
