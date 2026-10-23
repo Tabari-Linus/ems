@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject, input } from '@angular/core';
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import { type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, waitFor, within } from 'storybook/test';
 import { ToastService, type ToastTone } from './toast.service';
@@ -45,7 +45,7 @@ class ToastDemo {
 }
 
 const meta: Meta<ToastDemo> = {
-  title: 'Components/Toast',
+  title: 'Feedback/Toast',
   component: ToastDemo,
   args: { tone: 'success', message: 'Kwame Asante was added', duration: 0 },
   argTypes: {

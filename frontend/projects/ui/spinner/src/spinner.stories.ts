@@ -8,7 +8,7 @@ interface SpinnerArgs {
 }
 
 const meta: Meta<SpinnerArgs> = {
-  title: 'Components/Spinner',
+  title: 'Feedback/Spinner',
   component: Spinner,
   decorators: [moduleMetadata({ imports: [Spinner] })],
   args: { label: 'Loading people', size: 'md' },

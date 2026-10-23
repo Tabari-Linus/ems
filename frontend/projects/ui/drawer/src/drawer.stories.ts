@@ -1,10 +1,11 @@
 import { DialogRef } from '@angular/cdk/dialog';
 import { ChangeDetectionStrategy, Component, DestroyRef, inject, signal } from '@angular/core';
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import { type Meta, type StoryObj } from '@storybook/angular-vite';
-import { expect, fireEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 import { DrawerLayout } from './drawer';
 import { DrawerService } from './drawer.service';
+import { press } from '../../testing/keyboard';
 
 const field = 'display: grid; gap: 0.375rem; font-weight: 600;';
 const control =
@@ -75,7 +76,7 @@ class DrawerDemo {
 }
 
 const meta: Meta<DrawerDemo> = {
-  title: 'Components/Drawer',
+  title: 'Overlays/Drawer',
   component: DrawerDemo,
   parameters: {
     docs: {
@@ -98,18 +99,6 @@ export default meta;
 type Story = StoryObj<DrawerDemo>;
 
 const body = () => within(document.body);
-
-/**
- * Angular CDK reads KeyboardEvent.keyCode, which the play-function userEvent.keyboard() leaves at 0
- * (real keyboards set it; checked with Playwright). Dispatch CDK-handled keys with their key code.
- */
-const KEY_CODES = { Escape: 27, ArrowDown: 40, ArrowUp: 38, Home: 36, End: 35 } as const;
-const press = (key: keyof typeof KEY_CODES) =>
-  fireEvent.keyDown(document.activeElement ?? document.body, {
-    key,
-    code: key,
-    keyCode: KEY_CODES[key],
-  });
 
 export const AddPerson: Story = {
   name: 'Add person form',

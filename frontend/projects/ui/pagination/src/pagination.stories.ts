@@ -14,7 +14,7 @@ interface PaginationArgs {
 }
 
 const meta: Meta<PaginationArgs> = {
-  title: 'Layout/Pagination',
+  title: 'Navigation/Pagination',
   component: Pagination,
   decorators: [moduleMetadata({ imports: [Pagination] })],
   args: {

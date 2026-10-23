@@ -7,7 +7,7 @@ interface DescriptionListArgs {
 }
 
 const meta: Meta<DescriptionListArgs> = {
-  title: 'Layout/Description list',
+  title: 'Data display/Description list',
   component: DescriptionList,
   decorators: [moduleMetadata({ imports: [DescriptionList, DescriptionItem] })],
   args: { columns: 3 },

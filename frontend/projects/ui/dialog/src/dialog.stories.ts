@@ -7,11 +7,12 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { Button } from '../../button/src/public-api';
+import { Button } from '@ems/ui/button';
 import { type Meta, type StoryObj } from '@storybook/angular-vite';
-import { expect, fireEvent, waitFor, within } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
 import { DialogLayout } from './dialog';
 import { DialogService } from './dialog.service';
+import { press } from '../../testing/keyboard';
 
 @Component({
   selector: 'ui-story-edit-office',
@@ -88,7 +89,7 @@ class DialogDemo {
 }
 
 const meta: Meta<DialogDemo> = {
-  title: 'Components/Dialog',
+  title: 'Overlays/Dialog',
   component: DialogDemo,
   args: { mode: 'form' },
   parameters: {
@@ -116,18 +117,6 @@ export default meta;
 type Story = StoryObj<DialogDemo>;
 
 const body = () => within(document.body);
-
-/**
- * Angular CDK reads KeyboardEvent.keyCode, which the play-function userEvent.keyboard() leaves at 0
- * (real keyboards set it; checked with Playwright). Dispatch CDK-handled keys with their key code.
- */
-const KEY_CODES = { Escape: 27, ArrowDown: 40, ArrowUp: 38, Home: 36, End: 35 } as const;
-const press = (key: keyof typeof KEY_CODES) =>
-  fireEvent.keyDown(document.activeElement ?? document.body, {
-    key,
-    code: key,
-    keyCode: KEY_CODES[key],
-  });
 
 export const FormDialog: Story = {
   name: 'Dialog with form',

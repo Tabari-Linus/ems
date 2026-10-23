@@ -11,7 +11,7 @@ interface FormFieldStoryArgs {
 }
 
 const meta: Meta<FormFieldStoryArgs> = {
-  title: 'Forms/Form field',
+  title: 'Actions & inputs/Form field',
   component: FormField,
   decorators: [moduleMetadata({ imports: [FormField, Input] })],
   args: {

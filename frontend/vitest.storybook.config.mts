@@ -28,6 +28,9 @@ function themeProject(theme: 'light' | 'dark'): TestProjectInlineConfiguration {
     ],
     test: {
       name: `storybook-${theme}`,
+      // On a cold Vite cache the first story of a file compiles its whole import graph (the
+      // composed pages pull in most of @ems/ui), which can exceed the 15 s default.
+      testTimeout: 60_000,
       browser: {
         enabled: true,
         headless: true,

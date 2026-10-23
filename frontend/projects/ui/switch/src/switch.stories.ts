@@ -11,7 +11,7 @@ interface SwitchStoryArgs {
 }
 
 const meta: Meta<SwitchStoryArgs> = {
-  title: 'Forms/Switch',
+  title: 'Actions & inputs/Switch',
   component: Switch,
   decorators: [moduleMetadata({ imports: [Switch] })],
   args: {

@@ -1,8 +1,8 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
 import { expect, fn, waitFor } from 'storybook/test';
-import { Avatar } from '../../avatar/src/public-api';
-import { Button } from '../../button/src/public-api';
-import { Card } from '../../card/src/public-api';
+import { Avatar } from '@ems/ui/avatar';
+import { Button } from '@ems/ui/button';
+import { Card } from '@ems/ui/card';
 import {
   DataTable,
   type DataTableMode,
@@ -116,7 +116,7 @@ const TABLE = (extra = '') => `
   </ui-card>`;
 
 const meta: Meta<DataTableArgs> = {
-  title: 'Layout/Data table',
+  title: 'Data display/Data table',
   component: DataTable,
   decorators: [
     moduleMetadata({

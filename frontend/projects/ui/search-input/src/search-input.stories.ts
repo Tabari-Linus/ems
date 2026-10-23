@@ -12,7 +12,7 @@ interface SearchStoryArgs {
 }
 
 const meta: Meta<SearchStoryArgs> = {
-  title: 'Forms/Search input',
+  title: 'Actions & inputs/Search input',
   component: SearchInput,
   decorators: [moduleMetadata({ imports: [SearchInput] })],
   args: {

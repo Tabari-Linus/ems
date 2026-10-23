@@ -1,7 +1,8 @@
 import { moduleMetadata, type Meta, type StoryObj } from '@storybook/angular-vite';
-import { expect, fireEvent, fn, screen, waitFor } from 'storybook/test';
+import { expect, fn, screen, waitFor } from 'storybook/test';
 import type { SelectOption } from '@ems/ui/select';
 import { FilterPill } from './filter-pill';
+import { press } from '../../testing/keyboard';
 
 const OFFICES: SelectOption<string>[] = [
   { value: 'ACC', label: 'Accra' },
@@ -24,7 +25,7 @@ interface FilterPillStoryArgs {
 }
 
 const meta: Meta<FilterPillStoryArgs> = {
-  title: 'Forms/Filter pill',
+  title: 'Actions & inputs/Filter pill',
   component: FilterPill,
   decorators: [moduleMetadata({ imports: [FilterPill] })],
   args: { value: null, values: [], disabled: false, onChanged: fn() },
@@ -64,15 +65,6 @@ The first row, "All", clears the filter. While a filter applies the pill takes t
 
 export default meta;
 type Story = StoryObj<FilterPillStoryArgs>;
-
-/**
- * CDK key managers read `KeyboardEvent.keyCode`, which real browsers set but user-event does not,
- * so keys inside the open list are dispatched with it.
- */
-const KEY_CODES = { ArrowDown: 40, Enter: 13 } as const;
-function press(key: keyof typeof KEY_CODES): void {
-  fireEvent.keyDown(document.activeElement as Element, { key, keyCode: KEY_CODES[key] });
-}
 
 export const Default: Story = {
   play: async ({ canvas, userEvent, args }) => {

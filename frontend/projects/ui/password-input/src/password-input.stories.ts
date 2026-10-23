@@ -12,7 +12,7 @@ interface PasswordStoryArgs {
 }
 
 const meta: Meta<PasswordStoryArgs> = {
-  title: 'Forms/Password input',
+  title: 'Actions & inputs/Password input',
   component: PasswordInput,
   decorators: [moduleMetadata({ imports: [PasswordInput, FormField] })],
   args: {

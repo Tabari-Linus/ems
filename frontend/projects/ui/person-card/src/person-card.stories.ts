@@ -16,7 +16,7 @@ interface PersonCardArgs {
 }
 
 const meta: Meta<PersonCardArgs> = {
-  title: 'Identity/Person card',
+  title: 'Data display/Person card',
   component: PersonCard,
   decorators: [moduleMetadata({ imports: [PersonCard] })],
   args: {

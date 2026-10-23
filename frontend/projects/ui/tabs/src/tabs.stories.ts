@@ -14,7 +14,7 @@ import { TabPanel, Tabs } from './tabs';
 class EmptyRoute {}
 
 const meta: Meta<Tabs> = {
-  title: 'Layout/Tabs',
+  title: 'Navigation/Tabs',
   component: Tabs,
   decorators: [moduleMetadata({ imports: [Tabs, TabPanel, TabNav, TabLink] })],
   parameters: {

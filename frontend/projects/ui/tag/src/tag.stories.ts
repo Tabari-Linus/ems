@@ -11,7 +11,7 @@ interface TagArgs {
 }
 
 const meta: Meta<TagArgs> = {
-  title: 'Components/Tag',
+  title: 'Feedback/Tag',
   component: Tag,
   decorators: [moduleMetadata({ imports: [Tag] })],
   args: { label: 'Accra', variant: 'neutral', removable: false, onRemove: fn() },
