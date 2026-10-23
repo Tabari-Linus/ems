@@ -163,5 +163,8 @@ export class ShapePage {
     ...tokensUnder('control.').filter((t) => t.name.endsWith('.height')),
     ...tokensUnder('icon-size.'),
     ...tokensUnder('z.'),
+    ...tokensUnder('layout.'),
+    ...tokensUnder('size.'),
+    ...tokensUnder('breakpoint.'),
   ].map((t) => ({ ...t, value: t.value ?? t.light?.value }));
 }

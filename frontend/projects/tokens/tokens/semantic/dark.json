@@ -188,6 +188,19 @@
         "on-solid": {
           "$value": "{color.blue.950}"
         }
+      },
+      "neutral": {
+        "bg": {
+          "$value": "{color.neutral.800}",
+          "$description": "Neutral status: tags, neutral status pills."
+        },
+        "text": {
+          "$value": "{color.neutral.200}"
+        },
+        "border": {
+          "$value": "{color.neutral.700}",
+          "$description": "Decorative ring around a neutral tag (not a boundary)."
+        }
       }
     },
     "employee-status": {
@@ -272,6 +285,16 @@
         "text": {
           "$value": "{color.pastel.lime.150}"
         }
+      }
+    },
+    "skeleton": {
+      "base": {
+        "$value": "{color.neutral.750}",
+        "$description": "Loading placeholder shapes. Decorative (no contrast requirement)."
+      },
+      "highlight": {
+        "$value": "{color.neutral.850}",
+        "$description": "The other end of the skeleton pulse."
       }
     }
   },

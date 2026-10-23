@@ -111,7 +111,7 @@
     --ems-color-pastel-lime-700: oklch(0.4000 0.0900 125.00);
     --ems-color-pastel-lime-800: oklch(0.3400 0.0550 125.00);
     --ems-color-scrim-light: oklch(0.2300 0.0400 272.00 / 0.32);
-    --ems-color-scrim-dark: oklch(0.0800 0.0200 272.00 / 0.6);
+    --ems-color-scrim-dark: oklch(0.1200 0.0200 272.00 / 0.5);
     --ems-color-transparent: oklch(0.0000 0.0000 0.00 / 0);
     --ems-shadow-light-card: 0px 1px 2px 0px oklch(30% 0.06 272 / 0.06), 0px 3px 10px -2px oklch(30% 0.06 272 / 0.07);
     --ems-shadow-light-raised: 0px 2px 4px 0px oklch(30% 0.06 272 / 0.06), 0px 8px 20px -6px oklch(30% 0.08 272 / 0.12);
@@ -180,6 +180,8 @@
     --ems-z-overlay: 1000;
     --ems-z-modal: 1100;
     --ems-z-toast: 1200;
+    --ems-breakpoint-narrow: 640px;
+    --ems-breakpoint-compact: 900px;
   }
 
   /* sRGB fallback for engines without OKLCH; every other tier references these. */
@@ -289,7 +291,7 @@
       --ems-color-pastel-lime-700: #3d5010;
       --ems-color-pastel-lime-800: #313d1c;
       --ems-color-scrim-light: #161b3052;
-      --ems-color-scrim-dark: #01010599;
+      --ems-color-scrim-dark: #04050d80;
       --ems-color-transparent: #00000000;
     }
   }
@@ -303,6 +305,18 @@
     --ems-control-lg-height: 48px;
     --ems-control-min-target: 24px;
     --ems-motion-duration-spinner: 0.8s;
+    --ems-layout-sidebar-width: 232px;
+    --ems-layout-sidebar-collapsed-width: 72px;
+    --ems-layout-drawer-width: 288px;
+    --ems-layout-topbar-height: 68px;
+    --ems-layout-content-max-width: 1120px;
+    --ems-size-dialog-sm: 416px;
+    --ems-size-dialog-md: 512px;
+    --ems-size-dialog-lg: 704px;
+    --ems-size-drawer-md: 480px;
+    --ems-size-drawer-lg: 640px;
+    --ems-size-tooltip-max-width: 256px;
+    --ems-size-popover-min-width: 192px;
     --ems-color-bg-canvas: var(--ems-color-neutral-25);
     --ems-color-bg-surface: var(--ems-color-neutral-0);
     --ems-color-bg-sunken: var(--ems-color-neutral-50);
@@ -352,6 +366,9 @@
     --ems-color-status-info-solid: var(--ems-color-blue-600);
     --ems-color-status-info-solid-hover: var(--ems-color-blue-650);
     --ems-color-status-info-on-solid: var(--ems-color-neutral-0);
+    --ems-color-status-neutral-bg: var(--ems-color-neutral-50);
+    --ems-color-status-neutral-text: var(--ems-color-neutral-600);
+    --ems-color-status-neutral-border: var(--ems-color-neutral-100);
     --ems-color-employee-status-active-bg: var(--ems-color-green-50);
     --ems-color-employee-status-active-text: var(--ems-color-green-700);
     --ems-color-employee-status-pending-bg: var(--ems-color-amber-50);
@@ -372,6 +389,8 @@
     --ems-color-avatar-5-text: var(--ems-color-pastel-sand-700);
     --ems-color-avatar-6-bg: var(--ems-color-pastel-lime-100);
     --ems-color-avatar-6-text: var(--ems-color-pastel-lime-700);
+    --ems-color-skeleton-base: var(--ems-color-neutral-100);
+    --ems-color-skeleton-highlight: var(--ems-color-neutral-50);
     --ems-focus-ring-width: var(--ems-border-width-thick);
     --ems-control-border-width: var(--ems-border-width-hairline);
     --ems-motion-duration-control: var(--ems-duration-fast);
@@ -458,6 +477,18 @@
     --ems-control-lg-height: 48px;
     --ems-control-min-target: 24px;
     --ems-motion-duration-spinner: 0.8s;
+    --ems-layout-sidebar-width: 232px;
+    --ems-layout-sidebar-collapsed-width: 72px;
+    --ems-layout-drawer-width: 288px;
+    --ems-layout-topbar-height: 68px;
+    --ems-layout-content-max-width: 1120px;
+    --ems-size-dialog-sm: 416px;
+    --ems-size-dialog-md: 512px;
+    --ems-size-dialog-lg: 704px;
+    --ems-size-drawer-md: 480px;
+    --ems-size-drawer-lg: 640px;
+    --ems-size-tooltip-max-width: 256px;
+    --ems-size-popover-min-width: 192px;
     --ems-color-bg-canvas: var(--ems-color-neutral-950);
     --ems-color-bg-surface: var(--ems-color-neutral-850);
     --ems-color-bg-sunken: var(--ems-color-neutral-900);
@@ -507,6 +538,9 @@
     --ems-color-status-info-solid: var(--ems-color-blue-400);
     --ems-color-status-info-solid-hover: var(--ems-color-blue-300);
     --ems-color-status-info-on-solid: var(--ems-color-blue-950);
+    --ems-color-status-neutral-bg: var(--ems-color-neutral-800);
+    --ems-color-status-neutral-text: var(--ems-color-neutral-200);
+    --ems-color-status-neutral-border: var(--ems-color-neutral-700);
     --ems-color-employee-status-active-bg: var(--ems-color-green-850);
     --ems-color-employee-status-active-text: var(--ems-color-green-200);
     --ems-color-employee-status-pending-bg: var(--ems-color-amber-850);
@@ -527,6 +561,8 @@
     --ems-color-avatar-5-text: var(--ems-color-pastel-sand-150);
     --ems-color-avatar-6-bg: var(--ems-color-pastel-lime-800);
     --ems-color-avatar-6-text: var(--ems-color-pastel-lime-150);
+    --ems-color-skeleton-base: var(--ems-color-neutral-750);
+    --ems-color-skeleton-highlight: var(--ems-color-neutral-850);
     --ems-focus-ring-width: var(--ems-border-width-thick);
     --ems-control-border-width: var(--ems-border-width-hairline);
     --ems-motion-duration-control: var(--ems-duration-fast);
@@ -614,6 +650,18 @@
       --ems-control-lg-height: 48px;
       --ems-control-min-target: 24px;
       --ems-motion-duration-spinner: 0.8s;
+      --ems-layout-sidebar-width: 232px;
+      --ems-layout-sidebar-collapsed-width: 72px;
+      --ems-layout-drawer-width: 288px;
+      --ems-layout-topbar-height: 68px;
+      --ems-layout-content-max-width: 1120px;
+      --ems-size-dialog-sm: 416px;
+      --ems-size-dialog-md: 512px;
+      --ems-size-dialog-lg: 704px;
+      --ems-size-drawer-md: 480px;
+      --ems-size-drawer-lg: 640px;
+      --ems-size-tooltip-max-width: 256px;
+      --ems-size-popover-min-width: 192px;
       --ems-color-bg-canvas: var(--ems-color-neutral-950);
       --ems-color-bg-surface: var(--ems-color-neutral-850);
       --ems-color-bg-sunken: var(--ems-color-neutral-900);
@@ -663,6 +711,9 @@
       --ems-color-status-info-solid: var(--ems-color-blue-400);
       --ems-color-status-info-solid-hover: var(--ems-color-blue-300);
       --ems-color-status-info-on-solid: var(--ems-color-blue-950);
+      --ems-color-status-neutral-bg: var(--ems-color-neutral-800);
+      --ems-color-status-neutral-text: var(--ems-color-neutral-200);
+      --ems-color-status-neutral-border: var(--ems-color-neutral-700);
       --ems-color-employee-status-active-bg: var(--ems-color-green-850);
       --ems-color-employee-status-active-text: var(--ems-color-green-200);
       --ems-color-employee-status-pending-bg: var(--ems-color-amber-850);
@@ -683,6 +734,8 @@
       --ems-color-avatar-5-text: var(--ems-color-pastel-sand-150);
       --ems-color-avatar-6-bg: var(--ems-color-pastel-lime-800);
       --ems-color-avatar-6-text: var(--ems-color-pastel-lime-150);
+      --ems-color-skeleton-base: var(--ems-color-neutral-750);
+      --ems-color-skeleton-highlight: var(--ems-color-neutral-850);
       --ems-focus-ring-width: var(--ems-border-width-thick);
       --ems-control-border-width: var(--ems-border-width-hairline);
       --ems-motion-duration-control: var(--ems-duration-fast);

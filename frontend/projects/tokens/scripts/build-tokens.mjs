@@ -249,6 +249,23 @@ ${indent(darkVars, '    ')}
   }
   const json = { $schema: 'ems-tokens/1', prefix: `--${PREFIX}-`, tokens };
 
+  // Breakpoints get their own small export (custom properties do not work inside @media, and
+  // importing the whole `tokens` map into a component would bundle every token).
+  const breakpoints = Object.fromEntries(
+    lightTokens
+      .filter((t) => t.name.startsWith('breakpoint.'))
+      .map((t) => {
+        const px = Number.parseFloat(String(t.value));
+        if (!String(t.value).endsWith('px') || Number.isNaN(px)) {
+          throw new Error(`${t.name} must be a px dimension, got ${t.value}`);
+        }
+        return [t.name.slice('breakpoint.'.length), px];
+      }),
+  );
+  const mediaQueries = Object.fromEntries(
+    Object.entries(breakpoints).map(([name, px]) => [name, `(max-width: ${px - 0.02}px)`]),
+  );
+
   const ts = `${header}
 
 export type TokenTier = 'primitive' | 'foundation' | 'semantic' | 'component';
@@ -289,6 +306,18 @@ export type TokenName = keyof typeof tokens;
 export function cssVar(name: TokenName): string {
   return \`var(\${tokens[name].cssVar})\`;
 }
+
+/**
+ * Layout breakpoints in px (foundation \`breakpoint.*\`). Custom properties cannot be used in
+ * \`@media\`, so component CSS repeats the matching MEDIA_QUERIES literal with a comment naming the
+ * token; TS code (matchMedia) uses these constants.
+ */
+export const BREAKPOINTS = ${JSON.stringify(breakpoints, null, 2)} as const;
+
+export type BreakpointName = keyof typeof BREAKPOINTS;
+
+/** Media queries that match below each breakpoint, e.g. MEDIA_QUERIES.compact for matchMedia(). */
+export const MEDIA_QUERIES = ${JSON.stringify(mediaQueries, null, 2)} as const satisfies Readonly<Record<BreakpointName, string>>;
 `;
 
   await mkdir(outDir, { recursive: true });
