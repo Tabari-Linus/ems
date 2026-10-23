@@ -22,6 +22,13 @@ function themeProject(theme: 'light' | 'dark'): TestProjectInlineConfiguration {
   return {
     extends: true,
     define: { __EMS_STORY_THEME__: JSON.stringify(theme) },
+    // One dependency cache per project: the two projects start in parallel, and on a cold cache
+    // both would pre-bundle into the same folder at once (a race that can hang or reload a run).
+    cacheDir: path.join(dirname, 'node_modules', '.vite', `storybook-${theme}`),
+    // Browser mode has no index.html for Vite's dependency scan, so dependencies were discovered
+    // story by story and each discovery re-optimised and reloaded the page ("Failed to fetch
+    // dynamically imported module" on a cold cache). Scan every story up front instead.
+    optimizeDeps: { entries: ['projects/**/*.stories.ts', '.storybook/preview.ts'] },
     plugins: [
       storybookAngularVitest({ tsConfig: '.storybook/tsconfig.json' }),
       storybookTest({ configDir: path.join(dirname, '.storybook') }),
