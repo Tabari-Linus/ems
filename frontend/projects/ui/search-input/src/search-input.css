@@ -23,6 +23,13 @@
     white-space: nowrap;
   }
 
+  /* breakpoint.narrow (MEDIA_QUERIES.narrow): phones have no keyboard shortcut; give the field the room. */
+  @media (max-width: 639.98px) {
+    .ui-search-input .ui-input-group > .ui-search-input__kbd {
+      display: none;
+    }
+  }
+
   @media (forced-colors: active) {
     .ui-search-input__kbd {
       border: var(--ems-border-width-hairline) solid CanvasText;
