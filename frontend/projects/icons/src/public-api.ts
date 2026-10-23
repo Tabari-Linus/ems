@@ -1,5 +1,5 @@
 /*
  * Public API surface of @ems/icons.
  */
-export { Icon } from './icon';
-export { EMS_ICONS, ICON_NAMES, type IconName } from './registry';
+export { Icon, type IconSizeToken } from './icon';
+export { EMS_ICONS, ICON_NAMES, STATUS_ICONS, type IconName, type StatusTone } from './registry';
