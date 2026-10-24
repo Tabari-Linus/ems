@@ -90,6 +90,10 @@ jobs:
       - name: Contrast gate (WCAG, light + dark)
         run: npm run tokens:check-contrast
 
+      # Regenerates the curated icon data from @lucide/angular and fails if the committed file is stale.
+      - name: Build icon data (drift check)
+        run: npm run icons:check
+
       # Component styles use tokens only: no raw colours, lengths, durations or z-indexes, no
       # unknown or primitive --ems-* variables, and @media widths only from breakpoint.*.
       - name: Tokens-only CSS lint

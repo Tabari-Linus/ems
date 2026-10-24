@@ -6,6 +6,7 @@ export {
   type FormFieldContext,
   type FormFieldControlBinding,
   injectFormFieldControl,
+  showInvalidWhen,
   UI_FORM_FIELD,
   uniqueId,
 } from './form-field-control';

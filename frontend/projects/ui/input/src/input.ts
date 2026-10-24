@@ -49,11 +49,23 @@ export const UI_INPUT_GROUP = new InjectionToken<InputGroup>('UI_INPUT_GROUP');
 export class Input {
   /** Height and padding (ignored inside `ui-input-group`, which sets its own). */
   readonly size = input<InputSize>('md');
-  /** Marks the value invalid (also set automatically by an erroring `ui-form-field`). */
+  /**
+   * Marks the value invalid (also set automatically by an erroring `ui-form-field`). Bound by
+   * `[formField]`; then it shows only once `touched` is true.
+   */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /**
+   * Bound by `[formField]` (true after blur or `submit()`). Leave unset without a form: an
+   * `invalid` set by hand then shows at once.
+   */
+  readonly touched = input<boolean | undefined>(undefined);
 
   protected readonly grouped = inject(UI_INPUT_GROUP, { optional: true }) !== null;
-  protected readonly control = injectFormFieldControl(() => this.invalid());
+  protected readonly control = injectFormFieldControl(
+    () => this.invalid(),
+    undefined,
+    () => this.touched(),
+  );
 }
 
 /**

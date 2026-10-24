@@ -1,7 +1,13 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { type ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { form, FormField as SignalFormField } from '@angular/forms/signals';
+import {
+  type FieldTree,
+  form,
+  FormField as SignalFormField,
+  required,
+  submit,
+} from '@angular/forms/signals';
 import { FormField } from '@ems/ui/form-field';
 import { NativeSelect } from './native-select';
 import { Select, type SelectOption } from './select';
@@ -295,5 +301,89 @@ describe('NativeSelect', () => {
     expect(select.dataset['size']).toBe('sm');
     expect(bare.getAttribute('aria-invalid')).toBe('true');
     expect(bare.hasAttribute('id')).toBe(false);
+  });
+});
+
+describe('with a required signal-forms field', () => {
+  @Component({
+    imports: [Select, NativeSelect, FormField, SignalFormField],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    template: `
+      <ui-form-field label="Office" [error]="firstError(model.office)">
+        <ui-select [options]="offices" [formField]="model.office" />
+      </ui-form-field>
+      <ui-form-field label="Department" [error]="firstError(model.department)">
+        <select uiSelect [formField]="model.department">
+          <option value="">Choose a department</option>
+          <option value="eng">Engineering</option>
+        </select>
+      </ui-form-field>
+    `,
+  })
+  class Required {
+    readonly offices = OFFICES;
+    readonly model = form(signal({ office: null as string | null, department: '' }), (s) => {
+      required(s.office, { message: 'Choose an office.' });
+      required(s.department, { message: 'Choose a department.' });
+    });
+    firstError(field: FieldTree<unknown>): string | null {
+      return field().errors()[0]?.message ?? null;
+    }
+  }
+
+  async function setupForm() {
+    const fixture = TestBed.createComponent(Required);
+    document.body.appendChild(fixture.nativeElement);
+    await settle(fixture);
+    const root = fixture.nativeElement as HTMLElement;
+    return {
+      fixture,
+      model: fixture.componentInstance.model,
+      control: root.querySelector('.ui-select__control') as HTMLElement,
+      trigger: root.querySelector('.ui-select__trigger') as HTMLButtonElement,
+      native: root.querySelector('select') as HTMLSelectElement,
+      errors: () => [...root.querySelectorAll('.ui-form-field__error')].map((e) => e.textContent),
+    };
+  }
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('neither select is invalid on load, although both fields are', async () => {
+    const { model, control, trigger, native, errors } = await setupForm();
+
+    expect(model.office().invalid()).toBe(true);
+    expect(model.department().invalid()).toBe(true);
+    expect(control.hasAttribute('data-invalid')).toBe(false);
+    expect(trigger.hasAttribute('aria-invalid')).toBe(false);
+    expect(native.hasAttribute('aria-invalid')).toBe(false);
+    expect(errors()).toEqual([]);
+  });
+
+  it('each is invalid after its own blur', async () => {
+    const { fixture, control, trigger, native, errors } = await setupForm();
+    trigger.dispatchEvent(new Event('blur'));
+    await settle(fixture);
+
+    expect(control.hasAttribute('data-invalid')).toBe(true);
+    expect(trigger.getAttribute('aria-invalid')).toBe('true');
+    expect(native.hasAttribute('aria-invalid')).toBe(false);
+    expect(errors().join()).toContain('Choose an office.');
+
+    native.dispatchEvent(new Event('blur'));
+    await settle(fixture);
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+    expect(errors().join()).toContain('Choose a department.');
+  });
+
+  it('both are invalid after submit', async () => {
+    const { fixture, model, trigger, native, errors } = await setupForm();
+    await submit(model, async () => undefined);
+    await settle(fixture);
+
+    expect(trigger.getAttribute('aria-invalid')).toBe('true');
+    expect(native.getAttribute('aria-invalid')).toBe('true');
+    expect(errors().length).toBe(2);
   });
 });

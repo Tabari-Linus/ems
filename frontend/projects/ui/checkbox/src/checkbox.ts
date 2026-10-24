@@ -12,7 +12,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { type ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { uniqueId } from '@ems/ui/form-field';
+import { showInvalidWhen, uniqueId } from '@ems/ui/form-field';
 import { Icon } from '@ems/icons';
 
 /**
@@ -49,7 +49,7 @@ import { Icon } from '@ems/icons';
           [attr.name]="name() || null"
           [attr.value]="value() || null"
           [attr.aria-describedby]="describedBy() || null"
-          [attr.aria-invalid]="invalid() ? 'true' : null"
+          [attr.aria-invalid]="showInvalid() ? 'true' : null"
           (change)="onNativeChange($event)"
           (blur)="onTouched()"
         />
@@ -72,8 +72,13 @@ export class Checkbox implements ControlValueAccessor {
   /** Disables the checkbox (forms set this through `setDisabledState`). */
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly required = input(false, { transform: booleanAttribute });
-  /** Marks the checkbox invalid (`aria-invalid`). */
+  /**
+   * Marks the checkbox invalid (`aria-invalid`). Bound by `[formField]`; then it shows only once
+   * `touched` is true.
+   */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Bound by `[formField]` (true after blur or `submit()`). Leave unset without a form. */
+  readonly touched = input<boolean | undefined>(undefined);
   readonly name = input<string>();
   readonly value = input<string>();
   /** Id(s) of help or error text describing the checkbox. */
@@ -82,6 +87,7 @@ export class Checkbox implements ControlValueAccessor {
   protected readonly inputId = uniqueId('ui-checkbox');
   private readonly formDisabled = signal(false);
   protected readonly isDisabled = computed(() => this.disabled() || this.formDisabled());
+  protected readonly showInvalid = computed(() => showInvalidWhen(this.invalid(), this.touched()));
   private readonly native = viewChild.required<ElementRef<HTMLInputElement>>('native');
 
   private onChange: (value: boolean) => void = () => undefined;

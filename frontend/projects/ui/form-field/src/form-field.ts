@@ -19,7 +19,10 @@ import { Icon } from '@ems/icons';
  * `id` the label points at, `aria-describedby` (hint and error), `aria-invalid` while an error
  * is shown and `aria-required` when `required` is set.
  *
- * Pass `error` only once the user has touched the control or submitted the form. An error that
+ * When the projected control is bound with signal forms (`[formField]`), the error is held back
+ * until that field is touched (blur, or `submit()` / `markAsTouched()`), so `error` can be the
+ * field's first message straight away. Without a form, pass `error` only once the user has
+ * touched the control or submitted the form; it is shown as given. An error that
  * appears after the first render is announced (`role="alert"`); one that is present on first
  * render (e.g. server-side validation on load) is not, so screen readers are not interrupted.
  *
@@ -48,7 +51,7 @@ import { Icon } from '@ems/icons';
       <ng-content select="[uiFormFieldAside]" />
     </div>
     <ng-content />
-    @if (error(); as message) {
+    @if (shownError(); as message) {
       <p class="ui-form-field__error" [id]="errorId" [attr.role]="announce() ? 'alert' : null">
         <ui-icon class="ui-form-field__error-icon" name="circle-alert" size="sm" />
         <span>{{ message }}</span>
@@ -81,9 +84,22 @@ export class FormField implements FormFieldContext {
   private readonly generatedId = uniqueId('ui-form-field-control');
   readonly controlId = computed(() => this.registeredId() ?? this.generatedId);
 
-  readonly invalid = computed(() => !!this.error());
+  /** The projected control's `touched` state; `undefined` while it is not bound to a form. */
+  private readonly controlTouched = signal<() => boolean | undefined>(() => undefined);
+
+  /**
+   * The error as shown: held back while the projected control is bound to a signal form
+   * (`[formField]`) and not yet touched, so an empty required field is not red on load. The form
+   * touches it on blur and every field on `submit()`. Without a form it is shown as given.
+   */
+  protected readonly shownError = computed(() => {
+    const error = this.error();
+    return error && this.controlTouched()() !== false ? error : null;
+  });
+
+  readonly invalid = computed(() => !!this.shownError());
   readonly describedBy = computed(() => {
-    if (this.error()) return this.errorId;
+    if (this.shownError()) return this.errorId;
     return this.hint() ? this.hintId : null;
   });
 
@@ -93,7 +109,7 @@ export class FormField implements FormFieldContext {
    * already present on first render stays silent. Recomputed only when an error appears or goes.
    */
   protected readonly announce = linkedSignal<boolean, boolean>({
-    source: () => !!this.error(),
+    source: () => !!this.shownError(),
     computation: (hasError) => hasError && this.rendered,
   });
 
@@ -103,5 +119,9 @@ export class FormField implements FormFieldContext {
 
   registerControlId(id: string): void {
     this.registeredId.set(id);
+  }
+
+  registerControlTouched(touched: () => boolean | undefined): void {
+    this.controlTouched.set(touched);
   }
 }
