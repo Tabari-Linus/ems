@@ -8,3 +8,4 @@ playwright-report
 blob-report
 projects/tokens/src/generated
 storybook-static
+projects/icons/src/generated
