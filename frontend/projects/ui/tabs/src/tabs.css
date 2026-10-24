@@ -38,6 +38,14 @@
       color var(--ems-duration-fast) var(--ems-easing-standard);
   }
 
+  /* breakpoint.narrow (MEDIA_QUERIES.narrow): tighter pills so a short tab row fits a phone
+     without scrolling (the list still scrolls when there are more tabs than fit). */
+  @media (max-width: 639.98px) {
+    .ui-tabs__tab {
+      padding-inline: var(--ems-space-3);
+    }
+  }
+
   .ui-tabs__tab:hover {
     background-color: var(--ems-color-bg-sunken);
     color: var(--ems-color-text-primary);
