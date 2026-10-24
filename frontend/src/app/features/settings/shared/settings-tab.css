@@ -1,0 +1,32 @@
+/* Layout glue shared by the settings tabs; every visual comes from @ems/ui. */
+:host {
+  display: grid;
+  gap: var(--ems-space-5);
+}
+
+.settings-name {
+  font-weight: var(--ems-type-body-strong-weight);
+  color: var(--ems-color-text-primary);
+}
+
+.settings-mono {
+  font-family: var(--ems-font-family-mono);
+  font-size: var(--ems-type-mono-size);
+  font-variant-numeric: tabular-nums;
+  color: var(--ems-color-text-secondary);
+}
+
+.settings-muted {
+  color: var(--ems-color-text-muted);
+}
+
+/* Long emails and descriptions wrap instead of widening the page. */
+.settings-wrap {
+  overflow-wrap: anywhere;
+}
+
+/* Drawer forms: one column of fields; the drawer is at most 480px wide. */
+.settings-form {
+  display: grid;
+  gap: var(--ems-space-5);
+}

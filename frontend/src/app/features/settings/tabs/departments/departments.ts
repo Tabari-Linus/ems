@@ -1,19 +1,38 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+  viewChild,
+  type TemplateRef,
+} from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { ToastService } from '@ems/ui/toast';
 import { email, form, FormField, required, submit } from '@angular/forms/signals';
 import { DepartmentService } from '../../../../core/services/department.service';
 import { OfficeService } from '../../../../core/services/office.service';
 import { DepartmentListItem } from '../../../../core/models/settings.models';
+import { SETTINGS_TAB_IMPORTS } from '../../shared/settings-imports';
+import { bindFormDrawer, countLabel, fieldError, statusPillValue } from '../../shared/settings-ui';
 
 @Component({
   selector: 'app-settings-departments',
-  imports: [FormField],
+  imports: [FormField, ...SETTINGS_TAB_IMPORTS],
   templateUrl: './departments.html',
+  styleUrl: '../../shared/settings-tab.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsDepartments {
   private readonly departmentService = inject(DepartmentService);
   private readonly officeService = inject(OfficeService);
+  private readonly toast = inject(ToastService);
+
+  protected readonly fieldError = fieldError;
+  protected readonly statusPillValue = statusPillValue;
+  protected readonly trackById = (_: number, row: DepartmentListItem) => row.id;
+  private readonly formTemplate = viewChild<TemplateRef<unknown>>('formTpl');
 
   protected readonly showForm = signal(false);
   protected readonly editId = signal<string | null>(null);
@@ -38,6 +57,25 @@ export class SettingsDepartments {
   protected readonly listResource = resource({
     loader: () => firstValueFrom(this.departmentService.getDepartments()),
   });
+
+  protected readonly rows = computed(() =>
+    this.listResource.hasValue() ? this.listResource.value().data : [],
+  );
+  protected readonly count = computed(() =>
+    this.listResource.hasValue()
+      ? countLabel(
+          this.listResource.value().totalElements ?? this.rows().length,
+          'department',
+          'departments',
+        )
+      : null,
+  );
+
+  constructor() {
+    bindFormDrawer(this.showForm, this.formTemplate, {
+      autoFocus: '#departments-dept-form-office-id, #departments-dept-form-department-name',
+    });
+  }
 
   protected readonly officesResource = resource({
     loader: () => firstValueFrom(this.officeService.getOffices()),
@@ -96,6 +134,7 @@ export class SettingsDepartments {
             }),
           );
         }
+        this.toast.success(id ? 'Department updated' : 'Department added');
         this.model.set({
           officeId: '',
           departmentName: '',

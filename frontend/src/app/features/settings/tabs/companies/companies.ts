@@ -1,17 +1,36 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+  viewChild,
+  type TemplateRef,
+} from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { ToastService } from '@ems/ui/toast';
 import { email, form, FormField, required, submit } from '@angular/forms/signals';
 import { CompanyService } from '../../../../core/services/company.service';
 import { CompanyListItem } from '../../../../core/models/settings.models';
+import { SETTINGS_TAB_IMPORTS } from '../../shared/settings-imports';
+import { bindFormDrawer, countLabel, fieldError, statusPillValue } from '../../shared/settings-ui';
 
 @Component({
   selector: 'app-settings-companies',
-  imports: [FormField],
+  imports: [FormField, ...SETTINGS_TAB_IMPORTS],
   templateUrl: './companies.html',
+  styleUrl: '../../shared/settings-tab.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsCompanies {
   private readonly companyService = inject(CompanyService);
+  private readonly toast = inject(ToastService);
+
+  protected readonly fieldError = fieldError;
+  protected readonly statusPillValue = statusPillValue;
+  protected readonly trackById = (_: number, row: CompanyListItem) => row.id;
+  private readonly formTemplate = viewChild<TemplateRef<unknown>>('formTpl');
 
   protected readonly showForm = signal(false);
   protected readonly editId = signal<string | null>(null);
@@ -36,6 +55,25 @@ export class SettingsCompanies {
   protected readonly listResource = resource({
     loader: () => firstValueFrom(this.companyService.getCompanies()),
   });
+
+  protected readonly rows = computed(() =>
+    this.listResource.hasValue() ? this.listResource.value().data : [],
+  );
+  protected readonly count = computed(() =>
+    this.listResource.hasValue()
+      ? countLabel(
+          this.listResource.value().totalElements ?? this.rows().length,
+          'company',
+          'companies',
+        )
+      : null,
+  );
+
+  constructor() {
+    bindFormDrawer(this.showForm, this.formTemplate, {
+      autoFocus: '#companies-company-form-company-name',
+    });
+  }
 
   protected toggleForm(): void {
     this.editId.set(null);
@@ -91,6 +129,7 @@ export class SettingsCompanies {
             }),
           );
         }
+        this.toast.success(id ? 'Company updated' : 'Company added');
         this.model.set({
           companyName: '',
           companyCode: '',

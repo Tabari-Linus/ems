@@ -37,7 +37,8 @@ export const routes: Routes = [
       },
       {
         path: 'settings',
-        loadComponent: () => import('./features/settings/settings').then((m) => m.Settings),
+        loadChildren: () =>
+          import('./features/settings/settings.routes').then((m) => m.SETTINGS_ROUTES),
         canActivate: [permissionGuard([Permission.VIEW_ADMIN, Permission.MANAGE_ADMIN], true)],
       },
       {

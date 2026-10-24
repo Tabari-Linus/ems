@@ -1,19 +1,38 @@
-import { ChangeDetectionStrategy, Component, inject, resource, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  resource,
+  signal,
+  viewChild,
+  type TemplateRef,
+} from '@angular/core';
 import { firstValueFrom } from 'rxjs';
+import { ToastService } from '@ems/ui/toast';
 import { email, form, FormField, required, submit } from '@angular/forms/signals';
 import { OfficeService } from '../../../../core/services/office.service';
 import { CompanyService } from '../../../../core/services/company.service';
 import { OfficeListItem } from '../../../../core/models/settings.models';
+import { SETTINGS_TAB_IMPORTS } from '../../shared/settings-imports';
+import { bindFormDrawer, countLabel, fieldError, statusPillValue } from '../../shared/settings-ui';
 
 @Component({
   selector: 'app-settings-offices',
-  imports: [FormField],
+  imports: [FormField, ...SETTINGS_TAB_IMPORTS],
   templateUrl: './offices.html',
+  styleUrl: '../../shared/settings-tab.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SettingsOffices {
   private readonly officeService = inject(OfficeService);
   private readonly companyService = inject(CompanyService);
+  private readonly toast = inject(ToastService);
+
+  protected readonly fieldError = fieldError;
+  protected readonly statusPillValue = statusPillValue;
+  protected readonly trackById = (_: number, row: OfficeListItem) => row.id;
+  private readonly formTemplate = viewChild<TemplateRef<unknown>>('formTpl');
 
   protected readonly showForm = signal(false);
   protected readonly editId = signal<string | null>(null);
@@ -38,6 +57,25 @@ export class SettingsOffices {
   protected readonly listResource = resource({
     loader: () => firstValueFrom(this.officeService.getOffices()),
   });
+
+  protected readonly rows = computed(() =>
+    this.listResource.hasValue() ? this.listResource.value().data : [],
+  );
+  protected readonly count = computed(() =>
+    this.listResource.hasValue()
+      ? countLabel(
+          this.listResource.value().totalElements ?? this.rows().length,
+          'office',
+          'offices',
+        )
+      : null,
+  );
+
+  constructor() {
+    bindFormDrawer(this.showForm, this.formTemplate, {
+      autoFocus: '#offices-office-form-company-id, #offices-office-form-office-name',
+    });
+  }
 
   protected readonly companiesResource = resource({
     loader: () => firstValueFrom(this.companyService.getCompanies()),
@@ -96,6 +134,7 @@ export class SettingsOffices {
             }),
           );
         }
+        this.toast.success(id ? 'Office updated' : 'Office added');
         this.model.set({
           companyId: '',
           officeName: '',

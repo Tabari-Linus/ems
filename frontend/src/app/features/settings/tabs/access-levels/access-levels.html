@@ -1,288 +1,286 @@
-<div class="tab-panel">
-  <div class="panel-header">
-    <div>
-      <h2>Access Levels</h2>
-      <p>Define permission bundles assigned to employees</p>
-    </div>
-    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
-      {{ showForm() ? 'Cancel' : '+ New Access Level' }}
-    </button>
-  </div>
+<ui-page-header title="Access levels" level="2" [count]="count()">
+  <button uiPageHeaderActions uiButton type="button" (click)="toggleForm()">
+    <ui-icon name="plus" /> Add access level
+  </button>
+</ui-page-header>
 
-  @if (showForm()) {
-    <div class="create-form-card">
-      <h3>{{ editId() ? 'Edit Access Level' : 'New Access Level' }}</h3>
-      @if (formError()) {
-        <div class="form-api-error">{{ formError() }}</div>
-      }
-      <form (submit)="onSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          <div class="field">
-            <label for="access-levels-access-level-form-access-level-name"
-              >Name <span class="req">*</span></label
-            >
-            <input
-              id="access-levels-access-level-form-access-level-name"
-              [formField]="accessLevelForm.accessLevelName"
-              placeholder="e.g. HR Manager"
-            />
-            @if (
-              accessLevelForm.accessLevelName().touched() &&
-              accessLevelForm.accessLevelName().errors().length
-            ) {
-              <span class="field-err">{{
-                accessLevelForm.accessLevelName().errors()[0].message
-              }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="access-levels-access-level-form-description">Description</label>
-            <input
-              id="access-levels-access-level-form-description"
-              [formField]="accessLevelForm.description"
-              placeholder="Short description"
-            />
-          </div>
-
-          <!-- Permissions -->
-          <div class="field span-2">
-            <!-- Heading for the checkbox group below; each checkbox has its own wrapping label. -->
-            <!-- eslint-disable-next-line @angular-eslint/template/label-has-associated-control -->
-            <label id="access-levels-permissions-label">
-              Permissions
-              @if (!editId()) {
-                <span class="req">*</span>
-              }
-              @if (editId()) {
-                <span class="field-hint">Permissions are view-only when editing</span>
-              }
-            </label>
-
-            @if (loadingPerms()) {
-              <div class="perm-loading">Loading permissions…</div>
-            } @else {
-              <div class="perm-grid" role="group" aria-labelledby="access-levels-permissions-label">
-                <div class="perm-col">
-                  <div class="perm-col-head">
-                    <span class="perm-col-label">View</span>
-                    @if (!editId()) {
-                      <div class="perm-col-actions">
-                        <button
-                          type="button"
-                          class="perm-bulk-btn"
-                          (click)="selectAll(VIEW_PERMISSIONS)"
-                        >
-                          All
-                        </button>
-                        <button
-                          type="button"
-                          class="perm-bulk-btn"
-                          (click)="deselectAll(VIEW_PERMISSIONS)"
-                        >
-                          None
-                        </button>
-                      </div>
-                    }
-                  </div>
-                  @for (perm of VIEW_PERMISSIONS; track perm) {
-                    <label
-                      class="perm-item"
-                      [class.selected]="isPermSelected(perm)"
-                      [class.readonly]="!!editId()"
-                    >
-                      <input
-                        type="checkbox"
-                        [checked]="isPermSelected(perm)"
-                        [disabled]="!!editId()"
-                        (change)="togglePerm(perm)"
-                      />
-                      {{ formatPerm(perm) }}
-                    </label>
-                  }
-                </div>
-                <div class="perm-col">
-                  <div class="perm-col-head">
-                    <span class="perm-col-label">Manage</span>
-                    @if (!editId()) {
-                      <div class="perm-col-actions">
-                        <button
-                          type="button"
-                          class="perm-bulk-btn"
-                          (click)="selectAll(MANAGE_PERMISSIONS)"
-                        >
-                          All
-                        </button>
-                        <button
-                          type="button"
-                          class="perm-bulk-btn"
-                          (click)="deselectAll(MANAGE_PERMISSIONS)"
-                        >
-                          None
-                        </button>
-                      </div>
-                    }
-                  </div>
-                  @for (perm of MANAGE_PERMISSIONS; track perm) {
-                    <label
-                      class="perm-item"
-                      [class.selected]="isPermSelected(perm)"
-                      [class.readonly]="!!editId()"
-                    >
-                      <input
-                        type="checkbox"
-                        [checked]="isPermSelected(perm)"
-                        [disabled]="!!editId()"
-                        (change)="togglePerm(perm)"
-                      />
-                      {{ formatPerm(perm) }}
-                    </label>
-                  }
-                </div>
-              </div>
-            }
-
-            @if (permError()) {
-              <span class="field-err">{{ permError() }}</span>
-            }
-          </div>
-
-          <!-- Employee picker -->
-          <div class="field span-2">
-            <label for="access-levels-emp-search-input">
-              Employees
-              <span class="field-hint">optional — add members to this access level</span>
-            </label>
-
-            <!-- Selected chips -->
-            @if (selectedEmployees().length) {
-              <div class="emp-chips">
-                @for (emp of selectedEmployees(); track emp.id) {
-                  <span class="emp-chip">
-                    {{ emp.firstName }} {{ emp.lastName }}
-                    <button
-                      type="button"
-                      class="emp-chip-remove"
-                      (click)="removeEmployee(emp.id)"
-                      aria-label="Remove"
-                    >
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      >
-                        <line x1="18" y1="6" x2="6" y2="18" />
-                        <line x1="6" y1="6" x2="18" y2="18" />
-                      </svg>
-                    </button>
-                  </span>
-                }
-              </div>
-            }
-
-            <!-- Search input -->
-            <div class="emp-search-wrap">
-              <input
-                id="access-levels-emp-search-input"
-                type="text"
-                class="emp-search-input"
-                placeholder="Search employees by name…"
-                [value]="employeeSearch()"
-                (input)="onSearchInput($any($event.target).value)"
-                autocomplete="off"
-              />
-              @if (searchLoading()) {
-                <span class="emp-search-spinner"></span>
-              }
-            </div>
-
-            <!-- Results dropdown -->
-            @if (employeeSearch().trim().length >= 2) {
-              <div class="emp-results">
-                @if (searchLoading()) {
-                  <div class="emp-result-msg">Searching…</div>
-                } @else if (!searchResults()?.length) {
-                  <div class="emp-result-msg">No employees found</div>
-                } @else {
-                  @for (emp of searchResults()!; track emp.id) {
-                    <button
-                      type="button"
-                      class="emp-result-row"
-                      [class.is-added]="selectedEmployees().some((s) => s.id === emp.id)"
-                      (click)="addEmployee(emp)"
-                    >
-                      <span class="emp-result-avi"
-                        >{{ emp.firstName[0] }}{{ emp.lastName[0] }}</span
-                      >
-                      <span class="emp-result-name">{{ emp.firstName }} {{ emp.lastName }}</span>
-                      @if (emp.jobTitle) {
-                        <span class="emp-result-role">{{ emp.jobTitle }}</span>
-                      }
-                      @if (selectedEmployees().some((s) => s.id === emp.id)) {
-                        <span class="emp-result-badge">Added</span>
-                      }
-                    </button>
-                  }
-                }
-              </div>
-            }
-          </div>
-        </div>
-
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Access Level' }}
+@if (listResource.error()) {
+  <ui-card>
+    <ui-error-state
+      kind="network"
+      [headingLevel]="3"
+      heading="We couldn't load access levels"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="listResource.reload()"
+    />
+  </ui-card>
+} @else {
+  <ui-card flush>
+    <ui-data-table
+      caption="Access levels"
+      loadingLabel="Loading access levels"
+      [rows]="rows()"
+      [loading]="listResource.isLoading()"
+      [trackBy]="trackById"
+    >
+      <ng-container uiColumn="name" header="Name" primary>
+        <ng-template uiCell let-a>
+          <span class="settings-name">{{ a.accessLevelName }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="description" header="Description">
+        <ng-template uiCell let-a>
+          <span class="settings-wrap settings-muted">{{ a.description ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="status" header="Status">
+        <ng-template uiCell let-a>
+          @if (statusPillValue(a.status); as status) {
+            <ui-status-pill [status]="status" />
+          } @else {
+            <ui-status-pill>{{ a.status }}</ui-status-pill>
+          }
+        </ng-template>
+      </ng-container>
+      <ng-template uiRowActions let-a>
+        <button
+          uiButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="'Edit ' + a.accessLevelName"
+          (click)="startEdit(a)"
+        >
+          <ui-icon name="pencil" /> Edit
         </button>
-      </form>
-    </div>
-  }
+      </ng-template>
+      <ui-empty-state
+        uiTableEmpty
+        [headingLevel]="3"
+        heading="No access levels yet"
+        description="An access level is a set of permissions you give to people. Add the first one."
+      >
+        <button
+          uiEmptyStateActions
+          uiButton
+          variant="secondary"
+          type="button"
+          (click)="toggleForm()"
+        >
+          <ui-icon name="plus" /> Add access level
+        </button>
+      </ui-empty-state>
+    </ui-data-table>
+  </ui-card>
+}
 
-  @if (listResource.isLoading()) {
-    <div class="loading-state">Loading access levels...</div>
-  } @else if (listResource.error()) {
-    <div class="error-state">Failed to load access levels.</div>
-  } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of listResource.value()?.data ?? []; track item.id) {
-          <tr>
-            <td class="name-cell">{{ item.accessLevelName }}</td>
-            <td>{{ item.description ?? '' }}</td>
-            <td>
-              <span class="status-chip" [attr.data-status]="item.status">{{ item.status }}</span>
-            </td>
-            <td class="action-cell">
-              <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="4" class="empty-row">No access levels yet.</td>
-          </tr>
+<ng-template #formTpl>
+  <ui-drawer
+    [heading]="editId() ? 'Edit access level' : 'Add access level'"
+    description="Choose what people with this access level can see and change."
+  >
+    <form
+      id="access-levels-access-level-form"
+      class="settings-form"
+      novalidate
+      (submit)="onSubmit(); $event.preventDefault()"
+    >
+      @if (formError()) {
+        <ui-alert tone="danger" heading="We couldn't save this access level">
+          {{ formError() }} Check the details and try again.
+        </ui-alert>
+      }
+      <ui-form-field label="Name" required [error]="fieldError(accessLevelForm.accessLevelName)">
+        <input
+          uiInput
+          id="access-levels-access-level-form-access-level-name"
+          autocomplete="off"
+          placeholder="HR manager"
+          [formField]="accessLevelForm.accessLevelName"
+        />
+      </ui-form-field>
+      <ui-form-field label="Description">
+        <input
+          uiInput
+          id="access-levels-access-level-form-description"
+          autocomplete="off"
+          placeholder="Manages people and requests in one office"
+          [formField]="accessLevelForm.description"
+        />
+      </ui-form-field>
+
+      <fieldset class="al-perms" aria-describedby="access-levels-perm-help">
+        <legend class="al-legend">
+          Permissions
+          @if (!editId()) {
+            <span class="al-required" aria-hidden="true">*</span>
+          }
+        </legend>
+        <p class="al-help" id="access-levels-perm-help">
+          @if (editId()) {
+            Permissions can't be changed after an access level is created.
+          } @else {
+            View lets people see an area; manage lets them change it.
+          }
+        </p>
+
+        @if (loadingPerms()) {
+          <p class="al-loading"><ui-spinner size="sm" label="Loading permissions" /></p>
+        } @else {
+          <table class="al-matrix">
+            <caption class="ui-visually-hidden">
+              Permissions by area
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Area</th>
+                <th scope="col" class="al-col">
+                  <ui-checkbox
+                    [checked]="allSelected(VIEW_PERMISSIONS)"
+                    [indeterminate]="someSelected(VIEW_PERMISSIONS)"
+                    [disabled]="!!editId()"
+                    (checkedChange)="setGroup(VIEW_PERMISSIONS, $event)"
+                    >View<span class="ui-visually-hidden"> all areas</span></ui-checkbox
+                  >
+                </th>
+                <th scope="col" class="al-col">
+                  <ui-checkbox
+                    [checked]="allSelected(MANAGE_PERMISSIONS)"
+                    [indeterminate]="someSelected(MANAGE_PERMISSIONS)"
+                    [disabled]="!!editId()"
+                    (checkedChange)="setGroup(MANAGE_PERMISSIONS, $event)"
+                    >Manage<span class="ui-visually-hidden"> all areas</span></ui-checkbox
+                  >
+                </th>
+              </tr>
+            </thead>
+            @for (group of areaGroups; track group.label) {
+              <tbody>
+                <tr class="al-group">
+                  <th scope="rowgroup" colspan="3">{{ group.label }}</th>
+                </tr>
+                @for (area of group.areas; track area.key) {
+                  <tr>
+                    <th scope="row" class="al-area">{{ area.label }}</th>
+                    <td class="al-col">
+                      @if (area.view; as perm) {
+                        <ui-checkbox
+                          [checked]="isPermSelected(perm)"
+                          [disabled]="!!editId()"
+                          (checkedChange)="togglePerm(perm)"
+                          ><span class="ui-visually-hidden"
+                            >View {{ area.label.toLowerCase() }}</span
+                          ></ui-checkbox
+                        >
+                      }
+                    </td>
+                    <td class="al-col">
+                      @if (area.manage; as perm) {
+                        <ui-checkbox
+                          [checked]="isPermSelected(perm)"
+                          [disabled]="!!editId()"
+                          (checkedChange)="togglePerm(perm)"
+                          ><span class="ui-visually-hidden"
+                            >Manage {{ area.label.toLowerCase() }}</span
+                          ></ui-checkbox
+                        >
+                      }
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            }
+          </table>
         }
-      </tbody>
-    </table>
-  }
-</div>
+
+        @if (permError()) {
+          <ui-alert tone="danger" live="assertive">
+            {{ permError() }} Tick view or manage for at least one area.
+          </ui-alert>
+        }
+      </fieldset>
+
+      <ui-form-field
+        label="People"
+        hint="Optional. Search by name to give people this access level."
+      >
+        <input
+          uiInput
+          id="access-levels-emp-search-input"
+          type="search"
+          autocomplete="off"
+          placeholder="Search people by name"
+          [value]="employeeSearch()"
+          (input)="onSearchInput($any($event.target).value)"
+        />
+      </ui-form-field>
+
+      @if (employeeSearch().trim().length >= 2) {
+        <div class="al-results" aria-live="polite">
+          @if (searchLoading()) {
+            <p class="al-results-msg"><ui-spinner size="sm" label="Searching people" /></p>
+          } @else if (!searchResults()?.length) {
+            <p class="al-results-msg">No one matches "{{ employeeSearch().trim() }}".</p>
+          } @else {
+            <ul class="al-results-list" aria-label="Matching people">
+              @for (emp of searchResults()!; track emp.id) {
+                <li>
+                  <button
+                    type="button"
+                    class="al-result"
+                    [attr.aria-disabled]="isAdded(emp.id) ? 'true' : null"
+                    (click)="addEmployee(emp)"
+                  >
+                    <ui-avatar
+                      size="sm"
+                      decorative
+                      [name]="emp.firstName + ' ' + emp.lastName"
+                      [tintKey]="emp.department ?? null"
+                    />
+                    <span class="al-result-text">
+                      <span class="al-result-name">{{ emp.firstName }} {{ emp.lastName }}</span>
+                      @if (emp.jobTitle) {
+                        <span class="al-result-role">{{ emp.jobTitle }}</span>
+                      }
+                    </span>
+                    @if (isAdded(emp.id)) {
+                      <span class="al-result-added">Added</span>
+                    } @else {
+                      <ui-icon name="plus" size="sm" />
+                    }
+                  </button>
+                </li>
+              }
+            </ul>
+          }
+        </div>
+      }
+
+      @if (selectedEmployees().length) {
+        <ul class="al-chips" aria-label="People with this access level">
+          @for (emp of selectedEmployees(); track emp.id) {
+            <li>
+              <ui-tag
+                removable
+                [label]="emp.firstName + ' ' + emp.lastName"
+                (remove)="removeEmployee(emp.id)"
+              />
+            </li>
+          }
+        </ul>
+      }
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" (click)="showForm.set(false)">
+      Cancel
+    </button>
+    <button
+      uiDrawerAction
+      uiButton
+      type="submit"
+      form="access-levels-access-level-form"
+      [loading]="saving()"
+    >
+      {{ editId() ? 'Save changes' : 'Add access level' }}
+    </button>
+  </ui-drawer>
+</ng-template>

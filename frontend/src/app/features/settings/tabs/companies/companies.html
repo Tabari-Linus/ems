@@ -1,141 +1,170 @@
-<div class="tab-panel">
-  <div class="panel-header">
-    <div>
-      <h2>Companies</h2>
-      <p>Manage company records</p>
-    </div>
-    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
-      {{ showForm() ? 'Cancel' : '+ New Company' }}
-    </button>
-  </div>
+<ui-page-header title="Companies" level="2" [count]="count()">
+  <button uiPageHeaderActions uiButton type="button" (click)="toggleForm()">
+    <ui-icon name="plus" /> Add company
+  </button>
+</ui-page-header>
 
-  @if (showForm()) {
-    <div class="create-form-card">
-      <h3>{{ editId() ? 'Edit Company' : 'New Company' }}</h3>
-      @if (formError()) {
-        <div class="form-api-error">{{ formError() }}</div>
-      }
-      <form (submit)="onSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          <div class="field">
-            <label for="companies-company-form-company-name"
-              >Company Name <span class="req">*</span></label
-            >
-            <input
-              id="companies-company-form-company-name"
-              [formField]="companyForm.companyName"
-              placeholder="Acme Corporation"
-            />
-            @if (companyForm.companyName().touched() && companyForm.companyName().errors().length) {
-              <span class="field-err">{{ companyForm.companyName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="companies-company-form-company-code"
-              >Company Code <span class="req">*</span></label
-            >
-            <input
-              id="companies-company-form-company-code"
-              [formField]="companyForm.companyCode"
-              placeholder="ACME"
-            />
-            @if (companyForm.companyCode().touched() && companyForm.companyCode().errors().length) {
-              <span class="field-err">{{ companyForm.companyCode().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="companies-company-form-company-email"
-              >Email <span class="req">*</span></label
-            >
-            <input
-              id="companies-company-form-company-email"
-              type="email"
-              [formField]="companyForm.companyEmail"
-              placeholder="info@acme.com"
-            />
-            @if (
-              companyForm.companyEmail().touched() && companyForm.companyEmail().errors().length
-            ) {
-              <span class="field-err">{{ companyForm.companyEmail().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="companies-company-form-company-phone-number">Phone</label>
-            <input
-              id="companies-company-form-company-phone-number"
-              [formField]="companyForm.companyPhoneNumber"
-              placeholder="+1 555 0000"
-            />
-          </div>
-          <div class="field span-2">
-            <label for="companies-company-form-company-address">Address</label>
-            <input
-              id="companies-company-form-company-address"
-              [formField]="companyForm.companyAddress"
-              placeholder="123 Main St, City"
-            />
-          </div>
-        </div>
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Company' }}
+@if (listResource.error()) {
+  <ui-card>
+    <ui-error-state
+      kind="network"
+      [headingLevel]="3"
+      heading="We couldn't load companies"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="listResource.reload()"
+    />
+  </ui-card>
+} @else {
+  <ui-card flush>
+    <ui-data-table
+      caption="Companies"
+      loadingLabel="Loading companies"
+      [rows]="rows()"
+      [loading]="listResource.isLoading()"
+      [trackBy]="trackById"
+    >
+      <ng-container uiColumn="name" header="Name" primary>
+        <ng-template uiCell let-c>
+          <span class="settings-name">{{ c.companyName }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="code" header="Code">
+        <ng-template uiCell let-c>
+          <span class="settings-mono">{{ c.companyCode }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="email" header="Email">
+        <ng-template uiCell let-c>
+          <span class="settings-wrap">{{ c.companyEmail ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="phone" header="Phone">
+        <ng-template uiCell let-c>
+          <span class="settings-mono">{{ c.companyPhoneNumber ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="status" header="Status">
+        <ng-template uiCell let-c>
+          @if (statusPillValue(c.companyStatus ?? 'PENDING'); as status) {
+            <ui-status-pill [status]="status" />
+          } @else {
+            <ui-status-pill>{{ c.companyStatus }}</ui-status-pill>
+          }
+        </ng-template>
+      </ng-container>
+      <ng-template uiRowActions let-c>
+        <button
+          uiButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="'Edit ' + c.companyName"
+          (click)="startEdit(c)"
+        >
+          <ui-icon name="pencil" /> Edit
         </button>
-      </form>
-    </div>
-  }
+      </ng-template>
+      <ui-empty-state
+        uiTableEmpty
+        [headingLevel]="3"
+        heading="No companies yet"
+        description="Add your first company. Offices and departments are set up under it."
+      >
+        <button
+          uiEmptyStateActions
+          uiButton
+          variant="secondary"
+          type="button"
+          (click)="toggleForm()"
+        >
+          <ui-icon name="plus" /> Add company
+        </button>
+      </ui-empty-state>
+    </ui-data-table>
+  </ui-card>
+}
 
-  @if (listResource.isLoading()) {
-    <div class="loading-state">Loading companies...</div>
-  } @else if (listResource.error()) {
-    <div class="error-state">Failed to load companies. Check your connection.</div>
-  } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of listResource.value()?.data ?? []; track item.id) {
-          <tr>
-            <td class="name-cell">{{ item.companyName }}</td>
-            <td>
-              <span class="code-badge">{{ item.companyCode }}</span>
-            </td>
-            <td>{{ item.companyEmail ?? '' }}</td>
-            <td>{{ item.companyPhoneNumber ?? '' }}</td>
-            <td>
-              <span class="status-chip" [attr.data-status]="item.companyStatus ?? 'PENDING'">{{
-                item.companyStatus ?? 'PENDING'
-              }}</span>
-            </td>
-            <td class="action-cell">
-              <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="6" class="empty-row">No companies yet. Create the first one above.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-</div>
+<ng-template #formTpl>
+  <ui-drawer
+    [heading]="editId() ? 'Edit company' : 'Add company'"
+    description="Fields marked * are required."
+  >
+    <form
+      id="companies-company-form"
+      class="settings-form"
+      novalidate
+      (submit)="onSubmit(); $event.preventDefault()"
+    >
+      @if (formError()) {
+        <ui-alert tone="danger" heading="We couldn't save this company">
+          {{ formError() }} Check the details and try again.
+        </ui-alert>
+      }
+      <ui-form-field label="Company name" required [error]="fieldError(companyForm.companyName)">
+        <input
+          uiInput
+          id="companies-company-form-company-name"
+          autocomplete="organization"
+          placeholder="Akwaaba Labs"
+          [formField]="companyForm.companyName"
+        />
+      </ui-form-field>
+      <ui-form-field
+        label="Company code"
+        hint="A short code used in office and employee numbers."
+        required
+        [error]="fieldError(companyForm.companyCode)"
+      >
+        <input
+          uiInput
+          id="companies-company-form-company-code"
+          autocomplete="off"
+          placeholder="AKL"
+          [formField]="companyForm.companyCode"
+        />
+      </ui-form-field>
+      <ui-form-field label="Email" required [error]="fieldError(companyForm.companyEmail)">
+        <input
+          uiInput
+          id="companies-company-form-company-email"
+          type="email"
+          autocomplete="email"
+          placeholder="hello@akwaabalabs.example"
+          [formField]="companyForm.companyEmail"
+        />
+      </ui-form-field>
+      <ui-form-field label="Phone">
+        <input
+          uiInput
+          id="companies-company-form-company-phone-number"
+          type="tel"
+          autocomplete="tel"
+          placeholder="+233 30 255 0100"
+          [formField]="companyForm.companyPhoneNumber"
+        />
+      </ui-form-field>
+      <ui-form-field label="Address">
+        <textarea
+          uiInput
+          id="companies-company-form-company-address"
+          rows="2"
+          autocomplete="street-address"
+          placeholder="14 Oxford St, Osu, Accra"
+          [formField]="companyForm.companyAddress"
+        ></textarea>
+      </ui-form-field>
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" (click)="showForm.set(false)">
+      Cancel
+    </button>
+    <button
+      uiDrawerAction
+      uiButton
+      type="submit"
+      form="companies-company-form"
+      [loading]="saving()"
+    >
+      {{ editId() ? 'Save changes' : 'Add company' }}
+    </button>
+  </ui-drawer>
+</ng-template>
