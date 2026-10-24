@@ -1,399 +1,341 @@
-<div class="profile-page">
-  <!-- ── Back nav ─────────────────────────────────────────────── -->
-  <a routerLink="/staff" class="back-link">
-    <svg
-      viewBox="0 0 16 16"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+<nav class="profile-crumbs" aria-label="Breadcrumb">
+  <a uiButton variant="ghost" size="sm" routerLink="/people"><ui-icon name="arrow-left" /> People</a>
+</nav>
+
+@if (profileResource.isLoading()) {
+  <div class="profile-loading" aria-busy="true" aria-label="Loading profile">
+    <ui-card>
+      <div class="profile-head">
+        <ui-skeleton shape="avatar" />
+        <ui-skeleton class="profile-loading__lines" [lines]="2" />
+      </div>
+    </ui-card>
+    <ui-card><ui-skeleton [lines]="4" /></ui-card>
+  </div>
+} @else if (profileResource.error() || !profileResource.value()) {
+  @if (profileResource.error()) {
+    <ui-error-state
+      [headingLevel]="1"
+      heading="We couldn't load this profile"
+      [description]="errorMessage(profileResource.error()) + ' Try again, or go back to People.'"
+      (action)="profileResource.reload()"
     >
-      <path d="M13 8H3M7 4L3 8l4 4" />
-    </svg>
-    All employees
-  </a>
-
-  <!-- ── Loading skeleton ──────────────────────────────────────── -->
-  @if (profileResource.isLoading()) {
-    <div class="banner banner--skeleton">
-      <div class="sk-avi-lg pulse"></div>
-      <div class="banner-text">
-        <div class="sk-line w40 pulse"></div>
-        <div class="sk-line w25 pulse"></div>
-      </div>
-    </div>
-    <div class="content-grid">
-      @for (n of [1, 2, 3]; track n) {
-        <div class="section-card">
-          <div class="sk-line w30 pulse" style="height: 14px; margin-bottom: 16px"></div>
-          @for (m of [1, 2, 3]; track m) {
-            <div class="sk-row">
-              <div class="sk-line w25 pulse"></div>
-              <div class="sk-line w45 pulse"></div>
-            </div>
-          }
-        </div>
-      }
-    </div>
-
-    <!-- ── Error / not found ─────────────────────────────────────── -->
-  } @else if (profileResource.error() || !profileResource.value()) {
-    <div class="empty-state">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      @if (profileResource.error()) {
-        <p>{{ $any(profileResource.error()).message ?? 'Failed to load employee.' }}</p>
-      } @else {
-        <p>Employee not found.</p>
-      }
-      <a routerLink="/staff" class="btn-outline">Back to employees</a>
-    </div>
+      <a uiErrorStateActions uiButton variant="secondary" routerLink="/people">Back to People</a>
+    </ui-error-state>
   } @else {
-    @let emp = profileResource.value()!;
+    <ui-error-state
+      kind="not-found"
+      [headingLevel]="1"
+      heading="We can't find this person"
+      description="They may have been removed, or the link is out of date."
+      [showAction]="false"
+    >
+      <a uiErrorStateActions uiButton routerLink="/people">Back to People</a>
+    </ui-error-state>
+  }
+} @else {
+  @let emp = profileResource.value()!;
+  @let name = fullName(emp);
 
-    <!-- ── Banner ──────────────────────────────────────────────── -->
-    <div class="banner" [style.--avi-color]="getAvatarColor(emp.firstName + emp.lastName)">
-      <div class="banner-avi">
-        {{ getInitials(emp.firstName, emp.lastName) }}
-      </div>
-      <div class="banner-text">
-        <h1>{{ emp.bio?.fullName ?? emp.firstName + ' ' + emp.lastName }}</h1>
-        <p class="banner-sub">
+  <!-- Header card -->
+  <ui-card class="profile-header">
+    <div class="profile-head">
+      <ui-avatar [name]="name" [tintKey]="emp.department?.departmentName ?? name" size="xl" decorative />
+      <div class="profile-head__id">
+        <div class="profile-head__name-row">
+          <h1 class="profile-head__name">{{ name }}</h1>
+          <ui-status-pill [status]="asStatus(emp.status)" />
+        </div>
+        <p class="profile-head__position">
           {{ emp.position?.positionName ?? 'No position' }}
           @if (emp.department?.departmentName) {
             · {{ emp.department!.departmentName }}
           }
         </p>
-      </div>
-      <div class="banner-right">
-        <span class="badge" [attr.data-status]="emp.status">{{ emp.status }}</span>
-
-        @if (canManage()) {
-          <div class="action-row">
-            @if (emp.status !== 'ACTIVE') {
-              <button class="btn-primary" [disabled]="activating()" (click)="onActivate()">
-                {{ activating() ? 'Activating…' : 'Activate' }}
-              </button>
-            }
-            @if (emp.status === 'ACTIVE') {
-              <button class="btn-warn" [disabled]="deactivating()" (click)="onDeactivate()">
-                {{ deactivating() ? 'Deactivating…' : 'Deactivate' }}
-              </button>
-            }
-            @if (emp.status !== 'ARCHIVE') {
-              <button class="btn-danger" [disabled]="archiving()" (click)="onArchive()">
-                {{ archiving() ? 'Archiving…' : 'Archive' }}
-              </button>
-            }
-          </div>
-        }
-
-        @if (actionError()) {
-          <p class="action-error">{{ actionError() }}</p>
-        }
-      </div>
-    </div>
-
-    <!-- ── Content grid ────────────────────────────────────────── -->
-    <div class="content-grid">
-      <!-- Work Info -->
-      <div class="section-card">
-        <h2 class="section-title">Work Info</h2>
-        <dl class="field-list">
-          <div class="field-row">
-            <dt>Work Email</dt>
-            <dd>{{ emp.workEmail }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Department</dt>
-            <dd>
-              @if (!editingDepartment()) {
-                @if (emp.department) {
-                  {{ emp.department.departmentName }}
-                  @if (emp.department.departmentCode) {
-                    <span class="meta-tag">{{ emp.department.departmentCode }}</span>
-                  }
-                } @else {
-                  <span class="field-empty">No department</span>
-                }
-                @if (canManage()) {
-                  <button class="inline-edit-btn" (click)="startEditDepartment(emp.department?.id)">
-                    {{ emp.department ? 'Change' : 'Assign' }}
-                  </button>
-                }
-              } @else {
-                <div class="position-picker">
-                  @if (departmentsResource.isLoading()) {
-                    <span class="picker-loading">Loading departments…</span>
-                  } @else if (departmentsResource.error()) {
-                    <span class="picker-err">Failed to load departments</span>
-                  } @else {
-                    <select
-                      class="picker-select"
-                      [value]="selectedDepartmentId()"
-                      (change)="selectedDepartmentId.set($any($event.target).value)"
-                    >
-                      <option value="">— No department —</option>
-                      @for (dept of departmentsResource.value()?.data ?? []; track dept.id) {
-                        <option [value]="dept.id">{{ dept.departmentName }}</option>
-                      }
-                    </select>
-                    <button
-                      class="picker-save"
-                      [disabled]="savingDepartment()"
-                      (click)="saveDepartment()"
-                    >
-                      {{ savingDepartment() ? 'Saving…' : 'Save' }}
-                    </button>
-                    <button
-                      class="picker-cancel"
-                      [disabled]="savingDepartment()"
-                      (click)="cancelEditDepartment()"
-                    >
-                      Cancel
-                    </button>
-                  }
-                  @if (departmentError()) {
-                    <span class="picker-err">{{ departmentError() }}</span>
-                  }
-                </div>
-              }
-            </dd>
-          </div>
-          <div class="field-row">
-            <dt>Position</dt>
-            <dd>
-              @if (!editingPosition()) {
-                @if (emp.position) {
-                  {{ emp.position.positionName }}
-                  <span class="meta-tag">{{ emp.position.level }}</span>
-                } @else {
-                  <span class="field-empty">No position</span>
-                }
-                @if (canManage()) {
-                  <button class="inline-edit-btn" (click)="startEditPosition(emp.position?.id)">
-                    {{ emp.position ? 'Change' : 'Assign' }}
-                  </button>
-                }
-              } @else {
-                <div class="position-picker">
-                  @if (positionsResource.isLoading()) {
-                    <span class="picker-loading">Loading positions…</span>
-                  } @else if (positionsResource.error()) {
-                    <span class="picker-err">Failed to load positions</span>
-                  } @else {
-                    <select
-                      class="picker-select"
-                      [value]="selectedPositionId()"
-                      (change)="selectedPositionId.set($any($event.target).value)"
-                    >
-                      <option value="">— No position —</option>
-                      @for (pos of positionsResource.value()?.data ?? []; track pos.id) {
-                        <option [value]="pos.id">{{ pos.positionName }} ({{ pos.level }})</option>
-                      }
-                    </select>
-                    <button
-                      class="picker-save"
-                      [disabled]="savingPosition()"
-                      (click)="savePosition()"
-                    >
-                      {{ savingPosition() ? 'Saving…' : 'Save' }}
-                    </button>
-                    <button
-                      class="picker-cancel"
-                      [disabled]="savingPosition()"
-                      (click)="cancelEditPosition()"
-                    >
-                      Cancel
-                    </button>
-                  }
-                  @if (positionError()) {
-                    <span class="picker-err">{{ positionError() }}</span>
-                  }
-                </div>
-              }
-            </dd>
-          </div>
-          <div class="field-row">
-            <dt>Access Level</dt>
-            <dd>
-              @if (!editingAccessLevel()) {
-                @if (emp.accessLevel) {
-                  {{ emp.accessLevel.accessLevelName }}
-                } @else {
-                  <span class="field-empty">No access level</span>
-                }
-                @if (canManage()) {
-                  <button
-                    class="inline-edit-btn"
-                    (click)="startEditAccessLevel(emp.accessLevel?.id)"
-                  >
-                    {{ emp.accessLevel ? 'Change' : 'Assign' }}
-                  </button>
-                }
-              } @else {
-                <div class="position-picker">
-                  @if (accessLevelsResource.isLoading()) {
-                    <span class="picker-loading">Loading access levels…</span>
-                  } @else if (accessLevelsResource.error()) {
-                    <span class="picker-err">Failed to load access levels</span>
-                  } @else {
-                    <select
-                      class="picker-select"
-                      [value]="selectedAccessLevelId()"
-                      (change)="selectedAccessLevelId.set($any($event.target).value)"
-                    >
-                      <option value="">— No access level —</option>
-                      @for (lvl of accessLevelsResource.value()?.data ?? []; track lvl.id) {
-                        <option [value]="lvl.id">{{ lvl.accessLevelName }}</option>
-                      }
-                    </select>
-                    <button
-                      class="picker-save"
-                      [disabled]="savingAccessLevel()"
-                      (click)="saveAccessLevel()"
-                    >
-                      {{ savingAccessLevel() ? 'Saving…' : 'Save' }}
-                    </button>
-                    <button
-                      class="picker-cancel"
-                      [disabled]="savingAccessLevel()"
-                      (click)="cancelEditAccessLevel()"
-                    >
-                      Cancel
-                    </button>
-                  }
-                  @if (accessLevelError()) {
-                    <span class="picker-err">{{ accessLevelError() }}</span>
-                  }
-                </div>
-              }
-            </dd>
-          </div>
-          <div class="field-row">
-            <dt>Date Hired</dt>
-            <dd>{{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Last Updated</dt>
-            <dd>{{ formatDate(emp.lastModifiedDate) }}</dd>
-          </div>
-        </dl>
+        <p class="profile-head__meta">
+          <span class="profile-mono"><span class="ui-visually-hidden">Employee ID </span>#{{ emp.id }}</span>
+          <span aria-hidden="true">·</span>
+          <span>{{ emp.workEmail }}</span>
+        </p>
       </div>
 
-      <!-- Personal Bio -->
-      <div class="section-card">
-        <h2 class="section-title">Personal Info</h2>
-        <dl class="field-list">
-          <div class="field-row">
-            <dt>Full Name</dt>
-            <dd>{{ emp.bio?.fullName ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Other Name</dt>
-            <dd>{{ emp.bio?.otherName ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Gender</dt>
-            <dd>{{ emp.bio?.gender ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Date of Birth</dt>
-            <dd>{{ formatDate(emp.bio?.dateOfBirth) }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Place of Birth</dt>
-            <dd>{{ emp.bio?.placeOfBirth ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Nationality</dt>
-            <dd>{{ emp.bio?.nationality ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Marital Status</dt>
-            <dd>{{ emp.bio?.maritalStatus ?? '' }}</dd>
-          </div>
-          @if (emp.bio?.isExpert) {
-            <div class="field-row">
-              <dt>Expert</dt>
-              <dd>{{ emp.bio!.isExpert }}</dd>
-            </div>
-          }
-        </dl>
-      </div>
-
-      <!-- Contact -->
-      <div class="section-card">
-        <h2 class="section-title">Contact</h2>
-        @if (
-          (emp.contact?.phoneNumbers?.length ?? 0) === 0 &&
-          (emp.contact?.personalEmails?.length ?? 0) === 0
-        ) {
-          <p class="empty-msg">No contact info on file.</p>
-        } @else {
-          <dl class="field-list">
-            @if ((emp.contact?.phoneNumbers?.length ?? 0) > 0) {
-              @for (phone of emp.contact!.phoneNumbers!; track phone) {
-                <div class="field-row">
-                  <dt>Phone</dt>
-                  <dd>{{ phone }}</dd>
-                </div>
+      @if (canManage()) {
+        <div class="profile-head__actions">
+          <button
+            uiButton
+            variant="secondary"
+            type="button"
+            [loading]="busy()"
+            [uiMenuTrigger]="lifecycleMenu"
+          >
+            Manage <ui-icon name="chevron-down" />
+          </button>
+          <ng-template #lifecycleMenu>
+            <ui-menu>
+              @if (emp.status !== 'ACTIVE') {
+                <button uiMenuItem type="button" (triggered)="confirmActivate(name)">
+                  <ui-icon uiMenuItemIcon name="circle-check" /> Activate
+                </button>
               }
-            }
-            @if ((emp.contact?.personalEmails?.length ?? 0) > 0) {
-              @for (mail of emp.contact!.personalEmails!; track mail) {
-                <div class="field-row">
-                  <dt>Personal Email</dt>
-                  <dd>{{ mail }}</dd>
-                </div>
+              @if (emp.status === 'ACTIVE') {
+                <button uiMenuItem type="button" (triggered)="confirmDeactivate(name)">
+                  <ui-icon uiMenuItemIcon name="lock" /> Deactivate
+                </button>
               }
-            }
-          </dl>
-        }
-      </div>
-
-      <!-- Addresses -->
-      @if (emp.addresses.length > 0) {
-        <div class="section-card">
-          <h2 class="section-title">Addresses</h2>
-          @for (addr of emp.addresses; track addr.id) {
-            <div class="address-block">
-              <span class="addr-line">{{ addressLine(addr) }}</span>
-              @if (addr.digitalAddress) {
-                <span class="addr-digital">{{ addr.digitalAddress }}</span>
+              @if (emp.status !== 'ARCHIVED') {
+                <ui-menu-separator />
+                <button uiMenuItem variant="danger" type="button" (triggered)="confirmArchive(name)">
+                  <ui-icon uiMenuItemIcon name="trash" /> Archive
+                </button>
               }
-              @if (addr.isCurrentAddress) {
-                <span class="meta-tag">Current</span>
-              }
-            </div>
-          }
+            </ui-menu>
+          </ng-template>
         </div>
       }
+    </div>
 
-      <!-- Identifications -->
-      @if (emp.identifications.length > 0) {
-        <div class="section-card">
-          <h2 class="section-title">Identification</h2>
-          <dl class="field-list">
-            @for (id of emp.identifications; track id.id) {
-              <div class="field-row">
-                <dt>{{ id.identificationType.replace(/_/g, ' ') }}</dt>
-                <dd>{{ id.identificationNumber }}</dd>
+    @if (actionError()) {
+      <ui-alert class="profile-action-error" tone="danger" heading="That didn't work" dismissible (dismissed)="actionError.set('')">
+        {{ actionError() }}
+      </ui-alert>
+    }
+  </ui-card>
+
+  <ui-tabs class="profile-tabs" label="Profile sections" [(selectedIndex)]="tab">
+    <!-- Overview -->
+    <ui-tab-panel label="Overview">
+      <div class="profile-sections">
+        <ui-card title="Work details">
+          <dl uiDescriptionList [columns]="2">
+            <div uiDescriptionItem label="Department" [span]="editingDepartment() ? 2 : 1">
+              @if (!editingDepartment()) {
+                <span class="profile-value">
+                  @if (emp.department) {
+                    {{ emp.department.departmentName }}
+                    @if (emp.department.departmentCode) {
+                      <ui-tag [label]="emp.department.departmentCode" />
+                    }
+                  } @else {
+                    <span class="profile-empty">No department</span>
+                  }
+                  @if (canManage()) {
+                    <button
+                      uiButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [attr.aria-label]="(emp.department ? 'Change' : 'Assign') + ' department'"
+                      (click)="startEditDepartment(emp.department?.id)"
+                    >
+                      {{ emp.department ? 'Change' : 'Assign' }}
+                    </button>
+                  }
+                </span>
+              } @else {
+                <span class="profile-edit">
+                  @if (departmentsResource.isLoading()) {
+                    <span class="profile-empty" role="status">Loading departments…</span>
+                  } @else if (departmentsResource.error()) {
+                    <span class="profile-error" role="alert">Departments didn't load. Cancel and try again.</span>
+                  } @else {
+                    <ui-select
+                      class="profile-edit__select"
+                      label="Department"
+                      [options]="departmentOptions()"
+                      [value]="selectedDepartmentId()"
+                      (valueChange)="selectedDepartmentId.set($event ?? '')"
+                    />
+                    <button uiButton size="sm" type="button" [loading]="savingDepartment()" (click)="saveDepartment()">
+                      Save changes
+                    </button>
+                  }
+                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingDepartment()" (click)="cancelEditDepartment()">
+                    Cancel
+                  </button>
+                  @if (departmentError()) {
+                    <span class="profile-error" role="alert">{{ departmentError() }}</span>
+                  }
+                </span>
+              }
+            </div>
+
+            <div uiDescriptionItem label="Position" [span]="editingPosition() ? 2 : 1">
+              @if (!editingPosition()) {
+                <span class="profile-value">
+                  @if (emp.position) {
+                    {{ emp.position.positionName }}
+                    <ui-tag [label]="emp.position.level" />
+                  } @else {
+                    <span class="profile-empty">No position</span>
+                  }
+                  @if (canManage()) {
+                    <button
+                      uiButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [attr.aria-label]="(emp.position ? 'Change' : 'Assign') + ' position'"
+                      (click)="startEditPosition(emp.position?.id)"
+                    >
+                      {{ emp.position ? 'Change' : 'Assign' }}
+                    </button>
+                  }
+                </span>
+              } @else {
+                <span class="profile-edit">
+                  @if (positionsResource.isLoading()) {
+                    <span class="profile-empty" role="status">Loading positions…</span>
+                  } @else if (positionsResource.error()) {
+                    <span class="profile-error" role="alert">Positions didn't load. Cancel and try again.</span>
+                  } @else {
+                    <ui-select
+                      class="profile-edit__select"
+                      label="Position"
+                      [options]="positionOptions()"
+                      [value]="selectedPositionId()"
+                      (valueChange)="selectedPositionId.set($event ?? '')"
+                    />
+                    <button uiButton size="sm" type="button" [loading]="savingPosition()" (click)="savePosition()">
+                      Save changes
+                    </button>
+                  }
+                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingPosition()" (click)="cancelEditPosition()">
+                    Cancel
+                  </button>
+                  @if (positionError()) {
+                    <span class="profile-error" role="alert">{{ positionError() }}</span>
+                  }
+                </span>
+              }
+            </div>
+
+            <div uiDescriptionItem label="Access level" [span]="editingAccessLevel() ? 2 : 1">
+              @if (!editingAccessLevel()) {
+                <span class="profile-value">
+                  @if (emp.accessLevel) {
+                    {{ emp.accessLevel.accessLevelName }}
+                  } @else {
+                    <span class="profile-empty">No access level</span>
+                  }
+                  @if (canManage()) {
+                    <button
+                      uiButton
+                      variant="ghost"
+                      size="sm"
+                      type="button"
+                      [attr.aria-label]="(emp.accessLevel ? 'Change' : 'Assign') + ' access level'"
+                      (click)="startEditAccessLevel(emp.accessLevel?.id)"
+                    >
+                      {{ emp.accessLevel ? 'Change' : 'Assign' }}
+                    </button>
+                  }
+                </span>
+              } @else {
+                <span class="profile-edit">
+                  @if (accessLevelsResource.isLoading()) {
+                    <span class="profile-empty" role="status">Loading access levels…</span>
+                  } @else if (accessLevelsResource.error()) {
+                    <span class="profile-error" role="alert">Access levels didn't load. Cancel and try again.</span>
+                  } @else {
+                    <ui-select
+                      class="profile-edit__select"
+                      label="Access level"
+                      [options]="accessLevelOptions()"
+                      [value]="selectedAccessLevelId()"
+                      (valueChange)="selectedAccessLevelId.set($event ?? '')"
+                    />
+                    <button uiButton size="sm" type="button" [loading]="savingAccessLevel()" (click)="saveAccessLevel()">
+                      Save changes
+                    </button>
+                  }
+                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingAccessLevel()" (click)="cancelEditAccessLevel()">
+                    Cancel
+                  </button>
+                  @if (accessLevelError()) {
+                    <span class="profile-error" role="alert">{{ accessLevelError() }}</span>
+                  }
+                </span>
+              }
+            </div>
+
+            <div uiDescriptionItem label="Date hired" mono>
+              {{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}
+            </div>
+            <div uiDescriptionItem label="Work email" copyable [span]="2">{{ emp.workEmail }}</div>
+            <div uiDescriptionItem label="Last updated" mono>
+              {{ formatDate(emp.lastModifiedDate) || '—' }}
+            </div>
+          </dl>
+        </ui-card>
+
+        <ui-card title="Contact">
+          @if (
+            (emp.contact?.phoneNumbers?.length ?? 0) === 0 &&
+            (emp.contact?.personalEmails?.length ?? 0) === 0
+          ) {
+            <p class="profile-empty">No phone number or personal email on file.</p>
+          } @else {
+            <dl uiDescriptionList [columns]="2">
+              @for (phone of emp.contact?.phoneNumbers ?? []; track phone) {
+                <div uiDescriptionItem label="Phone" mono copyable>{{ phone }}</div>
+              }
+              @for (mail of emp.contact?.personalEmails ?? []; track mail) {
+                <div uiDescriptionItem label="Personal email" copyable>{{ mail }}</div>
+              }
+            </dl>
+          }
+        </ui-card>
+      </div>
+    </ui-tab-panel>
+
+    <!-- Personal -->
+    <ui-tab-panel label="Personal">
+      <div class="profile-sections">
+        <ui-card title="Personal details">
+          <dl uiDescriptionList [columns]="3">
+            <div uiDescriptionItem label="Full name">{{ emp.bio?.fullName || '—' }}</div>
+            <div uiDescriptionItem label="Other name">{{ emp.bio?.otherName || '—' }}</div>
+            <div uiDescriptionItem label="Gender">{{ emp.bio?.gender || '—' }}</div>
+            <div uiDescriptionItem label="Date of birth" mono>{{ formatDate(emp.bio?.dateOfBirth) || '—' }}</div>
+            <div uiDescriptionItem label="Place of birth">{{ emp.bio?.placeOfBirth || '—' }}</div>
+            <div uiDescriptionItem label="Nationality">{{ emp.bio?.nationality || '—' }}</div>
+            <div uiDescriptionItem label="Marital status">{{ emp.bio?.maritalStatus || '—' }}</div>
+            @if (emp.bio?.isExpert) {
+              <div uiDescriptionItem label="Expert">{{ emp.bio!.isExpert }}</div>
+            }
+          </dl>
+        </ui-card>
+
+        @if (emp.addresses.length > 0) {
+          <ui-card title="Addresses" [count]="emp.addresses.length">
+            <dl uiDescriptionList [columns]="1">
+              @for (addr of emp.addresses; track addr.id; let i = $index) {
+                <div uiDescriptionItem [label]="addr.isCurrentAddress ? 'Current address' : 'Address ' + (i + 1)">
+                  {{ addressLine(addr) }}
+                  @if (addr.digitalAddress) {
+                    <span class="profile-mono">{{ addr.digitalAddress }}</span>
+                  }
+                </div>
+              }
+            </dl>
+          </ui-card>
+        }
+      </div>
+    </ui-tab-panel>
+
+    <!-- Documents (only when there is something to show) -->
+    @if (emp.identifications.length > 0) {
+      <ui-tab-panel label="Documents">
+        <ui-card title="ID documents" [count]="emp.identifications.length">
+          <dl uiDescriptionList [columns]="2">
+            @for (doc of emp.identifications; track doc.id) {
+              <div uiDescriptionItem [label]="idTypeLabel(doc.identificationType)" mono>
+                {{ doc.identificationNumber }}
               </div>
             }
           </dl>
-        </div>
-      }
-    </div>
-  }
-</div>
+        </ui-card>
+      </ui-tab-panel>
+    }
+  </ui-tabs>
+}
