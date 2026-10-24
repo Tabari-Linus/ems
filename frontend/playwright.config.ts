@@ -6,6 +6,8 @@ import { defineConfig, devices } from '@playwright/test';
  */
 export default defineConfig({
   testDir: './e2e',
+  // Mocked page snapshots run with playwright.pages.config.ts (npm run e2e:pages).
+  testIgnore: 'pages/**',
   outputDir: './test-results',
   fullyParallel: true,
   forbidOnly: !!process.env['CI'],

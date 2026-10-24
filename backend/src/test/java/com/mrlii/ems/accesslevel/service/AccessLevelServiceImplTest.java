@@ -34,6 +34,7 @@ class AccessLevelServiceImplTest {
     @Mock private AccessLevelPersistenceHelper persistenceHelper;
     @Mock private AccessLevelServiceHelper serviceHelper;
     @Mock private PermissionSetRepository permissionSetRepository;
+    @Mock private org.springframework.context.ApplicationEventPublisher eventPublisher;
     @InjectMocks private AccessLevelServiceImpl service;
 
     // ── mutations ─────────────────────────────────────────────────────────────
@@ -79,6 +80,7 @@ class AccessLevelServiceImplTest {
 
         assertThat(result.id()).isEqualTo(1L);
         verify(persistenceHelper).archive(1L);
+        verify(eventPublisher).publishEvent(new com.mrlii.ems.common.event.AccessLevelChangedEvent(1L));
     }
 
     @Test
@@ -111,6 +113,7 @@ class AccessLevelServiceImplTest {
 
         assertThat(result.id()).isEqualTo(1L);
         verify(persistenceHelper).addPermissions(1L, permissions);
+        verify(eventPublisher).publishEvent(new com.mrlii.ems.common.event.AccessLevelChangedEvent(1L));
     }
 
     @Test

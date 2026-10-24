@@ -47,9 +47,7 @@ class AuthCookieIT extends AbstractGraphQlIntegrationTest {
                 .getFirst("refresh_token");
         assertThat(refreshCookie).isNotNull();
 
-        webTestClient().post()
-                .uri(AUTH_PATH + "/refresh-token")
-                .cookie(refreshCookie.getName(), refreshCookie.getValue())
+        cookiePost("/refresh-token", refreshCookie.getValue())
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody()

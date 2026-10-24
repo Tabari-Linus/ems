@@ -65,12 +65,14 @@ class AdminSeederTest {
         assertThat(savedEmployee.getLastName()).isEqualTo("Administrator");
         assertThat(savedEmployee.getStatus()).isEqualTo(CommonStatus.ACTIVE);
         assertThat(savedEmployee.getAccessLevel()).isEqualTo(adminLevel);
+        assertThat(savedEmployee.getWorkEmail()).isEqualTo(ADMIN_EMAIL);
 
         ArgumentCaptor<UserAccount> accountCaptor = ArgumentCaptor.forClass(UserAccount.class);
         verify(userAccountRepository).save(accountCaptor.capture());
         UserAccount savedAccount = accountCaptor.getValue();
         assertThat(savedAccount.getEmail()).isEqualTo(ADMIN_EMAIL);
         assertThat(savedAccount.getPasswordHash()).isEqualTo("hashed");
+        assertThat(savedAccount.getPasswordChangedAt()).isNotNull();
         assertThat(savedAccount.isEnabled()).isTrue();
         assertThat(savedAccount.getEmployee()).isEqualTo(savedEmployee);
     }

@@ -15,6 +15,31 @@ export type PageInput = {
   size?: number | null | undefined;
 };
 
+export type Permission =
+  | 'MANAGE_ACCESS_LEVEL'
+  | 'MANAGE_ADMIN'
+  | 'MANAGE_COMPANY'
+  | 'MANAGE_DEPARTMENT'
+  | 'MANAGE_DIRECTOR'
+  | 'MANAGE_EMPLOYEE'
+  | 'MANAGE_MANAGER'
+  | 'MANAGE_OFFICE'
+  | 'MANAGE_POSITION'
+  | 'MANAGE_ROLE'
+  | 'MANAGE_SELF'
+  | 'VIEW_ACCESS_LEVEL'
+  | 'VIEW_ADMIN'
+  | 'VIEW_COMPANY'
+  | 'VIEW_DASHBOARD'
+  | 'VIEW_DEPARTMENT'
+  | 'VIEW_DIRECTOR'
+  | 'VIEW_EMPLOYEE'
+  | 'VIEW_MANAGER'
+  | 'VIEW_OFFICE'
+  | 'VIEW_POSITION'
+  | 'VIEW_ROLE'
+  | 'VIEW_SELF';
+
 export type PositionFilterInput = {
   level?: PositionLevel | null | undefined;
   search?: string | null | undefined;
@@ -28,6 +53,25 @@ export type SortDirection = 'ASC' | 'DESC';
 export type SortInput = {
   sortDirection?: SortDirection | null | undefined;
   sortField?: string | null | undefined;
+};
+
+export type MeQueryVariables = Exact<{ [key: string]: never }>;
+
+export type MeQuery = {
+  me: {
+    permissions: Array<Permission>;
+    account: { id: string; email: string; lastLoginAt: string | null };
+    employee: {
+      id: string;
+      firstName: string;
+      lastName: string;
+      workEmail: string;
+      status: CommonStatus;
+      position: { positionName: string } | null;
+      department: { id: string; departmentName: string } | null;
+      accessLevel: { accessLevelName: string } | null;
+    } | null;
+  };
 };
 
 export type PositionsQueryVariables = Exact<{
@@ -55,6 +99,46 @@ export type PositionsQuery = {
   } | null;
 };
 
+export const MeDocument = gql`
+  query Me {
+    me {
+      account {
+        id
+        email
+        lastLoginAt
+      }
+      employee {
+        id
+        firstName
+        lastName
+        workEmail
+        status
+        position {
+          positionName
+        }
+        department {
+          id
+          departmentName
+        }
+        accessLevel {
+          accessLevelName
+        }
+      }
+      permissions
+    }
+  }
+`;
+
+@Injectable({
+  providedIn: 'root',
+})
+export class MeGQL extends Apollo.Query<MeQuery, MeQueryVariables> {
+  override document = MeDocument;
+
+  constructor(apollo: Apollo.Apollo) {
+    super(apollo);
+  }
+}
 export const PositionsDocument = gql`
   query Positions($pageInput: PageInput, $sortInput: SortInput, $filter: PositionFilterInput) {
     getPositions(pageInput: $pageInput, sortInput: $sortInput, filter: $filter) {

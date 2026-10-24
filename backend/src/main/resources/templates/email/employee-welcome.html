@@ -6,11 +6,11 @@
     <title>Welcome to EMS</title>
 </head>
 <body style="margin:0;padding:0;background-color:#f4f6f8;font-family:Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0">
+<table width="100%" cellpadding="0" cellspacing="0" role="presentation">
     <tr>
         <td align="center" style="padding:40px 16px;">
-            <table width="600" cellpadding="0" cellspacing="0"
-                   style="background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
+            <table width="600" cellpadding="0" cellspacing="0" role="presentation"
+                   style="max-width:600px;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
                 <!-- Header -->
                 <tr>
@@ -24,45 +24,44 @@
                 <!-- Body -->
                 <tr>
                     <td style="padding:36px 40px;">
-                        <h2 style="margin:0 0 12px;color:#1e293b;font-size:20px;">Welcome aboard!</h2>
+                        <h2 style="margin:0 0 12px;color:#1e293b;font-size:20px;">
+                            Welcome aboard, <span th:text="${firstName}">there</span>!
+                        </h2>
                         <p style="margin:0 0 24px;color:#475569;font-size:15px;line-height:1.6;">
-                            Your employee account has been created. Use the credentials below to sign in.
+                            An account has been created for you. Choose your password to get started.
                         </p>
 
-                        <!-- Credentials table -->
-                        <table width="100%" cellpadding="0" cellspacing="0"
-                               style="border:1px solid #e2e8f0;border-radius:6px;overflow:hidden;margin-bottom:24px;">
-                            <tr style="background-color:#f8fafc;">
-                                <td style="padding:12px 16px;font-weight:600;color:#64748b;font-size:13px;width:40%;">
-                                    Email Address
-                                </td>
-                                <td style="padding:12px 16px;color:#1e293b;font-size:14px;" th:text="${email}">
-                                    email@example.com
-                                </td>
-                            </tr>
+                        <!-- Call to action -->
+                        <table cellpadding="0" cellspacing="0" role="presentation" style="margin:0 0 24px;">
                             <tr>
-                                <td style="padding:12px 16px;font-weight:600;color:#64748b;font-size:13px;border-top:1px solid #e2e8f0;">
-                                    Temporary Password
-                                </td>
-                                <td style="padding:12px 16px;font-family:monospace;font-size:14px;color:#1e293b;border-top:1px solid #e2e8f0;"
-                                    th:text="${temporaryPassword}">
-                                    temp-password
+                                <td style="border-radius:6px;background-color:#1a56db;">
+                                    <a th:href="${setPasswordUrl}" href="#"
+                                       style="display:inline-block;padding:12px 24px;color:#ffffff;font-size:15px;font-weight:600;text-decoration:none;">
+                                        Set your password
+                                    </a>
                                 </td>
                             </tr>
                         </table>
 
-                        <!-- Warning -->
-                        <table width="100%" cellpadding="0" cellspacing="0"
-                               style="background-color:#fef3c7;border-left:4px solid #f59e0b;border-radius:0 4px 4px 0;margin-bottom:24px;">
-                            <tr>
-                                <td style="padding:12px 16px;color:#92400e;font-size:14px;">
-                                    <strong>Action required:</strong> Please change your password immediately after your first login.
-                                </td>
-                            </tr>
-                        </table>
+                        <p style="margin:0 0 8px;color:#475569;font-size:14px;line-height:1.6;">
+                            You will sign in with your work email:
+                            <strong th:text="${email}">email@example.com</strong>
+                        </p>
+                        <p style="margin:0 0 24px;color:#475569;font-size:14px;line-height:1.6;">
+                            The link works once and expires in <strong th:text="${validForHours}">72</strong> hours.
+                            If it has expired, ask your administrator to send you a new one.
+                        </p>
+
+                        <p style="margin:0 0 8px;color:#94a3b8;font-size:12px;line-height:1.5;">
+                            Button not working? Copy this link into your browser:
+                        </p>
+                        <p style="margin:0 0 24px;font-size:12px;line-height:1.5;word-break:break-all;">
+                            <a th:href="${setPasswordUrl}" th:text="${setPasswordUrl}" href="#"
+                               style="color:#1a56db;">https://app.example.com/set-password?token=...</a>
+                        </p>
 
                         <p style="margin:0;color:#94a3b8;font-size:13px;">
-                            If you did not expect this email, please contact your system administrator.
+                            If you did not expect this email, you can ignore it or let your administrator know.
                         </p>
                     </td>
                 </tr>

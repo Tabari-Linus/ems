@@ -1,0 +1,4 @@
+extend type Query {
+    "The caller. Requires authentication only, no permission."
+    me: Me!
+}

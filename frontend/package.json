@@ -12,6 +12,7 @@
     "lint": "ng lint",
     "test:ci": "ng test ems-frontend --configuration ci",
     "e2e": "playwright test",
+    "e2e:pages": "playwright test -c playwright.pages.config.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "tokens:build": "node projects/tokens/scripts/build-tokens.mjs",

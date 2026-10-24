@@ -3,6 +3,7 @@ package com.mrlii.ems.organization.employee.helper;
 import com.mrlii.ems.accesslevel.repository.AccessLevelRepository;
 import com.mrlii.ems.auth.entity.UserAccount;
 import com.mrlii.ems.auth.repository.UserAccountRepository;
+import com.mrlii.ems.notification.event.EmployeeCreatedEmailEvent;
 import com.mrlii.ems.common.enums.CommonStatus;
 import com.mrlii.ems.common.util.CommonUtilHelper;
 import com.mrlii.ems.organization.department.entity.Department;
@@ -25,7 +26,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -52,27 +52,26 @@ class EmployeePersistenceHelperTest {
     @Mock private EmployeeValidator validator;
     @Mock private CommonUtilHelper commonUtilHelper;
     @Mock private UserAccountRepository userAccountRepository;
-    @Mock private PasswordEncoder passwordEncoder;
     @Mock private ApplicationEventPublisher eventPublisher;
     @InjectMocks private EmployeePersistenceHelper persistenceHelper;
 
     // ── create ────────────────────────────────────────────────────────────────
 
     @Test
-    void create_withBasicInput_savesEmployeeWithActiveStatus() {
+    void create_withBasicInput_savesEmployeeWithPendingStatus() {
         CreateEmployeeInput input = new CreateEmployeeInput(
                 "John", "Doe", "john@test.com", null, null, null, null, null, null, null);
         Employee saved = buildEmployee(1L, "john@test.com");
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         Employee result = persistenceHelper.create(input);
 
         assertThat(result).isEqualTo(saved);
         ArgumentCaptor<Employee> captor = ArgumentCaptor.forClass(Employee.class);
         verify(employeeRepository).save(captor.capture());
-        assertThat(captor.getValue().getStatus()).isEqualTo(CommonStatus.ACTIVE);
+        assertThat(captor.getValue().getStatus()).isEqualTo(CommonStatus.PENDING);
         verify(validator).validateEmailIsUnique("john@test.com");
     }
 
@@ -84,7 +83,7 @@ class EmployeePersistenceHelperTest {
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(positionRepository.findById(10L)).thenReturn(Optional.of(position));
         when(employeeRepository.save(any())).thenReturn(buildEmployee(1L, "john@test.com"));
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -101,7 +100,7 @@ class EmployeePersistenceHelperTest {
         Employee saved = buildEmployee(1L, "john@test.com");
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -119,7 +118,7 @@ class EmployeePersistenceHelperTest {
         Employee saved = buildEmployee(1L, "john@test.com");
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -138,7 +137,7 @@ class EmployeePersistenceHelperTest {
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
         when(addressRepository.save(any())).thenReturn(savedAddress);
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -166,7 +165,7 @@ class EmployeePersistenceHelperTest {
                 "John", "Doe", "john@test.com", null, null, null, null, null, null, null);
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(buildEmployee(1L, "john@test.com"));
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -183,7 +182,7 @@ class EmployeePersistenceHelperTest {
         Employee saved = buildEmployee(1L, "john@test.com");
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
-        when(passwordEncoder.encode(anyString())).thenReturn("hashed_temp");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> inv.getArgument(0));
 
         persistenceHelper.create(input);
 
@@ -195,20 +194,29 @@ class EmployeePersistenceHelperTest {
     }
 
     @Test
-    void create_userAccount_passwordIsEncoded() {
+    void create_userAccount_hasNoPassword_andWelcomeEventCarriesNoSecret() {
         CreateEmployeeInput input = new CreateEmployeeInput(
-                "John", "Doe", "john@test.com", null, null, null, null, null, null, null);
+                "John", "Doe", " John@Test.com ", null, null, null, null, null, null, null);
         Employee saved = buildEmployee(1L, "john@test.com");
+        saved.setFirstName("John");
         when(commonUtilHelper.normalizeName(anyString())).thenAnswer(inv -> inv.getArgument(0));
         when(employeeRepository.save(any())).thenReturn(saved);
-        when(passwordEncoder.encode(anyString())).thenReturn("$2a$10$hashed");
+        when(userAccountRepository.save(any())).thenAnswer(inv -> {
+            UserAccount account = inv.getArgument(0);
+            account.setId(77L);
+            return account;
+        });
 
         persistenceHelper.create(input);
 
         ArgumentCaptor<UserAccount> captor = ArgumentCaptor.forClass(UserAccount.class);
         verify(userAccountRepository).save(captor.capture());
-        assertThat(captor.getValue().getPasswordHash()).isEqualTo("$2a$10$hashed");
-        verify(passwordEncoder).encode(anyString());
+        assertThat(captor.getValue().getPasswordHash()).isNull();
+        assertThat(captor.getValue().hasPassword()).isFalse();
+        ArgumentCaptor<Employee> employeeCaptor = ArgumentCaptor.forClass(Employee.class);
+        verify(employeeRepository).save(employeeCaptor.capture());
+        assertThat(employeeCaptor.getValue().getWorkEmail()).isEqualTo("john@test.com");
+        verify(eventPublisher).publishEvent(new EmployeeCreatedEmailEvent(1L, 77L, "john@test.com", "John"));
     }
 
     // ── update ────────────────────────────────────────────────────────────────
@@ -237,6 +245,21 @@ class EmployeePersistenceHelperTest {
 
         verify(validator).validateEmailIsUniqueForUpdate(1L, "new@test.com");
         assertThat(existing.getWorkEmail()).isEqualTo("new@test.com");
+    }
+
+    @Test
+    void update_withNewEmail_alsoUpdatesLoginEmail() {
+        Employee existing = buildEmployee(1L, "old@test.com");
+        UserAccount account = UserAccount.builder().id(9L).email("old@test.com").build();
+        UpdateEmployeeInput input = new UpdateEmployeeInput(null, null, "New@Test.com", null, null, null, null, null);
+        when(validator.findByIdOrThrow(1L)).thenReturn(existing);
+        when(employeeRepository.save(any())).thenReturn(existing);
+        when(userAccountRepository.findByEmployee_Id(1L)).thenReturn(java.util.Optional.of(account));
+
+        persistenceHelper.update(1L, input);
+
+        assertThat(existing.getWorkEmail()).isEqualTo("new@test.com");
+        assertThat(account.getEmail()).isEqualTo("new@test.com");
     }
 
     @Test
