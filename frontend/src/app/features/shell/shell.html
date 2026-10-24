@@ -10,11 +10,6 @@
     <a uiNavItem routerLink="/people" routerLinkActive ariaCurrentWhenActive="page">
       <ui-icon uiNavIcon name="users" /> People
     </a>
-    @if (canViewMyProfile()) {
-      <a uiNavItem routerLink="/my-profile" routerLinkActive ariaCurrentWhenActive="page">
-        <ui-icon uiNavIcon name="user" /> My profile
-      </a>
-    }
   </ng-container>
 
   @if (canViewSettings()) {
@@ -33,6 +28,16 @@
       [(value)]="search"
     />
   </form>
+
+  <button
+    uiShellActions
+    type="button"
+    class="shell-theme"
+    [attr.aria-label]="isDark() ? 'Switch to light theme' : 'Switch to dark theme'"
+    (click)="toggleTheme()"
+  >
+    <ui-icon [name]="isDark() ? 'sun' : 'moon'" />
+  </button>
 
   <button uiShellUser type="button" class="shell-user" [uiMenuTrigger]="userMenu">
     <ui-avatar
@@ -58,23 +63,6 @@
       <button uiMenuItem (triggered)="go('/change-password')">
         <ui-icon uiMenuItemIcon name="key" size="sm" /> Change password
       </button>
-      <ui-menu-separator />
-      <div role="group" aria-label="Theme">
-        @for (option of themeOptions; track option.value) {
-          <button
-            uiMenuItem
-            [attr.role]="'menuitemradio'"
-            [attr.aria-checked]="theme.theme() === option.value"
-            (triggered)="setTheme(option.value)"
-          >
-            <ui-icon uiMenuItemIcon [name]="option.icon" size="sm" />
-            {{ option.label }}
-            @if (theme.theme() === option.value) {
-              <ui-icon name="check" size="sm" class="shell-menu-check" />
-            }
-          </button>
-        }
-      </div>
       <ui-menu-separator />
       <button uiMenuItem (triggered)="signOut()">
         <ui-icon uiMenuItemIcon name="log-out" size="sm" /> Sign out

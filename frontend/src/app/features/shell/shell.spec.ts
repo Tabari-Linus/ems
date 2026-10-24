@@ -40,12 +40,12 @@ describe('Shell', () => {
 
   afterEach(() => document.querySelectorAll('.cdk-overlay-container').forEach((n) => n.remove()));
 
-  it('shows Home, People and My profile; Settings only for admins', async () => {
+  it('shows Home and People; My profile lives in the user menu only', async () => {
     const { el } = await render(['VIEW_SELF']);
-    expect(navLabels(el)).toEqual(['Home', 'People', 'My profile']);
+    expect(navLabels(el)).toEqual(['Home', 'People']);
   });
 
-  it('adds Settings at the bottom for admins and hides My profile without self access', async () => {
+  it('adds Settings at the bottom for admins', async () => {
     const { el } = await render(['VIEW_ADMIN', 'MANAGE_ADMIN']);
     expect(navLabels(el)).toEqual(['Home', 'People', 'Settings']);
     expect(el.querySelector('nav[aria-label="Workspace"]')?.textContent).toContain('Settings');
@@ -73,43 +73,32 @@ describe('Shell', () => {
     expect(navigate).toHaveBeenLastCalledWith(['/people'], { queryParams: {} });
   });
 
-  it('user menu: profile, change password, theme, sign out, sign out everywhere', async () => {
+  it('user menu: profile, change password, sign out, sign out everywhere', async () => {
     const { fixture, el } = await render(['VIEW_SELF']);
     const menu = await openMenu(el, fixture);
     const items = Array.from(menu.querySelectorAll<HTMLButtonElement>('button')).map((b) =>
       b.textContent?.trim(),
     );
-    expect(items).toEqual([
-      'My profile',
-      'Change password',
-      'Light',
-      'Dark',
-      'Match system',
-      'Sign out',
-      'Sign out of all devices',
-    ]);
-    const radios = menu.querySelectorAll('[role=menuitemradio]');
-    expect(radios).toHaveLength(3);
+    expect(items).toEqual(['My profile', 'Change password', 'Sign out', 'Sign out of all devices']);
   });
 
-  it('switches the theme and marks the choice', async () => {
+  it('toggles light and dark from the top bar', async () => {
     const { fixture, el } = await render([]);
     const theme = TestBed.inject(ThemeService);
-    let menu = await openMenu(el, fixture);
-    (
-      Array.from(menu.querySelectorAll('button')).find((b) =>
-        b.textContent?.includes('Dark'),
-      ) as HTMLButtonElement
-    ).click();
+    theme.setTheme('light');
+    await fixture.whenStable();
+    const toggle = el.querySelector<HTMLButtonElement>('button[uiShellActions]')!;
+    expect(toggle.getAttribute('aria-label')).toBe('Switch to dark theme');
+
+    toggle.click();
     await fixture.whenStable();
     expect(theme.theme()).toBe('dark');
     expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
+    expect(toggle.getAttribute('aria-label')).toBe('Switch to light theme');
 
-    menu = await openMenu(el, fixture);
-    const dark = Array.from(menu.querySelectorAll('[role=menuitemradio]')).find((b) =>
-      b.textContent?.includes('Dark'),
-    );
-    expect(dark?.getAttribute('aria-checked')).toBe('true');
+    toggle.click();
+    await fixture.whenStable();
+    expect(theme.theme()).toBe('light');
     theme.setTheme('system');
   });
 

@@ -131,9 +131,14 @@ test.describe('Flows', () => {
     await expect(page).toHaveURL(/\/people$/);
   });
 
-  test('the user menu switches theme and signs out', async ({ page }) => {
+  test('the top-bar toggle switches theme; the user menu signs out', async ({ page }) => {
     await mockApp(page, 'light', { user: ADMIN });
     await page.goto('/home');
+    await page.getByRole('button', { name: 'Switch to dark theme' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await page.getByRole('button', { name: 'Switch to light theme' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+
     const trigger = page.getByRole('button', { name: /Account menu/ });
     await trigger.focus();
     await page.keyboard.press('Enter');
@@ -144,9 +149,6 @@ test.describe('Flows', () => {
       'Sign out',
       'Sign out of all devices',
     ]);
-    await menu.getByRole('menuitemradio', { name: 'Dark' }).click();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    await trigger.click();
     await page.getByRole('menuitem', { name: 'Sign out', exact: true }).click();
     await expect(page).toHaveURL(/\/login$/);
   });

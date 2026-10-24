@@ -22,6 +22,27 @@
   inline-size: 100%;
 }
 
+.shell-theme {
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--ems-control-md-height);
+  block-size: var(--ems-control-md-height);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ems-radius-pill);
+  background: var(--ems-color-bg-surface);
+  box-shadow: var(--ems-elevation-card);
+  color: var(--ems-color-text-secondary);
+  cursor: pointer;
+  transition: background-color var(--ems-duration-fast) var(--ems-easing-standard);
+
+  &:hover {
+    background: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+}
+
 .shell-user {
   display: flex;
   align-items: center;
@@ -51,11 +72,6 @@
   color: var(--ems-color-text-muted);
 }
 
-.shell-menu-check {
-  margin-inline-start: auto;
-  padding-inline-start: var(--ems-space-3);
-}
-
 // breakpoint.narrow: the avatar alone names the account on phones (the name stays for AT).
 @media (max-width: 639.98px) {
   .shell-user__name {
@@ -73,6 +89,7 @@
 }
 
 @media (forced-colors: active) {
+  .shell-theme,
   .shell-user {
     border: var(--ems-border-width-hairline) solid ButtonText;
   }

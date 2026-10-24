@@ -6,18 +6,12 @@ import { Avatar } from '@ems/ui/avatar';
 import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@ems/ui/menu';
 import { NavItem } from '@ems/ui/nav-item';
 import { SearchInput } from '@ems/ui/search-input';
-import { ThemeService, type ThemePreference } from '@ems/ui/theme';
+import { ThemeService } from '@ems/ui/theme';
 import { ToastService } from '@ems/ui/toast';
 import { Permission } from '../../core/models/permission.model';
 import { AuthService } from '../../core/services/auth.service';
 import { SessionStore } from '../../core/services/session.store';
 import { Brand } from './brand';
-
-interface ThemeOption {
-  readonly value: ThemePreference;
-  readonly label: string;
-  readonly icon: 'sun' | 'moon' | 'monitor';
-}
 
 /** The signed-in frame: sidebar navigation, search, the user menu and the routed page. */
 @Component({
@@ -57,11 +51,8 @@ export class Shell {
     this.session.hasAnyPermission([Permission.VIEW_SELF, Permission.MANAGE_SELF]),
   );
 
-  protected readonly themeOptions: readonly ThemeOption[] = [
-    { value: 'light', label: 'Light', icon: 'sun' },
-    { value: 'dark', label: 'Dark', icon: 'moon' },
-    { value: 'system', label: 'Match system', icon: 'monitor' },
-  ];
+  /** The theme in effect; the top-bar toggle offers the other one. */
+  protected readonly isDark = computed(() => this.theme.resolved() === 'dark');
 
   /** Enter in the top-bar search opens People filtered by the query. */
   protected onSearch(event: Event): void {
@@ -74,8 +65,9 @@ export class Shell {
     void this.router.navigateByUrl(url);
   }
 
-  protected setTheme(value: ThemePreference): void {
-    this.theme.setTheme(value);
+  /** Switches between light and dark. The first switch replaces "match system" with a choice. */
+  protected toggleTheme(): void {
+    this.theme.setTheme(this.isDark() ? 'light' : 'dark');
   }
 
   protected signOut(): void {
