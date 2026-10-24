@@ -1,19 +1,7 @@
-/* ── PeopleOS Design System ─────────────────────────────────────
-   Palette
-     Charcoal Blue  #233d4d   primary dark / surfaces
-     Pumpkin Spice  #fe7f2d   accent / CTA
-     Golden Pollen  #fcca46   warning / highlight
-     Muted Olive    #a1c181   success / positive
-     Seagrass       #619b8a   secondary / info
-─────────────────────────────────────────────────────────────── */
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* Legacy palette (PeopleOS) and shared settings-tab rules, still used by pages that have not
+   moved to the design system yet (my-profile, profile, staff, settings: agents B2/B3).
+   Delete each block when its last user is gone. Global element rules (reset, html/body) were
+   removed in Phase B1: @ems/ui/styles (reset + base layers) owns them now. */
 
 :root {
   /* Brand */
@@ -108,22 +96,6 @@
     --red: #c0392b;
     --red-dim: rgba(192, 57, 43, 0.1);
   }
-}
-
-html,
-body {
-  height: 100%;
-  font-family: var(--font);
-  background: var(--bg);
-  color: var(--txt);
-  font-size: 15px;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-app-root {
-  display: block;
-  height: 100%;
 }
 
 /* ── Shared settings tab styles ─────────────────────────────────── */

@@ -1,0 +1,128 @@
+<header class="home-greeting">
+  <p class="home-date"><time [attr.datetime]="todayIso">{{ today }}</time></p>
+  <h1>{{ greeting() }}</h1>
+  <p class="home-summary" aria-live="polite">{{ summary() }}</p>
+</header>
+
+<div class="home-grid">
+  <ui-card title="Needs your attention" [count]="attention().length || null" flush class="home-attention">
+    @if (attentionLoading()) {
+      <div class="home-list-loading" aria-busy="true">
+        <ui-skeleton shape="text" lines="2" />
+        <ui-skeleton shape="text" lines="2" />
+      </div>
+    } @else {
+      <ul class="home-attention__list">
+        @for (item of attention(); track item.id) {
+          <li class="home-attention__row">
+            <ui-avatar [name]="item.name" [tintKey]="item.tintKey" decorative />
+            <div class="home-attention__text">
+              <p class="home-attention__title">{{ item.text }}</p>
+              <p class="home-attention__meta">
+                <ui-icon [name]="item.kind === 'own-profile' ? 'user' : 'mail'" size="sm" />
+                {{ item.meta }}
+              </p>
+            </div>
+            <a uiButton variant="secondary" [routerLink]="item.link">{{ item.action }}</a>
+          </li>
+        } @empty {
+          <li class="home-attention__empty">
+            <ui-icon name="circle-check" size="sm" /> You are all caught up.
+          </li>
+        }
+      </ul>
+      @if (morePending() > 0) {
+        <p class="home-attention__more">
+          <a class="home-link" routerLink="/people">
+            {{ morePending() }} more {{ morePending() === 1 ? 'person has' : 'people have' }} not
+            set a password yet <ui-icon name="arrow-right" size="sm" />
+          </a>
+        </p>
+      }
+    }
+  </ui-card>
+
+  <ui-card title="Quick links" flush class="home-links">
+    <ul class="home-links__list">
+      @for (link of links(); track link.url) {
+        <li>
+          <a class="home-links__item" [routerLink]="link.url">
+            <span class="home-links__icon" aria-hidden="true">
+              <ui-icon [name]="link.icon" size="sm" />
+            </span>
+            <span class="home-links__label">{{ link.label }}</span>
+            @if (link.count !== null) {
+              <span class="home-links__count"
+                >{{ link.count }}<span class="ui-visually-hidden"> active</span></span
+              >
+            }
+            <ui-icon name="chevron-right" size="sm" class="home-links__chevron" />
+          </a>
+        </li>
+      }
+    </ul>
+  </ui-card>
+</div>
+
+@if (team.value() || team.isLoading()) {
+  <section class="home-team" aria-labelledby="team-heading">
+    <div class="home-section-head">
+      <h2 id="team-heading">
+        Your team
+        @if (department(); as dept) {
+          <span>{{ teamCount() }} {{ teamCount() === 1 ? 'person' : 'people' }} in {{ dept.departmentName }}</span>
+        }
+      </h2>
+      @if (teamCount() > teammates().length) {
+        <a class="home-link" routerLink="/people">View all <ui-icon name="arrow-right" size="sm" /></a>
+      }
+    </div>
+    @if (team.isLoading()) {
+      <div class="home-team__grid" aria-busy="true">
+        @for (n of [1, 2, 3, 4]; track n) {
+          <ui-skeleton shape="card" />
+        }
+      </div>
+    } @else if (teammates().length) {
+      <ul class="home-team__grid">
+        @for (p of teammates(); track p.id) {
+          <li>
+            <a class="home-person" [routerLink]="['/people', p.id]">
+              <span class="home-person__top">
+                <ui-avatar [name]="p.firstName + ' ' + p.lastName" [tintKey]="p.department ?? null" decorative />
+                @if (p.status) {
+                  <ui-status-pill [status]="$any(p.status)" />
+                }
+              </span>
+              <span class="home-person__name">{{ p.firstName }} {{ p.lastName }}</span>
+              <span class="home-person__role">{{ p.jobTitle || 'No position yet' }}</span>
+            </a>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="home-muted">Nobody else is in your department yet.</p>
+    }
+  </section>
+}
+
+@if (canViewStats() && (figures().length || stats.isLoading())) {
+  <section class="home-figures" aria-labelledby="figures-heading">
+    <h2 id="figures-heading" class="home-figures__heading">Across the organisation</h2>
+    @if (stats.isLoading()) {
+      <ui-skeleton shape="text" />
+    } @else {
+      <dl class="home-figures__list">
+        @for (f of figures(); track f.label) {
+          <div class="home-figures__item">
+            <dt>{{ f.label }}</dt>
+            <dd>{{ f.value }}</dd>
+          </div>
+        }
+      </dl>
+      @if (trend(); as t) {
+        <p class="home-figures__trend">{{ t }}</p>
+      }
+    }
+  </section>
+}

@@ -1,0 +1,75 @@
+// Shared by the sign-in, set-password and change-password cards. Tokens only.
+
+.auth-head {
+  display: grid;
+  gap: var(--ems-space-1);
+
+  h1 {
+    margin: 0;
+    font-size: var(--ems-type-title-size);
+    font-weight: var(--ems-type-title-weight);
+    line-height: var(--ems-type-title-line-height);
+    letter-spacing: var(--ems-type-title-letter-spacing);
+  }
+
+  p {
+    margin: 0;
+    color: var(--ems-color-text-secondary);
+  }
+}
+
+.auth-form {
+  display: grid;
+  gap: var(--ems-space-4);
+
+  > button[type='submit'] {
+    margin-block-start: var(--ems-space-1);
+    inline-size: 100%;
+  }
+}
+
+.auth-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--ems-space-3);
+  padding: var(--ems-space-3) var(--ems-space-4);
+  border-radius: var(--ems-radius-lg);
+  background: var(--ems-color-bg-sunken);
+  color: var(--ems-color-text-secondary);
+  font-size: var(--ems-type-caption-size);
+  line-height: var(--ems-type-caption-line-height);
+
+  ui-icon {
+    flex: none;
+    margin-block-start: var(--ems-space-0);
+    color: var(--ems-color-text-muted);
+  }
+
+  p {
+    margin: 0;
+  }
+
+  b {
+    color: var(--ems-color-text-primary);
+    font-weight: var(--ems-type-body-strong-weight);
+  }
+}
+
+.auth-link {
+  color: var(--ems-color-text-link);
+  font-size: var(--ems-type-label-size);
+  font-weight: var(--ems-type-label-weight);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.auth-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ems-space-3);
+}
