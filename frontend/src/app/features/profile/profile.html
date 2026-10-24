@@ -63,8 +63,6 @@
           <span class="profile-mono"
             ><span class="ui-visually-hidden">Employee ID </span>#{{ emp.id }}</span
           >
-          <span aria-hidden="true">·</span>
-          <span>{{ emp.workEmail }}</span>
         </p>
       </div>
 
@@ -326,7 +324,7 @@
             <div uiDescriptionItem label="Date hired" mono>
               {{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}
             </div>
-            <div uiDescriptionItem label="Work email" copyable [span]="2">{{ emp.workEmail }}</div>
+            <div uiDescriptionItem label="Work email" copyable>{{ emp.workEmail }}</div>
             <div uiDescriptionItem label="Last updated" mono>
               {{ formatDate(emp.lastModifiedDate) || '—' }}
             </div>
