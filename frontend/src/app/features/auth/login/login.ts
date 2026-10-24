@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { email, form, required, submit } from '@angular/forms/signals';
+import { email, form, FormField, required, submit } from '@angular/forms/signals';
 import { ActivatedRoute } from '@angular/router';
 import { Icon } from '@ems/icons';
 import { Alert } from '@ems/ui/alert';
@@ -54,7 +54,7 @@ export function loginErrorCopy(error: AuthError): { heading: string; text: strin
 /** Sign in (direction-d, screen 1): a calm, single-column form. */
 @Component({
   selector: 'app-login',
-  imports: [AuthLayout, UiFormField, Input, PasswordInput, Button, Alert, Icon],
+  imports: [AuthLayout, UiFormField, FormField, Input, PasswordInput, Button, Alert, Icon],
   templateUrl: './login.html',
   styleUrl: './login.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

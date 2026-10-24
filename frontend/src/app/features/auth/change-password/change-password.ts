@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
-import { form, required, submit, validate } from '@angular/forms/signals';
+import { form, FormField, required, submit, validate } from '@angular/forms/signals';
 import { Router, RouterLink } from '@angular/router';
 import { Alert } from '@ems/ui/alert';
 import { Button } from '@ems/ui/button';
@@ -18,7 +18,7 @@ import { SessionStore } from '../../../core/services/session.store';
  */
 @Component({
   selector: 'app-change-password',
-  imports: [UiFormField, PasswordInput, Button, Alert, Card, PageHeader, RouterLink],
+  imports: [UiFormField, FormField, PasswordInput, Button, Alert, Card, PageHeader, RouterLink],
   templateUrl: './change-password.html',
   styleUrl: './change-password.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
