@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { form, FormField as SignalFormField, required, submit } from '@angular/forms/signals';
 import { FormField } from '@ems/ui/form-field';
 import { estimatePasswordStrength, PasswordInput, type PasswordStrength } from './password-input';
 
@@ -161,5 +162,72 @@ describe('PasswordInput', () => {
     fixture.detectChanges();
     expect(input.value).toBe('');
     expect(input.disabled).toBe(true);
+  });
+
+  describe('with a required signal-forms field', () => {
+    @Component({
+      imports: [PasswordInput, FormField, SignalFormField],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      template: `
+        <ui-form-field label="Password" [error]="firstError()">
+          <ui-password-input [formField]="model.password" />
+        </ui-form-field>
+      `,
+    })
+    class Required {
+      readonly model = form(signal({ password: '' }), (s) =>
+        required(s.password, { message: 'Enter your password.' }),
+      );
+      readonly firstError = () => this.model.password().errors()[0]?.message ?? null;
+    }
+
+    async function setupForm() {
+      const fixture = TestBed.createComponent(Required);
+      await fixture.whenStable();
+      const root = fixture.nativeElement as HTMLElement;
+      return {
+        fixture,
+        model: fixture.componentInstance.model,
+        input: root.querySelector('input') as HTMLInputElement,
+        error: () => root.querySelector('.ui-form-field__error'),
+      };
+    }
+
+    it('is not invalid on load, although the empty field is', async () => {
+      const { model, input, error } = await setupForm();
+
+      expect(model.password().invalid()).toBe(true);
+      expect(input.hasAttribute('aria-invalid')).toBe(false);
+      expect(error()).toBeNull();
+    });
+
+    it('is invalid with its message after blur', async () => {
+      const { fixture, model, input, error } = await setupForm();
+      input.dispatchEvent(new Event('blur'));
+      await fixture.whenStable();
+
+      expect(model.password().touched()).toBe(true);
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(error()?.textContent).toContain('Enter your password.');
+    });
+
+    it('is invalid with its message after submit', async () => {
+      const { fixture, model, input, error } = await setupForm();
+      await submit(model, async () => undefined);
+      await fixture.whenStable();
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(error()?.textContent).toContain('Enter your password.');
+    });
+
+    it('writes typed text to the form', async () => {
+      const { fixture, model, input } = await setupForm();
+      input.value = 'correct horse';
+      input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+
+      expect(model.password().value()).toBe('correct horse');
+      expect(model.password().invalid()).toBe(false);
+    });
   });
 });

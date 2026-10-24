@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { form, FormField } from '@angular/forms/signals';
+import { form, FormField, submit, validate } from '@angular/forms/signals';
 import { Checkbox } from './checkbox';
 
 @Component({
@@ -132,5 +132,50 @@ describe('Checkbox', () => {
 
     signalInput.click();
     expect(fixture.componentInstance.data().agree).toBe(true);
+  });
+
+  describe('with an invalid signal-forms field', () => {
+    @Component({
+      imports: [Checkbox, FormField],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      template: `<ui-checkbox [formField]="model.agree">I agree</ui-checkbox>`,
+    })
+    class MustAgree {
+      readonly model = form(signal({ agree: false }), (s) =>
+        validate(s.agree, ({ value }) =>
+          value() ? null : { kind: 'agree', message: 'Accept the terms.' },
+        ),
+      );
+    }
+
+    async function setupForm() {
+      const fixture = TestBed.createComponent(MustAgree);
+      await fixture.whenStable();
+      const input = (fixture.nativeElement as HTMLElement).querySelector('input')!;
+      return { fixture, input, model: fixture.componentInstance.model };
+    }
+
+    it('is not invalid on load, although the field is', async () => {
+      const { input, model } = await setupForm();
+
+      expect(model.agree().invalid()).toBe(true);
+      expect(input.hasAttribute('aria-invalid')).toBe(false);
+    });
+
+    it('is invalid after blur', async () => {
+      const { fixture, input } = await setupForm();
+      input.dispatchEvent(new Event('blur'));
+      await fixture.whenStable();
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('is invalid after submit', async () => {
+      const { fixture, input, model } = await setupForm();
+      await submit(model, async () => undefined);
+      await fixture.whenStable();
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+    });
   });
 });

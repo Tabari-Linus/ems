@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { form, FormField as SignalFormField } from '@angular/forms/signals';
+import { form, FormField as SignalFormField, required, submit } from '@angular/forms/signals';
 import { Input, InputGroup, type InputSize } from './input';
 
 @Component({
@@ -92,5 +92,51 @@ describe('Input', () => {
 
     fixture.componentInstance.control.disable();
     expect(reactive.disabled).toBe(true);
+  });
+
+  describe('with a required signal-forms field', () => {
+    @Component({
+      imports: [Input, SignalFormField],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      template: `<input uiInput [formField]="model.name" />`,
+    })
+    class Required {
+      readonly model = form(signal({ name: '' }), (s) => required(s.name));
+    }
+
+    async function setup() {
+      const fixture = TestBed.createComponent(Required);
+      await fixture.whenStable();
+      const input = (fixture.nativeElement as HTMLElement).querySelector('input')!;
+      return { fixture, input, form: fixture.componentInstance.model };
+    }
+
+    it('is not invalid on load, although the empty field is', async () => {
+      const { input, form } = await setup();
+
+      expect(form.name().invalid()).toBe(true);
+      expect(input.hasAttribute('aria-invalid')).toBe(false);
+    });
+
+    it('is invalid after blur', async () => {
+      const { fixture, input } = await setup();
+      input.dispatchEvent(new Event('blur'));
+      await fixture.whenStable();
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+    });
+
+    it('is invalid after submit, and valid again once filled', async () => {
+      const { fixture, input, form } = await setup();
+      await submit(form, async () => undefined);
+      await fixture.whenStable();
+
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+
+      input.value = 'Ama';
+      input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+      expect(input.hasAttribute('aria-invalid')).toBe(false);
+    });
   });
 });

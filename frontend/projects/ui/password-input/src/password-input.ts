@@ -66,6 +66,7 @@ const DEFAULT_STRENGTH_LABELS = ['Weak', 'Fair', 'Good', 'Strong'] as const;
         [value]="value()"
         [disabled]="isDisabled()"
         [invalid]="invalid()"
+        [touched]="touched()"
         [attr.autocomplete]="autocomplete()"
         [attr.placeholder]="placeholder() || null"
         [attr.name]="name() || null"
@@ -119,7 +120,10 @@ export class PasswordInput implements ControlValueAccessor {
   readonly name = input<string>();
   readonly size = input<InputSize>('md');
   readonly disabled = input(false, { transform: booleanAttribute });
+  /** Marks the value invalid. Bound by `[formField]`; then it shows only once `touched` is true. */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Bound by `[formField]` (true after blur or `submit()`). Leave unset without a form. */
+  readonly touched = input<boolean | undefined>(undefined);
   /** Shows the four-step strength meter while the field has a value. */
   readonly showStrength = input(false, { transform: booleanAttribute });
   /** Overrides the built-in estimate (e.g. with a score from the server or zxcvbn). */

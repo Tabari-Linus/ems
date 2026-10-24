@@ -43,7 +43,14 @@ import type { InputSize } from '@ems/ui/input';
 })
 export class NativeSelect {
   readonly size = input<InputSize>('md');
+  /** Marks the value invalid. Bound by `[formField]`; then it shows only once `touched` is true. */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Bound by `[formField]` (true after blur or `submit()`). Leave unset without a form. */
+  readonly touched = input<boolean | undefined>(undefined);
 
-  protected readonly control = injectFormFieldControl(() => this.invalid());
+  protected readonly control = injectFormFieldControl(
+    () => this.invalid(),
+    undefined,
+    () => this.touched(),
+  );
 }

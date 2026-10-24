@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { form, FormField as SignalFormField, required, submit } from '@angular/forms/signals';
 import { Input } from '@ems/ui/input';
 import { FormField } from './form-field';
-import { injectFormFieldControl, uniqueId } from './form-field-control';
+import { injectFormFieldControl, showInvalidWhen, uniqueId } from './form-field-control';
 
 @Component({
   imports: [FormField, Input],
@@ -118,6 +119,71 @@ describe('FormField', () => {
     expect(root.querySelector('input')?.id).toBe('department');
     expect(root.querySelector('label')?.htmlFor).toBe('department');
   });
+
+  describe('around a required signal-forms field', () => {
+    @Component({
+      imports: [FormField, Input, SignalFormField],
+      changeDetection: ChangeDetectionStrategy.OnPush,
+      template: `
+        <ui-form-field label="Work email" hint="Your company address." [error]="firstError()">
+          <input uiInput type="email" [formField]="model.email" />
+        </ui-form-field>
+      `,
+    })
+    class SignalForm {
+      readonly model = form(signal({ email: '' }), (s) =>
+        required(s.email, { message: 'Enter your work email.' }),
+      );
+      /** The first message, without a touched check: the field holds it back. */
+      readonly firstError = () => this.model.email().errors()[0]?.message ?? null;
+    }
+
+    async function setupForm() {
+      const fixture = TestBed.createComponent(SignalForm);
+      await fixture.whenStable();
+      const root = fixture.nativeElement as HTMLElement;
+      return {
+        fixture,
+        model: fixture.componentInstance.model,
+        field: root.querySelector('ui-form-field') as HTMLElement,
+        input: root.querySelector('input') as HTMLInputElement,
+        error: () => root.querySelector('.ui-form-field__error'),
+        hint: () => root.querySelector('.ui-form-field__hint'),
+      };
+    }
+
+    it('holds back the error on load and shows the hint', async () => {
+      const { field, input, error, hint } = await setupForm();
+
+      expect(error()).toBeNull();
+      expect(hint()).not.toBeNull();
+      expect(field.hasAttribute('data-invalid')).toBe(false);
+      expect(input.hasAttribute('aria-invalid')).toBe(false);
+      expect(input.getAttribute('aria-describedby')).toBe(hint()?.id);
+    });
+
+    it('shows and announces the error after blur', async () => {
+      const { fixture, field, input, error } = await setupForm();
+      input.dispatchEvent(new Event('blur'));
+      await fixture.whenStable();
+
+      expect(error()?.textContent?.trim()).toBe('Enter your work email.');
+      expect(error()?.getAttribute('role')).toBe('alert');
+      expect(field.hasAttribute('data-invalid')).toBe(true);
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+      expect(input.getAttribute('aria-describedby')).toBe(error()?.id);
+    });
+
+    it('shows the error after submit', async () => {
+      const { fixture, model, field, input, error } = await setupForm();
+      await submit(model, async () => undefined);
+      await fixture.whenStable();
+
+      expect(error()?.textContent?.trim()).toBe('Enter your work email.');
+      expect(field.hasAttribute('data-invalid')).toBe(true);
+      expect(input.getAttribute('aria-invalid')).toBe('true');
+    });
+  });
 });
 
 describe('injectFormFieldControl', () => {
@@ -141,6 +207,36 @@ describe('injectFormFieldControl', () => {
     expect(probe.bare.required()).toBe(false);
     expect(probe.prefixed.id()).toMatch(/^ui-probe-\d+$/);
     expect(probe.prefixed.invalid()).toBe(true);
+  });
+
+  it('shows own invalid only once touched when a form binds touched', async () => {
+    @Component({
+      selector: 'ui-probe',
+      template: '',
+      changeDetection: ChangeDetectionStrategy.OnPush,
+    })
+    class Probe {
+      readonly touched = signal<boolean | undefined>(false);
+      readonly control = injectFormFieldControl(
+        () => true,
+        undefined,
+        () => this.touched(),
+      );
+    }
+
+    const probe = TestBed.createComponent(Probe).componentInstance;
+    expect(probe.control.invalid()).toBe(false);
+    probe.touched.set(true);
+    expect(probe.control.invalid()).toBe(true);
+    probe.touched.set(undefined);
+    expect(probe.control.invalid()).toBe(true);
+  });
+
+  it('showInvalidWhen: invalid shows when touched or without a form', () => {
+    expect(showInvalidWhen(true, undefined)).toBe(true);
+    expect(showInvalidWhen(true, true)).toBe(true);
+    expect(showInvalidWhen(true, false)).toBe(false);
+    expect(showInvalidWhen(false, true)).toBe(false);
   });
 
   it('uniqueId increments', () => {

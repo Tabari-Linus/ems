@@ -177,14 +177,21 @@ export class Select<T = unknown> implements ControlValueAccessor {
   readonly emptyText = input('No options');
   readonly size = input<InputSize>('md');
   readonly disabled = input(false, { transform: booleanAttribute });
+  /** Marks the value invalid. Bound by `[formField]`; then it shows only once `touched` is true. */
   readonly invalid = input(false, { transform: booleanAttribute });
+  /** Bound by `[formField]` (true after blur or `submit()`). Leave unset without a form. */
+  readonly touched = input<boolean | undefined>(undefined);
   /** Value equality (e.g. compare objects by id). */
   readonly compareWith = input<(a: T, b: T) => boolean>(Object.is);
 
   /** Whether the list is showing. */
   readonly open = signal(false);
 
-  protected readonly control = injectFormFieldControl(() => this.invalid(), 'ui-select');
+  protected readonly control = injectFormFieldControl(
+    () => this.invalid(),
+    'ui-select',
+    () => this.touched(),
+  );
   protected readonly positions = SELECT_PANEL_POSITIONS;
   protected readonly listboxId = uniqueId('ui-select-listbox');
   protected readonly valueId = uniqueId('ui-select-value');
