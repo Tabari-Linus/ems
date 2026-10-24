@@ -8,12 +8,20 @@
   gap: var(--ems-space-5);
 }
 
-/* Cards flow into two columns when each can be at least a small-dialog wide. */
+/* Two independent columns of cards (editable details, then work and contact), so a tall card
+   never leaves a gap beside a short one. They stack once a column would be narrower than a
+   small dialog. */
 .mp-grid {
   display: grid;
   gap: var(--ems-space-5);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--ems-size-dialog-sm)), 1fr));
   align-items: start;
+}
+
+.mp-col {
+  display: grid;
+  gap: var(--ems-space-5);
+  min-inline-size: 0;
 }
 
 /* ── Header ─────────────────────────────────────────────────────── */
@@ -24,9 +32,10 @@
   gap: var(--ems-space-5);
 }
 
+/* Wraps under the avatar once the row is narrower than avatar + a popover width. */
 .mp-id-text {
   display: grid;
-  flex: 1;
+  flex: 1 1 var(--ems-size-popover-min-width);
   gap: var(--ems-space-1);
   min-inline-size: 0;
 }

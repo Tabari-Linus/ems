@@ -63,7 +63,7 @@ describe('SettingsAccessLevels permission matrix', () => {
 
   it('selects a whole column from its header checkbox', async () => {
     const sheet = await openCreate();
-    const viewAll = checkbox(sheet, 'View: all areas')!;
+    const viewAll = checkbox(sheet, 'View all areas')!;
     viewAll.click();
     fixture.detectChanges();
     expect(checkbox(sheet, 'View company')!.checked).toBe(true);

@@ -73,7 +73,7 @@ export class SettingsDepartments {
 
   constructor() {
     bindFormDrawer(this.showForm, this.formTemplate, {
-      autoFocus: '#departments-dept-form-department-name',
+      autoFocus: '#departments-dept-form-office-id, #departments-dept-form-department-name',
     });
   }
 

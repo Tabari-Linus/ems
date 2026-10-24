@@ -27,7 +27,7 @@ const GROUPS: readonly { label: string; keys: readonly string[] }[] = [
 
 const AREA_LABELS: Readonly<Record<string, string>> = {
   SELF: 'Own profile',
-  EMPLOYEE: 'People',
+  EMPLOYEE: 'People directory',
 };
 
 /** Builds the matrix rows from the permission list, so a new permission is never left out. */

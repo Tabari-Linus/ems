@@ -73,7 +73,7 @@ export class SettingsOffices {
 
   constructor() {
     bindFormDrawer(this.showForm, this.formTemplate, {
-      autoFocus: '#offices-office-form-office-name',
+      autoFocus: '#offices-office-form-company-id, #offices-office-form-office-name',
     });
   }
 

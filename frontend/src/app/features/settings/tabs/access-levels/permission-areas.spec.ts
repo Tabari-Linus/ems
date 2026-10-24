@@ -26,7 +26,7 @@ describe('permission areas', () => {
     expect(people.areas).toEqual([
       {
         key: 'EMPLOYEE',
-        label: 'People',
+        label: 'People directory',
         view: Permission.VIEW_EMPLOYEE,
         manage: Permission.MANAGE_EMPLOYEE,
       },
