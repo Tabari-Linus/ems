@@ -33,6 +33,9 @@ const config: CodegenConfig = {
         },
         useTypeImports: true,
         addExplicitOverride: true,
+        // Emit pre-parsed DocumentNode objects instead of gql`` strings, so the graphql parser
+        // and lexer stay out of the bundle (the session's `me` query loads at startup).
+        documentMode: 'documentNode',
       },
     },
   },

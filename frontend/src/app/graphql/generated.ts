@@ -5,7 +5,7 @@ type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 /** Internal type. DO NOT USE DIRECTLY. */
 export type Incremental<T> =
   T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
-import { gql } from 'apollo-angular';
+import type { DocumentNode } from 'graphql';
 import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
 export type CommonStatus = 'ACTIVE' | 'ARCHIVED' | 'INACTIVE' | 'PENDING';
@@ -99,35 +99,88 @@ export type PositionsQuery = {
   } | null;
 };
 
-export const MeDocument = gql`
-  query Me {
-    me {
-      account {
-        id
-        email
-        lastLoginAt
-      }
-      employee {
-        id
-        firstName
-        lastName
-        workEmail
-        status
-        position {
-          positionName
-        }
-        department {
-          id
-          departmentName
-        }
-        accessLevel {
-          accessLevelName
-        }
-      }
-      permissions
-    }
-  }
-`;
+export const MeDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Me' },
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'me' },
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'account' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'email' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lastLoginAt' } },
+                    ],
+                  },
+                },
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'employee' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'firstName' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'lastName' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'workEmail' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'position' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'positionName' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'department' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                            { kind: 'Field', name: { kind: 'Name', value: 'departmentName' } },
+                          ],
+                        },
+                      },
+                      {
+                        kind: 'Field',
+                        name: { kind: 'Name', value: 'accessLevel' },
+                        selectionSet: {
+                          kind: 'SelectionSet',
+                          selections: [
+                            { kind: 'Field', name: { kind: 'Name', value: 'accessLevelName' } },
+                          ],
+                        },
+                      },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'permissions' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode;
 
 @Injectable({
   providedIn: 'root',
@@ -139,26 +192,85 @@ export class MeGQL extends Apollo.Query<MeQuery, MeQueryVariables> {
     super(apollo);
   }
 }
-export const PositionsDocument = gql`
-  query Positions($pageInput: PageInput, $sortInput: SortInput, $filter: PositionFilterInput) {
-    getPositions(pageInput: $pageInput, sortInput: $sortInput, filter: $filter) {
-      data {
-        id
-        positionName
-        level
-        description
-        status
-        createdDate
-      }
-      currentPage
-      totalPages
-      totalElements
-      pageSize
-      hasNext
-      hasPrevious
-    }
-  }
-`;
+export const PositionsDocument = {
+  kind: 'Document',
+  definitions: [
+    {
+      kind: 'OperationDefinition',
+      operation: 'query',
+      name: { kind: 'Name', value: 'Positions' },
+      variableDefinitions: [
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'pageInput' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PageInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'sortInput' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'SortInput' } },
+        },
+        {
+          kind: 'VariableDefinition',
+          variable: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+          type: { kind: 'NamedType', name: { kind: 'Name', value: 'PositionFilterInput' } },
+        },
+      ],
+      selectionSet: {
+        kind: 'SelectionSet',
+        selections: [
+          {
+            kind: 'Field',
+            name: { kind: 'Name', value: 'getPositions' },
+            arguments: [
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'pageInput' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'pageInput' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'sortInput' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'sortInput' } },
+              },
+              {
+                kind: 'Argument',
+                name: { kind: 'Name', value: 'filter' },
+                value: { kind: 'Variable', name: { kind: 'Name', value: 'filter' } },
+              },
+            ],
+            selectionSet: {
+              kind: 'SelectionSet',
+              selections: [
+                {
+                  kind: 'Field',
+                  name: { kind: 'Name', value: 'data' },
+                  selectionSet: {
+                    kind: 'SelectionSet',
+                    selections: [
+                      { kind: 'Field', name: { kind: 'Name', value: 'id' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'positionName' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'level' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'description' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'status' } },
+                      { kind: 'Field', name: { kind: 'Name', value: 'createdDate' } },
+                    ],
+                  },
+                },
+                { kind: 'Field', name: { kind: 'Name', value: 'currentPage' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalPages' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'totalElements' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'pageSize' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'hasNext' } },
+                { kind: 'Field', name: { kind: 'Name', value: 'hasPrevious' } },
+              ],
+            },
+          },
+        ],
+      },
+    },
+  ],
+} as unknown as DocumentNode;
 
 @Injectable({
   providedIn: 'root',
