@@ -53,7 +53,7 @@ class EmailTemplateRendererTest {
     void renderHtmlPassesVariablesToContext() {
         when(templateEngine.process(any(String.class), any(IContext.class))).thenReturn("rendered");
 
-        renderer.renderHtml(EmailTemplateType.EMPLOYEE_WELCOME, Map.of("email", "user@test.com", "temporaryPassword", "pw123"));
+        renderer.renderHtml(EmailTemplateType.EMPLOYEE_WELCOME, Map.of("email", "user@test.com", "setPasswordUrl", "http://localhost:4200/set-password?token=abc"));
 
         verify(templateEngine).process(eq("employee-welcome.html"), any(IContext.class));
     }

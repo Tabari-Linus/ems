@@ -12,4 +12,68 @@
     white-space: nowrap;
     border: 0;
   }
+
+  /* Type roles. Prefer these (or the --ems-type-* tokens) over ad-hoc sizes and weights. */
+  .ui-type-display {
+    font-size: var(--ems-type-display-size);
+    font-weight: var(--ems-type-display-weight);
+    line-height: var(--ems-type-display-line-height);
+    letter-spacing: var(--ems-type-display-letter-spacing);
+  }
+
+  .ui-type-title {
+    font-size: var(--ems-type-title-size);
+    font-weight: var(--ems-type-title-weight);
+    line-height: var(--ems-type-title-line-height);
+    letter-spacing: var(--ems-type-title-letter-spacing);
+  }
+
+  .ui-type-headline {
+    font-size: var(--ems-type-headline-size);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: var(--ems-type-headline-line-height);
+    letter-spacing: var(--ems-type-headline-letter-spacing);
+  }
+
+  .ui-type-body {
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    letter-spacing: var(--ems-type-body-letter-spacing);
+  }
+
+  .ui-type-body-strong {
+    font-size: var(--ems-type-body-strong-size);
+    font-weight: var(--ems-type-body-strong-weight);
+    line-height: var(--ems-type-body-strong-line-height);
+    letter-spacing: var(--ems-type-body-strong-letter-spacing);
+  }
+
+  .ui-type-label {
+    font-size: var(--ems-type-label-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-label-line-height);
+    letter-spacing: var(--ems-type-label-letter-spacing);
+  }
+
+  .ui-type-caption {
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-caption-weight);
+    line-height: var(--ems-type-caption-line-height);
+    letter-spacing: var(--ems-type-caption-letter-spacing);
+  }
+
+  .ui-type-mono {
+    font-family: var(--ems-font-family-mono);
+    font-size: var(--ems-type-mono-size);
+    font-weight: var(--ems-type-mono-weight);
+    line-height: var(--ems-type-mono-line-height);
+    letter-spacing: var(--ems-type-mono-letter-spacing);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Aligned digits in counts and tables without switching to the mono face. */
+  .ui-tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }

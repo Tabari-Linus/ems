@@ -1,0 +1,134 @@
+/*
+ * ui-checkbox. Contract tokens only. The native input is restyled (appearance: none) and stays
+ * the focus and click target; the check mark is an icon laid over it.
+ */
+@layer components {
+  .ui-checkbox {
+    --_box: calc(var(--ems-space-4) + var(--ems-space-1) / 2);
+
+    display: inline-flex;
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-checkbox__row {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--ems-space-2);
+    color: var(--ems-color-text-primary);
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    cursor: pointer;
+  }
+
+  .ui-checkbox__box {
+    position: relative;
+    display: inline-grid;
+    flex: none;
+    inline-size: var(--_box);
+    block-size: var(--_box);
+    /* Centre the box on the first line of the label. */
+    margin-block-start: calc((1lh - var(--_box)) / 2);
+  }
+
+  .ui-checkbox__input {
+    appearance: none;
+    box-sizing: border-box;
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    margin: 0;
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-sm);
+    background-color: var(--ems-color-bg-surface);
+    cursor: inherit;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      border-color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-checkbox__input:hover:not(:disabled) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-checkbox__input:checked,
+  .ui-checkbox__input:indeterminate {
+    border-color: var(--ems-color-accent-solid);
+    background-color: var(--ems-color-accent-solid);
+  }
+
+  .ui-checkbox__input:checked:hover:not(:disabled),
+  .ui-checkbox__input:indeterminate:hover:not(:disabled) {
+    border-color: var(--ems-color-accent-solid-hover);
+    background-color: var(--ems-color-accent-solid-hover);
+  }
+
+  .ui-checkbox__input:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  .ui-checkbox__input[aria-invalid='true'] {
+    border-color: var(--ems-color-status-danger-border);
+  }
+
+  .ui-checkbox__mark {
+    --ui-icon-size: 100%;
+    --ui-icon-stroke-width: 3;
+
+    grid-area: 1 / 1;
+    inline-size: 100%;
+    block-size: 100%;
+    padding: calc(var(--ems-space-1) / 2);
+    box-sizing: border-box;
+    color: var(--ems-color-accent-on-solid);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  .ui-checkbox__input:checked + .ui-checkbox__mark,
+  .ui-checkbox__input:indeterminate + .ui-checkbox__mark {
+    visibility: visible;
+  }
+
+  .ui-checkbox[data-disabled] .ui-checkbox__row {
+    color: var(--ems-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .ui-checkbox__input:disabled {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+  }
+
+  .ui-checkbox__input:disabled:checked,
+  .ui-checkbox__input:disabled:indeterminate {
+    border-color: var(--ems-color-border-default);
+    background-color: var(--ems-color-border-default);
+  }
+
+  .ui-checkbox__label:empty {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-checkbox__input {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-checkbox__input {
+      border-color: CanvasText;
+    }
+
+    .ui-checkbox__input:checked,
+    .ui-checkbox__input:indeterminate {
+      background-color: Highlight;
+    }
+
+    .ui-checkbox__mark {
+      color: HighlightText;
+    }
+  }
+}

@@ -135,7 +135,14 @@
             "tsConfig": "projects/ui/tsconfig.spec.json",
             "include": ["**/*.spec.ts"],
             "coverageInclude": ["projects/ui/**/*.ts"],
-            "coverageExclude": ["**/*.spec.ts", "**/*.stories.ts", "**/public-api.ts"],
+            "coverageExclude": [
+              "**/*.spec.ts",
+              "**/*.stories.ts",
+              "**/public-api.ts",
+              "projects/ui/patterns/**",
+              "projects/ui/testing/**",
+              "projects/ui/scripts/**"
+            ],
             "coverageReporters": ["text", "text-summary", "html", "lcov", "json-summary"],
             "coverageThresholds": {
               "lines": 90,

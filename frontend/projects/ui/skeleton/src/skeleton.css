@@ -1,0 +1,87 @@
+/* ui-skeleton. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    display: block;
+    min-inline-size: 0;
+  }
+
+  :host([data-shape='avatar']) {
+    display: inline-block;
+  }
+
+  .ui-skeleton__bone {
+    display: block;
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-skeleton-base);
+    animation: ui-skeleton-pulse calc(var(--ems-duration-slow) * 5) var(--ems-easing-standard)
+      infinite alternate;
+  }
+
+  .ui-skeleton__lines {
+    display: grid;
+    flex: 1;
+    gap: var(--ems-space-2);
+    min-inline-size: 0;
+  }
+
+  .ui-skeleton__line {
+    block-size: var(--ems-space-3);
+    inline-size: 100%;
+  }
+
+  .ui-skeleton__line[data-width='long'] {
+    inline-size: 70%;
+  }
+
+  .ui-skeleton__line[data-width='medium'] {
+    inline-size: 45%;
+  }
+
+  .ui-skeleton__line[data-width='short'] {
+    inline-size: 60%;
+  }
+
+  .ui-skeleton__avatar {
+    flex: none;
+    inline-size: var(--ems-space-10);
+    block-size: var(--ems-space-10);
+    border-radius: 50%;
+  }
+
+  .ui-skeleton__card {
+    display: grid;
+    gap: var(--ems-space-4);
+    padding: var(--ems-space-4);
+    border-radius: var(--ems-radius-xl);
+    background-color: var(--ems-color-bg-surface);
+    box-shadow: var(--ems-elevation-card);
+  }
+
+  .ui-skeleton__card-top {
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-3);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-skeleton__bone {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-skeleton__bone {
+      background-color: GrayText;
+    }
+
+    .ui-skeleton__card {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+
+  @keyframes ui-skeleton-pulse {
+    to {
+      background-color: var(--ems-color-skeleton-highlight);
+    }
+  }
+}

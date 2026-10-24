@@ -1,66 +1,42 @@
-<div class="login-card">
-  <div class="login-header">
-    <div class="logo">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-    </div>
-    <h1>EMS Portal</h1>
-    <p>Employee Management System</p>
+<app-auth-layout headingId="login-heading">
+  <div class="auth-head">
+    <h1 id="login-heading">Sign in</h1>
+    <p>Use your work account.</p>
   </div>
 
-  @if (apiError()) {
-    <div class="api-error" role="alert">{{ apiError() }}</div>
+  @if (passwordSet && !errorCopy()) {
+    <ui-alert tone="success" heading="Password set">Sign in with your new password.</ui-alert>
+  }
+  @if (errorCopy(); as copy) {
+    <ui-alert tone="danger" [heading]="copy.heading">{{ copy.text }}</ui-alert>
   }
 
-  <form (submit)="onSubmit(); $event.preventDefault()">
-    <div class="form-group">
-      <label for="login-email">Work Email</label>
+  <form class="auth-form" novalidate (submit)="onSubmit($event)">
+    <ui-form-field label="Work email" [error]="fieldError('email')">
       <input
-        id="login-email"
+        uiInput
         type="email"
-        [formField]="loginForm.email"
-        placeholder="you@company.com"
-        autocomplete="email"
-        [class.is-invalid]="loginForm.email().touched() && loginForm.email().errors().length"
+        autocomplete="username"
+        [value]="loginForm.email().value()"
+        (input)="loginForm.email().value.set($any($event.target).value)"
+        (blur)="loginForm.email().markAsTouched()"
       />
-      @if (loginForm.email().touched() && loginForm.email().errors().length) {
-        <span class="field-error">{{ loginForm.email().errors()[0].message }}</span>
-      }
-    </div>
+    </ui-form-field>
 
-    <div class="form-group">
-      <label for="login-password">Password</label>
-      <input
-        id="login-password"
-        type="password"
-        [formField]="loginForm.password"
-        placeholder="Enter your password"
+    <ui-form-field label="Password" [error]="fieldError('password')">
+      <ui-password-input
         autocomplete="current-password"
-        [class.is-invalid]="loginForm.password().touched() && loginForm.password().errors().length"
+        [value]="loginForm.password().value()"
+        (valueChange)="loginForm.password().value.set($event)"
+        (focusout)="loginForm.password().markAsTouched()"
       />
-      @if (loginForm.password().touched() && loginForm.password().errors().length) {
-        <span class="field-error">{{ loginForm.password().errors()[0].message }}</span>
-      }
-    </div>
+    </ui-form-field>
 
-    <button type="submit" class="submit-btn" [disabled]="loading()">
-      @if (loading()) {
-        <span class="spinner"></span>
-        Signing in...
-      } @else {
-        Sign in
-      }
-    </button>
+    <button uiButton size="lg" type="submit" [loading]="loading()">Sign in</button>
   </form>
-</div>
+
+  <div class="auth-note">
+    <ui-icon name="info" size="sm" />
+    <p><b>Forgot your password?</b> Ask People Operations to send you a new link to set one.</p>
+  </div>
+</app-auth-layout>

@@ -1,0 +1,99 @@
+/* ui-dialog layout. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-block-size: 0;
+  }
+
+  .ui-dialog__header {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ems-space-3);
+    padding: var(--ems-space-6) var(--ems-space-6) var(--ems-space-2);
+  }
+
+  .ui-dialog__titles {
+    display: grid;
+    flex: 1;
+    gap: var(--ems-space-1);
+    min-inline-size: 0;
+  }
+
+  .ui-dialog__heading {
+    margin: 0;
+    font-size: var(--ems-type-headline-size);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: var(--ems-type-headline-line-height);
+    letter-spacing: var(--ems-type-headline-letter-spacing);
+    text-wrap: balance;
+  }
+
+  /* Initial-focus target for screen readers; not an interactive control. */
+  .ui-dialog__heading:focus {
+    outline: none;
+  }
+
+  .ui-dialog__description {
+    margin: 0;
+    color: var(--ems-color-text-secondary);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+  }
+
+  .ui-dialog__close {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--ems-control-sm-height);
+    block-size: var(--ems-control-sm-height);
+    margin: calc(var(--ems-space-1) * -1) calc(var(--ems-space-2) * -1) 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background: transparent;
+    color: var(--ems-color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-dialog__close:hover {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-dialog__close:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  .ui-dialog__body {
+    flex: 1;
+    min-block-size: 0;
+    padding: var(--ems-space-2) var(--ems-space-6);
+    overflow-y: auto;
+  }
+
+  .ui-dialog__body:empty {
+    display: none;
+  }
+
+  .ui-dialog__footer {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
+    gap: var(--ems-space-2);
+    padding: var(--ems-space-4) var(--ems-space-6) var(--ems-space-6);
+  }
+
+  .ui-dialog__footer:empty {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-dialog__close {
+      transition: none;
+    }
+  }
+}

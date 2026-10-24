@@ -13,6 +13,23 @@ import { EmployeeSelfService } from '../../core/services/employee-self.service';
 import { Permission } from '../../core/models/permission.model';
 import { EmployeeAddressInput } from '../../core/services/employee-self.service';
 import { EmployeeAddress, EmployeeIdentification } from '../../core/models/employee.model';
+import { Icon } from '@ems/icons';
+import { Alert } from '@ems/ui/alert';
+import { Avatar } from '@ems/ui/avatar';
+import { Button } from '@ems/ui/button';
+import { Card } from '@ems/ui/card';
+import { Checkbox } from '@ems/ui/checkbox';
+import { DescriptionItem, DescriptionList } from '@ems/ui/description-list';
+import { DialogService } from '@ems/ui/dialog';
+import { ErrorState } from '@ems/ui/error-state';
+import { FormField as UiFormField } from '@ems/ui/form-field';
+import { Input } from '@ems/ui/input';
+import { NativeSelect } from '@ems/ui/select';
+import { Skeleton } from '@ems/ui/skeleton';
+import { StatusPill } from '@ems/ui/status-pill';
+import { Tag } from '@ems/ui/tag';
+import { ToastService } from '@ems/ui/toast';
+import { fieldError, sentenceCase, statusPillValue } from '../settings/shared/settings-ui';
 
 const ID_TYPES = [
   'NATIONAL_ID_CARD',
@@ -22,27 +39,47 @@ const ID_TYPES = [
   'NATIONAL_HEALTH_ID_CARD',
 ] as const;
 
-const AVATAR_COLORS = [
-  '#fe7f2d',
-  '#619b8a',
-  '#fcca46',
-  '#a1c181',
-  '#5e7a8a',
-  '#e07070',
-  '#233d4d',
-  '#2e4e60',
-];
+const ID_TYPE_LABELS: Readonly<Record<string, string>> = {
+  NATIONAL_ID_CARD: 'National ID card',
+  DRIVING_LICENCE: 'Driving licence',
+  PASSPORT: 'Passport',
+  VOTERS_ID_CARD: "Voter's ID card",
+  NATIONAL_HEALTH_ID_CARD: 'National health ID card',
+};
 
 @Component({
   selector: 'app-my-profile',
-  imports: [FormField],
+  imports: [
+    FormField,
+    Alert,
+    Avatar,
+    Button,
+    Card,
+    Checkbox,
+    DescriptionItem,
+    DescriptionList,
+    ErrorState,
+    Icon,
+    Input,
+    NativeSelect,
+    Skeleton,
+    StatusPill,
+    Tag,
+    UiFormField,
+  ],
   templateUrl: './my-profile.html',
-  styleUrl: './my-profile.scss',
+  styleUrl: './my-profile.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MyProfile {
   private readonly selfService = inject(EmployeeSelfService);
   private readonly authService = inject(AuthService);
+  private readonly toast = inject(ToastService);
+  private readonly dialogs = inject(DialogService);
+
+  protected readonly fieldError = fieldError;
+  protected readonly statusPillValue = statusPillValue;
+  protected readonly sentenceCase = sentenceCase;
 
   protected readonly canEdit = computed(() =>
     this.authService.hasPermission(Permission.MANAGE_SELF),
@@ -107,6 +144,7 @@ export class MyProfile {
       );
       this.editSection.set(null);
       this.profileResource.reload();
+      this.toast.success('Personal details saved');
     } catch (err: unknown) {
       this.sectionError.set((err as { message?: string })?.message ?? 'Failed to update bio.');
     } finally {
@@ -166,6 +204,7 @@ export class MyProfile {
       );
       this.editSection.set(null);
       this.profileResource.reload();
+      this.toast.success('Contact details saved');
     } catch (err: unknown) {
       this.sectionError.set((err as { message?: string })?.message ?? 'Failed to update contact.');
     } finally {
@@ -244,6 +283,7 @@ export class MyProfile {
       this.editSection.set(null);
       this.editAddressId.set(null);
       this.profileResource.reload();
+      this.toast.success(id ? 'Address updated' : 'Address added');
     } catch (err: unknown) {
       this.sectionError.set((err as { message?: string })?.message ?? 'Failed to save address.');
     } finally {
@@ -256,6 +296,7 @@ export class MyProfile {
     try {
       await firstValueFrom(this.selfService.removeMyAddress(addressId));
       this.profileResource.reload();
+      this.toast.success('Address removed');
     } catch (err: unknown) {
       this.sectionError.set((err as { message?: string })?.message ?? 'Failed to remove address.');
     }
@@ -290,6 +331,7 @@ export class MyProfile {
       );
       this.editSection.set(null);
       this.profileResource.reload();
+      this.toast.success('ID document added');
     } catch (err: unknown) {
       this.sectionError.set(
         (err as { message?: string })?.message ?? 'Failed to save identification.',
@@ -304,6 +346,7 @@ export class MyProfile {
     try {
       await firstValueFrom(this.selfService.removeMyIdentification(identificationId));
       this.profileResource.reload();
+      this.toast.success('ID document removed');
     } catch (err: unknown) {
       this.sectionError.set(
         (err as { message?: string })?.message ?? 'Failed to remove identification.',
@@ -312,16 +355,27 @@ export class MyProfile {
   }
 
   // ── Helpers ───────────────────────────────────────────────────────
-  protected getInitials(first: string, last: string): string {
-    return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
+  /** Asks before removing an address; removal cannot be undone. */
+  protected async confirmRemoveAddress(addr: EmployeeAddress): Promise<void> {
+    const confirmed = await this.dialogs.confirm({
+      heading: 'Remove this address?',
+      description: `${this.addressLine(addr) || 'This address'} will be removed from your profile. You can add it again later.`,
+      confirmLabel: 'Remove address',
+      destructive: true,
+    });
+    if (confirmed) await this.removeAddress(addr.id);
   }
 
-  protected getAvatarColor(seed: string): string {
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  /** Asks before removing an ID document; removal cannot be undone. */
+  protected async confirmRemoveId(doc: EmployeeIdentification): Promise<void> {
+    const confirmed = await this.dialogs.confirm({
+      heading: `Remove your ${this.formatIdType(doc.identificationType)}?`,
+      description:
+        'The document number will be removed from your profile. You can add it again later.',
+      confirmLabel: 'Remove document',
+      destructive: true,
+    });
+    if (confirmed) await this.removeId(doc.id);
   }
 
   protected formatDate(dateStr?: string | null): string {
@@ -338,7 +392,7 @@ export class MyProfile {
   }
 
   protected formatIdType(raw: string): string {
-    return raw.replace(/_/g, ' ');
+    return ID_TYPE_LABELS[raw] ?? raw.replace(/_/g, ' ');
   }
 
   protected cancelEdit(): void {

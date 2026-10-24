@@ -1,0 +1,120 @@
+/*
+ * ui-avatar. Contract tokens only (docs/design/token-contract.md).
+ * Sizes are built from the 4-pt space scale: xs 20, sm 32, md 40, lg 48, xl 64.
+ */
+@layer components {
+  :host {
+    --_size: var(--ems-space-10);
+    --_bg: var(--ems-color-avatar-1-bg);
+    --_fg: var(--ems-color-avatar-1-text);
+
+    position: relative;
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    box-sizing: border-box;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    font-family: var(--ems-font-family-sans);
+    font-size: calc(var(--_size) * 0.36);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: 1;
+    letter-spacing: var(--ems-type-headline-letter-spacing);
+    vertical-align: middle;
+    user-select: none;
+  }
+
+  :host([data-size='xs']) {
+    --_size: var(--ems-space-5);
+
+    font-size: calc(var(--_size) * 0.42);
+  }
+
+  :host([data-size='sm']) {
+    --_size: var(--ems-space-8);
+  }
+
+  :host([data-size='lg']) {
+    --_size: var(--ems-space-12);
+  }
+
+  :host([data-size='xl']) {
+    --_size: var(--ems-space-16);
+
+    letter-spacing: var(--ems-type-title-letter-spacing);
+  }
+
+  :host([data-tint='2']) {
+    --_bg: var(--ems-color-avatar-2-bg);
+    --_fg: var(--ems-color-avatar-2-text);
+  }
+
+  :host([data-tint='3']) {
+    --_bg: var(--ems-color-avatar-3-bg);
+    --_fg: var(--ems-color-avatar-3-text);
+  }
+
+  :host([data-tint='4']) {
+    --_bg: var(--ems-color-avatar-4-bg);
+    --_fg: var(--ems-color-avatar-4-text);
+  }
+
+  :host([data-tint='5']) {
+    --_bg: var(--ems-color-avatar-5-bg);
+    --_fg: var(--ems-color-avatar-5-text);
+  }
+
+  :host([data-tint='6']) {
+    --_bg: var(--ems-color-avatar-6-bg);
+    --_fg: var(--ems-color-avatar-6-text);
+  }
+
+  .ui-avatar__img {
+    inline-size: 100%;
+    block-size: 100%;
+    border-radius: inherit;
+    object-fit: cover;
+  }
+
+  /* Status: colour + shape (filled circle, half circle, ring, square), never colour alone. */
+  .ui-avatar__status {
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    box-sizing: border-box;
+    inline-size: max(var(--ems-space-2), calc(var(--_size) * 0.28));
+    block-size: max(var(--ems-space-2), calc(var(--_size) * 0.28));
+    border: calc(var(--ems-border-width-hairline) * 1.5) solid currentColor;
+    border-radius: var(--ems-radius-pill);
+    background-color: currentColor;
+    box-shadow: 0 0 0 calc(var(--ems-border-width-hairline) * 2) var(--ems-color-bg-surface);
+  }
+
+  .ui-avatar__status[data-status='active'] {
+    color: var(--ems-color-employee-status-active-text);
+  }
+
+  .ui-avatar__status[data-status='pending'] {
+    color: var(--ems-color-employee-status-pending-text);
+    background: linear-gradient(90deg, currentColor 50%, var(--ems-color-bg-surface) 50%);
+  }
+
+  .ui-avatar__status[data-status='inactive'] {
+    color: var(--ems-color-employee-status-inactive-text);
+    background-color: var(--ems-color-bg-surface);
+  }
+
+  .ui-avatar__status[data-status='archived'] {
+    color: var(--ems-color-employee-status-archived-text);
+    border-radius: var(--ems-radius-sm);
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}

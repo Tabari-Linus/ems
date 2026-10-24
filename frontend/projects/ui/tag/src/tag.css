@@ -1,0 +1,78 @@
+/* ui-tag. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    --_bg: var(--ems-color-status-neutral-bg);
+    --_fg: var(--ems-color-status-neutral-text);
+    --_ring: var(--ems-color-status-neutral-border);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-1);
+    box-sizing: border-box;
+    min-block-size: calc(var(--ems-space-6) + var(--ems-space-1) / 2);
+    padding-inline: var(--ems-space-3);
+    border-radius: var(--ems-radius-sm);
+    background-color: var(--_bg);
+    box-shadow: inset 0 0 0 var(--ems-border-width-hairline) var(--_ring);
+    color: var(--_fg);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-caption-line-height);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  :host([data-variant='accent']) {
+    --_bg: var(--ems-color-accent-soft);
+    --_fg: var(--ems-color-accent-soft-text);
+    --_ring: transparent;
+  }
+
+  :host([data-removable]) {
+    padding-inline-end: var(--ems-space-1);
+  }
+
+  .ui-tag__remove {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    box-sizing: border-box;
+    inline-size: var(--ems-space-6);
+    block-size: var(--ems-space-6);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ems-radius-sm);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-tag__remove:hover {
+    background-color: var(--ems-color-accent-soft-hover);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-tag__remove:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-tag__remove {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+
+    .ui-tag__remove {
+      color: ButtonText;
+    }
+  }
+}

@@ -1,0 +1,36 @@
+/*
+ * dl[uiDescriptionList]. Contract tokens only.
+ * Up to N columns that drop to fewer as the list narrows (each column at least 11rem wide).
+ */
+@layer components {
+  :host {
+    --_columns: 2;
+    --_gap-inline: var(--ems-space-5);
+    --_min-column: calc(var(--ems-space-16) * 2 + var(--ems-space-12));
+
+    container: ui-description-list / inline-size;
+    display: grid;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(
+        max(
+          var(--_min-column),
+          calc((100% - (var(--_columns) - 1) * var(--_gap-inline)) / var(--_columns))
+        ),
+        1fr
+      )
+    );
+    gap: var(--ems-space-4) var(--_gap-inline);
+    margin: 0;
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+  }
+
+  :host([data-columns='1']) {
+    --_columns: 1;
+  }
+
+  :host([data-columns='3']) {
+    --_columns: 3;
+  }
+}

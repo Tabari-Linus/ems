@@ -1,0 +1,63 @@
+/*
+ * ui-form-field. Contract tokens only (docs/design/token-contract.md). Unencapsulated so the
+ * slot selectors can reach projected content; every selector is scoped by .ui-form-field.
+ */
+@layer components {
+  .ui-form-field {
+    display: grid;
+    gap: var(--ems-space-2);
+    min-inline-size: 0;
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-form-field__label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--ems-space-3);
+  }
+
+  .ui-form-field__label {
+    color: var(--ems-color-text-primary);
+    font-size: var(--ems-type-label-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-label-line-height);
+    letter-spacing: var(--ems-type-label-letter-spacing);
+  }
+
+  .ui-form-field__required {
+    margin-inline-start: var(--ems-space-1);
+    color: var(--ems-color-status-danger-text);
+  }
+
+  .ui-form-field__hint,
+  .ui-form-field__error {
+    margin: 0;
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-caption-weight);
+    line-height: var(--ems-type-caption-line-height);
+    letter-spacing: var(--ems-type-caption-letter-spacing);
+  }
+
+  .ui-form-field__hint {
+    color: var(--ems-color-text-muted);
+  }
+
+  .ui-form-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ems-space-2);
+    color: var(--ems-color-status-danger-text);
+  }
+
+  /* Centred on the first line of a wrapping message. */
+  .ui-form-field__error-icon {
+    --_size: var(--ems-icon-size-sm);
+    --ui-icon-size: var(--_size);
+
+    flex: none;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    margin-block-start: calc((1lh - var(--_size)) / 2);
+  }
+}

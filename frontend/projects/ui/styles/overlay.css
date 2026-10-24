@@ -1,0 +1,28 @@
+/*
+ * Angular CDK overlay theming (layer: components). The CDK's structural CSS is imported in
+ * index.css; these classes are what @ems/ui overlays pass as `backdropClass` / `panelClass`.
+ */
+@layer components {
+  .cdk-overlay-container {
+    z-index: var(--ems-z-overlay);
+  }
+
+  /* Modal scrim (dialogs, drawers). */
+  .ui-overlay-backdrop {
+    background-color: var(--ems-color-bg-overlay);
+  }
+
+  /* Floating panels (menus, popovers, listboxes). */
+  .ui-overlay-panel {
+    background-color: var(--ems-color-bg-raised);
+    color: var(--ems-color-text-primary);
+    border-radius: var(--ems-radius-lg);
+    box-shadow: var(--ems-elevation-raised);
+  }
+
+  @media (forced-colors: active) {
+    .ui-overlay-panel {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}

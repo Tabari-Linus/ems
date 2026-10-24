@@ -1,0 +1,45 @@
+/* ui-pagination. Contract tokens only. */
+@layer components {
+  :host {
+    display: block;
+    color: var(--ems-color-text-secondary);
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-pagination__nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ems-space-3) var(--ems-space-4);
+    padding-block: var(--ems-space-3);
+    padding-inline: var(--ems-space-4);
+  }
+
+  .ui-pagination__summary {
+    flex: 1 1 auto;
+    margin: 0;
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-caption-weight);
+    line-height: var(--ems-type-caption-line-height);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ui-pagination__size:empty {
+    display: none;
+  }
+
+  .ui-pagination__controls {
+    display: flex;
+    gap: var(--ems-space-2);
+  }
+
+  :host([data-variant='load-more']) .ui-pagination__nav {
+    flex-direction: column-reverse;
+    justify-content: center;
+    text-align: center;
+  }
+
+  :host([data-variant='load-more']) .ui-pagination__summary {
+    flex: none;
+  }
+}

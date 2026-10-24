@@ -1,0 +1,114 @@
+/* ui-status-pill. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    --_bg: var(--ems-color-status-neutral-bg);
+    --_fg: var(--ems-color-status-neutral-text);
+
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--ems-space-1) * 1.5);
+    box-sizing: border-box;
+    block-size: var(--ems-space-6);
+    padding-inline: var(--ems-space-2) calc(var(--ems-space-2) + var(--ems-space-1) / 2);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: 1;
+    letter-spacing: var(--ems-type-caption-letter-spacing);
+    white-space: nowrap;
+    vertical-align: middle;
+  }
+
+  /* Employee status */
+  :host([data-status='ACTIVE']) {
+    --_bg: var(--ems-color-employee-status-active-bg);
+    --_fg: var(--ems-color-employee-status-active-text);
+  }
+
+  :host([data-status='PENDING']) {
+    --_bg: var(--ems-color-employee-status-pending-bg);
+    --_fg: var(--ems-color-employee-status-pending-text);
+  }
+
+  :host([data-status='INACTIVE']) {
+    --_bg: var(--ems-color-employee-status-inactive-bg);
+    --_fg: var(--ems-color-employee-status-inactive-text);
+  }
+
+  :host([data-status='ARCHIVED']) {
+    --_bg: var(--ems-color-employee-status-archived-bg);
+    --_fg: var(--ems-color-employee-status-archived-text);
+  }
+
+  /* Generic tones (neutral keeps the sunken defaults) */
+  :host([data-tone='success']) {
+    --_bg: var(--ems-color-status-success-bg);
+    --_fg: var(--ems-color-status-success-text);
+  }
+
+  :host([data-tone='warning']) {
+    --_bg: var(--ems-color-status-warning-bg);
+    --_fg: var(--ems-color-status-warning-text);
+  }
+
+  :host([data-tone='danger']) {
+    --_bg: var(--ems-color-status-danger-bg);
+    --_fg: var(--ems-color-status-danger-text);
+  }
+
+  :host([data-tone='info']) {
+    --_bg: var(--ems-color-status-info-bg);
+    --_fg: var(--ems-color-status-info-text);
+  }
+
+  /* Dot shapes: the shape, not the hue, carries the meaning. */
+  .ui-status-pill__dot {
+    flex: none;
+    box-sizing: border-box;
+    inline-size: var(--ems-space-2);
+    block-size: var(--ems-space-2);
+    border: calc(var(--ems-border-width-hairline) * 1.5) solid currentColor;
+    border-radius: 50%;
+  }
+
+  :host([data-shape='filled']) .ui-status-pill__dot {
+    background-color: currentColor;
+  }
+
+  :host([data-shape='half']) .ui-status-pill__dot {
+    background-image: linear-gradient(to right, currentColor 50%, transparent 50%);
+  }
+
+  :host([data-shape='square']) .ui-status-pill__dot {
+    border-radius: calc(var(--ems-radius-sm) / 3);
+    background-color: currentColor;
+    transform: scale(0.875);
+  }
+
+  .ui-status-pill__label:empty {
+    display: none;
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+
+    .ui-status-pill__dot {
+      forced-color-adjust: none;
+      border-color: CanvasText;
+    }
+
+    :host([data-shape='filled']) .ui-status-pill__dot,
+    :host([data-shape='square']) .ui-status-pill__dot {
+      background-color: CanvasText;
+    }
+
+    :host([data-shape='half']) .ui-status-pill__dot {
+      background-image: linear-gradient(to right, CanvasText 50%, transparent 50%);
+    }
+  }
+}

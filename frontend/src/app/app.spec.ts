@@ -28,12 +28,14 @@ describe('App', () => {
     expect(host.querySelector('app-stub-page h1')?.textContent).toBe('Stub page');
   });
 
-  it('renders nothing but the outlet before navigation', async () => {
+  it('renders the outlet and the one toast host before navigation', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
 
     const host = fixture.nativeElement as HTMLElement;
-    expect(host.children).toHaveLength(1);
-    expect(host.firstElementChild?.tagName.toLowerCase()).toBe('router-outlet');
+    expect(Array.from(host.children).map((c) => c.tagName.toLowerCase())).toEqual([
+      'router-outlet',
+      'ui-toaster',
+    ]);
   });
 });

@@ -4,81 +4,117 @@
     "bg": {
       "canvas": {
         "$value": "{color.neutral.950}",
-        "$description": "Page background."
+        "$description": "Page background behind cards."
       },
       "surface": {
-        "$value": "{color.neutral.900}",
-        "$description": "Cards, panels, inputs."
-      },
-      "subtle": {
         "$value": "{color.neutral.850}",
-        "$description": "Hover / zebra rows."
+        "$description": "Cards, panels, inputs, the sidebar."
       },
-      "muted": {
+      "sunken": {
+        "$value": "{color.neutral.900}",
+        "$description": "Wells inside a card: tracks, notes, segmented controls, hover rows."
+      },
+      "raised": {
         "$value": "{color.neutral.800}",
-        "$description": "Pressed / selected."
+        "$description": "Popovers, menus, dialogs, drawers (pair with elevation.raised/overlay)."
+      },
+      "overlay": {
+        "$value": "{color.scrim.dark}",
+        "$description": "Scrim behind modal dialogs and drawers."
       },
       "inverse": {
-        "$value": "{color.neutral.100}",
-        "$description": "Tooltips, toasts."
+        "$value": "{color.neutral.50}",
+        "$description": "Tooltips and toasts."
       }
     },
     "text": {
-      "default": {
-        "$value": "{color.neutral.50}"
+      "primary": {
+        "$value": "{color.neutral.50}",
+        "$description": "Default text, names, values."
+      },
+      "secondary": {
+        "$value": "{color.neutral.200}",
+        "$description": "Supporting text: positions, descriptions."
       },
       "muted": {
-        "$value": "{color.neutral.400}"
+        "$value": "{color.neutral.300}",
+        "$description": "Meta, hints, placeholders, captions (still 4.5:1)."
       },
       "disabled": {
-        "$value": "{color.neutral.600}",
-        "$description": "Exempt from contrast (WCAG 1.4.3 inactive UI)."
+        "$value": "{color.neutral.450}",
+        "$description": "Disabled controls only. Exempt from contrast (WCAG 1.4.3)."
       },
       "inverse": {
-        "$value": "{color.neutral.950}"
+        "$value": "{color.neutral.800}",
+        "$description": "Text on bg.inverse."
       },
       "on-accent": {
-        "$value": "{color.neutral.950}"
+        "$value": "{color.indigo.900}",
+        "$description": "Text on accent.solid (current nav item, badges)."
+      },
+      "link": {
+        "$value": "{color.indigo.300}",
+        "$description": "Inline links, ghost buttons."
       }
     },
     "border": {
+      "subtle": {
+        "$value": "{color.neutral.700}",
+        "$description": "Dividers between rows and sections. Decorative, not a boundary."
+      },
       "default": {
-        "$value": "{color.neutral.800}",
-        "$description": "Decorative dividers; not a contrast-bearing boundary."
+        "$value": "{color.neutral.450}",
+        "$description": "Control outlines: inputs, selects, filter pills (>= 3:1)."
       },
       "strong": {
-        "$value": "{color.neutral.500}",
-        "$description": "Control boundaries (inputs, secondary buttons): >= 3:1."
+        "$value": "{color.neutral.300}",
+        "$description": "Hovered control outlines, emphasised boundaries."
       },
       "focus": {
-        "$value": "{color.accent.400}",
-        "$description": "Focus ring: >= 3:1."
+        "$value": "{color.indigo.350}",
+        "$description": "Focus ring and focused control outline (>= 3:1)."
       }
     },
     "accent": {
+      "solid": {
+        "$value": "{color.indigo.400}",
+        "$description": "The one primary action; the current nav item."
+      },
+      "solid-hover": {
+        "$value": "{color.indigo.350}"
+      },
+      "solid-active": {
+        "$value": "{color.indigo.300}"
+      },
+      "on-solid": {
+        "$value": "{color.indigo.900}",
+        "$description": "Text and icons on accent.solid."
+      },
+      "soft": {
+        "$value": "{color.indigo.800}",
+        "$description": "Selected tabs, secondary buttons, counts, icon tiles."
+      },
+      "soft-hover": {
+        "$value": "{color.indigo.750}"
+      },
+      "soft-text": {
+        "$value": "{color.indigo.200}",
+        "$description": "Text and icons on accent.soft."
+      }
+    },
+    "selection": {
       "bg": {
-        "$value": "{color.accent.400}"
-      },
-      "bg-hover": {
-        "$value": "{color.accent.300}"
-      },
-      "subtle": {
-        "$value": "{color.accent.950}"
-      },
-      "text": {
-        "$value": "{color.accent.300}"
-      },
-      "border": {
-        "$value": "{color.accent.500}"
+        "$value": "{color.indigo.750}",
+        "$description": "Text selection highlight."
       }
     },
     "status": {
       "success": {
         "text": {
-          "$value": "{color.green.300}"
+          "$value": "{color.green.200}"
         },
         "bg": {
-          "$value": "{color.green.950}"
+          "$value": "{color.green.850}"
         },
         "border": {
           "$value": "{color.green.500}"
@@ -90,15 +126,15 @@
           "$value": "{color.green.300}"
         },
         "on-solid": {
-          "$value": "{color.neutral.950}"
+          "$value": "{color.green.950}"
         }
       },
       "warning": {
         "text": {
-          "$value": "{color.amber.300}"
+          "$value": "{color.amber.200}"
         },
         "bg": {
-          "$value": "{color.amber.950}"
+          "$value": "{color.amber.850}"
         },
         "border": {
           "$value": "{color.amber.500}"
@@ -110,15 +146,15 @@
           "$value": "{color.amber.300}"
         },
         "on-solid": {
-          "$value": "{color.neutral.950}"
+          "$value": "{color.amber.950}"
         }
       },
       "danger": {
         "text": {
-          "$value": "{color.red.300}"
+          "$value": "{color.red.200}"
         },
         "bg": {
-          "$value": "{color.red.950}"
+          "$value": "{color.red.850}"
         },
         "border": {
           "$value": "{color.red.500}"
@@ -130,15 +166,15 @@
           "$value": "{color.red.300}"
         },
         "on-solid": {
-          "$value": "{color.neutral.950}"
+          "$value": "{color.red.950}"
         }
       },
       "info": {
         "text": {
-          "$value": "{color.blue.300}"
+          "$value": "{color.blue.200}"
         },
         "bg": {
-          "$value": "{color.blue.950}"
+          "$value": "{color.blue.850}"
         },
         "border": {
           "$value": "{color.blue.500}"
@@ -150,9 +186,135 @@
           "$value": "{color.blue.300}"
         },
         "on-solid": {
-          "$value": "{color.neutral.950}"
+          "$value": "{color.blue.950}"
+        }
+      },
+      "neutral": {
+        "bg": {
+          "$value": "{color.neutral.800}",
+          "$description": "Neutral status: tags, neutral status pills."
+        },
+        "text": {
+          "$value": "{color.neutral.200}"
+        },
+        "border": {
+          "$value": "{color.neutral.700}",
+          "$description": "Decorative ring around a neutral tag (not a boundary)."
         }
       }
+    },
+    "employee-status": {
+      "active": {
+        "bg": {
+          "$value": "{color.green.850}"
+        },
+        "text": {
+          "$value": "{color.green.200}"
+        }
+      },
+      "pending": {
+        "bg": {
+          "$value": "{color.amber.850}"
+        },
+        "text": {
+          "$value": "{color.amber.200}"
+        }
+      },
+      "inactive": {
+        "bg": {
+          "$value": "{color.neutral.700}"
+        },
+        "text": {
+          "$value": "{color.neutral.200}"
+        }
+      },
+      "archived": {
+        "bg": {
+          "$value": "{color.neutral.750}"
+        },
+        "text": {
+          "$value": "{color.neutral.300}"
+        }
+      }
+    },
+    "avatar": {
+      "1": {
+        "bg": {
+          "$value": "{color.pastel.indigo.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.indigo.150}"
+        }
+      },
+      "2": {
+        "bg": {
+          "$value": "{color.pastel.rose.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.rose.150}"
+        }
+      },
+      "3": {
+        "bg": {
+          "$value": "{color.pastel.sky.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.sky.150}"
+        }
+      },
+      "4": {
+        "bg": {
+          "$value": "{color.pastel.mint.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.mint.150}"
+        }
+      },
+      "5": {
+        "bg": {
+          "$value": "{color.pastel.sand.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.sand.150}"
+        }
+      },
+      "6": {
+        "bg": {
+          "$value": "{color.pastel.lime.800}"
+        },
+        "text": {
+          "$value": "{color.pastel.lime.150}"
+        }
+      }
+    },
+    "skeleton": {
+      "base": {
+        "$value": "{color.neutral.750}",
+        "$description": "Loading placeholder shapes. Decorative (no contrast requirement)."
+      },
+      "highlight": {
+        "$value": "{color.neutral.850}",
+        "$description": "The other end of the skeleton pulse."
+      }
+    }
+  },
+  "elevation": {
+    "$type": "shadow",
+    "card": {
+      "$value": "{shadow.dark.card}",
+      "$description": "Cards and chips resting on the canvas."
+    },
+    "raised": {
+      "$value": "{shadow.dark.raised}",
+      "$description": "Popovers, menus, the user menu."
+    },
+    "overlay": {
+      "$value": "{shadow.dark.overlay}",
+      "$description": "Dialogs and drawers."
+    },
+    "focus": {
+      "$value": "{shadow.dark.focus}",
+      "$description": "Outer glow for a focused text field (with border.focus outline)."
     }
   }
 }

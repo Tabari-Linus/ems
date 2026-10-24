@@ -12,7 +12,7 @@ interface ButtonStoryArgs {
 }
 
 const meta: Meta<ButtonStoryArgs> = {
-  title: 'Components/Button',
+  title: 'Actions & inputs/Button',
   component: Button,
   decorators: [moduleMetadata({ imports: [Button] })],
   args: {
@@ -44,8 +44,16 @@ const meta: Meta<ButtonStoryArgs> = {
         component: `
 Native \`<button uiButton>\` or \`<a uiButton>\` (WAI-ARIA APG *Button* pattern: the native element
 provides role, focus and Enter/Space activation). Styles use only \`--ems-button-*\` component tokens
-and semantic tokens.
+and semantic tokens. Every variant is a pill.
 
+| Variant | Use it for | Example |
+| --- | --- | --- |
+| **primary** | The one next step in a view (solid indigo). | Approve, Save changes, Add person |
+| **secondary** | The alternative next to a primary (soft indigo tint). | Decline, Cancel, Email |
+| **ghost** | Low-emphasis or repeated row actions. | Review profile, Reveal |
+| **danger** | Confirming something destructive, usually inside a confirm dialog. | Deactivate Kwame |
+
+- Labels say what happens, in sentence case: "Approve", not "OK" or "Submit".
 - **loading** shows a spinner, sets \`aria-busy="true"\` and \`aria-disabled="true"\`, blocks activation and
   keeps focus (the label stays in the accessible name).
 - **disabled** uses the native \`disabled\` attribute on \`<button>\`; on \`<a>\` it sets
@@ -76,15 +84,15 @@ export const Primary: Story = {
   },
 };
 
-export const Secondary: Story = { args: { variant: 'secondary' } };
+export const Secondary: Story = { args: { variant: 'secondary', label: 'Decline' } };
 
-export const Ghost: Story = { args: { variant: 'ghost' } };
+export const Ghost: Story = { args: { variant: 'ghost', label: 'Review profile' } };
 
-export const Danger: Story = { args: { variant: 'danger', label: 'Delete employee' } };
+export const Danger: Story = { args: { variant: 'danger', label: 'Deactivate Kwame' } };
 
-export const Small: Story = { args: { size: 'sm' } };
+export const Small: Story = { args: { size: 'sm', variant: 'ghost', label: 'Reveal' } };
 
-export const Large: Story = { args: { size: 'lg' } };
+export const Large: Story = { args: { size: 'lg', label: 'Sign in' } };
 
 export const Loading: Story = {
   args: { loading: true },
@@ -114,7 +122,7 @@ export const Disabled: Story = {
 
 export const AsLink: Story = {
   name: 'As link (a[uiButton])',
-  args: { variant: 'secondary', label: 'Open directory' },
+  args: { variant: 'secondary', label: 'Open People' },
   render: (args) => ({
     props: args,
     template: `
@@ -123,7 +131,7 @@ export const AsLink: Story = {
     `,
   }),
   play: async ({ canvas, userEvent, args }) => {
-    const link = canvas.getByRole('link', { name: 'Open directory' });
+    const link = canvas.getByRole('link', { name: 'Open People' });
     await userEvent.tab();
     await expect(link).toHaveFocus();
     await userEvent.keyboard('{Enter}');
@@ -133,10 +141,10 @@ export const AsLink: Story = {
 
 export const DisabledLink: Story = {
   name: 'Disabled link',
-  args: { variant: 'secondary', label: 'Open directory', disabled: true },
+  args: { variant: 'secondary', label: 'Open People', disabled: true },
   render: AsLink.render,
   play: async ({ canvas, userEvent, args }) => {
-    const link = canvas.getByRole('link', { name: 'Open directory' });
+    const link = canvas.getByRole('link', { name: 'Open People' });
     await expect(link).toHaveAttribute('aria-disabled', 'true');
     await expect(link).toHaveAttribute('tabindex', '-1');
     await userEvent.click(link);
@@ -152,18 +160,23 @@ export const AllVariants: Story = {
       <div style="display: grid; gap: 1rem;">
         @for (size of sizes; track size) {
           <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
-            @for (variant of variants; track variant) {
-              <button uiButton type="button" [variant]="variant" [size]="size">{{ variant }} {{ size }}</button>
+            @for (item of variants; track item.variant) {
+              <button uiButton type="button" [variant]="item.variant" [size]="size">{{ item.label }}</button>
             }
-            <button uiButton type="button" [size]="size" loading>Loading {{ size }}</button>
-            <button uiButton type="button" [size]="size" disabled>Disabled {{ size }}</button>
+            <button uiButton type="button" [size]="size" loading>Saving</button>
+            <button uiButton type="button" [size]="size" disabled>Approve</button>
           </div>
         }
       </div>
     `,
     props: {
       sizes: ['sm', 'md', 'lg'] satisfies ButtonSize[],
-      variants: ['primary', 'secondary', 'ghost', 'danger'] satisfies ButtonVariant[],
+      variants: [
+        { variant: 'primary', label: 'Approve' },
+        { variant: 'secondary', label: 'Decline' },
+        { variant: 'ghost', label: 'Review profile' },
+        { variant: 'danger', label: 'Deactivate' },
+      ] satisfies { variant: ButtonVariant; label: string }[],
     },
   }),
 };

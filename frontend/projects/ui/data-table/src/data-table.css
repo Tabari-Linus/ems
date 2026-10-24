@@ -1,0 +1,249 @@
+/* ui-data-table. Contract tokens only. Transparent: put it in <ui-card flush> for the surface. */
+@layer components {
+  :host {
+    display: block;
+    min-inline-size: 0;
+    color: var(--ems-color-text-primary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+  }
+
+  /* Scroll area: wide tables scroll here, never the page. `isolation` keeps the sticky header's
+     stacking inside the table so it never paints over the app's top bar. */
+  .ui-data-table__scroll {
+    overflow: auto;
+    isolation: isolate;
+    overscroll-behavior-inline: contain;
+  }
+
+  .ui-data-table__scroll:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: calc(var(--ems-focus-ring-width) * -1);
+  }
+
+  .ui-data-table__table {
+    inline-size: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  .ui-data-table__caption {
+    margin: 0;
+    padding-block: var(--ems-space-2);
+    padding-inline: var(--ems-space-4);
+    color: var(--ems-color-text-primary);
+    font-size: var(--ems-type-headline-size);
+    font-weight: var(--ems-type-headline-weight);
+    line-height: var(--ems-type-headline-line-height);
+    text-align: start;
+  }
+
+  th,
+  td {
+    padding-block: var(--ems-space-3);
+    padding-inline: var(--ems-space-4);
+    border-block-end: var(--ems-border-width-hairline) solid var(--ems-color-border-subtle);
+    text-align: start;
+    vertical-align: middle;
+  }
+
+  th[data-align='end'],
+  td[data-align='end'] {
+    text-align: end;
+  }
+
+  th {
+    padding-block: var(--ems-space-2);
+    background-color: var(--ems-color-bg-surface);
+    color: var(--ems-color-text-muted);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-label-weight);
+    line-height: var(--ems-type-caption-line-height);
+    white-space: nowrap;
+  }
+
+  :host([data-sticky]) th {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1; /* ds-lint-allow: local stacking inside the isolated scroll area */
+  }
+
+  tbody tr:last-child td {
+    border-block-end: 0;
+  }
+
+  .ui-data-table__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-1);
+    min-block-size: var(--ems-space-6);
+    margin-inline: calc(var(--ems-space-1) * -1);
+    padding-block: 0;
+    padding-inline: var(--ems-space-1);
+    border: 0;
+    border-radius: var(--ems-radius-sm);
+    background-color: transparent;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .ui-data-table__sort:hover,
+  .ui-data-table__sort:not([data-sort='none']) {
+    color: var(--ems-color-text-primary);
+  }
+
+  .ui-data-table__sort:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  .ui-data-table__sort[data-sort='none'] ui-icon {
+    opacity: 0.6;
+  }
+
+  /* Activatable rows */
+  .ui-data-table__row[data-activatable],
+  .ui-data-table__card[data-activatable] {
+    cursor: pointer;
+  }
+
+  .ui-data-table__row[data-activatable]:hover td,
+  .ui-data-table__card[data-activatable]:hover {
+    background-color: var(--ems-color-bg-sunken);
+  }
+
+  .ui-data-table__row:focus-visible,
+  .ui-data-table__card:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: calc(var(--ems-focus-ring-width) * -1);
+  }
+
+  .ui-data-table__actions {
+    inline-size: 1%;
+    white-space: nowrap;
+  }
+
+  .ui-data-table__actions-head {
+    inline-size: 1%;
+  }
+
+  /* Loading placeholders */
+  .ui-data-table__skeleton {
+    display: block;
+    inline-size: 70%;
+    block-size: var(--ems-space-3);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-skeleton-base);
+    animation: ui-data-table-pulse calc(var(--ems-duration-slow) * 5) var(--ems-easing-standard)
+      infinite alternate;
+  }
+
+  .ui-data-table__skeleton[data-variant='1'] {
+    inline-size: 45%;
+  }
+
+  .ui-data-table__skeleton[data-variant='2'] {
+    inline-size: 85%;
+  }
+
+  .ui-data-table__skeleton-row td {
+    padding-block: var(--ems-space-4);
+  }
+
+  .ui-data-table__empty-row td {
+    padding-block: var(--ems-space-8);
+    text-align: center;
+  }
+
+  .ui-data-table__empty-text {
+    margin: 0;
+    color: var(--ems-color-text-muted);
+  }
+
+  /* Card mode */
+  .ui-data-table__cards {
+    display: grid;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ui-data-table__card {
+    display: grid;
+    gap: var(--ems-space-2);
+    padding-block: var(--ems-space-4);
+    padding-inline: var(--ems-space-4);
+    border-block-end: var(--ems-border-width-hairline) solid var(--ems-color-border-subtle);
+  }
+
+  .ui-data-table__card:last-child {
+    border-block-end: 0;
+  }
+
+  .ui-data-table__card-title {
+    min-inline-size: 0;
+    font-weight: var(--ems-type-body-strong-weight);
+  }
+
+  .ui-data-table__card-fields {
+    display: grid;
+    gap: var(--ems-space-1);
+    margin: 0;
+  }
+
+  .ui-data-table__card-field {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: var(--ems-space-3);
+    align-items: baseline;
+  }
+
+  .ui-data-table__card-field dt {
+    color: var(--ems-color-text-muted);
+    font-size: var(--ems-type-caption-size);
+    font-weight: var(--ems-type-caption-weight);
+  }
+
+  .ui-data-table__card-field dd {
+    min-inline-size: 0;
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .ui-data-table__card-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ems-space-2);
+    padding-block-start: var(--ems-space-1);
+  }
+
+  .ui-data-table__cards-empty {
+    padding-block: var(--ems-space-8);
+    padding-inline: var(--ems-space-4);
+    text-align: center;
+  }
+
+  @keyframes ui-data-table-pulse {
+    to {
+      background-color: var(--ems-color-skeleton-highlight);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-data-table__skeleton {
+      animation: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-data-table__skeleton {
+      background-color: GrayText;
+    }
+
+    .ui-data-table__sort {
+      color: ButtonText;
+    }
+  }
+}

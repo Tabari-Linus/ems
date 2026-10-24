@@ -6,12 +6,16 @@
     <base href="/" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
+    <!-- Theme no-flash (@ems/ui/theme THEME_NO_FLASH_SCRIPT). Allowed by hash in the CSP of
+         docker/40-ems-runtime-config.sh; src/theme-no-flash.spec.ts fails if the two drift. -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('ems-theme');
+          if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

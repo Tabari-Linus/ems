@@ -24,7 +24,7 @@ function colorOf(name, theme) {
   const token = tokens[name];
   if (!token) throw new Error(`contrast-pairs.json: unknown token "${name}"`);
   if (token.type !== 'color') throw new Error(`contrast-pairs.json: "${name}" is not a colour`);
-  const value = token.tier === 'primitive' ? token.value : token[theme].value;
+  const value = 'value' in token ? token.value : token[theme].value;
   const parsed = parse(String(value));
   if (!parsed) throw new Error(`Cannot parse colour ${value} of "${name}"`);
   return toSrgb(parsed);

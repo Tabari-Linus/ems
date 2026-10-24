@@ -1,574 +1,624 @@
-<div class="my-profile-page">
-  <!-- ── Loading skeleton ──────────────────────────────────────── -->
-  @if (profileResource.isLoading()) {
-    <div class="banner banner--skeleton">
-      <div class="sk-avi-lg pulse"></div>
-      <div class="banner-text">
-        <div class="sk-line w40 pulse"></div>
-        <div class="sk-line w25 pulse"></div>
+@if (profileResource.isLoading() && !profileResource.hasValue()) {
+  <div class="mp" aria-busy="true">
+    <span class="ui-visually-hidden" role="status">Loading your profile</span>
+    <ui-card>
+      <div class="mp-id">
+        <ui-skeleton shape="avatar" />
+        <div class="mp-id-text"><ui-skeleton [lines]="3" /></div>
       </div>
-    </div>
-    <div class="content-grid">
-      @for (n of [1, 2, 3]; track n) {
-        <div class="section-card">
-          <div class="sk-line w30 pulse" style="height: 14px; margin-bottom: 16px"></div>
-          @for (m of [1, 2, 3]; track m) {
-            <div class="sk-row">
-              <div class="sk-line w25 pulse"></div>
-              <div class="sk-line w45 pulse"></div>
-            </div>
-          }
-        </div>
+    </ui-card>
+    <div class="mp-grid">
+      @for (n of [1, 2, 3, 4]; track n) {
+        <ui-skeleton shape="card" />
       }
     </div>
+  </div>
+} @else if (profileResource.error() || !profileResource.value()) {
+  <ui-card>
+    <ui-error-state
+      kind="network"
+      [headingLevel]="1"
+      heading="We couldn't load your profile"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="profileResource.reload()"
+    />
+  </ui-card>
+} @else {
+  @let emp = profileResource.value()!;
+  @let fullName = emp.bio?.fullName || emp.firstName + ' ' + emp.lastName;
 
-    <!-- ── Error / not found ─────────────────────────────────────── -->
-  } @else if (profileResource.error() || !profileResource.value()) {
-    <div class="empty-state">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      <p>Could not load your profile. Please try again later.</p>
-    </div>
-  } @else {
-    @let emp = profileResource.value()!;
-
-    <!-- ── Banner ──────────────────────────────────────────────── -->
-    <div class="banner" [style.--avi-color]="getAvatarColor(emp.firstName + emp.lastName)">
-      <div class="banner-avi">{{ getInitials(emp.firstName, emp.lastName) }}</div>
-      <div class="banner-text">
-        <h1>{{ emp.bio?.fullName ?? emp.firstName + ' ' + emp.lastName }}</h1>
-        <p class="banner-sub">
-          {{ emp.position?.positionName ?? 'No position' }}
-          @if (emp.department?.departmentName) {
-            · {{ emp.department!.departmentName }}
-          }
-        </p>
+  <div class="mp">
+    <!-- Header: same language as a colleague's profile -->
+    <ui-card>
+      <div class="mp-id">
+        <ui-avatar
+          size="xl"
+          decorative
+          [name]="emp.firstName + ' ' + emp.lastName"
+          [tintKey]="emp.department?.departmentCode ?? emp.department?.departmentName ?? null"
+        />
+        <div class="mp-id-text">
+          <div class="mp-name-row">
+            <h1 class="mp-name ui-type-title">{{ fullName }}</h1>
+            @if (statusPillValue(emp.status); as status) {
+              <ui-status-pill [status]="status" />
+            }
+          </div>
+          <p class="mp-position">
+            {{ emp.position?.positionName ?? 'No position yet' }}
+            @if (emp.department?.departmentName) {
+              · {{ emp.department!.departmentName }}
+            }
+          </p>
+          <p class="mp-meta">
+            @if (emp.department?.departmentCode) {
+              <span class="mp-mono"
+                ><span class="ui-visually-hidden">Department code </span
+                >{{ emp.department!.departmentCode }}</span
+              >
+            }
+            <span class="mp-meta-item">
+              <ui-icon name="mail" size="sm" />
+              <span class="mp-wrap">{{ emp.workEmail }}</span>
+            </span>
+            <span class="mp-meta-item">
+              <ui-icon name="calendar" size="sm" />
+              Joined
+              <span class="mp-mono">{{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}</span>
+            </span>
+          </p>
+        </div>
       </div>
-      <span class="status-badge" [attr.data-status]="emp.status">{{ emp.status }}</span>
-    </div>
+    </ui-card>
 
-    <!-- ── Global section error ────────────────────────────────── -->
-    @if (sectionError()) {
-      <div class="section-error">{{ sectionError() }}</div>
+    @if (sectionError() && !editSection()) {
+      <ui-alert tone="danger" heading="That change didn't go through">
+        {{ sectionError() }} Refresh the page and try again.
+      </ui-alert>
     }
 
-    <div class="content-grid">
-      <!-- ── Work Info (read-only) ─────────────────────────────── -->
-      <div class="section-card">
-        <div class="section-head">
-          <h2 class="section-title">Work Info</h2>
-        </div>
-        <dl class="field-list">
-          <div class="field-row">
-            <dt>Work Email</dt>
-            <dd>{{ emp.workEmail }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Department</dt>
-            <dd>{{ emp.department?.departmentName ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Position</dt>
-            <dd>
-              {{ emp.position?.positionName ?? '' }}
-              @if (emp.position?.level) {
-                <span class="meta-tag">{{ emp.position!.level }}</span>
-              }
-            </dd>
-          </div>
-          <div class="field-row">
-            <dt>Access Level</dt>
-            <dd>{{ emp.accessLevel?.accessLevelName ?? '' }}</dd>
-          </div>
-          <div class="field-row">
-            <dt>Hired</dt>
-            <dd>{{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}</dd>
-          </div>
-        </dl>
-      </div>
-
-      <!-- ── Personal Bio ───────────────────────────────────────── -->
-      <div class="section-card">
-        <div class="section-head">
-          <h2 class="section-title">Personal Info</h2>
+    <div class="mp-grid">
+      <div class="mp-col">
+        <!-- Personal details -->
+        <ui-card title="Personal details">
           @if (canEdit() && editSection() !== 'bio') {
-            <button class="edit-btn" (click)="openBioEdit()">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-              Edit
+            <button
+              uiCardActions
+              uiButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              aria-label="Edit personal details"
+              (click)="openBioEdit()"
+            >
+              <ui-icon name="pencil" /> Edit
             </button>
           }
-        </div>
 
-        @if (editSection() === 'bio') {
-          <form class="inline-form" (submit)="saveBio(); $event.preventDefault()">
-            <div class="form-grid">
-              <div class="field">
-                <label for="my-profile-bio-form-full-name">Full Name</label>
-                <input
-                  id="my-profile-bio-form-full-name"
-                  [formField]="bioForm.fullName"
-                  placeholder="Full legal name"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-bio-form-other-name">Other Name</label>
-                <input
-                  id="my-profile-bio-form-other-name"
-                  [formField]="bioForm.otherName"
-                  placeholder="Nickname or alias"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-bio-form-gender">Gender</label>
-                <select id="my-profile-bio-form-gender" [formField]="bioForm.gender">
-                  <option value="">Select</option>
-                  <option value="MALE">Male</option>
-                  <option value="FEMALE">Female</option>
-                  <option value="OTHER">Other</option>
-                  <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="my-profile-bio-form-marital-status">Marital Status</label>
-                <select id="my-profile-bio-form-marital-status" [formField]="bioForm.maritalStatus">
-                  <option value="">Select</option>
-                  <option value="SINGLE">Single</option>
-                  <option value="MARRIED">Married</option>
-                  <option value="DIVORCED">Divorced</option>
-                  <option value="WIDOWED">Widowed</option>
-                </select>
-              </div>
-              <div class="field">
-                <label for="my-profile-bio-form-date-of-birth">Date of Birth</label>
-                <input
-                  id="my-profile-bio-form-date-of-birth"
-                  type="date"
-                  [formField]="bioForm.dateOfBirth"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-bio-form-place-of-birth">Place of Birth</label>
-                <input
-                  id="my-profile-bio-form-place-of-birth"
-                  [formField]="bioForm.placeOfBirth"
-                  placeholder="City, Country"
-                />
-              </div>
-              <div class="field span-2">
-                <label for="my-profile-bio-form-nationality">Nationality</label>
-                <input
-                  id="my-profile-bio-form-nationality"
-                  [formField]="bioForm.nationality"
-                  placeholder="e.g. Ghanaian"
-                />
-              </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="save-btn" [disabled]="saving()">
-                {{ saving() ? 'Saving…' : 'Save' }}
-              </button>
-              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-            </div>
-          </form>
-        } @else {
-          <dl class="field-list">
-            <div class="field-row">
-              <dt>Full Name</dt>
-              <dd>{{ emp.bio?.fullName ?? '' }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Other Name</dt>
-              <dd>{{ emp.bio?.otherName ?? '' }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Gender</dt>
-              <dd>{{ emp.bio?.gender ?? '' }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Date of Birth</dt>
-              <dd>{{ formatDate(emp.bio?.dateOfBirth) }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Place of Birth</dt>
-              <dd>{{ emp.bio?.placeOfBirth ?? '' }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Nationality</dt>
-              <dd>{{ emp.bio?.nationality ?? '' }}</dd>
-            </div>
-            <div class="field-row">
-              <dt>Marital Status</dt>
-              <dd>{{ emp.bio?.maritalStatus ?? '' }}</dd>
-            </div>
-          </dl>
-        }
-      </div>
-
-      <!-- ── Contact ────────────────────────────────────────────── -->
-      <div class="section-card">
-        <div class="section-head">
-          <h2 class="section-title">Contact</h2>
-          @if (canEdit() && editSection() !== 'contact') {
-            <button class="edit-btn" (click)="openContactEdit()">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-              </svg>
-              Edit
-            </button>
-          }
-        </div>
-
-        @if (editSection() === 'contact') {
-          <div class="contact-edit">
-            <div class="contact-group">
-              <label for="my-profile-new-phone" class="contact-label">Phone Numbers</label>
-              @for (phone of phoneNumbers(); track phone) {
-                <div class="contact-chip">
-                  <span>{{ phone }}</span>
-                  <button
-                    type="button"
-                    class="chip-remove"
-                    (click)="removePhone(phone)"
-                    aria-label="Remove"
-                  >
-                    ×
-                  </button>
-                </div>
+          @if (editSection() === 'bio') {
+            <form class="mp-form" novalidate (submit)="saveBio(); $event.preventDefault()">
+              @if (sectionError()) {
+                <ui-alert tone="danger" heading="We couldn't save your personal details">
+                  {{ sectionError() }} Check the details and try again.
+                </ui-alert>
               }
-              <div class="contact-add-row">
-                <input
-                  id="my-profile-new-phone"
-                  class="contact-input"
-                  type="tel"
-                  placeholder="+1 555 0000"
-                  [value]="newPhone()"
-                  (input)="newPhone.set($any($event.target).value)"
-                  (keydown.enter)="addPhone(); $event.preventDefault()"
-                />
-                <button type="button" class="add-chip-btn" (click)="addPhone()">Add</button>
-              </div>
-            </div>
-
-            <div class="contact-group">
-              <label for="my-profile-new-email" class="contact-label">Personal Emails</label>
-              @for (mail of personalEmails(); track mail) {
-                <div class="contact-chip">
-                  <span>{{ mail }}</span>
-                  <button
-                    type="button"
-                    class="chip-remove"
-                    (click)="removeEmail(mail)"
-                    aria-label="Remove"
+              <div class="mp-fields">
+                <ui-form-field label="Full name">
+                  <input
+                    uiInput
+                    id="my-profile-bio-form-full-name"
+                    autocomplete="name"
+                    placeholder="Your full legal name"
+                    [formField]="bioForm.fullName"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Other name" hint="A nickname or the name you go by.">
+                  <input
+                    uiInput
+                    id="my-profile-bio-form-other-name"
+                    autocomplete="nickname"
+                    [formField]="bioForm.otherName"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Gender">
+                  <select uiSelect id="my-profile-bio-form-gender" [formField]="bioForm.gender">
+                    <option value="">Select</option>
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="OTHER">Other</option>
+                    <option value="PREFER_NOT_TO_SAY">Prefer not to say</option>
+                  </select>
+                </ui-form-field>
+                <ui-form-field label="Marital status">
+                  <select
+                    uiSelect
+                    id="my-profile-bio-form-marital-status"
+                    [formField]="bioForm.maritalStatus"
                   >
-                    ×
-                  </button>
-                </div>
-              }
-              <div class="contact-add-row">
-                <input
-                  id="my-profile-new-email"
-                  class="contact-input"
-                  type="email"
-                  placeholder="personal@email.com"
-                  [value]="newEmail()"
-                  (input)="newEmail.set($any($event.target).value)"
-                  (keydown.enter)="addEmail(); $event.preventDefault()"
-                />
-                <button type="button" class="add-chip-btn" (click)="addEmail()">Add</button>
+                    <option value="">Select</option>
+                    <option value="SINGLE">Single</option>
+                    <option value="MARRIED">Married</option>
+                    <option value="DIVORCED">Divorced</option>
+                    <option value="WIDOWED">Widowed</option>
+                  </select>
+                </ui-form-field>
+                <ui-form-field label="Date of birth">
+                  <input
+                    uiInput
+                    id="my-profile-bio-form-date-of-birth"
+                    type="date"
+                    autocomplete="bday"
+                    [formField]="bioForm.dateOfBirth"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Place of birth">
+                  <input
+                    uiInput
+                    id="my-profile-bio-form-place-of-birth"
+                    placeholder="City, country"
+                    [formField]="bioForm.placeOfBirth"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Nationality">
+                  <input
+                    uiInput
+                    id="my-profile-bio-form-nationality"
+                    placeholder="Ghanaian"
+                    [formField]="bioForm.nationality"
+                  />
+                </ui-form-field>
               </div>
-            </div>
-
-            <div class="form-actions">
-              <button class="save-btn" (click)="saveContact()" [disabled]="saving()">
-                {{ saving() ? 'Saving…' : 'Save' }}
-              </button>
-              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-            </div>
-          </div>
-        } @else {
-          @if (
-            (emp.contact?.phoneNumbers?.length ?? 0) === 0 &&
-            (emp.contact?.personalEmails?.length ?? 0) === 0
-          ) {
-            <p class="empty-msg">No contact info on file.</p>
+              <div class="mp-actions">
+                <button uiButton variant="secondary" type="button" (click)="cancelEdit()">
+                  Cancel
+                </button>
+                <button uiButton type="submit" [loading]="saving()">Save changes</button>
+              </div>
+            </form>
           } @else {
-            <dl class="field-list">
-              @for (phone of emp.contact?.phoneNumbers ?? []; track phone) {
-                <div class="field-row">
-                  <dt>Phone</dt>
-                  <dd>{{ phone }}</dd>
-                </div>
-              }
-              @for (mail of emp.contact?.personalEmails ?? []; track mail) {
-                <div class="field-row">
-                  <dt>Personal Email</dt>
-                  <dd>{{ mail }}</dd>
-                </div>
-              }
+            <dl uiDescriptionList [columns]="2">
+              <div uiDescriptionItem label="Full name">
+                <span [class.mp-empty]="!emp.bio?.fullName">{{
+                  emp.bio?.fullName || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Other name">
+                <span [class.mp-empty]="!emp.bio?.otherName">{{
+                  emp.bio?.otherName || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Gender">
+                <span [class.mp-empty]="!emp.bio?.gender">{{
+                  sentenceCase(emp.bio?.gender) || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Date of birth" [mono]="!!emp.bio?.dateOfBirth">
+                <span [class.mp-empty]="!emp.bio?.dateOfBirth">{{
+                  formatDate(emp.bio?.dateOfBirth) || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Place of birth">
+                <span [class.mp-empty]="!emp.bio?.placeOfBirth">{{
+                  emp.bio?.placeOfBirth || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Nationality">
+                <span [class.mp-empty]="!emp.bio?.nationality">{{
+                  emp.bio?.nationality || 'Not added'
+                }}</span>
+              </div>
+              <div uiDescriptionItem label="Marital status">
+                <span [class.mp-empty]="!emp.bio?.maritalStatus">{{
+                  sentenceCase(emp.bio?.maritalStatus) || 'Not added'
+                }}</span>
+              </div>
             </dl>
           }
-        }
-      </div>
+        </ui-card>
 
-      <!-- ── Addresses ──────────────────────────────────────────── -->
-      <div class="section-card">
-        <div class="section-head">
-          <h2 class="section-title">Addresses</h2>
+        <!-- Addresses -->
+        <ui-card title="Addresses" [count]="emp.addresses.length || null">
           @if (canEdit() && editSection() !== 'address') {
-            <button class="edit-btn" (click)="openAddAddress()">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              Add
+            <button
+              uiCardActions
+              uiButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              (click)="openAddAddress()"
+            >
+              <ui-icon name="plus" /> Add address
             </button>
           }
-        </div>
 
-        @if (editSection() === 'address') {
-          <form class="inline-form" (submit)="saveAddress(); $event.preventDefault()">
-            <div class="form-grid">
-              <div class="field span-2">
-                <label for="my-profile-address-form-street">Street</label>
-                <input
-                  id="my-profile-address-form-street"
-                  [formField]="addressForm.street"
-                  placeholder="123 Main St"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-address-form-city">City <span class="req">*</span></label>
-                <input
-                  id="my-profile-address-form-city"
-                  [formField]="addressForm.city"
-                  placeholder="Accra"
-                />
-                @if (addressForm.city().touched() && addressForm.city().errors().length) {
-                  <span class="field-err">{{ addressForm.city().errors()[0].message }}</span>
-                }
-              </div>
-              <div class="field">
-                <label for="my-profile-address-form-state">State / Region</label>
-                <input
-                  id="my-profile-address-form-state"
-                  [formField]="addressForm.state"
-                  placeholder="Greater Accra"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-address-form-zip-code">Zip / Postal Code</label>
-                <input
-                  id="my-profile-address-form-zip-code"
-                  [formField]="addressForm.zipCode"
-                  placeholder="GA-123"
-                />
-              </div>
-              <div class="field">
-                <label for="my-profile-address-form-country"
-                  >Country <span class="req">*</span></label
-                >
-                <input
-                  id="my-profile-address-form-country"
-                  [formField]="addressForm.country"
-                  placeholder="Ghana"
-                />
-                @if (addressForm.country().touched() && addressForm.country().errors().length) {
-                  <span class="field-err">{{ addressForm.country().errors()[0].message }}</span>
-                }
-              </div>
-              <div class="field span-2">
-                <label for="my-profile-address-form-digital-address">Digital Address</label>
-                <input
-                  id="my-profile-address-form-digital-address"
-                  [formField]="addressForm.digitalAddress"
-                  placeholder="GA-123-4567"
-                />
-              </div>
-              <div class="field span-2">
-                <label for="my-profile-field" class="checkbox-label">
-                  <input
-                    id="my-profile-field"
-                    type="checkbox"
-                    [checked]="addressModel().isCurrentAddress"
-                    (change)="
-                      addressModel.update((m) => ({
-                        ...m,
-                        isCurrentAddress: $any($event.target).checked,
-                      }))
-                    "
-                  />
-                  This is my current address
-                </label>
-              </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="save-btn" [disabled]="saving()">
-                {{ saving() ? 'Saving…' : editAddressId() ? 'Save Changes' : 'Add Address' }}
-              </button>
-              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-            </div>
-          </form>
-        }
-
-        @for (addr of emp.addresses; track addr.id; let last = $last) {
-          <div class="address-block" [class.last]="last && editSection() !== 'address'">
-            <div class="address-line">
-              <span class="addr-text">
-                {{ addressLine(addr) }}
-              </span>
-              @if (addr.isCurrentAddress) {
-                <span class="meta-tag">Current</span>
+          @if (editSection() === 'address') {
+            <form class="mp-form" novalidate (submit)="saveAddress(); $event.preventDefault()">
+              @if (sectionError()) {
+                <ui-alert tone="danger" heading="We couldn't save this address">
+                  {{ sectionError() }} Check the city and country, then try again.
+                </ui-alert>
               }
-            </div>
-            @if (addr.digitalAddress) {
-              <span class="addr-digital">{{ addr.digitalAddress }}</span>
-            }
-            @if (canEdit()) {
-              <div class="addr-actions">
-                <button class="addr-btn" (click)="openEditAddress(addr)">Edit</button>
-                <button class="addr-btn addr-btn--danger" (click)="removeAddress(addr.id)">
-                  Remove
+              <div class="mp-fields">
+                <ui-form-field label="Street" class="mp-span">
+                  <input
+                    uiInput
+                    id="my-profile-address-form-street"
+                    autocomplete="address-line1"
+                    placeholder="14 Oxford St, Osu"
+                    [formField]="addressForm.street"
+                  />
+                </ui-form-field>
+                <ui-form-field label="City" required [error]="fieldError(addressForm.city)">
+                  <input
+                    uiInput
+                    id="my-profile-address-form-city"
+                    autocomplete="address-level2"
+                    placeholder="Accra"
+                    [formField]="addressForm.city"
+                  />
+                </ui-form-field>
+                <ui-form-field label="State or region">
+                  <input
+                    uiInput
+                    id="my-profile-address-form-state"
+                    autocomplete="address-level1"
+                    placeholder="Greater Accra"
+                    [formField]="addressForm.state"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Postal code">
+                  <input
+                    uiInput
+                    id="my-profile-address-form-zip-code"
+                    autocomplete="postal-code"
+                    [formField]="addressForm.zipCode"
+                  />
+                </ui-form-field>
+                <ui-form-field label="Country" required [error]="fieldError(addressForm.country)">
+                  <input
+                    uiInput
+                    id="my-profile-address-form-country"
+                    autocomplete="country-name"
+                    placeholder="Ghana"
+                    [formField]="addressForm.country"
+                  />
+                </ui-form-field>
+                <ui-form-field
+                  label="Digital address"
+                  hint="Your GhanaPost GPS code, if you have one."
+                >
+                  <input
+                    uiInput
+                    id="my-profile-address-form-digital-address"
+                    placeholder="GA-123-4567"
+                    [formField]="addressForm.digitalAddress"
+                  />
+                </ui-form-field>
+              </div>
+              <ui-checkbox
+                [checked]="addressModel().isCurrentAddress"
+                (checkedChange)="addressModel.update((m) => ({ ...m, isCurrentAddress: $event }))"
+                >This is where I live now</ui-checkbox
+              >
+              <div class="mp-actions">
+                <button uiButton variant="secondary" type="button" (click)="cancelEdit()">
+                  Cancel
+                </button>
+                <button uiButton type="submit" [loading]="saving()">
+                  {{ editAddressId() ? 'Save changes' : 'Add address' }}
                 </button>
               </div>
-            }
-          </div>
-        } @empty {
-          @if (editSection() !== 'address') {
-            <p class="empty-msg">No addresses on file.</p>
+            </form>
           }
-        }
-      </div>
 
-      <!-- ── Identifications ─────────────────────────────────────── -->
-      <div class="section-card">
-        <div class="section-head">
-          <h2 class="section-title">Identification</h2>
+          @if (emp.addresses.length) {
+            <ul class="mp-list" aria-label="Your addresses">
+              @for (addr of emp.addresses; track addr.id) {
+                <li class="mp-list-item">
+                  <div class="mp-list-text">
+                    <span class="mp-list-title">
+                      {{ addressLine(addr) }}
+                      @if (addr.isCurrentAddress) {
+                        <ui-tag label="Current" variant="accent" />
+                      }
+                    </span>
+                    @if (addr.digitalAddress) {
+                      <span class="mp-mono">{{ addr.digitalAddress }}</span>
+                    }
+                  </div>
+                  @if (canEdit()) {
+                    <div class="mp-list-actions">
+                      <button
+                        uiButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        [attr.aria-label]="'Edit ' + addressLine(addr)"
+                        (click)="openEditAddress(addr)"
+                      >
+                        <ui-icon name="pencil" /> Edit
+                      </button>
+                      <button
+                        uiButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        [attr.aria-label]="'Remove ' + addressLine(addr)"
+                        (click)="confirmRemoveAddress(addr)"
+                      >
+                        <ui-icon name="trash" /> Remove
+                      </button>
+                    </div>
+                  }
+                </li>
+              }
+            </ul>
+          } @else if (editSection() !== 'address') {
+            <p class="mp-empty">
+              No address on file.
+              @if (canEdit()) {
+                Add where you live so HR can send letters and documents.
+              }
+            </p>
+          }
+        </ui-card>
+
+        <!-- ID documents -->
+        <ui-card title="ID documents" [count]="emp.identifications.length || null">
           @if (canEdit() && editSection() !== 'id') {
-            <button class="edit-btn" (click)="openAddId()">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="1.75"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M12 5v14M5 12h14" />
-              </svg>
-              Add
+            <button
+              uiCardActions
+              uiButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              (click)="openAddId()"
+            >
+              <ui-icon name="plus" /> Add ID document
             </button>
           }
-        </div>
 
-        @if (editSection() === 'id') {
-          <form class="inline-form" (submit)="saveId(); $event.preventDefault()">
-            <div class="form-grid">
-              <div class="field">
-                <label for="my-profile-id-form-identification-type"
-                  >ID Type <span class="req">*</span></label
+          @if (editSection() === 'id') {
+            <form class="mp-form" novalidate (submit)="saveId(); $event.preventDefault()">
+              @if (sectionError()) {
+                <ui-alert tone="danger" heading="We couldn't add this ID document">
+                  {{ sectionError() }} Check the document number, then try again.
+                </ui-alert>
+              }
+              <div class="mp-fields">
+                <ui-form-field label="Document type" required>
+                  <select
+                    uiSelect
+                    id="my-profile-id-form-identification-type"
+                    [formField]="idForm.identificationType"
+                  >
+                    @for (type of ID_TYPES; track type) {
+                      <option [value]="type">{{ formatIdType(type) }}</option>
+                    }
+                  </select>
+                </ui-form-field>
+                <ui-form-field
+                  label="Document number"
+                  required
+                  [error]="fieldError(idForm.identificationNumber)"
                 >
-                <select
-                  id="my-profile-id-form-identification-type"
-                  [formField]="idForm.identificationType"
-                >
-                  @for (type of ID_TYPES; track type) {
-                    <option [value]="type">{{ formatIdType(type) }}</option>
-                  }
-                </select>
+                  <input
+                    uiInput
+                    id="my-profile-id-form-identification-number"
+                    autocomplete="off"
+                    placeholder="GHA-123456789-0"
+                    [formField]="idForm.identificationNumber"
+                  />
+                </ui-form-field>
               </div>
-              <div class="field">
-                <label for="my-profile-id-form-identification-number"
-                  >ID Number <span class="req">*</span></label
-                >
-                <input
-                  id="my-profile-id-form-identification-number"
-                  [formField]="idForm.identificationNumber"
-                  placeholder="GHA-12345678-9"
-                />
-                @if (
-                  idForm.identificationNumber().touched() &&
-                  idForm.identificationNumber().errors().length
-                ) {
-                  <span class="field-err">{{
-                    idForm.identificationNumber().errors()[0].message
-                  }}</span>
-                }
+              <div class="mp-actions">
+                <button uiButton variant="secondary" type="button" (click)="cancelEdit()">
+                  Cancel
+                </button>
+                <button uiButton type="submit" [loading]="saving()">Add ID document</button>
               </div>
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="save-btn" [disabled]="saving()">
-                {{ saving() ? 'Saving…' : 'Add ID' }}
-              </button>
-              <button type="button" class="cancel-btn" (click)="cancelEdit()">Cancel</button>
-            </div>
-          </form>
-        }
+            </form>
+          }
 
-        @if (emp.identifications.length > 0) {
-          <dl class="field-list">
-            @for (id of emp.identifications; track id.id) {
-              <div class="field-row">
-                <dt>{{ formatIdType(id.identificationType) }}</dt>
-                <dd>
-                  {{ id.identificationNumber }}
+          @if (emp.identifications.length) {
+            <ul class="mp-list" aria-label="Your ID documents">
+              @for (doc of emp.identifications; track doc.id) {
+                <li class="mp-list-item">
+                  <div class="mp-list-text">
+                    <span class="mp-list-title">{{ formatIdType(doc.identificationType) }}</span>
+                    <span class="mp-mono">{{ doc.identificationNumber }}</span>
+                  </div>
                   @if (canEdit()) {
-                    <button class="inline-remove-btn" (click)="removeId(id.id)" aria-label="Remove">
-                      <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
+                    <div class="mp-list-actions">
+                      <button
+                        uiButton
+                        variant="ghost"
+                        size="sm"
+                        type="button"
+                        [attr.aria-label]="'Remove ' + formatIdType(doc.identificationType)"
+                        (click)="confirmRemoveId(doc)"
                       >
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-                        <path d="M10 11v6M14 11v6" />
-                        <path d="M9 6V4h6v2" />
-                      </svg>
-                    </button>
+                        <ui-icon name="trash" /> Remove
+                      </button>
+                    </div>
                   }
-                </dd>
-              </div>
-            }
+                </li>
+              }
+            </ul>
+          } @else if (editSection() !== 'id') {
+            <p class="mp-empty">
+              No ID documents on file.
+              @if (canEdit()) {
+                Add your Ghana Card or passport number for payroll and contracts.
+              }
+            </p>
+          }
+        </ui-card>
+      </div>
+      <div class="mp-col">
+        <!-- Work details (read only) -->
+        <ui-card title="Work details">
+          <dl uiDescriptionList [columns]="2">
+            <div uiDescriptionItem label="Work email" [span]="2">
+              <span class="mp-wrap">{{ emp.workEmail }}</span>
+            </div>
+            <div uiDescriptionItem label="Department">
+              {{ emp.department?.departmentName || 'Not set' }}
+            </div>
+            <div uiDescriptionItem label="Position · level">
+              {{ emp.position?.positionName || 'Not set' }}
+              @if (emp.position?.level) {
+                · {{ sentenceCase(emp.position!.level) }}
+              }
+            </div>
+            <div uiDescriptionItem label="Access level">
+              {{ emp.accessLevel?.accessLevelName || 'Not set' }}
+            </div>
+            <div uiDescriptionItem label="Date hired" mono>
+              {{ formatDate(emp.bio?.dateHired ?? emp.createdDate) }}
+            </div>
           </dl>
-        } @else if (editSection() !== 'id') {
-          <p class="empty-msg">No IDs on file.</p>
-        }
+          <p uiCardFooter class="mp-note">Ask HR if any of these details are wrong.</p>
+        </ui-card>
+
+        <!-- Contact -->
+        <ui-card title="Contact">
+          @if (canEdit() && editSection() !== 'contact') {
+            <button
+              uiCardActions
+              uiButton
+              variant="ghost"
+              size="sm"
+              type="button"
+              aria-label="Edit contact details"
+              (click)="openContactEdit()"
+            >
+              <ui-icon name="pencil" /> Edit
+            </button>
+          }
+
+          @if (editSection() === 'contact') {
+            <div class="mp-form">
+              @if (sectionError()) {
+                <ui-alert tone="danger" heading="We couldn't save your contact details">
+                  {{ sectionError() }} Check the numbers and emails, then try again.
+                </ui-alert>
+              }
+              <div class="mp-contact-group">
+                @if (phoneNumbers().length) {
+                  <ul class="mp-tags" aria-label="Phone numbers">
+                    @for (phone of phoneNumbers(); track phone) {
+                      <li>
+                        <ui-tag
+                          removable
+                          [label]="phone"
+                          [removeLabel]="'Remove ' + phone"
+                          (remove)="removePhone(phone)"
+                        />
+                      </li>
+                    }
+                  </ul>
+                }
+                <ui-form-field
+                  label="Add a phone number"
+                  hint="Press Enter or Add to put it on the list."
+                >
+                  <input
+                    uiInput
+                    id="my-profile-new-phone"
+                    type="tel"
+                    autocomplete="tel"
+                    placeholder="+233 24 555 0142"
+                    [value]="newPhone()"
+                    (input)="newPhone.set($any($event.target).value)"
+                    (keydown.enter)="addPhone(); $event.preventDefault()"
+                  />
+                </ui-form-field>
+                <button uiButton variant="secondary" size="sm" type="button" (click)="addPhone()">
+                  <ui-icon name="plus" /> Add phone
+                </button>
+              </div>
+
+              <div class="mp-contact-group">
+                @if (personalEmails().length) {
+                  <ul class="mp-tags" aria-label="Personal emails">
+                    @for (mail of personalEmails(); track mail) {
+                      <li>
+                        <ui-tag
+                          removable
+                          [label]="mail"
+                          [removeLabel]="'Remove ' + mail"
+                          (remove)="removeEmail(mail)"
+                        />
+                      </li>
+                    }
+                  </ul>
+                }
+                <ui-form-field
+                  label="Add a personal email"
+                  hint="Press Enter or Add to put it on the list."
+                >
+                  <input
+                    uiInput
+                    id="my-profile-new-email"
+                    type="email"
+                    autocomplete="email"
+                    placeholder="ama@example.com"
+                    [value]="newEmail()"
+                    (input)="newEmail.set($any($event.target).value)"
+                    (keydown.enter)="addEmail(); $event.preventDefault()"
+                  />
+                </ui-form-field>
+                <button uiButton variant="secondary" size="sm" type="button" (click)="addEmail()">
+                  <ui-icon name="plus" /> Add email
+                </button>
+              </div>
+
+              <div class="mp-actions">
+                <button uiButton variant="secondary" type="button" (click)="cancelEdit()">
+                  Cancel
+                </button>
+                <button uiButton type="button" [loading]="saving()" (click)="saveContact()">
+                  Save changes
+                </button>
+              </div>
+            </div>
+          } @else {
+            @if (
+              (emp.contact?.phoneNumbers?.length ?? 0) === 0 &&
+              (emp.contact?.personalEmails?.length ?? 0) === 0
+            ) {
+              <p class="mp-empty">
+                No personal phone or email yet.
+                @if (canEdit()) {
+                  Add one so HR can reach you outside work.
+                }
+              </p>
+            } @else {
+              <dl uiDescriptionList [columns]="1">
+                @if (emp.contact?.phoneNumbers?.length) {
+                  <div uiDescriptionItem label="Phone">
+                    <span class="mp-tags">
+                      @for (phone of emp.contact!.phoneNumbers!; track phone) {
+                        <ui-tag [label]="phone" />
+                      }
+                    </span>
+                  </div>
+                }
+                @if (emp.contact?.personalEmails?.length) {
+                  <div uiDescriptionItem label="Personal email">
+                    <span class="mp-tags">
+                      @for (mail of emp.contact!.personalEmails!; track mail) {
+                        <ui-tag [label]="mail" />
+                      }
+                    </span>
+                  </div>
+                }
+              </dl>
+            }
+          }
+        </ui-card>
       </div>
     </div>
-  }
-</div>
+  </div>
+}

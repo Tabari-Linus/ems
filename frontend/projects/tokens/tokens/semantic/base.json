@@ -11,7 +11,28 @@
     }
   },
   "control": {
-    "border-width": { "$type": "dimension", "$value": "{border-width.thin}" },
+    "border-width": { "$type": "dimension", "$value": "{border-width.hairline}" },
+    "sm": {
+      "height": {
+        "$type": "dimension",
+        "$value": { "value": 32, "unit": "px" },
+        "$description": "Compact controls: small buttons, row actions, chips."
+      }
+    },
+    "md": {
+      "height": {
+        "$type": "dimension",
+        "$value": { "value": 40, "unit": "px" },
+        "$description": "Default height for buttons, inputs, selects and filter pills, so they line up."
+      }
+    },
+    "lg": {
+      "height": {
+        "$type": "dimension",
+        "$value": { "value": 48, "unit": "px" },
+        "$description": "Prominent single actions: the sign-in button."
+      }
+    },
     "min-target": {
       "$type": "dimension",
       "$value": { "value": 24, "unit": "px" },
@@ -24,20 +45,134 @@
       "control": { "$value": "{duration.fast}" },
       "spinner": { "$value": { "value": 800, "unit": "ms" } }
     },
-    "easing": {
-      "$type": "cubicBezier",
-      "standard": { "$value": "{easing.standard}" }
+    "easing": { "$type": "cubicBezier", "standard": { "$value": "{easing.standard}" } }
+  },
+  "type": {
+    "display": {
+      "$description": "The Home greeting only. One per app.",
+      "size": { "$type": "dimension", "$value": "{font.size.46}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.extrabold}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.tight}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.tightest}" }
+    },
+    "title": {
+      "$description": "Page titles and the person's name on a profile (h1).",
+      "size": { "$type": "dimension", "$value": "{font.size.28}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.extrabold}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.snug}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.tighter}" }
+    },
+    "headline": {
+      "$description": "Section and card titles, dialog titles (h2/h3).",
+      "size": { "$type": "dimension", "$value": "{font.size.17}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.bold}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.heading}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.tight}" }
+    },
+    "body": {
+      "$description": "Running text and table cells.",
+      "size": { "$type": "dimension", "$value": "{font.size.15}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.relaxed}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
+    },
+    "body-strong": {
+      "$description": "Names and values that must stand out inside body text (description-list values).",
+      "size": { "$type": "dimension", "$value": "{font.size.15}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.relaxed}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
+    },
+    "label": {
+      "$description": "Buttons, nav items, tabs, form labels.",
+      "size": { "$type": "dimension", "$value": "{font.size.14}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.semibold}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.compact}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
+    },
+    "caption": {
+      "$description": "Hints, meta lines, timestamps, table headers.",
+      "size": { "$type": "dimension", "$value": "{font.size.13}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.normal}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
+    },
+    "mono": {
+      "$description": "Employee numbers, codes, dates (Geist Mono, tabular numerals).",
+      "size": { "$type": "dimension", "$value": "{font.size.13}" },
+      "weight": { "$type": "fontWeight", "$value": "{font.weight.medium}" },
+      "line-height": { "$type": "number", "$value": "{font.line-height.normal}" },
+      "letter-spacing": { "$type": "dimension", "$value": "{font.tracking.normal}" }
     }
   },
-  "text": {
-    "body": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.sans}" },
-      "size": { "$type": "dimension", "$value": "{font.size.md}" },
-      "line-height": { "$type": "number", "$value": "{font.line-height.normal}" },
-      "weight": { "$type": "fontWeight", "$value": "{font.weight.regular}" }
+  "layout": {
+    "$type": "dimension",
+    "sidebar": {
+      "width": {
+        "$value": { "value": 232, "unit": "px" },
+        "$description": "App-shell sidebar, expanded."
+      },
+      "collapsed-width": {
+        "$value": { "value": 72, "unit": "px" },
+        "$description": "App-shell sidebar collapsed to icons."
+      }
     },
-    "code": {
-      "family": { "$type": "fontFamily", "$value": "{font.family.mono}" }
+    "drawer": {
+      "width": {
+        "$value": { "value": 288, "unit": "px" },
+        "$description": "App-shell navigation drawer below breakpoint.compact."
+      }
+    },
+    "topbar": {
+      "height": {
+        "$value": { "value": 68, "unit": "px" },
+        "$description": "App-shell top bar (search, actions, user menu)."
+      }
+    },
+    "content": {
+      "max-width": {
+        "$value": { "value": 1120, "unit": "px" },
+        "$description": "Page content width inside the app shell: the 1200px direction-d frame minus the sidebar, with room to breathe at 1440."
+      }
+    }
+  },
+  "size": {
+    "$type": "dimension",
+    "dialog": {
+      "sm": {
+        "$value": { "value": 416, "unit": "px" },
+        "$description": "Confirmations."
+      },
+      "md": {
+        "$value": { "value": 512, "unit": "px" },
+        "$description": "Default dialog."
+      },
+      "lg": {
+        "$value": { "value": 704, "unit": "px" },
+        "$description": "Dialogs with a form or a table."
+      }
+    },
+    "drawer": {
+      "md": {
+        "$value": { "value": 480, "unit": "px" },
+        "$description": "Default side sheet (create and edit forms)."
+      },
+      "lg": {
+        "$value": { "value": 640, "unit": "px" },
+        "$description": "Wide side sheet (permission matrix, long forms)."
+      }
+    },
+    "tooltip": {
+      "max-width": {
+        "$value": { "value": 256, "unit": "px" },
+        "$description": "Tooltips wrap beyond this width."
+      }
+    },
+    "popover": {
+      "min-width": {
+        "$value": { "value": 192, "unit": "px" },
+        "$description": "Menus, listboxes and filter panels."
+      }
     }
   }
 }

@@ -1,138 +1,165 @@
-<div class="tab-panel">
-  <div class="panel-header">
-    <div>
-      <h2>Offices</h2>
-      <p>Manage office locations under a company</p>
-    </div>
-    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
-      {{ showForm() ? 'Cancel' : '+ New Office' }}
-    </button>
-  </div>
+<ui-page-header title="Offices" level="2" [count]="count()">
+  <button uiPageHeaderActions uiButton type="button" (click)="toggleForm()">
+    <ui-icon name="plus" /> Add office
+  </button>
+</ui-page-header>
 
-  @if (showForm()) {
-    <div class="create-form-card">
-      <h3>{{ editId() ? 'Edit Office' : 'New Office' }}</h3>
-      @if (formError()) {
-        <div class="form-api-error">{{ formError() }}</div>
-      }
-      <form (submit)="onSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          @if (!editId()) {
-            <div class="field span-2">
-              <label for="offices-office-form-company-id">Company <span class="req">*</span></label>
-              <select id="offices-office-form-company-id" [formField]="officeForm.companyId">
-                <option value="">Select a company</option>
-                @for (c of companiesResource.value()?.data ?? []; track c.id) {
-                  <option [value]="c.id">{{ c.companyName }}</option>
-                }
-              </select>
-              @if (officeForm.companyId().touched() && officeForm.companyId().errors().length) {
-                <span class="field-err">{{ officeForm.companyId().errors()[0].message }}</span>
-              }
-            </div>
+@if (listResource.error()) {
+  <ui-card>
+    <ui-error-state
+      kind="network"
+      [headingLevel]="3"
+      heading="We couldn't load offices"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="listResource.reload()"
+    />
+  </ui-card>
+} @else {
+  <ui-card flush>
+    <ui-data-table
+      caption="Offices"
+      loadingLabel="Loading offices"
+      [rows]="rows()"
+      [loading]="listResource.isLoading()"
+      [trackBy]="trackById"
+    >
+      <ng-container uiColumn="name" header="Name" primary>
+        <ng-template uiCell let-o>
+          <span class="settings-name">{{ o.officeName }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="code" header="Code">
+        <ng-template uiCell let-o>
+          <span class="settings-mono">{{ o.officeCode }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="email" header="Email">
+        <ng-template uiCell let-o>
+          <span class="settings-wrap">{{ o.officeEmail ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="phone" header="Phone">
+        <ng-template uiCell let-o>
+          <span class="settings-mono">{{ o.officePhoneNumber ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="status" header="Status">
+        <ng-template uiCell let-o>
+          @if (statusPillValue(o.officeStatus ?? 'PENDING'); as status) {
+            <ui-status-pill [status]="status" />
+          } @else {
+            <ui-status-pill>{{ o.officeStatus }}</ui-status-pill>
           }
-          <div class="field">
-            <label for="offices-office-form-office-name"
-              >Office Name <span class="req">*</span></label
-            >
-            <input
-              id="offices-office-form-office-name"
-              [formField]="officeForm.officeName"
-              placeholder="Head Office"
-            />
-            @if (officeForm.officeName().touched() && officeForm.officeName().errors().length) {
-              <span class="field-err">{{ officeForm.officeName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="offices-office-form-office-email">Email <span class="req">*</span></label>
-            <input
-              id="offices-office-form-office-email"
-              type="email"
-              [formField]="officeForm.officeEmail"
-              placeholder="office@acme.com"
-            />
-            @if (officeForm.officeEmail().touched() && officeForm.officeEmail().errors().length) {
-              <span class="field-err">{{ officeForm.officeEmail().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="offices-office-form-office-phone-number">Phone</label>
-            <input
-              id="offices-office-form-office-phone-number"
-              [formField]="officeForm.officePhoneNumber"
-              placeholder="+1 555 0001"
-            />
-          </div>
-          <div class="field">
-            <label for="offices-office-form-office-address">Address</label>
-            <input
-              id="offices-office-form-office-address"
-              [formField]="officeForm.officeAddress"
-              placeholder="456 Park Ave, City"
-            />
-          </div>
-        </div>
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Office' }}
+        </ng-template>
+      </ng-container>
+      <ng-template uiRowActions let-o>
+        <button
+          uiButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="'Edit ' + o.officeName"
+          (click)="startEdit(o)"
+        >
+          <ui-icon name="pencil" /> Edit
         </button>
-      </form>
-    </div>
-  }
+      </ng-template>
+      <ui-empty-state
+        uiTableEmpty
+        [headingLevel]="3"
+        heading="No offices yet"
+        description="Add an office under one of your companies, then add departments to it."
+      >
+        <button
+          uiEmptyStateActions
+          uiButton
+          variant="secondary"
+          type="button"
+          (click)="toggleForm()"
+        >
+          <ui-icon name="plus" /> Add office
+        </button>
+      </ui-empty-state>
+    </ui-data-table>
+  </ui-card>
+}
 
-  @if (listResource.isLoading()) {
-    <div class="loading-state">Loading offices...</div>
-  } @else if (listResource.error()) {
-    <div class="error-state">Failed to load offices.</div>
-  } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of listResource.value()?.data ?? []; track item.id) {
-          <tr>
-            <td class="name-cell">{{ item.officeName }}</td>
-            <td>
-              <span class="code-badge">{{ item.officeCode }}</span>
-            </td>
-            <td>{{ item.officeEmail ?? '' }}</td>
-            <td>{{ item.officePhoneNumber ?? '' }}</td>
-            <td>
-              <span class="status-chip" [attr.data-status]="item.officeStatus ?? 'PENDING'">{{
-                item.officeStatus ?? 'PENDING'
-              }}</span>
-            </td>
-            <td class="action-cell">
-              <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="6" class="empty-row">No offices yet.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-</div>
+<ng-template #formTpl>
+  <ui-drawer
+    [heading]="editId() ? 'Edit office' : 'Add office'"
+    description="Fields marked * are required."
+  >
+    <form
+      id="offices-office-form"
+      class="settings-form"
+      novalidate
+      (submit)="onSubmit(); $event.preventDefault()"
+    >
+      @if (formError()) {
+        <ui-alert tone="danger" heading="We couldn't save this office">
+          {{ formError() }} Check the details and try again.
+        </ui-alert>
+      }
+      @if (!editId()) {
+        <ui-form-field
+          label="Company"
+          hint="The company this office belongs to."
+          required
+          [error]="fieldError(officeForm.companyId)"
+        >
+          <select uiSelect id="offices-office-form-company-id" [formField]="officeForm.companyId">
+            <option value="">Select a company</option>
+            @for (c of companiesResource.value()?.data ?? []; track c.id) {
+              <option [value]="c.id">{{ c.companyName }}</option>
+            }
+          </select>
+        </ui-form-field>
+      }
+      <ui-form-field label="Office name" required [error]="fieldError(officeForm.officeName)">
+        <input
+          uiInput
+          id="offices-office-form-office-name"
+          autocomplete="off"
+          placeholder="Accra"
+          [formField]="officeForm.officeName"
+        />
+      </ui-form-field>
+      <ui-form-field label="Email" required [error]="fieldError(officeForm.officeEmail)">
+        <input
+          uiInput
+          id="offices-office-form-office-email"
+          type="email"
+          autocomplete="email"
+          placeholder="accra@akwaabalabs.example"
+          [formField]="officeForm.officeEmail"
+        />
+      </ui-form-field>
+      <ui-form-field label="Phone">
+        <input
+          uiInput
+          id="offices-office-form-office-phone-number"
+          type="tel"
+          autocomplete="tel"
+          placeholder="+233 30 255 0101"
+          [formField]="officeForm.officePhoneNumber"
+        />
+      </ui-form-field>
+      <ui-form-field label="Address">
+        <textarea
+          uiInput
+          id="offices-office-form-office-address"
+          rows="2"
+          autocomplete="street-address"
+          placeholder="14 Oxford St, Osu, Accra"
+          [formField]="officeForm.officeAddress"
+        ></textarea>
+      </ui-form-field>
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" (click)="showForm.set(false)">
+      Cancel
+    </button>
+    <button uiDrawerAction uiButton type="submit" form="offices-office-form" [loading]="saving()">
+      {{ editId() ? 'Save changes' : 'Add office' }}
+    </button>
+  </ui-drawer>
+</ng-template>

@@ -1,142 +1,164 @@
-<div class="tab-panel">
-  <div class="panel-header">
-    <div>
-      <h2>Departments</h2>
-      <p>Manage departments within offices</p>
-    </div>
-    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
-      {{ showForm() ? 'Cancel' : '+ New Department' }}
-    </button>
-  </div>
+<ui-page-header title="Departments" level="2" [count]="count()">
+  <button uiPageHeaderActions uiButton type="button" (click)="toggleForm()">
+    <ui-icon name="plus" /> Add department
+  </button>
+</ui-page-header>
 
-  @if (showForm()) {
-    <div class="create-form-card">
-      <h3>{{ editId() ? 'Edit Department' : 'New Department' }}</h3>
-      @if (formError()) {
-        <div class="form-api-error">{{ formError() }}</div>
-      }
-      <form (submit)="onSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          @if (!editId()) {
-            <div class="field span-2">
-              <label for="departments-dept-form-office-id">Office <span class="req">*</span></label>
-              <select id="departments-dept-form-office-id" [formField]="deptForm.officeId">
-                <option value="">Select an office</option>
-                @for (o of officesResource.value()?.data ?? []; track o.id) {
-                  <option [value]="o.id">{{ o.officeName }}</option>
-                }
-              </select>
-              @if (deptForm.officeId().touched() && deptForm.officeId().errors().length) {
-                <span class="field-err">{{ deptForm.officeId().errors()[0].message }}</span>
-              }
-            </div>
+@if (listResource.error()) {
+  <ui-card>
+    <ui-error-state
+      kind="network"
+      [headingLevel]="3"
+      heading="We couldn't load departments"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="listResource.reload()"
+    />
+  </ui-card>
+} @else {
+  <ui-card flush>
+    <ui-data-table
+      caption="Departments"
+      loadingLabel="Loading departments"
+      [rows]="rows()"
+      [loading]="listResource.isLoading()"
+      [trackBy]="trackById"
+    >
+      <ng-container uiColumn="name" header="Name" primary>
+        <ng-template uiCell let-d>
+          <span class="settings-name">{{ d.departmentName }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="code" header="Code">
+        <ng-template uiCell let-d>
+          <span class="settings-mono">{{ d.departmentCode }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="email" header="Email">
+        <ng-template uiCell let-d>
+          <span class="settings-wrap">{{ d.departmentEmail ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="phone" header="Phone">
+        <ng-template uiCell let-d>
+          <span class="settings-mono">{{ d.departmentPhoneNumber ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="status" header="Status">
+        <ng-template uiCell let-d>
+          @if (statusPillValue(d.departmentStatus ?? 'PENDING'); as status) {
+            <ui-status-pill [status]="status" />
+          } @else {
+            <ui-status-pill>{{ d.departmentStatus }}</ui-status-pill>
           }
-          <div class="field">
-            <label for="departments-dept-form-department-name"
-              >Department Name <span class="req">*</span></label
-            >
-            <input
-              id="departments-dept-form-department-name"
-              [formField]="deptForm.departmentName"
-              placeholder="Engineering"
-            />
-            @if (deptForm.departmentName().touched() && deptForm.departmentName().errors().length) {
-              <span class="field-err">{{ deptForm.departmentName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="departments-dept-form-department-email"
-              >Email <span class="req">*</span></label
-            >
-            <input
-              id="departments-dept-form-department-email"
-              type="email"
-              [formField]="deptForm.departmentEmail"
-              placeholder="eng@acme.com"
-            />
-            @if (
-              deptForm.departmentEmail().touched() && deptForm.departmentEmail().errors().length
-            ) {
-              <span class="field-err">{{ deptForm.departmentEmail().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="departments-dept-form-department-phone-number">Phone</label>
-            <input
-              id="departments-dept-form-department-phone-number"
-              [formField]="deptForm.departmentPhoneNumber"
-              placeholder="+1 555 0002"
-            />
-          </div>
-          <div class="field">
-            <label for="departments-dept-form-department-address">Address</label>
-            <input
-              id="departments-dept-form-department-address"
-              [formField]="deptForm.departmentAddress"
-              placeholder="Floor 3, Block B"
-            />
-          </div>
-        </div>
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Department' }}
+        </ng-template>
+      </ng-container>
+      <ng-template uiRowActions let-d>
+        <button
+          uiButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="'Edit ' + d.departmentName"
+          (click)="startEdit(d)"
+        >
+          <ui-icon name="pencil" /> Edit
         </button>
-      </form>
-    </div>
-  }
+      </ng-template>
+      <ui-empty-state
+        uiTableEmpty
+        [headingLevel]="3"
+        heading="No departments yet"
+        description="Add a department to one of your offices so people can be placed in it."
+      >
+        <button
+          uiEmptyStateActions
+          uiButton
+          variant="secondary"
+          type="button"
+          (click)="toggleForm()"
+        >
+          <ui-icon name="plus" /> Add department
+        </button>
+      </ui-empty-state>
+    </ui-data-table>
+  </ui-card>
+}
 
-  @if (listResource.isLoading()) {
-    <div class="loading-state">Loading departments...</div>
-  } @else if (listResource.error()) {
-    <div class="error-state">Failed to load departments.</div>
-  } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Code</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of listResource.value()?.data ?? []; track item.id) {
-          <tr>
-            <td class="name-cell">{{ item.departmentName }}</td>
-            <td>
-              <span class="code-badge">{{ item.departmentCode }}</span>
-            </td>
-            <td>{{ item.departmentEmail ?? '' }}</td>
-            <td>{{ item.departmentPhoneNumber ?? '' }}</td>
-            <td>
-              <span class="status-chip" [attr.data-status]="item.departmentStatus ?? 'PENDING'">{{
-                item.departmentStatus ?? 'PENDING'
-              }}</span>
-            </td>
-            <td class="action-cell">
-              <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="6" class="empty-row">No departments yet.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-</div>
+<ng-template #formTpl>
+  <ui-drawer
+    [heading]="editId() ? 'Edit department' : 'Add department'"
+    description="Fields marked * are required."
+  >
+    <form
+      id="departments-dept-form"
+      class="settings-form"
+      novalidate
+      (submit)="onSubmit(); $event.preventDefault()"
+    >
+      @if (formError()) {
+        <ui-alert tone="danger" heading="We couldn't save this department">
+          {{ formError() }} Check the details and try again.
+        </ui-alert>
+      }
+      @if (!editId()) {
+        <ui-form-field
+          label="Office"
+          hint="The office this department works from."
+          required
+          [error]="fieldError(deptForm.officeId)"
+        >
+          <select uiSelect id="departments-dept-form-office-id" [formField]="deptForm.officeId">
+            <option value="">Select an office</option>
+            @for (o of officesResource.value()?.data ?? []; track o.id) {
+              <option [value]="o.id">{{ o.officeName }}</option>
+            }
+          </select>
+        </ui-form-field>
+      }
+      <ui-form-field label="Department name" required [error]="fieldError(deptForm.departmentName)">
+        <input
+          uiInput
+          id="departments-dept-form-department-name"
+          autocomplete="off"
+          placeholder="Platform Engineering"
+          [formField]="deptForm.departmentName"
+        />
+      </ui-form-field>
+      <ui-form-field label="Email" required [error]="fieldError(deptForm.departmentEmail)">
+        <input
+          uiInput
+          id="departments-dept-form-department-email"
+          type="email"
+          autocomplete="email"
+          placeholder="platform@akwaabalabs.example"
+          [formField]="deptForm.departmentEmail"
+        />
+      </ui-form-field>
+      <ui-form-field label="Phone">
+        <input
+          uiInput
+          id="departments-dept-form-department-phone-number"
+          type="tel"
+          autocomplete="tel"
+          placeholder="+233 30 255 0102"
+          [formField]="deptForm.departmentPhoneNumber"
+        />
+      </ui-form-field>
+      <ui-form-field label="Location" hint="Floor or building, if it helps people find the team.">
+        <input
+          uiInput
+          id="departments-dept-form-department-address"
+          autocomplete="off"
+          placeholder="Floor 3, Block B"
+          [formField]="deptForm.departmentAddress"
+        />
+      </ui-form-field>
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" (click)="showForm.set(false)">
+      Cancel
+    </button>
+    <button uiDrawerAction uiButton type="submit" form="departments-dept-form" [loading]="saving()">
+      {{ editId() ? 'Save changes' : 'Add department' }}
+    </button>
+  </ui-drawer>
+</ng-template>

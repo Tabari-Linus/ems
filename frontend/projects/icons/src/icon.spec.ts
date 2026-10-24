@@ -10,7 +10,7 @@ import { EMS_ICONS, ICON_NAMES, type IconName } from './registry';
 })
 class Host {
   readonly name = signal<IconName>('search');
-  readonly size = signal<number | string>(20);
+  readonly size = signal<number | string | undefined>(20);
   readonly label = signal<string | undefined>(undefined);
 }
 
@@ -70,6 +70,29 @@ describe('Icon', () => {
     expect(icon.dataset['icon']).toBe('x');
     expect(svg().getAttribute('width')).toBe('16');
     expect(svg().getAttribute('height')).toBe('16');
+  });
+
+  it('maps size tokens to the icon scale and inherits the size from CSS without one', async () => {
+    const { icon, update } = await setup();
+    const sizeVar = () => icon.style.getPropertyValue('--ui-icon-size');
+    const svg = () => icon.querySelector('svg') as SVGSVGElement;
+
+    expect(sizeVar()).toBe('20px');
+
+    await update((h) => h.size.set('sm'));
+    expect(sizeVar()).toBe('var(--ems-icon-size-sm)');
+    expect(svg().getAttribute('width')).toBe('16');
+
+    await update((h) => h.size.set('lg'));
+    expect(sizeVar()).toBe('var(--ems-icon-size-lg)');
+    expect(svg().getAttribute('width')).toBe('24');
+
+    await update((h) => h.size.set('1em'));
+    expect(sizeVar()).toBe('1em');
+    expect(svg().getAttribute('width')).toBe('20');
+
+    await update((h) => h.size.set(undefined));
+    expect(sizeVar()).toBe('');
   });
 
   it('exposes a sorted list of curated names', () => {

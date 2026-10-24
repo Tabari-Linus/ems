@@ -1,0 +1,137 @@
+/*
+ * ui-input-group: the field frame around a grouped uiInput plus leading/trailing slots.
+ * Contract tokens only. Unencapsulated so slot selectors reach projected content; every
+ * selector is scoped by .ui-input-group.
+ */
+@layer components {
+  .ui-input-group {
+    --_height: var(--ems-control-md-height);
+    --_padding-inline: var(--ems-space-3);
+    --_action-size: var(--ems-control-sm-height);
+
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--ems-space-2);
+    inline-size: 100%;
+    min-inline-size: 0;
+    block-size: var(--_height);
+    padding-inline: var(--_padding-inline);
+    border: var(--ems-border-width-hairline) solid var(--ems-color-border-default);
+    border-radius: var(--ems-radius-md);
+    background-color: var(--ems-color-bg-surface);
+    color: var(--ems-color-text-muted);
+    transition:
+      border-color var(--ems-duration-fast) var(--ems-easing-standard),
+      box-shadow var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-input-group[data-size='sm'] {
+    --_height: var(--ems-control-sm-height);
+    --_padding-inline: var(--ems-space-2);
+    --_action-size: var(--ems-control-min-target);
+  }
+
+  .ui-input-group[data-shape='pill'] {
+    padding-inline-start: var(--ems-space-4);
+    padding-inline-end: var(--ems-space-1);
+    border-radius: var(--ems-radius-pill);
+  }
+
+  .ui-input-group:hover:not(:has(.ui-input:disabled, .ui-input[readonly])) {
+    border-color: var(--ems-color-border-strong);
+  }
+
+  .ui-input-group:has(.ui-input:focus) {
+    border-color: var(--ems-color-border-focus);
+    box-shadow: var(--ems-elevation-focus);
+  }
+
+  .ui-input-group:has(.ui-input[aria-invalid='true']) {
+    border-color: var(--ems-color-status-danger-border);
+  }
+
+  .ui-input-group:has(.ui-input[readonly]) {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+  }
+
+  .ui-input-group:has(.ui-input:disabled) {
+    border-color: var(--ems-color-border-subtle);
+    background-color: var(--ems-color-bg-sunken);
+    cursor: not-allowed;
+  }
+
+  .ui-input-group > [uiInputLeading],
+  .ui-input-group > [uiInputTrailing] {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Standard icon size inside the frame (slot icons and button glyphs). */
+  .ui-input-group__icon {
+    --ui-icon-size: var(--ems-icon-size-sm);
+
+    flex: none;
+    inline-size: var(--ems-icon-size-sm);
+    block-size: var(--ems-icon-size-sm);
+  }
+
+  /* A small round icon button for trailing actions (reveal password, clear search). */
+  .ui-input-group__button {
+    box-sizing: border-box;
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--_action-size);
+    block-size: var(--_action-size);
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background: transparent;
+    color: var(--ems-color-text-muted);
+    cursor: pointer;
+    transition:
+      background-color var(--ems-duration-fast) var(--ems-easing-standard),
+      color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-input-group__button:hover {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-input-group__button:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  .ui-input-group__button:disabled {
+    color: var(--ems-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .ui-input-group__button:disabled:hover {
+    background: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-input-group,
+    .ui-input-group__button {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-input-group:has(.ui-input:focus) {
+      outline: var(--ems-border-width-hairline) solid Highlight;
+      outline-offset: var(--ems-border-width-hairline);
+    }
+
+    .ui-input-group__button:focus-visible {
+      outline-color: Highlight;
+    }
+  }
+}

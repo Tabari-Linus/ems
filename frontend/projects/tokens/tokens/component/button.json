@@ -2,55 +2,95 @@
   "button": {
     "primary": {
       "$type": "color",
+      "$description": "Solid indigo pill: the one next step in a view.",
       "bg": {
-        "$value": "{color.accent.bg}"
+        "$value": "{color.accent.solid}"
       },
       "bg-hover": {
-        "$value": "{color.accent.bg-hover}"
+        "$value": "{color.accent.solid-hover}"
+      },
+      "bg-active": {
+        "$value": "{color.accent.solid-active}"
       },
       "fg": {
-        "$value": "{color.text.on-accent}"
+        "$value": "{color.accent.on-solid}"
+      },
+      "border": {
+        "$value": "{color.transparent}"
       }
     },
     "secondary": {
       "$type": "color",
+      "$description": "Soft indigo tint: Decline, Cancel, Email.",
       "bg": {
-        "$value": "{color.bg.surface}"
+        "$value": "{color.accent.soft}"
       },
       "bg-hover": {
-        "$value": "{color.bg.subtle}"
+        "$value": "{color.accent.soft-hover}"
+      },
+      "bg-active": {
+        "$value": "{color.accent.soft-hover}"
       },
       "fg": {
-        "$value": "{color.text.default}"
+        "$value": "{color.accent.soft-text}"
       },
       "border": {
-        "$value": "{color.border.strong}"
+        "$value": "{color.transparent}"
       }
     },
     "ghost": {
       "$type": "color",
+      "$description": "Text-only: Review profile, Reveal, low-emphasis row actions.",
+      "bg": {
+        "$value": "{color.transparent}"
+      },
       "bg-hover": {
-        "$value": "{color.bg.subtle}"
+        "$value": "{color.accent.soft}"
+      },
+      "bg-active": {
+        "$value": "{color.accent.soft-hover}"
       },
       "fg": {
-        "$value": "{color.accent.text}"
+        "$value": "{color.text.link}"
+      },
+      "border": {
+        "$value": "{color.transparent}"
       }
     },
     "danger": {
       "$type": "color",
+      "$description": "Destructive confirmation only (Deactivate, Delete), usually inside a confirm dialog.",
       "bg": {
         "$value": "{color.status.danger.solid}"
       },
       "bg-hover": {
         "$value": "{color.status.danger.solid-hover}"
       },
+      "bg-active": {
+        "$value": "{color.status.danger.solid-hover}"
+      },
       "fg": {
         "$value": "{color.status.danger.on-solid}"
+      },
+      "border": {
+        "$value": "{color.transparent}"
+      }
+    },
+    "disabled": {
+      "$type": "color",
+      "bg": {
+        "$value": "{color.bg.sunken}"
+      },
+      "fg": {
+        "$value": "{color.text.disabled}"
+      },
+      "border": {
+        "$value": "{color.transparent}"
       }
     },
     "radius": {
       "$type": "dimension",
-      "$value": "{radius.md}"
+      "$value": "{radius.pill}"
     },
     "gap": {
       "$type": "dimension",
@@ -58,51 +98,42 @@
     },
     "font-weight": {
       "$type": "fontWeight",
-      "$value": "{font.weight.medium}"
+      "$value": "{type.label.weight}"
     },
     "sm": {
       "$type": "dimension",
       "height": {
-        "$value": {
-          "value": 2,
-          "unit": "rem"
-        }
+        "$value": "{control.sm.height}"
       },
       "padding-inline": {
         "$value": "{space.3}"
       },
       "font-size": {
-        "$value": "{font.size.sm}"
+        "$value": "{font.size.13}"
       }
     },
     "md": {
       "$type": "dimension",
       "height": {
-        "$value": {
-          "value": 2.5,
-          "unit": "rem"
-        }
+        "$value": "{control.md.height}"
       },
       "padding-inline": {
         "$value": "{space.4}"
       },
       "font-size": {
-        "$value": "{font.size.sm}"
+        "$value": "{type.label.size}"
       }
     },
     "lg": {
       "$type": "dimension",
       "height": {
-        "$value": {
-          "value": 3,
-          "unit": "rem"
-        }
+        "$value": "{control.lg.height}"
       },
       "padding-inline": {
-        "$value": "{space.5}"
+        "$value": "{space.6}"
       },
       "font-size": {
-        "$value": "{font.size.md}"
+        "$value": "{font.size.15}"
       }
     }
   }

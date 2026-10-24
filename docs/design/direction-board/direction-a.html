@@ -1,0 +1,678 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Direction A — Atelier</title>
+<meta name="description" content="EMS Direction Board, Direction A: Atelier — warm, people-first editorial modernism.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=Figtree:ital,wght@0,300..900;1,400&family=JetBrains+Mono:wght@400..700&display=swap">
+<style>
+:root{--ground:oklch(97% 0.008 150);--surface:oklch(99.3% 0.004 150);--raised:oklch(100% 0 0);--tint:oklch(94.5% 0.013 150);--sunken:oklch(95.6% 0.01 150);--ink:oklch(25% 0.03 162);--ink-soft:oklch(34% 0.028 162);--muted:oklch(47% 0.022 160);--line:oklch(90% 0.012 152);--line-strong:oklch(63% 0.02 158);--card-border:oklch(91.5% 0.01 152);--accent:oklch(50% 0.13 160);--accent-hover:oklch(44% 0.12 160);--on-accent:oklch(99% 0.01 150);--accent-soft:oklch(92.5% 0.045 158);--accent-text:oklch(40% 0.11 160);--brass:oklch(51% 0.095 72);--brass-soft:oklch(93.5% 0.04 82);--danger:oklch(51% 0.17 28);--danger-hover:oklch(46% 0.16 28);--on-danger:oklch(99% 0.01 28);--danger-soft:oklch(95.5% 0.022 28);--st-active-bg:oklch(40% 0.075 225);--st-active-fg:oklch(97% 0.015 225);--st-pending-bg:oklch(91% 0.06 82);--st-pending-fg:oklch(40% 0.08 70);--st-archived-bg:oklch(92.5% 0.006 160);color-scheme:light;--av-l:90%;--av-c:.045;--avi-l:33%;--avi-c:.075;--av-sheen:oklch(100% 0 0 / .45);--shadow-0:0 0 0 1px var(--card-border);--shadow-1:0 1px 1px oklch(25% .03 162 / .05),0 2px 6px -2px oklch(25% .03 162 / .08);--shadow-2:0 1px 2px oklch(25% .03 162 / .06),0 10px 24px -10px oklch(25% .03 162 / .18),0 24px 48px -28px oklch(25% .03 162 / .22);
+--font-display:"Bricolage Grotesque","Avenir Next","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+--font-body:"Figtree","Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,sans-serif;
+--font-mono:"JetBrains Mono",ui-monospace,"Cascadia Mono",Consolas,monospace;
+--ease:cubic-bezier(.2,.7,.25,1);--dur:180ms;--r-tag:6px;--r-ctl:8px;--r-surf:10px;--r-frame:14px;}
+[data-mode="light"]{--ground:oklch(97% 0.008 150);--surface:oklch(99.3% 0.004 150);--raised:oklch(100% 0 0);--tint:oklch(94.5% 0.013 150);--sunken:oklch(95.6% 0.01 150);--ink:oklch(25% 0.03 162);--ink-soft:oklch(34% 0.028 162);--muted:oklch(47% 0.022 160);--line:oklch(90% 0.012 152);--line-strong:oklch(63% 0.02 158);--card-border:oklch(91.5% 0.01 152);--accent:oklch(50% 0.13 160);--accent-hover:oklch(44% 0.12 160);--on-accent:oklch(99% 0.01 150);--accent-soft:oklch(92.5% 0.045 158);--accent-text:oklch(40% 0.11 160);--brass:oklch(51% 0.095 72);--brass-soft:oklch(93.5% 0.04 82);--danger:oklch(51% 0.17 28);--danger-hover:oklch(46% 0.16 28);--on-danger:oklch(99% 0.01 28);--danger-soft:oklch(95.5% 0.022 28);--st-active-bg:oklch(40% 0.075 225);--st-active-fg:oklch(97% 0.015 225);--st-pending-bg:oklch(91% 0.06 82);--st-pending-fg:oklch(40% 0.08 70);--st-archived-bg:oklch(92.5% 0.006 160);color-scheme:light;--av-l:90%;--av-c:.045;--avi-l:33%;--avi-c:.075;--av-sheen:oklch(100% 0 0 / .45);--shadow-0:0 0 0 1px var(--card-border);--shadow-1:0 1px 1px oklch(25% .03 162 / .05),0 2px 6px -2px oklch(25% .03 162 / .08);--shadow-2:0 1px 2px oklch(25% .03 162 / .06),0 10px 24px -10px oklch(25% .03 162 / .18),0 24px 48px -28px oklch(25% .03 162 / .22);}
+:root[data-theme="dark"],[data-mode="dark"]{--ground:oklch(20% 0.02 160);--surface:oklch(24.5% 0.022 160);--raised:oklch(29% 0.024 160);--tint:oklch(28.5% 0.025 160);--sunken:oklch(17.5% 0.018 160);--ink:oklch(94% 0.012 150);--ink-soft:oklch(86% 0.015 150);--muted:oklch(75% 0.02 155);--line:oklch(31% 0.02 160);--line-strong:oklch(54% 0.025 160);--card-border:oklch(30% 0.022 160);--accent:oklch(74% 0.15 158);--accent-hover:oklch(80% 0.14 158);--on-accent:oklch(18% 0.03 160);--accent-soft:oklch(33% 0.06 160);--accent-text:oklch(84% 0.12 158);--brass:oklch(79% 0.1 80);--brass-soft:oklch(31% 0.045 80);--danger:oklch(71% 0.15 28);--danger-hover:oklch(76% 0.13 28);--on-danger:oklch(18% 0.03 28);--danger-soft:oklch(29% 0.05 28);--st-active-bg:oklch(80% 0.07 220);--st-active-fg:oklch(20% 0.03 230);--st-pending-bg:oklch(36% 0.055 78);--st-pending-fg:oklch(88% 0.09 85);--st-archived-bg:oklch(28% 0.01 160);color-scheme:dark;--av-l:35%;--av-c:.05;--avi-l:89%;--avi-c:.07;--av-sheen:oklch(100% 0 0 / .07);--shadow-0:0 0 0 1px var(--card-border);--shadow-1:inset 0 1px 0 oklch(100% 0 0 / .045);--shadow-2:inset 0 1px 0 oklch(100% 0 0 / .06),0 18px 40px -18px oklch(8% .02 160 / .7);}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--ground:oklch(20% 0.02 160);--surface:oklch(24.5% 0.022 160);--raised:oklch(29% 0.024 160);--tint:oklch(28.5% 0.025 160);--sunken:oklch(17.5% 0.018 160);--ink:oklch(94% 0.012 150);--ink-soft:oklch(86% 0.015 150);--muted:oklch(75% 0.02 155);--line:oklch(31% 0.02 160);--line-strong:oklch(54% 0.025 160);--card-border:oklch(30% 0.022 160);--accent:oklch(74% 0.15 158);--accent-hover:oklch(80% 0.14 158);--on-accent:oklch(18% 0.03 160);--accent-soft:oklch(33% 0.06 160);--accent-text:oklch(84% 0.12 158);--brass:oklch(79% 0.1 80);--brass-soft:oklch(31% 0.045 80);--danger:oklch(71% 0.15 28);--danger-hover:oklch(76% 0.13 28);--on-danger:oklch(18% 0.03 28);--danger-soft:oklch(29% 0.05 28);--st-active-bg:oklch(80% 0.07 220);--st-active-fg:oklch(20% 0.03 230);--st-pending-bg:oklch(36% 0.055 78);--st-pending-fg:oklch(88% 0.09 85);--st-archived-bg:oklch(28% 0.01 160);color-scheme:dark;--av-l:35%;--av-c:.05;--avi-l:89%;--avi-c:.07;--av-sheen:oklch(100% 0 0 / .07);--shadow-0:0 0 0 1px var(--card-border);--shadow-1:inset 0 1px 0 oklch(100% 0 0 / .045);--shadow-2:inset 0 1px 0 oklch(100% 0 0 / .06),0 18px 40px -18px oklch(8% .02 160 / .7);}}
+:root[data-theme="light"]{--ground:oklch(97% 0.008 150);--surface:oklch(99.3% 0.004 150);--raised:oklch(100% 0 0);--tint:oklch(94.5% 0.013 150);--sunken:oklch(95.6% 0.01 150);--ink:oklch(25% 0.03 162);--ink-soft:oklch(34% 0.028 162);--muted:oklch(47% 0.022 160);--line:oklch(90% 0.012 152);--line-strong:oklch(63% 0.02 158);--card-border:oklch(91.5% 0.01 152);--accent:oklch(50% 0.13 160);--accent-hover:oklch(44% 0.12 160);--on-accent:oklch(99% 0.01 150);--accent-soft:oklch(92.5% 0.045 158);--accent-text:oklch(40% 0.11 160);--brass:oklch(51% 0.095 72);--brass-soft:oklch(93.5% 0.04 82);--danger:oklch(51% 0.17 28);--danger-hover:oklch(46% 0.16 28);--on-danger:oklch(99% 0.01 28);--danger-soft:oklch(95.5% 0.022 28);--st-active-bg:oklch(40% 0.075 225);--st-active-fg:oklch(97% 0.015 225);--st-pending-bg:oklch(91% 0.06 82);--st-pending-fg:oklch(40% 0.08 70);--st-archived-bg:oklch(92.5% 0.006 160);color-scheme:light;--av-l:90%;--av-c:.045;--avi-l:33%;--avi-c:.075;--av-sheen:oklch(100% 0 0 / .45);--shadow-0:0 0 0 1px var(--card-border);--shadow-1:0 1px 1px oklch(25% .03 162 / .05),0 2px 6px -2px oklch(25% .03 162 / .08);--shadow-2:0 1px 2px oklch(25% .03 162 / .06),0 10px 24px -10px oklch(25% .03 162 / .18),0 24px 48px -28px oklch(25% .03 162 / .22);}
+[data-mode]{color:var(--ink)}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.5;font-feature-settings:"ss01";-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4,p,dl,dd,ul,ol,figure{margin:0}
+ul,ol{padding:0;list-style:none}
+a{color:inherit}
+button,input,select{font:inherit;color:inherit}
+.ic{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ic-sm{width:16px;height:16px}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-feature-settings:"zero" 0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* ---------- page chrome ---------- */
+.page{max-width:1480px;margin:0 auto;padding-top:clamp(28px,5vw,64px);padding-bottom:96px;
+padding-left:max(clamp(16px,4vw,48px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,4vw,48px),env(safe-area-inset-right,0px))}
+.dh{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(24px,5vw,72px);align-items:end;padding-bottom:clamp(28px,4vw,48px);border-bottom:1px solid var(--line)}
+.dh-eyebrow{display:flex;align-items:center;gap:12px;font:600 12px/1 var(--font-body);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:18px}
+.dh-eyebrow .mono{color:var(--brass);letter-spacing:.04em;font-size:12.5px}
+.dh h1{font-family:var(--font-display);font-optical-sizing:auto;font-size:clamp(64px,13vw,168px);line-height:.86;font-weight:700;font-stretch:80%;letter-spacing:-.045em}
+.dh h1 span{color:var(--brass)}
+.dh-idea{font-size:clamp(18px,2vw,22px);line-height:1.45;color:var(--ink-soft);max-width:34ch;text-wrap:pretty}
+.kw{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.kw li{font:500 13px/1 var(--font-body);padding:8px 12px;border-radius:999px;border:1px solid var(--line-strong);color:var(--ink-soft)}
+.sec{margin-top:clamp(48px,7vw,96px)}
+.sec-head{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:20px;row-gap:6px;align-items:baseline;margin-bottom:28px}
+.sec-no{font:500 13px/1 var(--font-mono);color:var(--brass);grid-row:span 2;padding-top:10px}
+.sec-head h2{font-family:var(--font-display);font-size:clamp(28px,3.4vw,40px);line-height:1.05;font-weight:650;font-stretch:88%;letter-spacing:-.025em}
+.sec-head p{color:var(--muted);max-width:62ch;font-size:15px}
+.sub-h{font:600 12px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+/* foundations */
+.f-grid{display:grid;gap:20px}
+.f-pal{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.panel{background:var(--surface);border-radius:var(--r-surf);box-shadow:var(--shadow-0),var(--shadow-1);padding:clamp(16px,2.4vw,24px);min-width:0}
+[data-mode].panel{background:var(--ground)}
+.panel-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:16px}
+.panel-h h3{font:650 18px/1.2 var(--font-display);font-stretch:90%}
+.panel-h span{font:500 12px/1 var(--font-mono);color:var(--muted)}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:14px 12px}
+.sw li{min-width:0}
+.chip{height:52px;border-radius:8px;box-shadow:inset 0 0 0 1px oklch(50% 0.02 160 / .18)}
+.sw b{display:block;font:600 13px/1.3 var(--font-body);margin-top:8px}
+.sw code{display:block;font:400 11px/1.4 var(--font-mono);color:var(--muted);overflow-wrap:anywhere}
+.f-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:20px}
+.type-spec li{display:grid;grid-template-columns:128px minmax(0,1fr);gap:16px;align-items:baseline;padding:12px 0;border-top:1px solid var(--line)}
+.type-spec li:first-child{border-top:0;padding-top:0}
+.type-spec .meta{font:400 11.5px/1.4 var(--font-mono);color:var(--muted)}
+.type-spec .meta b{display:block;font:600 12px/1.3 var(--font-body);color:var(--ink);letter-spacing:.02em}
+.ts-xl{font:700 clamp(40px,6vw,64px)/.95 var(--font-display);font-stretch:80%;letter-spacing:-.035em;overflow-wrap:anywhere}
+.ts-l{font:650 36px/1.05 var(--font-display);font-stretch:88%;letter-spacing:-.02em}
+.ts-m{font:600 22px/1.2 var(--font-display);font-stretch:92%;letter-spacing:-.01em}
+.ts-b{font:400 16px/1.55 var(--font-body);color:var(--ink-soft);max-width:52ch}
+.ts-s{font:500 13px/1.45 var(--font-body);color:var(--muted)}
+.ts-mono{font:500 15px/1.4 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--brass)}
+.scale{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.scale span{font:500 11.5px/1 var(--font-mono);padding:6px 8px;border-radius:6px;background:var(--tint);color:var(--ink-soft)}
+.shape{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:14px}
+.shape li{min-width:0}
+.shape .s{height:72px;background:var(--surface);box-shadow:var(--shadow-0)}
+.shape small{display:block;margin-top:8px;font:400 11.5px/1.4 var(--font-mono);color:var(--muted)}
+.shape small b{display:block;font:600 12.5px/1.3 var(--font-body);color:var(--ink)}
+.elev{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+.elev > div{border-radius:var(--r-surf);padding:16px;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;background:var(--ground)}
+.elev .e{height:56px;border-radius:var(--r-surf);display:grid;place-items:end start;padding:8px;font:500 11px/1 var(--font-mono);color:var(--muted)}
+.elev .e0{background:var(--ground);box-shadow:inset 0 0 0 1px var(--line)}
+.elev .e1{background:var(--surface);box-shadow:var(--shadow-0),var(--shadow-1)}
+.elev .e2{background:var(--raised);box-shadow:var(--shadow-0),var(--shadow-2)}
+.comp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:20px}
+.comp .panel{display:grid;gap:20px}
+.c-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.c-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px}
+/* ---------- components ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:40px;padding:0 16px;border-radius:var(--r-ctl);border:1px solid transparent;font:600 14px/1 var(--font-body);letter-spacing:.005em;cursor:pointer;text-decoration:none;white-space:nowrap;
+transition:background-color var(--dur) var(--ease),border-color var(--dur) var(--ease),color var(--dur) var(--ease),box-shadow var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.btn .ic{width:18px;height:18px}
+.btn-primary{background:var(--accent);color:var(--on-accent);box-shadow:inset 0 1px 0 oklch(100% 0 0 / .14),0 1px 2px oklch(20% .04 160 / .2)}
+.btn-primary:hover{background:var(--accent-hover)}
+.btn-secondary{background:var(--surface);color:var(--ink);border-color:var(--line-strong)}
+.btn-secondary:hover{background:var(--tint)}
+.btn-ghost{background:transparent;color:var(--ink-soft)}
+.btn-ghost:hover{background:var(--tint);color:var(--ink)}
+.btn-danger{background:var(--danger);color:var(--on-danger)}
+.btn-danger:hover{background:var(--danger-hover)}
+.btn:active{transform:translateY(1px)}
+.btn-sm{height:34px;padding:0 12px;font-size:13.5px}
+.btn-block{width:100%;height:46px;font-size:15px}
+.field{display:grid;gap:6px;min-width:0}
+.field label,.lbl{font:600 13px/1.2 var(--font-body);color:var(--ink)}
+.input{display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;border:1px solid var(--line-strong);border-radius:var(--r-ctl);background:var(--surface);color:var(--ink);font:400 15px/1 var(--font-body);min-width:0;width:100%;
+transition:border-color var(--dur) var(--ease),box-shadow var(--dur) var(--ease)}
+.input input{all:unset;flex:1;min-width:0;font:inherit;color:inherit}
+.input input::placeholder{color:var(--muted)}
+.input .ic{color:var(--muted)}
+.input:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.input.is-focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.hint{font:400 12.5px/1.4 var(--font-body);color:var(--muted)}
+.field.err .input{border-color:var(--danger);box-shadow:0 0 0 3px var(--danger-soft)}
+.errmsg{display:flex;gap:6px;align-items:center;font:500 12.5px/1.4 var(--font-body);color:var(--danger)}
+.errmsg .ic{width:15px;height:15px}
+.pill{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px 0 8px;border-radius:999px;font:650 11px/1 var(--font-body);letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;border:1px solid transparent}
+.pill::before{content:"";width:7px;height:7px;border-radius:50%;flex:none}
+.pill.active{background:var(--st-active-bg);color:var(--st-active-fg)}
+.pill.active::before{background:currentColor}
+.pill.pending{background:var(--st-pending-bg);color:var(--st-pending-fg)}
+.pill.pending::before{background:linear-gradient(90deg,currentColor 50%,transparent 50%);box-shadow:inset 0 0 0 1.5px currentColor}
+.pill.inactive{background:transparent;color:var(--muted);border-color:var(--line-strong)}
+.pill.inactive::before{box-shadow:inset 0 0 0 1.5px currentColor}
+.pill.archived{background:var(--st-archived-bg);color:var(--muted)}
+.pill.archived::before{width:8px;height:2px;border-radius:1px;background:currentColor}
+.tag{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:var(--r-tag);background:var(--tint);color:var(--ink-soft);font:500 12px/1 var(--font-body);white-space:nowrap}
+.tag.brass{background:var(--brass-soft);color:var(--brass)}
+.av{display:inline-grid;place-items:center;flex:none;width:40px;height:40px;border-radius:10px;
+background:radial-gradient(130% 100% at 0% 0%,var(--av-sheen),transparent 62%),oklch(var(--av-l) var(--av-c) var(--h,158));
+color:oklch(var(--avi-l) var(--avi-c) var(--h,158));font:650 15px/1 var(--font-display);font-stretch:90%;letter-spacing:.01em}
+.av-xs{width:22px;height:22px;border-radius:6px;font-size:9.5px}
+.av-sm{width:32px;height:32px;border-radius:8px;font-size:12.5px}
+.av-lg{width:56px;height:56px;border-radius:12px;font-size:21px}
+.av-xl{width:108px;height:108px;border-radius:18px;font-size:42px;font-weight:600;font-stretch:84%;letter-spacing:-.01em}
+.ib{display:inline-grid;place-items:center;width:36px;height:36px;border-radius:var(--r-ctl);border:0;background:transparent;color:var(--ink-soft);cursor:pointer;position:relative;transition:background-color var(--dur) var(--ease)}
+.ib:hover{background:var(--tint)}
+/* ---------- frames ---------- */
+.pair{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,560px),1fr));gap:clamp(16px,2vw,28px)}
+.device{margin:0;min-width:0;border-radius:var(--r-frame);background:var(--sunken);box-shadow:var(--shadow-0),var(--shadow-2);overflow:hidden}
+.device-bar{display:flex;align-items:center;gap:10px;height:36px;padding:0 14px;border-bottom:1px solid var(--line);font:500 11.5px/1 var(--font-mono);color:var(--muted);min-width:0}
+.device-bar .url{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.device-bar .mk{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-body);font-weight:600;letter-spacing:.08em;text-transform:uppercase;font-size:10.5px;flex:none}
+.device-bar .mk .ic{width:14px;height:14px}
+.dots{display:flex;gap:6px;flex:none}
+.dots i{width:9px;height:9px;border-radius:50%;box-shadow:inset 0 0 0 1.25px var(--line-strong)}
+.viewport{position:relative;height:calc(760px * var(--s,1));overflow:hidden}
+.canvas{position:absolute;top:0;left:0;width:1200px;height:760px;transform:scale(var(--s,1));transform-origin:0 0;background:var(--ground);color:var(--ink);font-family:var(--font-body);overflow:hidden}
+/* ---------- screen 1: sign in ---------- */
+.signin{display:grid;grid-template-columns:540px 1fr;height:100%;background:var(--surface)}
+.welcome{position:relative;display:flex;flex-direction:column;padding:40px 48px 44px;background:var(--tint);overflow:hidden}
+.welcome::before{content:"";position:absolute;inset:0;pointer-events:none;
+background:repeating-linear-gradient(90deg,transparent 0 107px,var(--line) 107px 108px);opacity:.9;
+-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent);mask-image:linear-gradient(180deg,transparent 0,#000 30%,#000 70%,transparent)}
+.welcome > *{position:relative}
+.brand{display:flex;align-items:center;gap:12px}
+.brand b{display:block;font:650 17px/1.1 var(--font-display);font-stretch:90%;letter-spacing:-.01em}
+.brand small{display:block;font:500 12px/1.2 var(--font-body);color:var(--muted);margin-top:2px}
+.mark{width:34px;height:34px;flex:none}
+.mark .m-bg{fill:var(--accent)}
+.mark .m-door{fill:none;stroke:var(--on-accent);stroke-width:2.4;stroke-linecap:round}
+.mark .m-dot{fill:var(--brass-soft)}
+.greet{margin-top:auto;margin-bottom:auto;padding-top:24px}
+.greet .no{font:500 12px/1 var(--font-mono);color:var(--brass);letter-spacing:.04em}
+.akwaaba{font-family:var(--font-display);font-optical-sizing:auto;font-size:118px;line-height:.86;font-weight:700;font-stretch:76%;letter-spacing:-.045em;margin:18px 0 18px -4px}
+.akwaaba span{color:var(--brass)}
+.pron{font:500 13px/1.4 var(--font-mono);color:var(--muted)}
+.pron b{font-weight:600;color:var(--ink-soft)}
+.lede{font:400 18px/1.5 var(--font-body);color:var(--ink-soft);max-width:36ch;margin-top:22px;text-wrap:pretty}
+.offices{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line-strong);padding-top:16px;gap:16px}
+.offices li code{font:600 12px/1 var(--font-mono);color:var(--brass);letter-spacing:.06em}
+.offices li b{display:block;font:600 19px/1.2 var(--font-display);font-stretch:90%;margin-top:8px}
+.offices li span{font:400 13px/1.3 var(--font-body);color:var(--muted)}
+.form-side{display:flex;flex-direction:column;padding:28px 40px 32px 96px}
+.fs-top{display:flex;justify-content:space-between;align-items:center}
+.fs-top .help{font:500 13.5px/1 var(--font-body);color:var(--muted);text-decoration:none}
+.seg{display:inline-flex;padding:3px;gap:2px;border-radius:10px;background:var(--tint);box-shadow:inset 0 0 0 1px var(--line)}
+.seg button{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 10px;border:0;border-radius:7px;background:transparent;color:var(--muted);font:600 12.5px/1 var(--font-body);cursor:pointer;transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.seg button .ic{width:16px;height:16px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line-strong)}
+.form{width:400px;margin:auto 0;display:grid;gap:18px}
+.form h2{font:650 40px/1 var(--font-display);font-stretch:86%;letter-spacing:-.03em}
+.form .sub{font:400 15.5px/1.5 var(--font-body);color:var(--muted);margin-top:-6px}
+.pw-eye{margin-right:-6px;width:30px;height:30px}
+.row-between{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.check{display:inline-flex;align-items:center;gap:8px;font:400 14px/1.2 var(--font-body);color:var(--ink-soft)}
+.box{width:18px;height:18px;border-radius:5px;border:1px solid var(--line-strong);background:var(--surface);display:grid;place-items:center}
+.box.on{background:var(--accent);border-color:var(--accent);color:var(--on-accent)}
+.box .ic{width:13px;height:13px;stroke-width:2.25}
+.link{font:600 14px/1.2 var(--font-body);color:var(--accent-text);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:color-mix(in oklch,var(--accent-text) 40%,transparent)}
+.link:hover{text-decoration-color:currentColor}
+.note{display:grid;grid-template-columns:20px 1fr;gap:12px;padding:14px 16px;border-radius:var(--r-surf);background:var(--sunken);font:400 13.5px/1.5 var(--font-body);color:var(--ink-soft)}
+.note .ic{color:var(--brass);margin-top:1px}
+.note b{color:var(--ink);font-weight:600}
+.fs-foot{display:flex;justify-content:space-between;font:400 13px/1.3 var(--font-body);color:var(--muted)}
+/* ---------- app shell ---------- */
+.app{display:grid;grid-template-columns:212px minmax(0,1fr);height:100%}
+.side{display:flex;flex-direction:column;gap:2px;padding:20px 12px 16px;background:var(--sunken);border-right:1px solid var(--line)}
+.side .brand{padding:0 8px 22px}
+.side .mark{width:30px;height:30px}
+.nav-lbl{font:600 10.5px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding:6px 12px 10px}
+.nav{display:grid;gap:2px}
+.nav a{display:flex;align-items:center;gap:12px;height:38px;padding:0 10px 0 12px;border-radius:var(--r-ctl);color:var(--ink-soft);text-decoration:none;font:500 14.5px/1 var(--font-body);transition:background-color var(--dur) var(--ease),color var(--dur) var(--ease)}
+.nav a:hover{background:var(--tint);color:var(--ink)}
+.nav a[aria-current="page"]{background:var(--accent-soft);color:var(--accent-text);font-weight:600}
+.badge{margin-left:auto;min-width:22px;height:20px;padding:0 6px;border-radius:999px;display:inline-grid;place-items:center;background:var(--brass-soft);color:var(--brass);font:700 11px/1 var(--font-mono)}
+.side-foot{margin-top:auto;display:grid;gap:12px}
+.org{display:flex;align-items:center;gap:10px;padding:12px;border-radius:var(--r-surf);background:var(--ground);box-shadow:var(--shadow-0);font:400 12px/1.35 var(--font-body);color:var(--muted)}
+.org b{display:block;color:var(--ink);font:600 13px/1.3 var(--font-body)}
+.org code{font:600 11px/1 var(--font-mono);color:var(--brass);padding:5px 6px;border-radius:6px;background:var(--brass-soft)}
+.main{display:flex;flex-direction:column;min-width:0}
+.top{display:flex;align-items:center;gap:14px;height:60px;padding:0 24px 0 28px;border-bottom:1px solid var(--line);flex:none}
+.cmdk{display:flex;align-items:center;gap:10px;width:380px;height:38px;padding:0 6px 0 12px;border-radius:var(--r-ctl);background:var(--surface);box-shadow:var(--shadow-0);color:var(--muted);font:400 14px/1 var(--font-body);border:0;cursor:pointer;text-align:left}
+.cmdk .ic{width:18px;height:18px}
+.kbd{margin-left:auto;font:500 11.5px/1 var(--font-mono);padding:5px 7px;border-radius:6px;background:var(--tint);color:var(--ink-soft)}
+.top-r{margin-left:auto;display:flex;align-items:center;gap:6px}
+.ib .ping{position:absolute;top:8px;right:9px;width:7px;height:7px;border-radius:50%;background:var(--brass);box-shadow:0 0 0 2px var(--ground)}
+.vr{width:1px;height:24px;background:var(--line);margin:0 6px}
+.user{display:flex;align-items:center;gap:10px;padding:4px 8px 4px 4px;border-radius:10px;border:0;background:transparent;cursor:pointer;text-align:left;transition:background-color var(--dur) var(--ease)}
+.user:hover{background:var(--tint)}
+.user b{display:block;font:600 13.5px/1.2 var(--font-body)}
+.user small{display:block;font:400 12px/1.2 var(--font-body);color:var(--muted)}
+.user .ic{width:16px;height:16px;color:var(--muted)}
+.content{flex:1;min-height:0;padding:24px 28px 0;overflow:hidden}
+/* ---------- screen 2: directory ---------- */
+.ph{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:20px}
+.eyebrow{font:600 11px/1 var(--font-body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
+.ph h1{display:flex;align-items:baseline;gap:14px;font:680 44px/.95 var(--font-display);font-stretch:82%;letter-spacing:-.035em}
+.ph h1 .count{font:500 13px/1 var(--font-mono);letter-spacing:0;color:var(--muted);padding:6px 9px;border-radius:999px;background:var(--tint);transform:translateY(-6px)}
+.ph-r{display:flex;gap:10px;align-items:center}
+.seg-v button{height:28px}
+.filters{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.filters .input{width:248px;height:38px;font-size:14px}
+.filters .input .ic{width:18px;height:18px}
+.fbtn{display:inline-flex;align-items:center;gap:6px;height:38px;padding:0 10px 0 12px;border-radius:var(--r-ctl);border:1px solid var(--line-strong);background:var(--surface);font:500 13.5px/1 var(--font-body);color:var(--ink);cursor:pointer;transition:background-color var(--dur) var(--ease)}
+.fbtn:hover{background:var(--tint)}
+.fbtn span{color:var(--muted);font-weight:400}
+.fbtn .ic{width:16px;height:16px;color:var(--muted)}
+.fbtn.on{border-color:var(--accent);background:var(--accent-soft)}
+.fbtn.on span,.fbtn.on .ic{color:var(--accent-text)}
+.f-meta{margin-left:auto;font:400 13px/1 var(--font-body);color:var(--muted);display:flex;align-items:center;gap:6px}
+.f-meta .ic{width:16px;height:16px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.pcard{display:grid;grid-template-columns:56px minmax(0,1fr);column-gap:14px;padding:16px 16px 14px;border-radius:var(--r-surf);background:var(--surface);box-shadow:var(--shadow-0),var(--shadow-1);text-decoration:none;color:inherit;
+transition:box-shadow var(--dur) var(--ease),transform var(--dur) var(--ease)}
+.pcard:hover{box-shadow:var(--shadow-0),var(--shadow-2);transform:translateY(-2px)}
+.pcard.is-sel{box-shadow:0 0 0 2px var(--accent),var(--shadow-2)}
+.pc-name{font:650 19px/1.15 var(--font-display);font-stretch:90%;letter-spacing:-.015em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-top:3px}
+.pc-role{font:400 13.5px/1.35 var(--font-body);color:var(--ink-soft);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-org{font:400 12.5px/1.35 var(--font-body);color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pc-foot{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.empno{margin-left:auto;font:500 12.5px/1 var(--font-mono);font-variant-numeric:tabular-nums;color:var(--brass);letter-spacing:.01em}
+/* ---------- screen 3: profile ---------- */
+.crumbs{display:flex;align-items:center;gap:6px;font:500 13px/1 var(--font-body);color:var(--muted);margin-bottom:20px}
+.crumbs a{text-decoration:none}
+.crumbs a:hover{color:var(--ink)}
+.crumbs .ic{width:14px;height:14px}
+.crumbs [aria-current]{color:var(--ink)}
+.pf-head{display:grid;grid-template-columns:auto minmax(0,1fr) 316px;gap:24px;align-items:start;margin-bottom:22px}
+.pf-id .eyebrow{margin:4px 0 8px}
+.pf-name{font:700 50px/.95 var(--font-display);font-optical-sizing:auto;font-stretch:80%;letter-spacing:-.04em}
+.pf-pos{font:400 17px/1.4 var(--font-body);color:var(--ink-soft);margin-top:8px}
+.pf-pos b{font-weight:600;color:var(--ink)}
+.pf-meta{display:flex;align-items:center;flex-wrap:wrap;gap:10px;margin-top:14px}
+.copy{display:inline-flex;align-items:center;gap:8px;height:28px;padding:0 6px 0 10px;border-radius:var(--r-ctl);border:0;background:var(--brass-soft);color:var(--brass);font:600 13px/1 var(--font-mono);font-variant-numeric:tabular-nums;cursor:pointer;transition:filter var(--dur) var(--ease)}
+.copy .ic{width:15px;height:15px}
+.copy:hover{filter:brightness(.97)}
+.mgr{display:inline-flex;align-items:center;gap:8px;font:400 13.5px/1 var(--font-body);color:var(--muted)}
+.mgr a{color:var(--ink);font-weight:600;text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px}
+.mgr a:hover{text-decoration-color:currentColor}
+.req{border-radius:var(--r-surf);background:var(--surface);box-shadow:var(--shadow-0),var(--shadow-2);padding:16px}
+.req-h{display:flex;align-items:center;gap:8px;font:650 15px/1.2 var(--font-display);font-stretch:92%}
+.req-h .ic{color:var(--brass);width:18px;height:18px}
+.req-h time{margin-left:auto;font:500 11.5px/1 var(--font-mono);color:var(--muted)}
+.req p{font:400 13px/1.45 var(--font-body);color:var(--ink-soft);margin:8px 0 14px}
+.req .acts{display:grid;grid-template-columns:1fr auto;gap:8px}
+.pf-cols{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:18px}
+.card{border-radius:var(--r-surf);background:var(--surface);box-shadow:var(--shadow-0),var(--shadow-1);padding:6px 20px 8px}
+.card-h{display:flex;align-items:center;gap:10px;height:50px;border-bottom:1px solid var(--line)}
+.card-h h3{font:650 17px/1 var(--font-display);font-stretch:90%;letter-spacing:-.01em}
+.card-h .ic{color:var(--muted);width:18px;height:18px}
+.private-mk{margin-left:auto;display:inline-flex;align-items:center;gap:6px;height:26px;padding:0 10px;border-radius:999px;background:var(--brass-soft);color:var(--brass);font:600 11.5px/1 var(--font-body)}
+.private-mk .ic{width:14px;height:14px;color:currentColor}
+.dl > div{display:grid;grid-template-columns:128px minmax(0,1fr);gap:12px;align-items:center;min-height:41px;padding:6px 0;border-bottom:1px solid var(--line)}
+.dl > div:last-child{border-bottom:0}
+.dl dt{font:500 13px/1.3 var(--font-body);color:var(--muted)}
+.dl dd{font:400 14.5px/1.35 var(--font-body);color:var(--ink);display:flex;align-items:center;gap:8px;min-width:0}
+.dl dd .mono{font-size:13.5px}
+.dl dd .sub{color:var(--muted);font-size:13px}
+.dl dd .ib{width:28px;height:28px;margin-left:auto}
+.dl dd .ib .ic{width:16px;height:16px}
+.masked{display:inline-flex;align-items:center;gap:8px}
+.masked .mono{letter-spacing:.02em}
+.docs{display:grid;gap:6px;width:100%}
+.docs > span{display:flex;align-items:center;gap:8px}
+.docs .k{font:500 12.5px/1 var(--font-body);color:var(--muted);width:82px}
+.reveal{margin-left:auto;display:inline-flex;align-items:center;gap:5px;font:600 12.5px/1 var(--font-body);color:var(--accent-text);background:none;border:0;cursor:pointer;padding:4px;border-radius:6px}
+.reveal .ic{width:15px;height:15px}
+@media (max-width:860px){.dh{grid-template-columns:1fr}.elev{grid-template-columns:1fr}}
+@media (max-width:520px){.type-spec li{grid-template-columns:1fr;gap:6px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}.pcard:hover{transform:none}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="i-dash" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="8.5" rx="1.75"/><rect x="13.5" y="3.5" width="7" height="5" rx="1.75"/><rect x="13.5" y="11.5" width="7" height="9" rx="1.75"/><rect x="3.5" y="15" width="7" height="5.5" rx="1.75"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.75 19.5c.8-3.4 3.3-5.25 6.25-5.25s5.45 1.85 6.25 5.25"/><path d="M15.5 4.75a3.5 3.5 0 0 1 0 6.5M17.75 14.6c1.8.75 3 2.3 3.5 4.9"/></symbol>
+<symbol id="i-inbox" viewBox="0 0 24 24"><path d="M3.5 13 5.8 6.1A2 2 0 0 1 7.7 4.75h8.6a2 2 0 0 1 1.9 1.35L20.5 13v4.75a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/><path d="M3.5 13h4.75l1.5 2.5h4.5l1.5-2.5h4.75"/></symbol>
+<symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 12h3M11 12h9M4 17h11M19 17h1"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="12" r="2"/><circle cx="17" cy="17" r="2"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c.9-3.8 3.9-5.75 7.5-5.75s6.6 1.95 7.5 5.75"/></symbol>
+<symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.25-4.25"/></symbol>
+<symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.75h-15z"/><path d="M10 20.75a2.1 2.1 0 0 0 4 0"/></symbol>
+<symbol id="i-down" viewBox="0 0 24 24"><path d="m6.5 9.5 5.5 5.5 5.5-5.5"/></symbol>
+<symbol id="i-right" viewBox="0 0 24 24"><path d="m9.5 6 6 6-6 6"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13.5 6.5 19 12l-5.5 5.5"/></symbol>
+<symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11.5" height="11.5" rx="2"/><path d="M15.5 8.5V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7.5a2 2 0 0 0 2 2h2.5"/></symbol>
+<symbol id="i-lock" viewBox="0 0 24 24"><rect x="4.5" y="10.5" width="15" height="10" rx="2.25"/><path d="M8 10.5V7.75a4 4 0 0 1 8 0v2.75"/></symbol>
+<symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.75 12S6.25 5.75 12 5.75 21.25 12 21.25 12 17.75 18.25 12 18.25 2.75 12 2.75 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+<symbol id="i-eyeoff" viewBox="0 0 24 24"><path d="m3.5 3.5 17 17"/><path d="M10.4 5.9A9.6 9.6 0 0 1 12 5.75c5.75 0 9.25 6.25 9.25 6.25a16.5 16.5 0 0 1-2.9 3.6M6.7 6.75C4.1 8.4 2.75 12 2.75 12S6.25 18.25 12 18.25c1.75 0 3.25-.5 4.5-1.2"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+<symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.75v2M12 19.25v2M2.75 12h2M19.25 12h2M5.45 5.45l1.4 1.4M17.15 17.15l1.4 1.4M5.45 18.55l1.4-1.4M17.15 6.85l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M19.75 14.6A8 8 0 0 1 9.4 4.25a8 8 0 1 0 10.35 10.35z"/></symbol>
+<symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15" r="4.25"/><path d="M11.1 12 19.5 3.5M15.75 7.25l2.75 2.75M13.6 9.4l2 2"/></symbol>
+<symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75"/><path d="M12 11v5.25M12 7.9v.1"/></symbol>
+<symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.75"/><path d="M12 7.5v5.25M12 16v.1"/></symbol>
+<symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+<symbol id="i-briefcase" viewBox="0 0 24 24"><rect x="3.5" y="7" width="17" height="13" rx="2.25"/><path d="M9 7V5.75A1.75 1.75 0 0 1 10.75 4h2.5A1.75 1.75 0 0 1 15 5.75V7M3.5 12.75h17"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></symbol>
+<symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6.5h11M9 12h11M9 17.5h11M4.5 6.5v.1M4.5 12v.1M4.5 17.5v.1"/></symbol>
+<symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11M7 10.5l5 5 5-5M5 20h14"/></symbol>
+<symbol id="i-sort" viewBox="0 0 24 24"><path d="M7.5 4.5v15M4.5 16.5l3 3 3-3M16.5 19.5v-15M13.5 7.5l3-3 3 3"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><path d="M5.5 12v.1M12 12v.1M18.5 12v.1"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+<symbol id="i-x" viewBox="0 0 24 24"><path d="m6.5 6.5 11 11M17.5 6.5l-11 11"/></symbol>
+</defs></svg>
+<div class="page">
+<header class="dh">
+<div><p class="dh-eyebrow"><span class="mono">A</span>EMS Direction Board</p><h1>Atelier<span>.</span></h1></div>
+<div><p class="dh-idea">A calm, humane workplace tool that reads like a well-made studio handbook: people first, names set large, and plenty of air.</p>
+<ul class="kw"><li>People-first</li><li>Editorial</li><li>Malachite &amp; brass</li><li>Quietly crafted</li><li>Warm modernism</li></ul></div>
+</header>
+
+<section class="sec" aria-labelledby="f-h">
+<header class="sec-head"><span class="sec-no">00</span><h2 id="f-h">Foundations</h2><p>Malachite marks the action, focus and selection — nothing else. Brass carries identifiers. Status is told by lightness and dot shape, so it survives without hue.</p></header>
+<div class="f-grid">
+<div class="f-pal"><div class="panel" data-mode="light"><div class="panel-h"><h3>Light — pale stone</h3><span>light</span></div>
+<ul class="sw"><li><div class="chip" style="background:var(--ground)"></div><b>Ground</b><code>oklch(97% 0.008 150)</code></li><li><div class="chip" style="background:var(--surface)"></div><b>Surface</b><code>oklch(99.3% 0.004 150)</code></li><li><div class="chip" style="background:var(--tint)"></div><b>Tint</b><code>oklch(94.5% 0.013 150)</code></li><li><div class="chip" style="background:var(--ink)"></div><b>Ink</b><code>oklch(25% 0.03 162)</code></li><li><div class="chip" style="background:var(--muted)"></div><b>Muted ink</b><code>oklch(47% 0.022 160)</code></li><li><div class="chip" style="background:var(--line-strong)"></div><b>Line (control)</b><code>oklch(63% 0.02 158)</code></li><li><div class="chip" style="background:var(--accent)"></div><b>Malachite · accent</b><code>oklch(50% 0.13 160)</code></li><li><div class="chip" style="background:var(--accent-soft)"></div><b>Accent soft</b><code>oklch(92.5% 0.045 158)</code></li><li><div class="chip" style="background:var(--brass)"></div><b>Brass</b><code>oklch(51% 0.095 72)</code></li><li><div class="chip" style="background:var(--danger)"></div><b>Danger</b><code>oklch(51% 0.17 28)</code></li><li><div class="chip" style="background:var(--st-active-bg)"></div><b>Status · active</b><code>oklch(40% 0.075 225)</code></li><li><div class="chip" style="background:var(--st-pending-bg)"></div><b>Status · pending</b><code>oklch(91% 0.06 82)</code></li></ul></div><div class="panel" data-mode="dark"><div class="panel-h"><h3>Dark — forest charcoal</h3><span>dark</span></div>
+<ul class="sw"><li><div class="chip" style="background:var(--ground)"></div><b>Ground</b><code>oklch(20% 0.02 160)</code></li><li><div class="chip" style="background:var(--surface)"></div><b>Surface</b><code>oklch(24.5% 0.022 160)</code></li><li><div class="chip" style="background:var(--tint)"></div><b>Tint</b><code>oklch(28.5% 0.025 160)</code></li><li><div class="chip" style="background:var(--ink)"></div><b>Ink</b><code>oklch(94% 0.012 150)</code></li><li><div class="chip" style="background:var(--muted)"></div><b>Muted ink</b><code>oklch(75% 0.02 155)</code></li><li><div class="chip" style="background:var(--line-strong)"></div><b>Line (control)</b><code>oklch(54% 0.025 160)</code></li><li><div class="chip" style="background:var(--accent)"></div><b>Malachite · accent</b><code>oklch(74% 0.15 158)</code></li><li><div class="chip" style="background:var(--accent-soft)"></div><b>Accent soft</b><code>oklch(33% 0.06 160)</code></li><li><div class="chip" style="background:var(--brass)"></div><b>Brass</b><code>oklch(79% 0.1 80)</code></li><li><div class="chip" style="background:var(--danger)"></div><b>Danger</b><code>oklch(71% 0.15 28)</code></li><li><div class="chip" style="background:var(--st-active-bg)"></div><b>Status · active</b><code>oklch(80% 0.07 220)</code></li><li><div class="chip" style="background:var(--st-pending-bg)"></div><b>Status · pending</b><code>oklch(36% 0.055 78)</code></li></ul></div></div>
+<div class="f-row">
+<div class="panel"><div class="panel-h"><h3>Type</h3><span>1.25 scale · 16 base</span></div>
+<ul class="type-spec">
+<li><span class="meta"><b>Display</b>Bricolage Grotesque 700 · wdth 80</span><span class="ts-xl">Kwame Asante</span></li>
+<li><span class="meta"><b>Title</b>Bricolage 650 · 36</span><span class="ts-l">People directory</span></li>
+<li><span class="meta"><b>Heading</b>Bricolage 600 · 22</span><span class="ts-m">Work details</span></li>
+<li><span class="meta"><b>Body</b>Figtree 400 · 16 / 1.55</span><span class="ts-b">Approving a reset sends Kwame a one-time link at his work email. It expires after 30 minutes.</span></li>
+<li><span class="meta"><b>Caption</b>Figtree 500 · 13</span><span class="ts-s">Private — visible to you, your manager and HR</span></li>
+<li><span class="meta"><b>Mono</b>JetBrains Mono · tnum</span><span class="ts-mono">GH-ACC-0042 · 2023-03-14</span></li>
+</ul>
+<div class="scale"><span>11</span><span>13</span><span>16</span><span>20</span><span>25</span><span>31</span><span>39</span><span>49</span><span>61</span><span>96+</span></div>
+</div>
+<div class="panel"><div class="panel-h"><h3>Shape &amp; elevation</h3><span>soft, not bubbly</span></div>
+<ul class="shape">
+<li><div class="s" style="border-radius:6px"></div><small><b>Tag</b>radius 6</small></li>
+<li><div class="s" style="border-radius:8px"></div><small><b>Control</b>radius 8</small></li>
+<li><div class="s" style="border-radius:10px"></div><small><b>Surface</b>radius 10</small></li>
+<li><div class="s" style="border-radius:999px;height:36px;margin:18px 0"></div><small><b>Status pill</b>radius 999</small></li>
+</ul>
+<div class="elev"><div data-mode="light"><span class="e e0">0</span><span class="e e1">1</span><span class="e e2">2</span></div><div data-mode="dark"><span class="e e0">0</span><span class="e e1">1</span><span class="e e2">2</span></div></div>
+<p class="hint" style="margin-top:12px">Light lifts with layered shadow; dark lifts with surface lightness (20 → 24.5 → 29 L).</p>
+</div>
+</div>
+<div class="comp"><div class="panel" data-mode="light"><div class="panel-h"><h3>Components</h3><span>light</span></div>
+<div class="c-row"><button class="btn btn-primary" type="button"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve</button><button class="btn btn-secondary" type="button">Export</button><button class="btn btn-ghost" type="button">Cancel</button><button class="btn btn-danger" type="button">Archive person</button></div>
+<div class="c-fields">
+<div class="field"><label for="c-em-light">Work email</label><div class="input"><input id="c-em-light" value="efua.boateng@akwaabalabs.example"></div><p class="hint">Used to sign in. HR can change it.</p></div>
+<div class="field err"><label for="c-no-light">Employee number</label><div class="input"><input id="c-no-light" class="mono" value="GH-AC-42" aria-invalid="true"></div><p class="errmsg"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>Use the format GH-ACC-0042.</p></div>
+</div>
+<div class="c-row"><span class="pill active">Active</span><span class="pill pending">Pending</span><span class="pill inactive">Inactive</span><span class="pill archived">Archived</span><span style="width:8px"></span><span class="av" style="--h:25" aria-hidden="true">EB</span><span class="av av-sm" style="--h:235" aria-hidden="true">KO</span><span class="tag">Platform Engineering</span><span class="tag brass">Current</span></div>
+</div><div class="panel" data-mode="dark"><div class="panel-h"><h3>Components</h3><span>dark</span></div>
+<div class="c-row"><button class="btn btn-primary" type="button"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve</button><button class="btn btn-secondary" type="button">Export</button><button class="btn btn-ghost" type="button">Cancel</button><button class="btn btn-danger" type="button">Archive person</button></div>
+<div class="c-fields">
+<div class="field"><label for="c-em-dark">Work email</label><div class="input"><input id="c-em-dark" value="efua.boateng@akwaabalabs.example"></div><p class="hint">Used to sign in. HR can change it.</p></div>
+<div class="field err"><label for="c-no-dark">Employee number</label><div class="input"><input id="c-no-dark" class="mono" value="GH-AC-42" aria-invalid="true"></div><p class="errmsg"><svg class="ic" aria-hidden="true"><use href="#i-alert"/></svg>Use the format GH-ACC-0042.</p></div>
+</div>
+<div class="c-row"><span class="pill active">Active</span><span class="pill pending">Pending</span><span class="pill inactive">Inactive</span><span class="pill archived">Archived</span><span style="width:8px"></span><span class="av" style="--h:25" aria-hidden="true">EB</span><span class="av av-sm" style="--h:235" aria-hidden="true">KO</span><span class="tag">Platform Engineering</span><span class="tag brass">Current</span></div>
+</div></div>
+</div>
+</section>
+
+<section class="sec" aria-labelledby="s1-h">
+<header class="sec-head"><span class="sec-no">01</span><h2 id="s1-h">Sign in</h2><p>A typographic welcome on the left; a short, honest form on the right. “Forgot password?” explains up front that your manager approves the reset.</p></header>
+<div class="pair"><figure class="device" data-mode="light">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/sign-in</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</span><span class="sr">Sign in, light mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="signin">
+<aside class="welcome">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People directory</small></div></div>
+<div class="greet">
+<p class="no">No. 01 — Welcome</p>
+<p class="akwaaba" role="heading" aria-level="3">Akwaaba<span>.</span></p>
+<p class="pron"><b>/a·kwaa·ba/</b> &nbsp;Twi, “you are welcome”</p>
+<p class="lede">Everyone at Akwaaba Labs, in one place. Find a colleague, keep your details current, and get back in fast when you are locked out.</p>
+</div>
+<ul class="offices">
+<li><code>ACC</code><b>Accra</b><span>5 people</span></li>
+<li><code>KSI</code><b>Kumasi</b><span>2 people</span></li>
+<li><code>TKD</code><b>Takoradi</b><span>2 people</span></li>
+</ul>
+</aside>
+<div class="form-side">
+<div class="fs-top"><a class="help" href="#">Need help?</a>
+<div class="seg" role="group" aria-label="Theme"><button type="button" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</button><button type="button" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button></div></div>
+<form class="form" onsubmit="return false">
+<div><h2>Sign in</h2></div>
+<p class="sub">Use your Akwaaba Labs work account.</p>
+<div class="field"><label for="em-light">Work email</label>
+<div class="input is-focus"><input id="em-light" type="email" value="ama.mensah@akwaabalabs.example" autocomplete="off"></div></div>
+<div class="field"><label for="pw-light">Password</label>
+<div class="input"><input id="pw-light" type="password" value="akwaaba-labs-2026" autocomplete="off"><button type="button" class="ib pw-eye" aria-label="Show password"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-eye"/></svg></button></div></div>
+<div class="row-between"><span class="check"><span class="box on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span>Keep me signed in</span><a class="link" href="#">Forgot password?</a></div>
+<button class="btn btn-primary btn-block" type="submit">Sign in <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+<div class="note"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg><span><b>Forgot your password?</b> We send a reset request to your manager. Once they approve it, a one-time link arrives in your work inbox.</span></div>
+</form>
+<div class="fs-foot"><span>New joiner? People Operations sets up your account.</span><span class="mono">EMS 2.4</span></div>
+</div></div></div></div></figure><figure class="device" data-mode="dark">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/sign-in</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</span><span class="sr">Sign in, dark mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="signin">
+<aside class="welcome">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People directory</small></div></div>
+<div class="greet">
+<p class="no">No. 01 — Welcome</p>
+<p class="akwaaba" role="heading" aria-level="3">Akwaaba<span>.</span></p>
+<p class="pron"><b>/a·kwaa·ba/</b> &nbsp;Twi, “you are welcome”</p>
+<p class="lede">Everyone at Akwaaba Labs, in one place. Find a colleague, keep your details current, and get back in fast when you are locked out.</p>
+</div>
+<ul class="offices">
+<li><code>ACC</code><b>Accra</b><span>5 people</span></li>
+<li><code>KSI</code><b>Kumasi</b><span>2 people</span></li>
+<li><code>TKD</code><b>Takoradi</b><span>2 people</span></li>
+</ul>
+</aside>
+<div class="form-side">
+<div class="fs-top"><a class="help" href="#">Need help?</a>
+<div class="seg" role="group" aria-label="Theme"><button type="button" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</button><button type="button" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button></div></div>
+<form class="form" onsubmit="return false">
+<div><h2>Sign in</h2></div>
+<p class="sub">Use your Akwaaba Labs work account.</p>
+<div class="field"><label for="em-dark">Work email</label>
+<div class="input is-focus"><input id="em-dark" type="email" value="ama.mensah@akwaabalabs.example" autocomplete="off"></div></div>
+<div class="field"><label for="pw-dark">Password</label>
+<div class="input"><input id="pw-dark" type="password" value="akwaaba-labs-2026" autocomplete="off"><button type="button" class="ib pw-eye" aria-label="Show password"><svg class="ic ic-sm" aria-hidden="true"><use href="#i-eye"/></svg></button></div></div>
+<div class="row-between"><span class="check"><span class="box on"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg></span>Keep me signed in</span><a class="link" href="#">Forgot password?</a></div>
+<button class="btn btn-primary btn-block" type="submit">Sign in <svg class="ic" aria-hidden="true"><use href="#i-arrow"/></svg></button>
+<div class="note"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg><span><b>Forgot your password?</b> We send a reset request to your manager. Once they approve it, a one-time link arrives in your work inbox.</span></div>
+</form>
+<div class="fs-foot"><span>New joiner? People Operations sets up your account.</span><span class="mono">EMS 2.4</span></div>
+</div></div></div></div></figure></div>
+</section>
+
+<section class="sec" aria-labelledby="s2-h">
+<header class="sec-head"><span class="sec-no">02</span><h2 id="s2-h">People directory</h2><p>A spacious card grid: large initials on soft tinted tiles, names set in the display face, employee numbers in brass mono.</p></header>
+<div class="pair"><figure class="device" data-mode="light">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/people</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</span><span class="sr">People directory, light mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="app"><nav class="side" aria-label="Main">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People</small></div></div>
+<p class="nav-lbl">Workspace</p>
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-dash"/></svg>Dashboard</a><a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-people"/></svg>People</a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Requests<span class="badge" aria-label="2 open">2</span></a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a></div>
+<div class="side-foot">
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>My profile</a></div>
+<div class="org"><code>GH</code><span><b>Akwaaba Labs</b>3 offices · 9 people</span></div>
+</div></nav><div class="main"><header class="top">
+<button class="cmdk" type="button"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Search people, teams, numbers<span class="kbd">⌘K</span></button>
+<div class="top-r"><button class="ib" type="button" aria-label="Notifications, 2 new"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="ping"></span></button><span class="vr"></span>
+<button class="user" type="button"><span class="av av-sm" style="--h:158" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button></div></header>
+<main class="content">
+<div class="ph"><div><p class="eyebrow">Directory · Akwaaba Labs</p><h1>People <span class="count">9 people</span></h1></div>
+<div class="ph-r"><div class="seg seg-v" role="group" aria-label="View"><button type="button" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>Cards</button><button type="button" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg>Table</button></div>
+<button class="btn btn-secondary btn-sm" type="button"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Export</button></div></div>
+<div class="filters">
+<label class="input"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input type="search" placeholder="Name or employee no." aria-label="Search people"></label>
+<button class="fbtn" type="button"><span>Office</span>All offices<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<button class="fbtn" type="button"><span>Department</span>All<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<button class="fbtn" type="button"><span>Status</span>Any<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<span class="f-meta"><svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg>Name, A–Z</span>
+</div>
+<div class="cards"><a class="pcard" href="#"><span class="av av-lg" style="--h:158" aria-hidden="true">AM</span>
+<div style="min-width:0"><h3 class="pc-name">Ama Mensah</h3><p class="pc-role">Engineering Manager</p><p class="pc-org">Platform Engineering · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Lead</span><span class="empno">GH-ACC-0007</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:75" aria-hidden="true">KA</span>
+<div style="min-width:0"><h3 class="pc-name">Kwame Asante</h3><p class="pc-role">Senior Backend Engineer</p><p class="pc-org">Platform Engineering · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Senior</span><span class="empno">GH-ACC-0042</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:25" aria-hidden="true">EB</span>
+<div style="min-width:0"><h3 class="pc-name">Efua Boateng</h3><p class="pc-role">Product Designer</p><p class="pc-org">Design · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Mid</span><span class="empno">GH-ACC-0051</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:235" aria-hidden="true">KO</span>
+<div style="min-width:0"><h3 class="pc-name">Kofi Owusu</h3><p class="pc-role">Data Analyst</p><p class="pc-org">Analytics · Kumasi</p></div>
+<div class="pc-foot"><span class="pill pending">Pending</span><span class="tag">Junior</span><span class="empno">GH-KSI-0013</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:340" aria-hidden="true">AD</span>
+<div style="min-width:0"><h3 class="pc-name">Abena Darko</h3><p class="pc-role">HR Business Partner</p><p class="pc-org">People Operations · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Senior</span><span class="empno">GH-ACC-0019</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:115" aria-hidden="true">YA</span>
+<div style="min-width:0"><h3 class="pc-name">Yaw Appiah</h3><p class="pc-role">QA Engineer</p><p class="pc-org">Quality Engineering · Takoradi</p></div>
+<div class="pc-foot"><span class="pill inactive">Inactive</span><span class="tag">Mid</span><span class="empno">GH-TKD-0004</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:50" aria-hidden="true">AF</span>
+<div style="min-width:0"><h3 class="pc-name">Akosua Frimpong</h3><p class="pc-role">Frontend Engineer</p><p class="pc-org">Platform Engineering · Kumasi</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Mid</span><span class="empno">GH-KSI-0021</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:195" aria-hidden="true">NA</span>
+<div style="min-width:0"><h3 class="pc-name">Nana Agyeman</h3><p class="pc-role">Finance Lead</p><p class="pc-org">Finance · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Lead</span><span class="empno">GH-ACC-0003</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:285" aria-hidden="true">EQ</span>
+<div style="min-width:0"><h3 class="pc-name">Esi Quaye</h3><p class="pc-role">Intern, Engineering</p><p class="pc-org">Platform Engineering · Takoradi</p></div>
+<div class="pc-foot"><span class="pill pending">Pending</span><span class="tag">Intern</span><span class="empno">GH-TKD-0011</span></div></a></div>
+</main></div></div></div></div></figure><figure class="device" data-mode="dark">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/people</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</span><span class="sr">People directory, dark mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="app"><nav class="side" aria-label="Main">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People</small></div></div>
+<p class="nav-lbl">Workspace</p>
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-dash"/></svg>Dashboard</a><a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-people"/></svg>People</a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Requests<span class="badge" aria-label="2 open">2</span></a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a></div>
+<div class="side-foot">
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>My profile</a></div>
+<div class="org"><code>GH</code><span><b>Akwaaba Labs</b>3 offices · 9 people</span></div>
+</div></nav><div class="main"><header class="top">
+<button class="cmdk" type="button"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Search people, teams, numbers<span class="kbd">⌘K</span></button>
+<div class="top-r"><button class="ib" type="button" aria-label="Notifications, 2 new"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="ping"></span></button><span class="vr"></span>
+<button class="user" type="button"><span class="av av-sm" style="--h:158" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button></div></header>
+<main class="content">
+<div class="ph"><div><p class="eyebrow">Directory · Akwaaba Labs</p><h1>People <span class="count">9 people</span></h1></div>
+<div class="ph-r"><div class="seg seg-v" role="group" aria-label="View"><button type="button" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-grid"/></svg>Cards</button><button type="button" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-list"/></svg>Table</button></div>
+<button class="btn btn-secondary btn-sm" type="button"><svg class="ic" aria-hidden="true"><use href="#i-download"/></svg>Export</button></div></div>
+<div class="filters">
+<label class="input"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg><input type="search" placeholder="Name or employee no." aria-label="Search people"></label>
+<button class="fbtn" type="button"><span>Office</span>All offices<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<button class="fbtn" type="button"><span>Department</span>All<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<button class="fbtn" type="button"><span>Status</span>Any<svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button>
+<span class="f-meta"><svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg>Name, A–Z</span>
+</div>
+<div class="cards"><a class="pcard" href="#"><span class="av av-lg" style="--h:158" aria-hidden="true">AM</span>
+<div style="min-width:0"><h3 class="pc-name">Ama Mensah</h3><p class="pc-role">Engineering Manager</p><p class="pc-org">Platform Engineering · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Lead</span><span class="empno">GH-ACC-0007</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:75" aria-hidden="true">KA</span>
+<div style="min-width:0"><h3 class="pc-name">Kwame Asante</h3><p class="pc-role">Senior Backend Engineer</p><p class="pc-org">Platform Engineering · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Senior</span><span class="empno">GH-ACC-0042</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:25" aria-hidden="true">EB</span>
+<div style="min-width:0"><h3 class="pc-name">Efua Boateng</h3><p class="pc-role">Product Designer</p><p class="pc-org">Design · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Mid</span><span class="empno">GH-ACC-0051</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:235" aria-hidden="true">KO</span>
+<div style="min-width:0"><h3 class="pc-name">Kofi Owusu</h3><p class="pc-role">Data Analyst</p><p class="pc-org">Analytics · Kumasi</p></div>
+<div class="pc-foot"><span class="pill pending">Pending</span><span class="tag">Junior</span><span class="empno">GH-KSI-0013</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:340" aria-hidden="true">AD</span>
+<div style="min-width:0"><h3 class="pc-name">Abena Darko</h3><p class="pc-role">HR Business Partner</p><p class="pc-org">People Operations · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Senior</span><span class="empno">GH-ACC-0019</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:115" aria-hidden="true">YA</span>
+<div style="min-width:0"><h3 class="pc-name">Yaw Appiah</h3><p class="pc-role">QA Engineer</p><p class="pc-org">Quality Engineering · Takoradi</p></div>
+<div class="pc-foot"><span class="pill inactive">Inactive</span><span class="tag">Mid</span><span class="empno">GH-TKD-0004</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:50" aria-hidden="true">AF</span>
+<div style="min-width:0"><h3 class="pc-name">Akosua Frimpong</h3><p class="pc-role">Frontend Engineer</p><p class="pc-org">Platform Engineering · Kumasi</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Mid</span><span class="empno">GH-KSI-0021</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:195" aria-hidden="true">NA</span>
+<div style="min-width:0"><h3 class="pc-name">Nana Agyeman</h3><p class="pc-role">Finance Lead</p><p class="pc-org">Finance · Accra</p></div>
+<div class="pc-foot"><span class="pill active">Active</span><span class="tag">Lead</span><span class="empno">GH-ACC-0003</span></div></a>
+<a class="pcard" href="#"><span class="av av-lg" style="--h:285" aria-hidden="true">EQ</span>
+<div style="min-width:0"><h3 class="pc-name">Esi Quaye</h3><p class="pc-role">Intern, Engineering</p><p class="pc-org">Platform Engineering · Takoradi</p></div>
+<div class="pc-foot"><span class="pill pending">Pending</span><span class="tag">Intern</span><span class="empno">GH-TKD-0011</span></div></a></div>
+</main></div></div></div></div></figure></div>
+</section>
+
+<section class="sec" aria-labelledby="s3-h">
+<header class="sec-head"><span class="sec-no">03</span><h2 id="s3-h">Employee profile</h2><p>Kwame Asante, seen by his manager. The name leads; work details and private details sit side by side, and the pending reset waits top-right.</p></header>
+<div class="pair"><figure class="device" data-mode="light">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/people/GH-ACC-0042</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</span><span class="sr">Employee profile, light mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="app"><nav class="side" aria-label="Main">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People</small></div></div>
+<p class="nav-lbl">Workspace</p>
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-dash"/></svg>Dashboard</a><a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-people"/></svg>People</a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Requests<span class="badge" aria-label="2 open">2</span></a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a></div>
+<div class="side-foot">
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>My profile</a></div>
+<div class="org"><code>GH</code><span><b>Akwaaba Labs</b>3 offices · 9 people</span></div>
+</div></nav><div class="main"><header class="top">
+<button class="cmdk" type="button"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Search people, teams, numbers<span class="kbd">⌘K</span></button>
+<div class="top-r"><button class="ib" type="button" aria-label="Notifications, 2 new"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="ping"></span></button><span class="vr"></span>
+<button class="user" type="button"><span class="av av-sm" style="--h:158" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button></div></header>
+<main class="content">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="#">People</a><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg><a href="#">Platform Engineering</a><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg><span aria-current="page">Kwame Asante</span></nav>
+<div class="pf-head">
+<span class="av av-xl" style="--h:75" aria-hidden="true">KA</span>
+<div class="pf-id"><p class="eyebrow">Platform Engineering · Accra</p>
+<h1 class="pf-name">Kwame Asante</h1>
+<p class="pf-pos">Senior Backend Engineer · <b>Senior</b></p>
+<div class="pf-meta"><button class="copy" type="button" aria-label="Copy employee number GH-ACC-0042">GH-ACC-0042<svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg></button><span class="pill active">Active</span>
+<span class="mgr">Reports to <span class="av av-xs" style="--h:158" aria-hidden="true">AM</span><a href="#">Ama Mensah</a></span></div></div>
+<section class="req" aria-label="Pending request">
+<div class="req-h"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg>Password reset requested<time class="mono" datetime="2026-10-22T08:14">08:14</time></div>
+<p>Kwame is locked out. Approving sends a one-time reset link to his work email.</p>
+<div class="acts"><button class="btn btn-primary btn-sm" type="button"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve password reset</button><button class="btn btn-secondary btn-sm" type="button">Decline</button></div>
+</section>
+</div>
+<div class="pf-cols">
+<section class="card"><div class="card-h"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg><h3>Work details</h3></div>
+<dl class="dl">
+<div><dt>Department</dt><dd>Platform Engineering</dd></div>
+<div><dt>Office</dt><dd>Accra <span class="mono sub">ACC</span></dd></div>
+<div><dt>Position</dt><dd>Senior Backend Engineer <span class="tag">Senior</span></dd></div>
+<div><dt>Date hired</dt><dd><span class="mono">2023-03-14</span><span class="sub">3 yr 7 mo</span></dd></div>
+<div><dt>Work email</dt><dd>kwame.asante@akwaabalabs.example<button class="ib" type="button" aria-label="Copy work email"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg></button></dd></div>
+<div><dt>Access level</dt><dd>Employee</dd></div>
+<div><dt>Direct reports</dt><dd class="sub">None</dd></div>
+</dl></section>
+<section class="card"><div class="card-h"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><h3>Private</h3><span class="private-mk"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>Private — visible to you, your manager and HR</span></div>
+<dl class="dl">
+<div><dt>Date of birth</dt><dd><span class="mono">1994-08-02</span></dd></div>
+<div><dt>Nationality</dt><dd>Ghanaian</dd></div>
+<div><dt>Personal phone</dt><dd><span class="mono">+233 24 555 0142</span></dd></div>
+<div><dt>Address</dt><dd>14 Oxford St, Osu, Accra, <span style="white-space:nowrap">GA-123-4567</span> <span class="tag brass">Current</span></dd></div>
+<div><dt>ID documents</dt><dd><span class="docs">
+<span><span class="k">Ghana Card</span><span class="mono">GHA-7xxxxxxx-4</span><button class="reveal" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eyeoff"/></svg>Masked</button></span>
+<span><span class="k">Passport</span><span class="mono">G2xxxxx</span><button class="reveal" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eyeoff"/></svg>Masked</button></span></span></dd></div>
+</dl></section>
+</div>
+</main></div></div></div></div></figure><figure class="device" data-mode="dark">
+<figcaption class="device-bar"><span class="dots"><i></i><i></i><i></i></span><span class="url">people.akwaabalabs.example/people/GH-ACC-0042</span><span class="mk"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</span><span class="sr">Employee profile, dark mode</span></figcaption>
+<div class="viewport"><div class="canvas"><div class="app"><nav class="side" aria-label="Main">
+<div class="brand"><svg class="mark" viewBox="0 0 34 34" aria-hidden="true"><rect class="m-bg" width="34" height="34" rx="9"/><path class="m-door" d="M11 26V15.5a6 6 0 0 1 12 0V26"/><circle class="m-dot" cx="17" cy="21.5" r="2.1"/></svg><div><b>Akwaaba Labs</b><small>People</small></div></div>
+<p class="nav-lbl">Workspace</p>
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-dash"/></svg>Dashboard</a><a href="#" aria-current="page"><svg class="ic" aria-hidden="true"><use href="#i-people"/></svg>People</a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-inbox"/></svg>Requests<span class="badge" aria-label="2 open">2</span></a><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-sliders"/></svg>Settings</a></div>
+<div class="side-foot">
+<div class="nav"><a href="#"><svg class="ic" aria-hidden="true"><use href="#i-user"/></svg>My profile</a></div>
+<div class="org"><code>GH</code><span><b>Akwaaba Labs</b>3 offices · 9 people</span></div>
+</div></nav><div class="main"><header class="top">
+<button class="cmdk" type="button"><svg class="ic" aria-hidden="true"><use href="#i-search"/></svg>Search people, teams, numbers<span class="kbd">⌘K</span></button>
+<div class="top-r"><button class="ib" type="button" aria-label="Notifications, 2 new"><svg class="ic" aria-hidden="true"><use href="#i-bell"/></svg><span class="ping"></span></button><span class="vr"></span>
+<button class="user" type="button"><span class="av av-sm" style="--h:158" aria-hidden="true">AM</span><span><b>Ama Mensah</b><small>Engineering Manager</small></span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></button></div></header>
+<main class="content">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="#">People</a><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg><a href="#">Platform Engineering</a><svg class="ic" aria-hidden="true"><use href="#i-right"/></svg><span aria-current="page">Kwame Asante</span></nav>
+<div class="pf-head">
+<span class="av av-xl" style="--h:75" aria-hidden="true">KA</span>
+<div class="pf-id"><p class="eyebrow">Platform Engineering · Accra</p>
+<h1 class="pf-name">Kwame Asante</h1>
+<p class="pf-pos">Senior Backend Engineer · <b>Senior</b></p>
+<div class="pf-meta"><button class="copy" type="button" aria-label="Copy employee number GH-ACC-0042">GH-ACC-0042<svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg></button><span class="pill active">Active</span>
+<span class="mgr">Reports to <span class="av av-xs" style="--h:158" aria-hidden="true">AM</span><a href="#">Ama Mensah</a></span></div></div>
+<section class="req" aria-label="Pending request">
+<div class="req-h"><svg class="ic" aria-hidden="true"><use href="#i-key"/></svg>Password reset requested<time class="mono" datetime="2026-10-22T08:14">08:14</time></div>
+<p>Kwame is locked out. Approving sends a one-time reset link to his work email.</p>
+<div class="acts"><button class="btn btn-primary btn-sm" type="button"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Approve password reset</button><button class="btn btn-secondary btn-sm" type="button">Decline</button></div>
+</section>
+</div>
+<div class="pf-cols">
+<section class="card"><div class="card-h"><svg class="ic" aria-hidden="true"><use href="#i-briefcase"/></svg><h3>Work details</h3></div>
+<dl class="dl">
+<div><dt>Department</dt><dd>Platform Engineering</dd></div>
+<div><dt>Office</dt><dd>Accra <span class="mono sub">ACC</span></dd></div>
+<div><dt>Position</dt><dd>Senior Backend Engineer <span class="tag">Senior</span></dd></div>
+<div><dt>Date hired</dt><dd><span class="mono">2023-03-14</span><span class="sub">3 yr 7 mo</span></dd></div>
+<div><dt>Work email</dt><dd>kwame.asante@akwaabalabs.example<button class="ib" type="button" aria-label="Copy work email"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg></button></dd></div>
+<div><dt>Access level</dt><dd>Employee</dd></div>
+<div><dt>Direct reports</dt><dd class="sub">None</dd></div>
+</dl></section>
+<section class="card"><div class="card-h"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg><h3>Private</h3><span class="private-mk"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>Private — visible to you, your manager and HR</span></div>
+<dl class="dl">
+<div><dt>Date of birth</dt><dd><span class="mono">1994-08-02</span></dd></div>
+<div><dt>Nationality</dt><dd>Ghanaian</dd></div>
+<div><dt>Personal phone</dt><dd><span class="mono">+233 24 555 0142</span></dd></div>
+<div><dt>Address</dt><dd>14 Oxford St, Osu, Accra, <span style="white-space:nowrap">GA-123-4567</span> <span class="tag brass">Current</span></dd></div>
+<div><dt>ID documents</dt><dd><span class="docs">
+<span><span class="k">Ghana Card</span><span class="mono">GHA-7xxxxxxx-4</span><button class="reveal" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eyeoff"/></svg>Masked</button></span>
+<span><span class="k">Passport</span><span class="mono">G2xxxxx</span><button class="reveal" type="button"><svg class="ic" aria-hidden="true"><use href="#i-eyeoff"/></svg>Masked</button></span></span></dd></div>
+</dl></section>
+</div>
+</main></div></div></div></div></figure></div>
+</section>
+</div>
+<script>
+(function(){var v=[].slice.call(document.querySelectorAll('.viewport'));function fit(el){el.style.setProperty('--s',(el.clientWidth/1200).toFixed(4))}
+v.forEach(fit);if('ResizeObserver' in window){var ro=new ResizeObserver(function(es){es.forEach(function(e){fit(e.target)})});v.forEach(function(el){ro.observe(el)})}else{addEventListener('resize',function(){v.forEach(fit)})}})();
+</script>
+</body>
+</html>

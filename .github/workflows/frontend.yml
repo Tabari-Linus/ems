@@ -90,6 +90,11 @@ jobs:
       - name: Contrast gate (WCAG, light + dark)
         run: npm run tokens:check-contrast
 
+      # Component styles use tokens only: no raw colours, lengths, durations or z-indexes, no
+      # unknown or primitive --ems-* variables, and @media widths only from breakpoint.*.
+      - name: Tokens-only CSS lint
+        run: npm run ds:lint-css
+
       - name: Build libraries (tokens, icons, ui)
         run: npm run lib:build
 
@@ -120,17 +125,17 @@ jobs:
           path: frontend/storybook-static/
           retention-days: 14
 
-      # Every story runs in Chromium: render, play function (interactions) and axe (0 violations).
+      # Every story runs in Chromium twice (light and dark): render, play function and axe (0 violations).
       - name: Storybook tests (interactions + a11y)
         run: npm run storybook:test
 
-      # Baselines are per platform (system fonts differ). Until Linux baselines are committed,
-      # `missing` writes them instead of failing; they are uploaded below for review and commit.
-      # Existing baselines are always compared.
+      # Linux baselines are committed (generated in the mcr.microsoft.com/playwright image that
+      # matches @playwright/test; see frontend/projects/README.md), so a missing or changed
+      # screenshot fails the job.
       - name: Visual regression (light + dark)
-        run: npm run test:visual -- --update-snapshots=missing
+        run: npm run test:visual
 
-      - name: Upload visual report and Linux baselines
+      - name: Upload visual report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v7
         with:
@@ -138,7 +143,6 @@ jobs:
           path: |
             frontend/playwright-report/visual/
             frontend/test-results/visual/
-            frontend/visual/baselines/*-linux.png
           if-no-files-found: ignore
           retention-days: 14
 

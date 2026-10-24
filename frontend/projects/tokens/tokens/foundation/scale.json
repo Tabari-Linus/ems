@@ -1,0 +1,145 @@
+{
+  "space": {
+    "0": { "$value": { "value": 0, "unit": "px" } },
+    "1": { "$value": { "value": 0.25, "unit": "rem" } },
+    "2": { "$value": { "value": 0.5, "unit": "rem" } },
+    "3": { "$value": { "value": 0.75, "unit": "rem" } },
+    "4": { "$value": { "value": 1, "unit": "rem" } },
+    "5": { "$value": { "value": 1.25, "unit": "rem" } },
+    "6": { "$value": { "value": 1.5, "unit": "rem" } },
+    "8": { "$value": { "value": 2, "unit": "rem" } },
+    "10": { "$value": { "value": 2.5, "unit": "rem" } },
+    "12": { "$value": { "value": 3, "unit": "rem" } },
+    "16": { "$value": { "value": 4, "unit": "rem" } },
+    "$type": "dimension",
+    "$description": "4-pt spacing scale: space.N = N x 4px."
+  },
+  "radius": {
+    "$type": "dimension",
+    "sm": {
+      "$value": { "value": 6, "unit": "px" },
+      "$description": "Tags, kbd, small chips."
+    },
+    "md": {
+      "$value": { "value": 10, "unit": "px" },
+      "$description": "Inputs, selects, icon tiles."
+    },
+    "lg": {
+      "$value": { "value": 12, "unit": "px" },
+      "$description": "Inner panels, list rows, menus, notes."
+    },
+    "xl": {
+      "$value": { "value": 14, "unit": "px" },
+      "$description": "Cards, dialogs, drawers."
+    },
+    "pill": {
+      "$value": { "value": 9999, "unit": "px" },
+      "$description": "Buttons, filters, tabs, status pills, avatars."
+    }
+  },
+  "icon-size": {
+    "$type": "dimension",
+    "sm": {
+      "$value": { "value": 16, "unit": "px" },
+      "$description": "Inside buttons, pills and meta lines."
+    },
+    "md": {
+      "$value": { "value": 20, "unit": "px" },
+      "$description": "Nav items, icon buttons, inputs."
+    },
+    "lg": {
+      "$value": { "value": 24, "unit": "px" },
+      "$description": "Empty states and standalone icons."
+    }
+  },
+  "border-width": {
+    "$type": "dimension",
+    "hairline": {
+      "$value": { "value": 1, "unit": "px" },
+      "$description": "Dividers and control outlines."
+    },
+    "thick": {
+      "$value": { "value": 2, "unit": "px" },
+      "$description": "Focus ring, selected indicators."
+    }
+  },
+  "duration": {
+    "$type": "duration",
+    "fast": {
+      "$value": { "value": 120, "unit": "ms" },
+      "$description": "Hover, press, colour changes."
+    },
+    "base": {
+      "$value": { "value": 180, "unit": "ms" },
+      "$description": "Menus, popovers, small reveals."
+    },
+    "slow": {
+      "$value": { "value": 240, "unit": "ms" },
+      "$description": "Dialogs, drawers, page-level transitions."
+    }
+  },
+  "easing": {
+    "$type": "cubicBezier",
+    "standard": {
+      "$value": [0.2, 0, 0, 1],
+      "$description": "Default for state changes and exits."
+    },
+    "emphasized": {
+      "$value": [0.3, 1.2, 0.5, 1],
+      "$description": "Overlays entering: a slight, spring-like settle. Never for colour changes."
+    }
+  },
+  "z": {
+    "$type": "number",
+    "$description": "Stacking layers. CDK overlays render in .cdk-overlay-container at z.overlay.",
+    "sticky": { "$value": 100 },
+    "dropdown": { "$value": 900 },
+    "overlay": { "$value": 1000 },
+    "modal": { "$value": 1100 },
+    "toast": { "$value": 1200 }
+  },
+  "breakpoint": {
+    "$type": "dimension",
+    "$description": "Viewport widths where layouts change. CSS custom properties cannot be used inside @media, so CSS repeats the literal as (max-width: <value - 0.02px>) with a comment naming this token; TS code imports BREAKPOINTS / MEDIA_QUERIES from @ems/tokens.",
+    "narrow": {
+      "$value": { "value": 640, "unit": "px" },
+      "$description": "Phones: dialogs and drawers go full screen, data tables switch to card mode, toasts span the width."
+    },
+    "compact": {
+      "$value": { "value": 900, "unit": "px" },
+      "$description": "Tablets and small laptops: the app-shell sidebar becomes an off-canvas drawer."
+    }
+  },
+  "font": {
+    "family": {
+      "$type": "fontFamily",
+      "sans": {
+        "$value": [
+          "Plus Jakarta Sans",
+          "Plus Jakarta Sans Fallback",
+          "ui-sans-serif",
+          "system-ui",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "Arial",
+          "sans-serif"
+        ],
+        "$description": "Everything: UI, body, headings. Self-hosted variable font (weights 200-800)."
+      },
+      "mono": {
+        "$value": [
+          "Geist Mono",
+          "Geist Mono Fallback",
+          "ui-monospace",
+          "Cascadia Mono",
+          "SFMono-Regular",
+          "Menlo",
+          "Consolas",
+          "monospace"
+        ],
+        "$description": "Employee numbers, codes, dates and counts; pair with tabular numerals."
+      }
+    }
+  }
+}

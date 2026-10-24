@@ -1,0 +1,153 @@
+<title>EMS Direction Board</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@400;500&display=swap">
+<style>
+  /* Layout: a quiet review shell — header, comparison table, tabbed full-height preview of each direction. */
+  :root {
+    --bg: oklch(97.5% 0.004 250);
+    --surface: oklch(100% 0 0);
+    --ink: oklch(24% 0.015 255);
+    --muted: oklch(47% 0.015 255);
+    --line: oklch(88% 0.008 255);
+    --accent: oklch(48% 0.13 250);
+    --accent-ink: oklch(100% 0 0);
+    --font-ui: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
+    --font-mono: "Martian Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: oklch(19% 0.01 255); --surface: oklch(23% 0.012 255); --ink: oklch(93% 0.006 255);
+      --muted: oklch(72% 0.012 255); --line: oklch(35% 0.012 255);
+      --accent: oklch(74% 0.12 250); --accent-ink: oklch(19% 0.02 255); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: oklch(19% 0.01 255); --surface: oklch(23% 0.012 255); --ink: oklch(93% 0.006 255);
+    --muted: oklch(72% 0.012 255); --line: oklch(35% 0.012 255);
+    --accent: oklch(74% 0.12 250); --accent-ink: oklch(19% 0.02 255); color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 15px/1.55 var(--font-ui);
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 32px 48px;
+  }
+  .wrap { max-width: 1240px; margin-inline: auto; display: grid; gap: 28px; }
+  header { display: grid; gap: 10px; max-width: 68ch; }
+  .eyebrow { font: 500 11px/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+  h1 { margin: 0; font-size: clamp(28px, 4vw, 40px); line-height: 1.1; font-weight: 700; letter-spacing: -0.02em; text-wrap: balance; }
+  h2 { margin: 0; font-size: 19px; font-weight: 650; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  .lede { color: var(--muted); font-size: 16px; }
+
+  .compare { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+  tr:last-child td { border-bottom: 0; }
+  thead th { font: 500 11px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  tbody th { font-weight: 600; width: 150px; color: var(--muted); }
+  td strong { font-weight: 650; }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tab {
+    font: 600 14px/1 var(--font-ui); color: var(--ink); background: var(--surface);
+    border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; cursor: pointer;
+    display: inline-flex; gap: 10px; align-items: center;
+  }
+  .tab .k { font: 500 11px/1 var(--font-mono); color: var(--muted); }
+  .tab[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .tab[aria-selected="true"] .k { color: inherit; opacity: .75; }
+  .tab:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .open { margin-left: auto; font-size: 14px; color: var(--accent); }
+
+  .stage { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--surface); }
+  .stage iframe { display: block; width: 100%; height: 2600px; border: 0; background: var(--surface); }
+
+  .decide { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .decide section { display: grid; gap: 6px; align-content: start; }
+  .decide p { color: var(--muted); font-size: 14px; }
+  footer { color: var(--muted); font-size: 13px; }
+  @media (prefers-reduced-motion: no-preference) { .tab { transition: background .15s, color .15s; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">EMS · Slice DS · Round 2</span>
+    <h1>Pick the visual direction for EMS</h1>
+    <p class="lede">Clean, minimal, light-first HR software with a blue accent, in the spirit of Rippling and Deel. Three takes on that brief, each shown on the same four screens (sign in, your home, the people directory, an employee profile) in light and dark with the same Akwaaba Labs sample data. Choose one, or name the parts you want to combine.</p>
+  </header>
+
+  <div class="compare" role="region" aria-label="Comparison of the three directions" tabindex="0">
+    <table>
+      <thead><tr><th scope="col"></th><th scope="col">D · Daylight</th><th scope="col">E · Structure</th><th scope="col">F · Quiet</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Feels like</th><td>Friendly and effortless. Airy, rounded, welcoming.</td><td>Trusted and orderly. Everything has its place.</td><td>Calm and spacious. The most minimal of the three.</td></tr>
+        <tr><th scope="row">Colour</th><td>Light canvas, white cards, <strong>indigo</strong> accent, soft avatar tints</td><td>White content, <strong>deep navy sidebar</strong>, <strong>cobalt</strong> accent</td><td>White and hairlines, <strong>ultramarine</strong> only where you can act</td></tr>
+        <tr><th scope="row">Shape</th><td>Pill buttons, rounded cards, soft shadows</td><td>6px corners, 1px borders, almost no shadow</td><td>Space and hairlines instead of cards</td></tr>
+        <tr><th scope="row">Navigation</th><td>Light sidebar</td><td>Navy sidebar</td><td>Top navigation bar</td></tr>
+        <tr><th scope="row">Directory default</th><td>Grid of people cards</td><td>Table grouped by department</td><td>Spacious people grid</td></tr>
+        <tr><th scope="row">Signature</th><td>Welcoming home with "Needs your attention"</td><td>Profile with sticky summary column and tabs</td><td>Typography and white space</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Directions">
+    <button class="tab" role="tab" id="tab-daylight" aria-controls="stage" aria-selected="true" data-file="direction-d.html"><span class="k">D</span>Daylight</button>
+    <button class="tab" role="tab" id="tab-structure" aria-controls="stage" aria-selected="false" data-file="direction-e.html"><span class="k">E</span>Structure</button>
+    <button class="tab" role="tab" id="tab-quiet" aria-controls="stage" aria-selected="false" data-file="direction-f.html"><span class="k">F</span>Quiet</button>
+    <a class="open" id="open-link" href="direction-d.html" target="_blank" rel="noopener">Open full page</a>
+  </div>
+
+  <div class="stage" id="stage" role="tabpanel" aria-labelledby="tab-daylight">
+    <iframe id="frame" title="Direction preview" src="direction-d.html" loading="eager"></iframe>
+  </div>
+
+  <div class="decide">
+    <section><h2>Choose one</h2><p>Reply with D, E or F. Its palette, type and shapes become the tokens; components follow its patterns.</p></section>
+    <section><h2>Or combine</h2><p>Name the parts, for example "D's home and palette with E's profile layout".</p></section>
+    <section><h2>What happens next</h2><p>The chosen direction is frozen into DTCG tokens with the contrast gate, then the first components ship in Storybook in both themes.</p></section>
+  </div>
+
+  <footer>Sample data is fictional. Contrast is checked per direction against WCAG 2.2 AA in both modes. Round 1 (Atelier, Kente Modern, Precision) was set aside.</footer>
+</div>
+
+<script>
+  const tabs = [...document.querySelectorAll('.tab')];
+  const frame = document.getElementById('frame');
+  const stage = document.getElementById('stage');
+  const openLink = document.getElementById('open-link');
+  const byHash = { daylight: 0, structure: 1, quiet: 2 };
+
+  function fit() {
+    try {
+      const doc = frame.contentDocument;
+      if (doc && doc.documentElement) frame.style.height = doc.documentElement.scrollHeight + 'px';
+    } catch (e) { /* keep the fallback height */ }
+  }
+  function select(i, focus) {
+    tabs.forEach((t, j) => { t.setAttribute('aria-selected', String(i === j)); t.tabIndex = i === j ? 0 : -1; });
+    const file = tabs[i].dataset.file;
+    frame.src = file; openLink.href = file;
+    stage.setAttribute('aria-labelledby', tabs[i].id);
+    if (focus) tabs[i].focus();
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(i));
+    t.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        select((i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length, true);
+      }
+    });
+  });
+  frame.addEventListener('load', () => { fit(); setTimeout(fit, 800); });
+  window.addEventListener('resize', () => setTimeout(fit, 150));
+  const start = byHash[(location.hash || '').slice(1)];
+  select(start === undefined ? 0 : start);
+</script>

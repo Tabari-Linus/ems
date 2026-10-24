@@ -1,0 +1,174 @@
+<ng-template #emptyContent>
+  @if (emptySlot()) {
+    <ng-content select="[uiTableEmpty]" />
+  } @else {
+    <p class="ui-data-table__empty-text">{{ emptyText() }}</p>
+  }
+</ng-template>
+
+<span class="ui-visually-hidden" role="status">{{ loading() ? loadingLabel() : '' }}</span>
+
+@if (resolvedMode() === 'table') {
+  <div
+    class="ui-data-table__scroll"
+    [style.max-block-size]="maxHeight()"
+    [attr.tabindex]="maxHeight() ? 0 : null"
+    [attr.role]="maxHeight() ? 'region' : null"
+    [attr.aria-label]="maxHeight() ? caption() : null"
+  >
+    <table class="ui-data-table__table" [attr.aria-busy]="loading() ? 'true' : null">
+      <caption [class.ui-visually-hidden]="!showCaption()" class="ui-data-table__caption">
+        {{
+          caption()
+        }}
+      </caption>
+      <thead>
+        <tr>
+          @for (column of columns(); track column.id()) {
+            <th
+              scope="col"
+              [attr.aria-sort]="ariaSort(column)"
+              [attr.data-align]="column.align()"
+              [style.inline-size]="column.width()"
+            >
+              @if (column.sortable()) {
+                <button
+                  type="button"
+                  class="ui-data-table__sort"
+                  [attr.data-sort]="ariaSort(column) ?? 'none'"
+                  (click)="toggleSort(column.id())"
+                >
+                  <ng-container *ngTemplateOutlet="headerContent; context: { $implicit: column }" />
+                  <ui-icon [name]="sortIcon(column)" size="sm" />
+                </button>
+              } @else {
+                <span [class.ui-visually-hidden]="column.headerHidden()">
+                  <ng-container *ngTemplateOutlet="headerContent; context: { $implicit: column }" />
+                </span>
+              }
+            </th>
+          }
+          @if (rowActions()) {
+            <th scope="col" data-align="end" class="ui-data-table__actions-head">
+              <span class="ui-visually-hidden">{{ actionsLabel() }}</span>
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @if (loading()) {
+          @for (i of skeleton(); track i) {
+            <tr class="ui-data-table__skeleton-row" aria-hidden="true">
+              @for (column of columns(); track column.id(); let c = $index) {
+                <td>
+                  <span class="ui-data-table__skeleton" [attr.data-variant]="(i + c) % 3"></span>
+                </td>
+              }
+              @if (rowActions()) {
+                <td></td>
+              }
+            </tr>
+          }
+        } @else if (isEmpty()) {
+          <tr class="ui-data-table__empty-row">
+            <td [attr.colspan]="columnCount()">
+              <ng-container *ngTemplateOutlet="emptyContent" />
+            </td>
+          </tr>
+        } @else {
+          @for (row of rowList(); track trackBy()($index, row); let i = $index) {
+            <tr
+              class="ui-data-table__row"
+              [attr.tabindex]="activatable() ? 0 : null"
+              [attr.data-activatable]="activatable() ? '' : null"
+              (click)="onRowClick($event, row, i)"
+              (keydown)="onRowKeydown($event, row, i)"
+            >
+              @for (column of columns(); track column.id()) {
+                <td [attr.data-align]="column.align()">
+                  @if (column.cell(); as cell) {
+                    <ng-container *ngTemplateOutlet="cell.template; context: cellContext(row, i)" />
+                  }
+                </td>
+              }
+              @if (rowActions(); as actions) {
+                <td data-align="end" class="ui-data-table__actions">
+                  <ng-container
+                    *ngTemplateOutlet="actions.template; context: cellContext(row, i)"
+                  />
+                </td>
+              }
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+} @else {
+  @if (showCaption()) {
+    <p class="ui-data-table__caption" [id]="captionId">{{ caption() }}</p>
+  }
+  @if (loading()) {
+    <ul class="ui-data-table__cards" role="list" aria-busy="true" [attr.aria-label]="caption()">
+      @for (i of skeleton(); track i) {
+        <li class="ui-data-table__card" aria-hidden="true">
+          <span class="ui-data-table__skeleton" data-variant="0"></span>
+          <span class="ui-data-table__skeleton" data-variant="2"></span>
+        </li>
+      }
+    </ul>
+  } @else if (isEmpty()) {
+    <div class="ui-data-table__cards-empty">
+      <ng-container *ngTemplateOutlet="emptyContent" />
+    </div>
+  } @else {
+    <ul class="ui-data-table__cards" role="list" [attr.aria-label]="caption()">
+      @for (row of rowList(); track trackBy()($index, row); let i = $index) {
+        <li
+          class="ui-data-table__card"
+          [attr.tabindex]="activatable() ? 0 : null"
+          [attr.data-activatable]="activatable() ? '' : null"
+          (click)="onRowClick($event, row, i)"
+          (keydown)="onRowKeydown($event, row, i)"
+        >
+          @if (primaryColumn(); as primary) {
+            <div class="ui-data-table__card-title">
+              @if (primary.cell(); as cell) {
+                <ng-container *ngTemplateOutlet="cell.template; context: cellContext(row, i)" />
+              }
+            </div>
+          }
+          @if (cardColumns().length) {
+            <dl class="ui-data-table__card-fields">
+              @for (column of cardColumns(); track column.id()) {
+                <div class="ui-data-table__card-field">
+                  <dt>{{ column.header() }}</dt>
+                  <dd>
+                    @if (column.cell(); as cell) {
+                      <ng-container
+                        *ngTemplateOutlet="cell.template; context: cellContext(row, i)"
+                      />
+                    }
+                  </dd>
+                </div>
+              }
+            </dl>
+          }
+          @if (rowActions(); as actions) {
+            <div class="ui-data-table__card-actions">
+              <ng-container *ngTemplateOutlet="actions.template; context: cellContext(row, i)" />
+            </div>
+          }
+        </li>
+      }
+    </ul>
+  }
+}
+
+<ng-template #headerContent let-column>
+  @if (column.headerCell(); as header) {
+    <ng-container *ngTemplateOutlet="header.template" />
+  } @else {
+    {{ column.header() }}
+  }
+</ng-template>

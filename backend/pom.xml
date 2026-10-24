@@ -29,6 +29,7 @@
     <properties>
         <java.version>21</java.version>
         <jacoco.version>0.8.14</jacoco.version>
+        <bucket4j.version>8.14.0</bucket4j.version>
         <!-- -DskipUnitTests runs only integration tests; -DskipITs (Failsafe) runs only unit tests -->
         <skipUnitTests>false</skipUnitTests>
     </properties>
@@ -138,6 +139,12 @@
         <dependency>
             <groupId>com.github.ben-manes.caffeine</groupId>
             <artifactId>caffeine</artifactId>
+        </dependency>
+        <!-- Per-IP rate limiting of the public auth endpoints (plain Java, no Spring integration) -->
+        <dependency>
+            <groupId>com.bucket4j</groupId>
+            <artifactId>bucket4j_jdk17-core</artifactId>
+            <version>${bucket4j.version}</version>
         </dependency>
     </dependencies>
 

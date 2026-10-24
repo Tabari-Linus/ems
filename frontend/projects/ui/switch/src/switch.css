@@ -1,0 +1,128 @@
+/*
+ * ui-switch. Contract tokens only. The native checkbox (appearance: none) is the track; its
+ * ::before pseudo-element is the thumb.
+ */
+@layer components {
+  .ui-switch {
+    --_track-w: calc(var(--ems-space-8) + var(--ems-space-1));
+    --_track-h: var(--ems-space-5);
+    --_thumb: var(--ems-space-4);
+    --_inset: calc((var(--_track-h) - var(--_thumb)) / 2);
+
+    display: inline-flex;
+    font-family: var(--ems-font-family-sans);
+  }
+
+  .ui-switch__row {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--ems-space-3);
+    min-block-size: var(--ems-space-6);
+    color: var(--ems-color-text-primary);
+    font-size: var(--ems-type-body-size);
+    font-weight: var(--ems-type-body-weight);
+    line-height: var(--ems-type-body-line-height);
+    cursor: pointer;
+  }
+
+  .ui-switch[data-label-position='before'] .ui-switch__row {
+    flex-direction: row-reverse;
+  }
+
+  .ui-switch__input {
+    appearance: none;
+    position: relative;
+    box-sizing: border-box;
+    flex: none;
+    inline-size: var(--_track-w);
+    block-size: var(--_track-h);
+    margin: 0;
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-border-default);
+    cursor: inherit;
+    transition: background-color var(--ems-duration-base) var(--ems-easing-standard);
+  }
+
+  .ui-switch__input::before {
+    content: '';
+    position: absolute;
+    inset-block-start: var(--_inset);
+    inset-inline-start: var(--_inset);
+    inline-size: var(--_thumb);
+    block-size: var(--_thumb);
+    border-radius: var(--ems-radius-pill);
+    background-color: var(--ems-color-bg-surface);
+    box-shadow: var(--ems-elevation-card);
+    transition: translate var(--ems-duration-base) var(--ems-easing-standard);
+  }
+
+  .ui-switch__input:hover:not(:disabled) {
+    background-color: var(--ems-color-border-strong);
+  }
+
+  .ui-switch__input:checked {
+    background-color: var(--ems-color-accent-solid);
+  }
+
+  .ui-switch__input:checked:hover:not(:disabled) {
+    background-color: var(--ems-color-accent-solid-hover);
+  }
+
+  .ui-switch__input:checked::before {
+    background-color: var(--ems-color-accent-on-solid);
+    translate: calc(var(--_track-w) - var(--_thumb) - 2 * var(--_inset)) 0;
+  }
+
+  .ui-switch__input:checked:dir(rtl)::before {
+    translate: calc((var(--_track-w) - var(--_thumb) - 2 * var(--_inset)) * -1) 0;
+  }
+
+  .ui-switch__input:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  .ui-switch[data-disabled] .ui-switch__row {
+    color: var(--ems-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .ui-switch__input:disabled {
+    background-color: var(--ems-color-border-subtle);
+  }
+
+  .ui-switch__input:disabled::before {
+    background-color: var(--ems-color-bg-sunken);
+    box-shadow: none;
+  }
+
+  .ui-switch__label:empty {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-switch__input,
+    .ui-switch__input::before {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .ui-switch__input {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+
+    .ui-switch__input::before {
+      background-color: CanvasText;
+    }
+
+    .ui-switch__input:checked {
+      background-color: Highlight;
+    }
+
+    .ui-switch__input:checked::before {
+      background-color: HighlightText;
+    }
+  }
+}

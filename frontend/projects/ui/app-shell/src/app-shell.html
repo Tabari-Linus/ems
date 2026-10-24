@@ -1,0 +1,81 @@
+<a class="ui-app-shell__skip" [href]="'#' + mainId()" (click)="skipToContent($event)">{{
+  skipLinkLabel()
+}}</a>
+
+@if (drawerVisible()) {
+  <div class="ui-app-shell__scrim" aria-hidden="true" (click)="closeDrawer()"></div>
+}
+
+<div
+  #sidebar
+  class="ui-app-shell__sidebar"
+  tabindex="-1"
+  [id]="sidebarId"
+  [attr.inert]="compact() && !drawerOpen() ? '' : null"
+  [attr.role]="drawerVisible() ? 'dialog' : null"
+  [attr.aria-modal]="drawerVisible() ? 'true' : null"
+  [attr.aria-label]="drawerVisible() ? navLabel() : null"
+  (keydown)="onSidebarKeydown($event)"
+  (click)="onSidebarClick($event)"
+>
+  <div class="ui-app-shell__brand">
+    <ng-content select="[uiShellBrand]" />
+    @if (drawerVisible()) {
+      <button
+        type="button"
+        class="ui-app-shell__icon-button ui-app-shell__close"
+        [attr.aria-label]="closeMenuLabel()"
+        (click)="closeDrawer()"
+      >
+        <ui-icon name="x" />
+      </button>
+    }
+  </div>
+
+  <nav class="ui-app-shell__nav" [attr.aria-label]="navLabel()">
+    <ng-content select="[uiShellNav]" />
+  </nav>
+
+  <div class="ui-app-shell__footer">
+    <ng-content select="[uiShellFooter]" />
+    @if (collapsible() && !compact()) {
+      <button
+        type="button"
+        class="ui-app-shell__icon-button ui-app-shell__collapse"
+        [attr.aria-label]="collapsed() ? expandLabel() : collapseLabel()"
+        [attr.aria-expanded]="!collapsed()"
+        [attr.aria-controls]="sidebarId"
+        (click)="toggleCollapsed()"
+      >
+        <ui-icon [name]="collapsed() ? 'panel-left-open' : 'panel-left-close'" />
+      </button>
+    }
+  </div>
+</div>
+
+<div class="ui-app-shell__app" [attr.inert]="drawerVisible() ? '' : null">
+  <header class="ui-app-shell__top">
+    @if (compact()) {
+      <button
+        #menuButton
+        type="button"
+        class="ui-app-shell__icon-button ui-app-shell__menu"
+        [attr.aria-label]="openMenuLabel()"
+        [attr.aria-expanded]="drawerOpen()"
+        [attr.aria-controls]="sidebarId"
+        (click)="openDrawer()"
+      >
+        <ui-icon name="menu" />
+      </button>
+    }
+    <div class="ui-app-shell__search"><ng-content select="[uiShellSearch]" /></div>
+    <div class="ui-app-shell__actions">
+      <ng-content select="[uiShellActions]" />
+      <ng-content select="[uiShellUser]" />
+    </div>
+  </header>
+
+  <main #main class="ui-app-shell__main" tabindex="-1" [id]="mainId()">
+    <div class="ui-app-shell__content"><ng-content /></div>
+  </main>
+</div>

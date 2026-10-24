@@ -9,6 +9,7 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { routes } from './app.routes';
 import { authInterceptor } from './core/interceptors/auth.interceptor';
 import { provideAppApollo } from './core/apollo/apollo.config';
+import { provideSessionAwareErrorHandler } from './core/apollo/session-error-handler';
 import { AuthService } from './core/services/auth.service';
 
 /**
@@ -21,6 +22,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(withFetch(), withInterceptors([authInterceptor])),
     provideAppApollo(),
+    // Re-reads `me` on a FORBIDDEN error (docs/api/auth.md §6).
+    provideSessionAwareErrorHandler(),
     // Restore the session from the refresh cookie before the first navigation runs the guards.
     provideAppInitializer(() => inject(AuthService).restoreSession()),
   ],

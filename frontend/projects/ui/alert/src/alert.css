@@ -1,0 +1,133 @@
+/* ui-alert. Contract tokens only (docs/design/token-contract.md). */
+@layer components {
+  :host {
+    --_bg: var(--ems-color-status-info-bg);
+    --_ring: var(--ems-color-status-info-border);
+    --_icon: var(--ems-color-status-info-text);
+    --_shadow: none;
+
+    display: flex;
+    align-items: flex-start;
+    gap: var(--ems-space-3);
+    box-sizing: border-box;
+    padding: var(--ems-space-4);
+    border-radius: var(--ems-radius-lg);
+    background-color: var(--_bg);
+    box-shadow:
+      var(--_shadow),
+      inset 0 0 0 var(--ems-border-width-hairline) var(--_ring);
+    color: var(--ems-color-text-secondary);
+    font-family: var(--ems-font-family-sans);
+    font-size: var(--ems-type-body-size);
+    line-height: var(--ems-type-body-line-height);
+  }
+
+  :host([hidden]) {
+    display: none;
+  }
+
+  /* Neutral: a calm white card, like the pending-request notice on a profile. */
+  :host([data-tone='neutral']) {
+    --_bg: var(--ems-color-bg-surface);
+    --_ring: transparent;
+    --_icon: var(--ems-color-text-link);
+    --_shadow: var(--ems-elevation-card);
+  }
+
+  :host([data-tone='success']) {
+    --_bg: var(--ems-color-status-success-bg);
+    --_ring: var(--ems-color-status-success-border);
+    --_icon: var(--ems-color-status-success-text);
+  }
+
+  :host([data-tone='warning']) {
+    --_bg: var(--ems-color-status-warning-bg);
+    --_ring: var(--ems-color-status-warning-border);
+    --_icon: var(--ems-color-status-warning-text);
+  }
+
+  :host([data-tone='danger']) {
+    --_bg: var(--ems-color-status-danger-bg);
+    --_ring: var(--ems-color-status-danger-border);
+    --_icon: var(--ems-color-status-danger-text);
+  }
+
+  .ui-alert__icon {
+    display: inline-flex;
+    flex: none;
+    padding-block-start: calc(var(--ems-space-1) / 2);
+    color: var(--_icon);
+  }
+
+  .ui-alert__content {
+    display: grid;
+    flex: 1;
+    gap: var(--ems-space-1);
+    min-inline-size: 0;
+  }
+
+  .ui-alert__heading {
+    margin: 0;
+    color: var(--ems-color-text-secondary);
+  }
+
+  .ui-alert__title {
+    color: var(--ems-color-text-primary);
+    font-weight: var(--ems-type-body-strong-weight);
+  }
+
+  .ui-alert__meta {
+    margin-inline-start: var(--ems-space-1);
+    color: var(--ems-color-text-secondary);
+  }
+
+  .ui-alert__body:empty,
+  .ui-alert__actions:empty {
+    display: none;
+  }
+
+  .ui-alert__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ems-space-2);
+    margin-block-start: var(--ems-space-2);
+  }
+
+  .ui-alert__dismiss {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    inline-size: var(--ems-control-sm-height);
+    block-size: var(--ems-control-sm-height);
+    margin: calc(var(--ems-space-1) * -1.5) calc(var(--ems-space-1) * -1.5) 0 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--ems-radius-pill);
+    background: transparent;
+    color: var(--ems-color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--ems-duration-fast) var(--ems-easing-standard);
+  }
+
+  .ui-alert__dismiss:hover {
+    background-color: var(--ems-color-accent-soft);
+    color: var(--ems-color-accent-soft-text);
+  }
+
+  .ui-alert__dismiss:focus-visible {
+    outline: var(--ems-focus-ring-width) solid var(--ems-focus-ring-color);
+    outline-offset: var(--ems-focus-ring-offset);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ui-alert__dismiss {
+      transition: none;
+    }
+  }
+
+  @media (forced-colors: active) {
+    :host {
+      border: var(--ems-border-width-hairline) solid CanvasText;
+    }
+  }
+}
