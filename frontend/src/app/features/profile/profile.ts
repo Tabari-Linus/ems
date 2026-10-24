@@ -8,6 +8,20 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
+import { Icon } from '@ems/icons';
+import { Alert } from '@ems/ui/alert';
+import { Avatar } from '@ems/ui/avatar';
+import { Button } from '@ems/ui/button';
+import { Card } from '@ems/ui/card';
+import { DescriptionItem, DescriptionList } from '@ems/ui/description-list';
+import { DialogService } from '@ems/ui/dialog';
+import { ErrorState } from '@ems/ui/error-state';
+import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@ems/ui/menu';
+import { Select, type SelectOption } from '@ems/ui/select';
+import { Skeleton } from '@ems/ui/skeleton';
+import { StatusPill, type EmployeeStatus } from '@ems/ui/status-pill';
+import { TabPanel, Tabs } from '@ems/ui/tabs';
+import { Tag } from '@ems/ui/tag';
 import { AuthService } from '../../core/services/auth.service';
 import { EmployeeService } from '../../core/services/employee.service';
 import { PositionService } from '../../core/services/position.service';
@@ -15,20 +29,32 @@ import { DepartmentService } from '../../core/services/department.service';
 import { AccessLevelService } from '../../core/services/access-level.service';
 import { Permission } from '../../core/models/permission.model';
 
-const AVATAR_COLORS = [
-  '#fe7f2d',
-  '#619b8a',
-  '#fcca46',
-  '#a1c181',
-  '#5e7a8a',
-  '#e07070',
-  '#233d4d',
-  '#2e4e60',
-];
+const EMPLOYEE_STATUSES: readonly string[] = ['ACTIVE', 'PENDING', 'INACTIVE', 'ARCHIVED'];
 
+/** A colleague's profile: header card, pill tabs, inline edits and lifecycle actions. */
 @Component({
   selector: 'app-profile',
-  imports: [RouterLink],
+  imports: [
+    RouterLink,
+    Icon,
+    Alert,
+    Avatar,
+    Button,
+    Card,
+    DescriptionItem,
+    DescriptionList,
+    ErrorState,
+    Menu,
+    MenuItem,
+    MenuSeparator,
+    MenuTrigger,
+    Select,
+    Skeleton,
+    StatusPill,
+    TabPanel,
+    Tabs,
+    Tag,
+  ],
   templateUrl: './profile.html',
   styleUrl: './profile.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +65,7 @@ export class Profile {
   private readonly departmentService = inject(DepartmentService);
   private readonly accessLevelService = inject(AccessLevelService);
   private readonly authService = inject(AuthService);
+  private readonly dialogs = inject(DialogService);
 
   protected readonly employeeId = inject(ActivatedRoute).snapshot.paramMap.get('id') ?? '';
 
@@ -50,11 +77,47 @@ export class Profile {
     loader: () => firstValueFrom(this.employeeService.getEmployee(this.employeeId)),
   });
 
+  /** Selected profile tab (Overview first). */
+  protected readonly tab = signal(0);
+
   // ── Status actions ────────────────────────────────────────────
   protected readonly actionError = signal('');
   protected readonly activating = signal(false);
   protected readonly deactivating = signal(false);
   protected readonly archiving = signal(false);
+  protected readonly busy = computed(
+    () => this.activating() || this.deactivating() || this.archiving(),
+  );
+
+  /** Lifecycle actions ask first (`confirm-dialog`), then run the existing mutation. */
+  protected async confirmActivate(name: string): Promise<void> {
+    const ok = await this.dialogs.confirm({
+      heading: `Activate ${name}?`,
+      description: 'They can sign in to EMS and show as active in the directory.',
+      confirmLabel: 'Activate',
+    });
+    if (ok) await this.onActivate();
+  }
+
+  protected async confirmDeactivate(name: string): Promise<void> {
+    const ok = await this.dialogs.confirm({
+      heading: `Deactivate ${name}?`,
+      description: 'They can no longer sign in. You can activate them again later.',
+      confirmLabel: 'Deactivate',
+      destructive: true,
+    });
+    if (ok) await this.onDeactivate();
+  }
+
+  protected async confirmArchive(name: string): Promise<void> {
+    const ok = await this.dialogs.confirm({
+      heading: `Archive ${name}?`,
+      description: 'Their record is kept for reporting but leaves the active directory.',
+      confirmLabel: 'Archive',
+      destructive: true,
+    });
+    if (ok) await this.onArchive();
+  }
 
   protected async onActivate(): Promise<void> {
     this.activating.set(true);
@@ -64,7 +127,7 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.actionError.set(
-        (err as { message?: string })?.message ?? 'Failed to activate employee.',
+        (err as { message?: string })?.message ?? 'They could not be activated. Try again.',
       );
     } finally {
       this.activating.set(false);
@@ -79,7 +142,7 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.actionError.set(
-        (err as { message?: string })?.message ?? 'Failed to deactivate employee.',
+        (err as { message?: string })?.message ?? 'They could not be deactivated. Try again.',
       );
     } finally {
       this.deactivating.set(false);
@@ -93,7 +156,9 @@ export class Profile {
       await firstValueFrom(this.employeeService.archiveEmployee(this.employeeId));
       this.profileResource.reload();
     } catch (err: unknown) {
-      this.actionError.set((err as { message?: string })?.message ?? 'Failed to archive employee.');
+      this.actionError.set(
+        (err as { message?: string })?.message ?? 'They could not be archived. Try again.',
+      );
     } finally {
       this.archiving.set(false);
     }
@@ -106,12 +171,20 @@ export class Profile {
   protected readonly positionError = signal('');
 
   private readonly positionsEnabled = signal(false);
+  // Loaded on first edit. `params` is the reactive part of a resource; the loader is untracked,
+  // so gating inside the loader (as before) never loaded the options.
   protected readonly positionsResource = resource({
-    loader: () => {
-      if (!this.positionsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.positionService.getPositions());
-    },
+    params: () => this.positionsEnabled() || undefined,
+    loader: () => firstValueFrom(this.positionService.getPositions()),
   });
+
+  protected readonly positionOptions = computed<readonly SelectOption<string>[]>(() => [
+    { value: '', label: 'No position' },
+    ...(this.positionsResource.value()?.data ?? []).map((p) => ({
+      value: p.id,
+      label: `${p.positionName} (${p.level})`,
+    })),
+  ]);
 
   protected startEditPosition(currentId?: string): void {
     this.selectedPositionId.set(currentId ?? '');
@@ -138,7 +211,7 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.positionError.set(
-        (err as { message?: string })?.message ?? 'Failed to assign position.',
+        (err as { message?: string })?.message ?? 'The position was not saved. Try again.',
       );
     } finally {
       this.savingPosition.set(false);
@@ -153,11 +226,17 @@ export class Profile {
 
   private readonly departmentsEnabled = signal(false);
   protected readonly departmentsResource = resource({
-    loader: () => {
-      if (!this.departmentsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.departmentService.getDepartments());
-    },
+    params: () => this.departmentsEnabled() || undefined,
+    loader: () => firstValueFrom(this.departmentService.getDepartments()),
   });
+
+  protected readonly departmentOptions = computed<readonly SelectOption<string>[]>(() => [
+    { value: '', label: 'No department' },
+    ...(this.departmentsResource.value()?.data ?? []).map((d) => ({
+      value: d.id,
+      label: d.departmentName,
+    })),
+  ]);
 
   protected startEditDepartment(currentId?: string): void {
     this.selectedDepartmentId.set(currentId ?? '');
@@ -184,7 +263,7 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.departmentError.set(
-        (err as { message?: string })?.message ?? 'Failed to assign department.',
+        (err as { message?: string })?.message ?? 'The department was not saved. Try again.',
       );
     } finally {
       this.savingDepartment.set(false);
@@ -199,11 +278,17 @@ export class Profile {
 
   private readonly accessLevelsEnabled = signal(false);
   protected readonly accessLevelsResource = resource({
-    loader: () => {
-      if (!this.accessLevelsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.accessLevelService.getAccessLevels());
-    },
+    params: () => this.accessLevelsEnabled() || undefined,
+    loader: () => firstValueFrom(this.accessLevelService.getAccessLevels()),
   });
+
+  protected readonly accessLevelOptions = computed<readonly SelectOption<string>[]>(() => [
+    { value: '', label: 'No access level' },
+    ...(this.accessLevelsResource.value()?.data ?? []).map((a) => ({
+      value: a.id,
+      label: a.accessLevelName,
+    })),
+  ]);
 
   protected startEditAccessLevel(currentId?: string): void {
     this.selectedAccessLevelId.set(currentId ?? '');
@@ -230,7 +315,7 @@ export class Profile {
       this.profileResource.reload();
     } catch (err: unknown) {
       this.accessLevelError.set(
-        (err as { message?: string })?.message ?? 'Failed to assign access level.',
+        (err as { message?: string })?.message ?? 'The access level was not saved. Try again.',
       );
     } finally {
       this.savingAccessLevel.set(false);
@@ -238,16 +323,20 @@ export class Profile {
   }
 
   // ── Helpers ───────────────────────────────────────────────────
-  protected getInitials(first: string, last: string): string {
-    return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase();
+  protected fullName(emp: {
+    firstName: string;
+    lastName: string;
+    bio?: { fullName?: string };
+  }): string {
+    return emp.bio?.fullName || `${emp.firstName} ${emp.lastName}`;
   }
 
-  protected getAvatarColor(seed: string): string {
-    let hash = 0;
-    for (let i = 0; i < seed.length; i++) {
-      hash = seed.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+  protected asStatus(status: string | null | undefined): EmployeeStatus {
+    return status && EMPLOYEE_STATUSES.includes(status) ? (status as EmployeeStatus) : 'PENDING';
+  }
+
+  protected errorMessage(err: unknown): string {
+    return (err as { message?: string })?.message ?? 'The server did not respond.';
   }
 
   protected formatDate(dateStr?: string | null): string {
@@ -273,5 +362,10 @@ export class Profile {
     return [addr.street, addr.city, addr.state, addr.country, addr.zipCode]
       .filter(Boolean)
       .join(', ');
+  }
+
+  protected idTypeLabel(type: string): string {
+    const words = type.replace(/_/g, ' ').toLocaleLowerCase();
+    return words.charAt(0).toLocaleUpperCase() + words.slice(1);
   }
 }
