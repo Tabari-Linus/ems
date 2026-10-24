@@ -13,11 +13,23 @@
 
   <form class="auth-form" novalidate (submit)="onSubmit($event)">
     <ui-form-field label="Work email" [error]="fieldError('email')">
-      <input uiInput type="email" autocomplete="username" [formField]="loginForm.email" />
+      <input
+        uiInput
+        type="email"
+        autocomplete="username"
+        [value]="loginForm.email().value()"
+        (input)="loginForm.email().value.set($any($event.target).value)"
+        (blur)="loginForm.email().markAsTouched()"
+      />
     </ui-form-field>
 
     <ui-form-field label="Password" [error]="fieldError('password')">
-      <ui-password-input autocomplete="current-password" [formField]="loginForm.password" />
+      <ui-password-input
+        autocomplete="current-password"
+        [value]="loginForm.password().value()"
+        (valueChange)="loginForm.password().value.set($event)"
+        (focusout)="loginForm.password().markAsTouched()"
+      />
     </ui-form-field>
 
     <button uiButton size="lg" type="submit" [loading]="loading()">Sign in</button>
@@ -25,8 +37,6 @@
 
   <div class="auth-note">
     <ui-icon name="info" size="sm" />
-    <p>
-      <b>Forgot your password?</b> Ask People Operations to send you a new link to set one.
-    </p>
+    <p><b>Forgot your password?</b> Ask People Operations to send you a new link to set one.</p>
   </div>
 </app-auth-layout>

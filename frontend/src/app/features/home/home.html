@@ -1,11 +1,18 @@
 <header class="home-greeting">
-  <p class="home-date"><time [attr.datetime]="todayIso">{{ today }}</time></p>
+  <p class="home-date">
+    <time [attr.datetime]="todayIso">{{ today }}</time>
+  </p>
   <h1>{{ greeting() }}</h1>
   <p class="home-summary" aria-live="polite">{{ summary() }}</p>
 </header>
 
 <div class="home-grid">
-  <ui-card title="Needs your attention" [count]="attention().length || null" flush class="home-attention">
+  <ui-card
+    title="Needs your attention"
+    [count]="attention().length || null"
+    flush
+    class="home-attention"
+  >
     @if (attentionLoading()) {
       <div class="home-list-loading" aria-busy="true">
         <ui-skeleton shape="text" lines="2" />
@@ -64,17 +71,22 @@
   </ui-card>
 </div>
 
-@if (team.value() || team.isLoading()) {
+@if (teamPage() || team.isLoading()) {
   <section class="home-team" aria-labelledby="team-heading">
     <div class="home-section-head">
       <h2 id="team-heading">
         Your team
         @if (department(); as dept) {
-          <span>{{ teamCount() }} {{ teamCount() === 1 ? 'person' : 'people' }} in {{ dept.departmentName }}</span>
+          <span
+            >{{ teamCount() }} {{ teamCount() === 1 ? 'person' : 'people' }} in
+            {{ dept.departmentName }}</span
+          >
         }
       </h2>
       @if (teamCount() > teammates().length) {
-        <a class="home-link" routerLink="/people">View all <ui-icon name="arrow-right" size="sm" /></a>
+        <a class="home-link" routerLink="/people"
+          >View all <ui-icon name="arrow-right" size="sm"
+        /></a>
       }
     </div>
     @if (team.isLoading()) {
@@ -89,7 +101,11 @@
           <li>
             <a class="home-person" [routerLink]="['/people', p.id]">
               <span class="home-person__top">
-                <ui-avatar [name]="p.firstName + ' ' + p.lastName" [tintKey]="p.department ?? null" decorative />
+                <ui-avatar
+                  [name]="p.firstName + ' ' + p.lastName"
+                  [tintKey]="p.department ?? null"
+                  decorative
+                />
                 @if (p.status) {
                   <ui-status-pill [status]="$any(p.status)" />
                 }

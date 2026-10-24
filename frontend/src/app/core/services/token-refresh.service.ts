@@ -17,8 +17,7 @@ export const AUTH_CHANNEL_NAME = 'ems-auth';
 
 /** Messages exchanged between tabs on {@link AUTH_CHANNEL_NAME}. */
 export type AuthChannelMessage =
-  | { type: 'refreshed'; accessToken: string }
-  | { type: 'signed-out' };
+  { type: 'refreshed'; accessToken: string } | { type: 'signed-out' };
 
 /** The subset of `navigator.locks` used here; null where the Web Locks API is missing. */
 export interface LockManagerLike {

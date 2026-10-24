@@ -20,10 +20,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
         />
       </svg>
     </span>
-    <span class="brand__name">
-      <b>EMS</b>
-      <small>Employee management</small>
-    </span>
+    <b class="brand__name">EMS</b>
   `,
   styles: `
     :host {
@@ -51,23 +48,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
     }
 
     .brand__name {
-      display: grid;
-      min-inline-size: 0;
-      line-height: var(--ems-type-headline-line-height);
-    }
-
-    b {
       font-size: var(--ems-type-headline-size);
       font-weight: var(--ems-type-title-weight);
       letter-spacing: var(--ems-type-headline-letter-spacing);
-    }
-
-    small {
-      overflow: hidden;
-      color: var(--ems-color-text-muted);
-      font-size: var(--ems-type-caption-size);
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
     @media (forced-colors: active) {

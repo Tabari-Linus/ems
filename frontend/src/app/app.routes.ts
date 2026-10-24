@@ -85,9 +85,7 @@ export const routes: Routes = [
         path: 'change-password',
         title: 'Change password · EMS',
         loadComponent: () =>
-          import('./features/auth/change-password/change-password').then(
-            (m) => m.ChangePassword,
-          ),
+          import('./features/auth/change-password/change-password').then((m) => m.ChangePassword),
       },
       {
         path: 'unauthorized',

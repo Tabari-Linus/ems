@@ -140,10 +140,7 @@ export class AuthService {
       );
     });
     try {
-      await Promise.race([
-        this.refresher.refresh().then(() => this.session.load()),
-        timedOut,
-      ]);
+      await Promise.race([this.refresher.refresh().then(() => this.session.load()), timedOut]);
     } catch {
       this.tokens.clear();
       this.session.clear();

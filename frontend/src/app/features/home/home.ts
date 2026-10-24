@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  resource,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, resource } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Icon, type IconName } from '@ems/icons';
 import { Avatar } from '@ems/ui/avatar';
@@ -151,16 +145,26 @@ export class Home {
     loader: () => firstValueFrom(this.gql.request<DashboardSummary>(DASHBOARD_SUMMARY)),
   });
 
+  // A failed section simply stays hidden: Home never breaks because one query did.
+  private readonly profileData = computed(() =>
+    this.profile.hasValue() ? this.profile.value() : null,
+  );
+  private readonly pendingPage = computed(() =>
+    this.pending.hasValue() ? this.pending.value() : null,
+  );
+  protected readonly teamPage = computed(() => (this.team.hasValue() ? this.team.value() : null));
+  private readonly summaryData = computed(() =>
+    this.stats.hasValue() ? this.stats.value().getDashboardSummary : null,
+  );
+
   /** Colleagues in the user's department, without the user. */
   protected readonly teammates = computed<EmployeeListItem[]>(() => {
     const ownId = this.session.employee()?.id;
-    return (this.team.value()?.data ?? [])
-      .filter((p) => p.id !== ownId)
-      .slice(0, TEAM_PREVIEW);
+    return (this.teamPage()?.data ?? []).filter((p) => p.id !== ownId).slice(0, TEAM_PREVIEW);
   });
   protected readonly teamCount = computed(() => {
-    const total = this.team.value()?.totalElements ?? 0;
-    const includesSelf = (this.team.value()?.data ?? []).some(
+    const total = this.teamPage()?.totalElements ?? 0;
+    const includesSelf = (this.teamPage()?.data ?? []).some(
       (p) => p.id === this.session.employee()?.id,
     );
     return Math.max(0, includesSelf ? total - 1 : total);
@@ -168,7 +172,7 @@ export class Home {
 
   protected readonly attention = computed<AttentionItem[]>(() => {
     const items: AttentionItem[] = [];
-    const missing = missingProfileParts(this.profile.value());
+    const missing = missingProfileParts(this.profileData());
     if (missing.length) {
       items.push({
         id: 'own-profile',
@@ -178,10 +182,10 @@ export class Home {
         meta: 'HR uses these details for payroll and emergencies',
         link: '/my-profile',
         action: 'Complete profile',
-        tintKey: this.department()?.id ?? null,
+        tintKey: this.department()?.departmentName ?? null,
       });
     }
-    for (const person of this.pending.value()?.data ?? []) {
+    for (const person of this.pendingPage()?.data ?? []) {
       items.push({
         id: person.id,
         kind: 'pending-person',
@@ -198,7 +202,7 @@ export class Home {
 
   /** Pending people beyond the preview. */
   protected readonly morePending = computed(() => {
-    const page = this.pending.value();
+    const page = this.pendingPage();
     return page ? Math.max(0, page.totalElements - page.data.length) : 0;
   });
 
@@ -214,7 +218,7 @@ export class Home {
   });
 
   protected readonly figures = computed(() => {
-    const s = this.stats.value()?.getDashboardSummary;
+    const s = this.summaryData();
     if (!s) return [];
     return [
       { label: 'Active people', value: s.activeEmployeeCount },
@@ -224,7 +228,7 @@ export class Home {
     ];
   });
   protected readonly trend = computed(() => {
-    const trend = this.stats.value()?.getDashboardSummary.headcountTrend?.trend;
+    const trend = this.summaryData()?.headcountTrend?.trend;
     if (trend === 'INCREASE') return 'New hires are up on last period';
     if (trend === 'DECREASE') return 'New hires are down on last period';
     if (trend) return 'New hires are level with last period';
@@ -240,7 +244,7 @@ export class Home {
       label: 'People',
       url: '/people',
       icon: 'users',
-      count: this.stats.value()?.getDashboardSummary.activeEmployeeCount ?? null,
+      count: this.summaryData()?.activeEmployeeCount ?? null,
     });
     links.push({ label: 'Change password', url: '/change-password', icon: 'key', count: null });
     return links;

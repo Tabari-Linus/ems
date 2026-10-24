@@ -1,5 +1,5 @@
 <ui-app-shell [collapsible]="false">
-  <a uiShellBrand routerLink="/home" class="shell-brand" aria-label="EMS, go to Home">
+  <a uiShellBrand routerLink="/home" class="shell-brand">
     <app-brand />
   </a>
 
@@ -37,7 +37,7 @@
   <button uiShellUser type="button" class="shell-user" [uiMenuTrigger]="userMenu">
     <ui-avatar
       [name]="session.displayName() || 'You'"
-      [tintKey]="session.employee()?.department?.id ?? null"
+      [tintKey]="session.employee()?.department?.departmentName ?? null"
       size="sm"
       decorative
     />
@@ -87,4 +87,3 @@
 
   <router-outlet />
 </ui-app-shell>
-<ui-toaster />

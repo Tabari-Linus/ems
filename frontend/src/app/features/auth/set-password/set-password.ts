@@ -1,6 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { form, FormField, required, submit, validate } from '@angular/forms/signals';
+import { form, required, submit, validate } from '@angular/forms/signals';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Icon } from '@ems/icons';
 import { Alert } from '@ems/ui/alert';
@@ -25,7 +25,7 @@ type LinkProblem = 'missing' | 'invalid' | 'expired' | null;
  */
 @Component({
   selector: 'app-set-password',
-  imports: [AuthLayout, FormField, UiFormField, PasswordInput, Button, Alert, Icon, RouterLink],
+  imports: [AuthLayout, UiFormField, PasswordInput, Button, Alert, Icon, RouterLink],
   templateUrl: './set-password.html',
   styleUrl: './set-password.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,7 +84,7 @@ export class SetPassword {
   protected fieldError(field: 'password' | 'confirm'): string | null {
     if (field === 'password' && this.serverViolation()) return this.serverViolation();
     const state = this.passwordForm[field]();
-    return state.touched() && state.errors().length ? state.errors()[0].message ?? null : null;
+    return state.touched() && state.errors().length ? (state.errors()[0].message ?? null) : null;
   }
 
   protected onPasswordInput(): void {

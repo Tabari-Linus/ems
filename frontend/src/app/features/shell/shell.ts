@@ -7,7 +7,7 @@ import { Menu, MenuItem, MenuSeparator, MenuTrigger } from '@ems/ui/menu';
 import { NavItem } from '@ems/ui/nav-item';
 import { SearchInput } from '@ems/ui/search-input';
 import { ThemeService, type ThemePreference } from '@ems/ui/theme';
-import { Toaster, ToastService } from '@ems/ui/toast';
+import { ToastService } from '@ems/ui/toast';
 import { Permission } from '../../core/models/permission.model';
 import { AuthService } from '../../core/services/auth.service';
 import { SessionStore } from '../../core/services/session.store';
@@ -35,7 +35,6 @@ interface ThemeOption {
     MenuItem,
     MenuSeparator,
     MenuTrigger,
-    Toaster,
     Brand,
   ],
   templateUrl: './shell.html',
