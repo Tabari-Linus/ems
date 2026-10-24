@@ -1,37 +1,42 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
-import { SettingsCompanies } from './tabs/companies/companies';
-import { SettingsOffices } from './tabs/offices/offices';
-import { SettingsDepartments } from './tabs/departments/departments';
-import { SettingsPositions } from './tabs/positions/positions';
-import { SettingsAccessLevels } from './tabs/access-levels/access-levels';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { PageHeader } from '@ems/ui/page-header';
+import { TabLink, TabNav } from '@ems/ui/tabs';
 
-type Tab = 'companies' | 'offices' | 'departments' | 'positions' | 'access-levels';
-
+/** Settings frame: page title, routed pill tabs, and the current section below. */
 @Component({
   selector: 'app-settings',
-  imports: [
-    SettingsCompanies,
-    SettingsOffices,
-    SettingsDepartments,
-    SettingsPositions,
-    SettingsAccessLevels,
-  ],
-  templateUrl: './settings.html',
-  styleUrl: './settings.scss',
+  imports: [PageHeader, TabNav, TabLink, RouterLink, RouterLinkActive, RouterOutlet],
+  template: `
+    <ui-page-header
+      title="Settings"
+      description="Your organisation's structure and who can do what."
+    />
+    <nav uiTabNav class="settings-tabs" aria-label="Settings sections">
+      @for (tab of tabs; track tab.path) {
+        <a uiTab [routerLink]="tab.path" routerLinkActive ariaCurrentWhenActive="page">{{
+          tab.label
+        }}</a>
+      }
+    </nav>
+    <router-outlet />
+  `,
+  styles: `
+    :host {
+      display: block;
+    }
+    .settings-tabs {
+      margin-block: var(--ems-space-5) var(--ems-space-6);
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Settings {
-  protected readonly activeTab = signal<Tab>('companies');
-
-  protected readonly tabs: { id: Tab; label: string }[] = [
-    { id: 'companies', label: 'Companies' },
-    { id: 'offices', label: 'Offices' },
-    { id: 'departments', label: 'Departments' },
-    { id: 'positions', label: 'Positions' },
-    { id: 'access-levels', label: 'Access Levels' },
-  ];
-
-  protected setTab(id: Tab): void {
-    this.activeTab.set(id);
-  }
+  protected readonly tabs = [
+    { path: 'companies', label: 'Companies' },
+    { path: 'offices', label: 'Offices' },
+    { path: 'departments', label: 'Departments' },
+    { path: 'positions', label: 'Positions' },
+    { path: 'access-levels', label: 'Access levels' },
+  ] as const;
 }

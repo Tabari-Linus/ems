@@ -1,110 +1,135 @@
-<div class="tab-panel">
-  <div class="panel-header">
-    <div>
-      <h2>Positions</h2>
-      <p>Define roles and seniority levels</p>
-    </div>
-    <button class="toggle-btn" [class.cancel]="showForm()" (click)="toggleForm()">
-      {{ showForm() ? 'Cancel' : '+ New Position' }}
-    </button>
-  </div>
+<ui-page-header title="Positions" level="2" [count]="count()">
+  <button uiPageHeaderActions uiButton type="button" (click)="toggleForm()">
+    <ui-icon name="plus" /> Add position
+  </button>
+</ui-page-header>
 
-  @if (showForm()) {
-    <div class="create-form-card">
-      <h3>{{ editId() ? 'Edit Position' : 'New Position' }}</h3>
-      @if (formError()) {
-        <div class="form-api-error">{{ formError() }}</div>
-      }
-      <form (submit)="onSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          <div class="field">
-            <label for="positions-position-form-position-name"
-              >Position Name <span class="req">*</span></label
-            >
-            <input
-              id="positions-position-form-position-name"
-              [formField]="positionForm.positionName"
-              placeholder="Software Engineer"
-            />
-            @if (
-              positionForm.positionName().touched() && positionForm.positionName().errors().length
-            ) {
-              <span class="field-err">{{ positionForm.positionName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="positions-position-form-level">Level <span class="req">*</span></label>
-            <select id="positions-position-form-level" [formField]="positionForm.level">
-              @for (lvl of LEVELS; track lvl) {
-                <option [value]="lvl">{{ lvl }}</option>
-              }
-            </select>
-          </div>
-          <div class="field span-2">
-            <label for="positions-position-form-description">Description</label>
-            <input
-              id="positions-position-form-description"
-              [formField]="positionForm.description"
-              placeholder="Brief description of the role"
-            />
-          </div>
-        </div>
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Saving…' : editId() ? 'Save Changes' : 'Create Position' }}
+@if (listResource.error()) {
+  <ui-card>
+    <ui-error-state
+      kind="server"
+      [headingLevel]="3"
+      heading="We couldn't load positions"
+      description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
+      (action)="listResource.reload()"
+    />
+  </ui-card>
+} @else {
+  <ui-card flush>
+    <ui-data-table
+      caption="Positions"
+      loadingLabel="Loading positions"
+      [rows]="rows()"
+      [loading]="listResource.isLoading()"
+      [trackBy]="trackById"
+    >
+      <ng-container uiColumn="name" header="Position" primary>
+        <ng-template uiCell let-p>
+          <span class="settings-name">{{ p.positionName }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="level" header="Level">
+        <ng-template uiCell let-p>{{ levelLabel(p.level) }}</ng-template>
+      </ng-container>
+      <ng-container uiColumn="description" header="Description">
+        <ng-template uiCell let-p>
+          <span class="settings-wrap settings-muted">{{ p.description ?? '' }}</span>
+        </ng-template>
+      </ng-container>
+      <ng-container uiColumn="status" header="Status">
+        <ng-template uiCell let-p>
+          @if (statusPillValue(p.status); as status) {
+            <ui-status-pill [status]="status" />
+          } @else {
+            <ui-status-pill>{{ p.status }}</ui-status-pill>
+          }
+        </ng-template>
+      </ng-container>
+      <ng-template uiRowActions let-p>
+        <button
+          uiButton
+          variant="ghost"
+          size="sm"
+          type="button"
+          [attr.aria-label]="'Edit ' + p.positionName"
+          (click)="startEdit(p)"
+        >
+          <ui-icon name="pencil" /> Edit
         </button>
-      </form>
-    </div>
-  }
+      </ng-template>
+      <ui-empty-state
+        uiTableEmpty
+        [headingLevel]="3"
+        heading="No positions yet"
+        description="Add the roles people hold, with their level, so you can assign them to people."
+      >
+        <button
+          uiEmptyStateActions
+          uiButton
+          variant="secondary"
+          type="button"
+          (click)="toggleForm()"
+        >
+          <ui-icon name="plus" /> Add position
+        </button>
+      </ui-empty-state>
+    </ui-data-table>
+  </ui-card>
+}
 
-  @if (listResource.isLoading()) {
-    <div class="loading-state">Loading positions...</div>
-  } @else if (listResource.error()) {
-    <div class="error-state">Failed to load positions.</div>
-  } @else {
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Position Name</th>
-          <th>Level</th>
-          <th>Description</th>
-          <th>Status</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (item of listResource.value()?.data ?? []; track item.id) {
-          <tr>
-            <td class="name-cell">{{ item.positionName }}</td>
-            <td>
-              <span class="level-badge">{{ item.level }}</span>
-            </td>
-            <td>{{ item.description ?? '' }}</td>
-            <td>
-              <span class="status-chip" [attr.data-status]="item.status">{{ item.status }}</span>
-            </td>
-            <td class="action-cell">
-              <button class="row-edit-btn" (click)="startEdit(item)">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.75"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                </svg>
-                Edit
-              </button>
-            </td>
-          </tr>
-        } @empty {
-          <tr>
-            <td colspan="5" class="empty-row">No positions yet.</td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
-</div>
+<ng-template #formTpl>
+  <ui-drawer
+    [heading]="editId() ? 'Edit position' : 'Add position'"
+    description="Fields marked * are required."
+  >
+    <form
+      id="positions-position-form"
+      class="settings-form"
+      novalidate
+      (submit)="onSubmit(); $event.preventDefault()"
+    >
+      @if (formError()) {
+        <ui-alert tone="danger" heading="We couldn't save this position">
+          {{ formError() }} Check the details and try again.
+        </ui-alert>
+      }
+      <ui-form-field label="Position name" required [error]="fieldError(positionForm.positionName)">
+        <input
+          uiInput
+          id="positions-position-form-position-name"
+          autocomplete="off"
+          placeholder="Backend Engineer"
+          [formField]="positionForm.positionName"
+        />
+      </ui-form-field>
+      <ui-form-field label="Level" required [error]="fieldError(positionForm.level)">
+        <select uiSelect id="positions-position-form-level" [formField]="positionForm.level">
+          @for (lvl of LEVELS; track lvl) {
+            <option [value]="lvl">{{ levelLabel(lvl) }}</option>
+          }
+        </select>
+      </ui-form-field>
+      <ui-form-field label="Description" hint="One line on what the role is responsible for.">
+        <textarea
+          uiInput
+          id="positions-position-form-description"
+          rows="3"
+          placeholder="Builds and runs the services behind EMS."
+          [formField]="positionForm.description"
+        ></textarea>
+      </ui-form-field>
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" (click)="showForm.set(false)">
+      Cancel
+    </button>
+    <button
+      uiDrawerAction
+      uiButton
+      type="submit"
+      form="positions-position-form"
+      [loading]="saving()"
+    >
+      {{ editId() ? 'Save changes' : 'Add position' }}
+    </button>
+  </ui-drawer>
+</ng-template>
