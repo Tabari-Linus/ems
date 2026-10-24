@@ -171,11 +171,11 @@ export class Profile {
   protected readonly positionError = signal('');
 
   private readonly positionsEnabled = signal(false);
+  // Loaded on first edit. `params` is the reactive part of a resource; the loader is untracked,
+  // so gating inside the loader (as before) never loaded the options.
   protected readonly positionsResource = resource({
-    loader: () => {
-      if (!this.positionsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.positionService.getPositions());
-    },
+    params: () => this.positionsEnabled() || undefined,
+    loader: () => firstValueFrom(this.positionService.getPositions()),
   });
 
   protected readonly positionOptions = computed<readonly SelectOption<string>[]>(() => [
@@ -226,10 +226,8 @@ export class Profile {
 
   private readonly departmentsEnabled = signal(false);
   protected readonly departmentsResource = resource({
-    loader: () => {
-      if (!this.departmentsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.departmentService.getDepartments());
-    },
+    params: () => this.departmentsEnabled() || undefined,
+    loader: () => firstValueFrom(this.departmentService.getDepartments()),
   });
 
   protected readonly departmentOptions = computed<readonly SelectOption<string>[]>(() => [
@@ -280,10 +278,8 @@ export class Profile {
 
   private readonly accessLevelsEnabled = signal(false);
   protected readonly accessLevelsResource = resource({
-    loader: () => {
-      if (!this.accessLevelsEnabled()) return Promise.resolve(null);
-      return firstValueFrom(this.accessLevelService.getAccessLevels());
-    },
+    params: () => this.accessLevelsEnabled() || undefined,
+    loader: () => firstValueFrom(this.accessLevelService.getAccessLevels()),
   });
 
   protected readonly accessLevelOptions = computed<readonly SelectOption<string>[]>(() => [
