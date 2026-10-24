@@ -51,14 +51,24 @@
       description="Try another name, or clear the filters to see everyone."
     >
       <ui-icon uiEmptyStateIcon name="search" />
-      <button uiEmptyStateActions uiButton variant="secondary" type="button" (click)="clearFilters()">
+      <button
+        uiEmptyStateActions
+        uiButton
+        variant="secondary"
+        type="button"
+        (click)="clearFilters()"
+      >
         Clear filters
       </button>
     </ui-empty-state>
   } @else {
     <ui-empty-state
       heading="No people yet"
-      [description]="canManage() ? 'Add the first person to start your directory.' : 'People will appear here once HR adds them.'"
+      [description]="
+        canManage()
+          ? 'Add the first person to start your directory.'
+          : 'People will appear here once HR adds them.'
+      "
     >
       <ui-icon uiEmptyStateIcon name="users" />
       @if (canManage()) {
@@ -88,11 +98,22 @@
     </ul>
   } @else {
     <ui-card flush>
-      <ui-data-table caption="People" [rows]="employees()" [trackBy]="trackById" activatable (rowActivate)="openProfile($event)">
+      <ui-data-table
+        caption="People"
+        [rows]="employees()"
+        [trackBy]="trackById"
+        activatable
+        (rowActivate)="openProfile($event)"
+      >
         <ng-container uiColumn="name" header="Name" primary>
           <ng-template uiCell let-emp>
             <a class="people-name" [routerLink]="['/people', emp.id]">
-              <ui-avatar [name]="fullName(emp)" [tintKey]="emp.department ?? fullName(emp)" size="sm" decorative />
+              <ui-avatar
+                [name]="fullName(emp)"
+                [tintKey]="emp.department ?? fullName(emp)"
+                size="sm"
+                decorative
+              />
               {{ fullName(emp) }}
             </a>
           </ng-template>
@@ -104,7 +125,9 @@
           <ng-template uiCell let-emp>{{ emp.department ?? 'No department' }}</ng-template>
         </ng-container>
         <ng-container uiColumn="status" header="Status">
-          <ng-template uiCell let-emp><ui-status-pill [status]="asStatus(emp.status)" /></ng-template>
+          <ng-template uiCell let-emp
+            ><ui-status-pill [status]="asStatus(emp.status)"
+          /></ng-template>
         </ng-container>
       </ui-data-table>
     </ui-card>
@@ -130,21 +153,45 @@
 }
 
 <ng-template #addDrawer>
-  <ui-drawer heading="Add person" description="They join the directory as pending until they're activated.">
-    <form id="staff-add-form" class="add-person-form" novalidate (submit)="onAddSubmit(); $event.preventDefault()">
+  <ui-drawer
+    heading="Add person"
+    description="They join the directory as pending until they're activated."
+  >
+    <form
+      id="staff-add-form"
+      class="add-person-form"
+      novalidate
+      (submit)="onAddSubmit(); $event.preventDefault()"
+    >
       @if (addError()) {
         <ui-alert tone="danger" heading="The person wasn't added">{{ addError() }}</ui-alert>
       }
       <div class="add-person-form__row">
         <ui-form-field label="First name" required [error]="fieldError(addForm.firstName())">
-          <input uiInput id="staff-add-form-first-name" autocomplete="off" [formField]="addForm.firstName" />
+          <input
+            uiInput
+            id="staff-add-form-first-name"
+            autocomplete="off"
+            [formField]="addForm.firstName"
+          />
         </ui-form-field>
         <ui-form-field label="Last name" required [error]="fieldError(addForm.lastName())">
-          <input uiInput id="staff-add-form-last-name" autocomplete="off" [formField]="addForm.lastName" />
+          <input
+            uiInput
+            id="staff-add-form-last-name"
+            autocomplete="off"
+            [formField]="addForm.lastName"
+          />
         </ui-form-field>
       </div>
       <ui-form-field label="Work email" required [error]="fieldError(addForm.workEmail())">
-        <input uiInput id="staff-add-form-work-email" type="email" autocomplete="off" [formField]="addForm.workEmail" />
+        <input
+          uiInput
+          id="staff-add-form-work-email"
+          type="email"
+          autocomplete="off"
+          [formField]="addForm.workEmail"
+        />
       </ui-form-field>
       <ui-form-field label="Position">
         <select uiSelect id="staff-add-form-position-id" [formField]="addForm.positionId">
@@ -171,7 +218,14 @@
         </select>
       </ui-form-field>
     </form>
-    <button uiDrawerAction uiButton variant="secondary" type="button" [disabled]="saving()" (click)="toggleAddForm()">
+    <button
+      uiDrawerAction
+      uiButton
+      variant="secondary"
+      type="button"
+      [disabled]="saving()"
+      (click)="toggleAddForm()"
+    >
       Cancel
     </button>
     <button uiDrawerAction uiButton type="submit" form="staff-add-form" [loading]="saving()">

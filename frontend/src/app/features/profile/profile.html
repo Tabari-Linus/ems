@@ -1,5 +1,7 @@
 <nav class="profile-crumbs" aria-label="Breadcrumb">
-  <a uiButton variant="ghost" size="sm" routerLink="/people"><ui-icon name="arrow-left" /> People</a>
+  <a uiButton variant="ghost" size="sm" routerLink="/people"
+    ><ui-icon name="arrow-left" /> People</a
+  >
 </nav>
 
 @if (profileResource.isLoading()) {
@@ -40,7 +42,12 @@
   <!-- Header card -->
   <ui-card class="profile-header">
     <div class="profile-head">
-      <ui-avatar [name]="name" [tintKey]="emp.department?.departmentName ?? name" size="xl" decorative />
+      <ui-avatar
+        [name]="name"
+        [tintKey]="emp.department?.departmentName ?? name"
+        size="xl"
+        decorative
+      />
       <div class="profile-head__id">
         <div class="profile-head__name-row">
           <h1 class="profile-head__name">{{ name }}</h1>
@@ -53,7 +60,9 @@
           }
         </p>
         <p class="profile-head__meta">
-          <span class="profile-mono"><span class="ui-visually-hidden">Employee ID </span>#{{ emp.id }}</span>
+          <span class="profile-mono"
+            ><span class="ui-visually-hidden">Employee ID </span>#{{ emp.id }}</span
+          >
           <span aria-hidden="true">·</span>
           <span>{{ emp.workEmail }}</span>
         </p>
@@ -84,7 +93,12 @@
               }
               @if (emp.status !== 'ARCHIVED') {
                 <ui-menu-separator />
-                <button uiMenuItem variant="danger" type="button" (triggered)="confirmArchive(name)">
+                <button
+                  uiMenuItem
+                  variant="danger"
+                  type="button"
+                  (triggered)="confirmArchive(name)"
+                >
                   <ui-icon uiMenuItemIcon name="trash" /> Archive
                 </button>
               }
@@ -95,7 +109,13 @@
     </div>
 
     @if (actionError()) {
-      <ui-alert class="profile-action-error" tone="danger" heading="That didn't work" dismissible (dismissed)="actionError.set('')">
+      <ui-alert
+        class="profile-action-error"
+        tone="danger"
+        heading="That didn't work"
+        dismissible
+        (dismissed)="actionError.set('')"
+      >
         {{ actionError() }}
       </ui-alert>
     }
@@ -136,7 +156,9 @@
                   @if (departmentsResource.isLoading()) {
                     <span class="profile-empty" role="status">Loading departments…</span>
                   } @else if (departmentsResource.error()) {
-                    <span class="profile-error" role="alert">Departments didn't load. Cancel and try again.</span>
+                    <span class="profile-error" role="alert"
+                      >Departments didn't load. Cancel and try again.</span
+                    >
                   } @else {
                     <ui-select
                       class="profile-edit__select"
@@ -145,11 +167,24 @@
                       [value]="selectedDepartmentId()"
                       (valueChange)="selectedDepartmentId.set($event ?? '')"
                     />
-                    <button uiButton size="sm" type="button" [loading]="savingDepartment()" (click)="saveDepartment()">
+                    <button
+                      uiButton
+                      size="sm"
+                      type="button"
+                      [loading]="savingDepartment()"
+                      (click)="saveDepartment()"
+                    >
                       Save changes
                     </button>
                   }
-                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingDepartment()" (click)="cancelEditDepartment()">
+                  <button
+                    uiButton
+                    variant="secondary"
+                    size="sm"
+                    type="button"
+                    [disabled]="savingDepartment()"
+                    (click)="cancelEditDepartment()"
+                  >
                     Cancel
                   </button>
                   @if (departmentError()) {
@@ -186,7 +221,9 @@
                   @if (positionsResource.isLoading()) {
                     <span class="profile-empty" role="status">Loading positions…</span>
                   } @else if (positionsResource.error()) {
-                    <span class="profile-error" role="alert">Positions didn't load. Cancel and try again.</span>
+                    <span class="profile-error" role="alert"
+                      >Positions didn't load. Cancel and try again.</span
+                    >
                   } @else {
                     <ui-select
                       class="profile-edit__select"
@@ -195,11 +232,24 @@
                       [value]="selectedPositionId()"
                       (valueChange)="selectedPositionId.set($event ?? '')"
                     />
-                    <button uiButton size="sm" type="button" [loading]="savingPosition()" (click)="savePosition()">
+                    <button
+                      uiButton
+                      size="sm"
+                      type="button"
+                      [loading]="savingPosition()"
+                      (click)="savePosition()"
+                    >
                       Save changes
                     </button>
                   }
-                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingPosition()" (click)="cancelEditPosition()">
+                  <button
+                    uiButton
+                    variant="secondary"
+                    size="sm"
+                    type="button"
+                    [disabled]="savingPosition()"
+                    (click)="cancelEditPosition()"
+                  >
                     Cancel
                   </button>
                   @if (positionError()) {
@@ -235,7 +285,9 @@
                   @if (accessLevelsResource.isLoading()) {
                     <span class="profile-empty" role="status">Loading access levels…</span>
                   } @else if (accessLevelsResource.error()) {
-                    <span class="profile-error" role="alert">Access levels didn't load. Cancel and try again.</span>
+                    <span class="profile-error" role="alert"
+                      >Access levels didn't load. Cancel and try again.</span
+                    >
                   } @else {
                     <ui-select
                       class="profile-edit__select"
@@ -244,11 +296,24 @@
                       [value]="selectedAccessLevelId()"
                       (valueChange)="selectedAccessLevelId.set($event ?? '')"
                     />
-                    <button uiButton size="sm" type="button" [loading]="savingAccessLevel()" (click)="saveAccessLevel()">
+                    <button
+                      uiButton
+                      size="sm"
+                      type="button"
+                      [loading]="savingAccessLevel()"
+                      (click)="saveAccessLevel()"
+                    >
                       Save changes
                     </button>
                   }
-                  <button uiButton variant="secondary" size="sm" type="button" [disabled]="savingAccessLevel()" (click)="cancelEditAccessLevel()">
+                  <button
+                    uiButton
+                    variant="secondary"
+                    size="sm"
+                    type="button"
+                    [disabled]="savingAccessLevel()"
+                    (click)="cancelEditAccessLevel()"
+                  >
                     Cancel
                   </button>
                   @if (accessLevelError()) {
@@ -296,7 +361,9 @@
             <div uiDescriptionItem label="Full name">{{ emp.bio?.fullName || '—' }}</div>
             <div uiDescriptionItem label="Other name">{{ emp.bio?.otherName || '—' }}</div>
             <div uiDescriptionItem label="Gender">{{ emp.bio?.gender || '—' }}</div>
-            <div uiDescriptionItem label="Date of birth" mono>{{ formatDate(emp.bio?.dateOfBirth) || '—' }}</div>
+            <div uiDescriptionItem label="Date of birth" mono>
+              {{ formatDate(emp.bio?.dateOfBirth) || '—' }}
+            </div>
             <div uiDescriptionItem label="Place of birth">{{ emp.bio?.placeOfBirth || '—' }}</div>
             <div uiDescriptionItem label="Nationality">{{ emp.bio?.nationality || '—' }}</div>
             <div uiDescriptionItem label="Marital status">{{ emp.bio?.maritalStatus || '—' }}</div>
@@ -310,7 +377,10 @@
           <ui-card title="Addresses" [count]="emp.addresses.length">
             <dl uiDescriptionList [columns]="1">
               @for (addr of emp.addresses; track addr.id; let i = $index) {
-                <div uiDescriptionItem [label]="addr.isCurrentAddress ? 'Current address' : 'Address ' + (i + 1)">
+                <div
+                  uiDescriptionItem
+                  [label]="addr.isCurrentAddress ? 'Current address' : 'Address ' + (i + 1)"
+                >
                   {{ addressLine(addr) }}
                   @if (addr.digitalAddress) {
                     <span class="profile-mono">{{ addr.digitalAddress }}</span>

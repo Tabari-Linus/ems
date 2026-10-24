@@ -27,10 +27,21 @@ const KWAME: EmployeeDetail = {
   bio: { fullName: 'Kwame Asante', nationality: 'Ghanaian', dateOfBirth: '1994-08-02' },
   contact: { phoneNumbers: ['+233 24 555 0142'], personalEmails: [] },
   addresses: [{ id: 'ad1', street: '14 Oxford St', city: 'Accra', isCurrentAddress: true }],
-  identifications: [{ id: 'i1', identificationNumber: 'GHA-123456789-0', identificationType: 'GHANA_CARD' }],
+  identifications: [
+    { id: 'i1', identificationNumber: 'GHA-123456789-0', identificationType: 'GHANA_CARD' },
+  ],
 };
 
-const list = <T>(data: T[]) => of({ data, currentPage: 0, totalPages: 1, totalElements: data.length, pageSize: 20, hasNext: false, hasPrevious: false });
+const list = <T>(data: T[]) =>
+  of({
+    data,
+    currentPage: 0,
+    totalPages: 1,
+    totalElements: data.length,
+    pageSize: 20,
+    hasNext: false,
+    hasPrevious: false,
+  });
 
 const settle = () => new Promise((resolve) => setTimeout(resolve));
 
@@ -53,7 +64,9 @@ describe('Profile', () => {
   }
 
   const buttonByText = (root: ParentNode, text: string) =>
-    [...root.querySelectorAll<HTMLButtonElement>('button')].find((b) => b.textContent?.trim().startsWith(text));
+    [...root.querySelectorAll<HTMLButtonElement>('button')].find((b) =>
+      b.textContent?.trim().startsWith(text),
+    );
 
   beforeEach(() => {
     permissions = [Permission.VIEW_EMPLOYEE];
@@ -70,14 +83,37 @@ describe('Profile', () => {
           { path: 'people/:id', component: Profile },
           { path: 'people', children: [] },
         ]),
-        { provide: AuthService, useValue: { hasPermission: (p: Permission) => permissions.includes(p) } },
+        {
+          provide: AuthService,
+          useValue: { hasPermission: (p: Permission) => permissions.includes(p) },
+        },
         {
           provide: EmployeeService,
-          useValue: { getEmployee, updateEmployee, activateEmployee, deactivateEmployee, archiveEmployee },
+          useValue: {
+            getEmployee,
+            updateEmployee,
+            activateEmployee,
+            deactivateEmployee,
+            archiveEmployee,
+          },
         },
-        { provide: PositionService, useValue: { getPositions: () => list([{ id: 'p2', positionName: 'Staff Engineer', level: 'Lead' }]) } },
-        { provide: DepartmentService, useValue: { getDepartments: () => list([{ id: 'd2', departmentName: 'Design', departmentCode: 'DES' }]) } },
-        { provide: AccessLevelService, useValue: { getAccessLevels: () => list([{ id: 'a2', accessLevelName: 'HR admin' }]) } },
+        {
+          provide: PositionService,
+          useValue: {
+            getPositions: () => list([{ id: 'p2', positionName: 'Staff Engineer', level: 'Lead' }]),
+          },
+        },
+        {
+          provide: DepartmentService,
+          useValue: {
+            getDepartments: () =>
+              list([{ id: 'd2', departmentName: 'Design', departmentCode: 'DES' }]),
+          },
+        },
+        {
+          provide: AccessLevelService,
+          useValue: { getAccessLevels: () => list([{ id: 'a2', accessLevelName: 'HR admin' }]) },
+        },
         { provide: DialogService, useValue: { confirm } },
       ],
     });
@@ -93,7 +129,9 @@ describe('Profile', () => {
     expect(getEmployee).toHaveBeenCalledWith('42');
     expect(host.querySelector('h1')?.textContent?.trim()).toBe('Kwame Asante');
     expect(host.querySelector('ui-status-pill')?.textContent).toContain('Active');
-    expect(host.querySelector('.profile-head__position')?.textContent).toContain('Backend Engineer');
+    expect(host.querySelector('.profile-head__position')?.textContent).toContain(
+      'Backend Engineer',
+    );
     expect(host.querySelector('.profile-head__meta .profile-mono')?.textContent).toContain('#42');
     expect(host.querySelector('.profile-crumbs a')?.getAttribute('href')).toBe('/people');
   });
@@ -102,7 +140,9 @@ describe('Profile', () => {
     const { host } = await render();
     const tabs = [...host.querySelectorAll('[role="tab"]')].map((t) => t.textContent?.trim());
     expect(tabs).toEqual(['Overview', 'Personal', 'Documents']);
-    expect(host.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim()).toBe('Overview');
+    expect(host.querySelector('[role="tab"][aria-selected="true"]')?.textContent?.trim()).toBe(
+      'Overview',
+    );
     expect(host.textContent).toContain('Platform Engineering');
     expect(host.textContent).toContain('+233 24 555 0142');
   });
@@ -130,9 +170,12 @@ describe('Profile', () => {
     expect(host.querySelector('ui-select')).not.toBeNull();
 
     // Choose "Design" in the listbox.
-    host.querySelector<HTMLElement>('ui-select [role="combobox"]')!.click();
+    host.querySelector<HTMLElement>('ui-select .ui-select__trigger')!.click();
     harness.detectChanges();
-    const option = [...document.querySelectorAll<HTMLElement>('[role="option"]')].find((o) => o.textContent?.trim() === 'Design')!;
+    await harness.fixture.whenStable();
+    const options = [...document.querySelectorAll<HTMLElement>('[role="option"]')];
+    expect(options.map((o) => o.textContent?.trim())).toEqual(['No department', 'Design']);
+    const option = options[1];
     option.click();
     harness.detectChanges();
 
@@ -185,7 +228,9 @@ describe('Profile', () => {
     items[0].click();
     await settle();
     harness.detectChanges();
-    expect(confirm).toHaveBeenCalledWith(expect.objectContaining({ heading: 'Deactivate Kwame Asante?', destructive: true }));
+    expect(confirm).toHaveBeenCalledWith(
+      expect.objectContaining({ heading: 'Deactivate Kwame Asante?', destructive: true }),
+    );
     expect(deactivateEmployee).toHaveBeenCalledWith('42');
   });
 
@@ -195,7 +240,9 @@ describe('Profile', () => {
     const { harness, host } = await render();
     buttonByText(host, 'Manage')!.click();
     harness.detectChanges();
-    [...document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].find((i) => i.textContent?.includes('Archive'))!.click();
+    [...document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')]
+      .find((i) => i.textContent?.includes('Archive'))!
+      .click();
     await settle();
 
     expect(confirm).toHaveBeenCalled();
@@ -209,7 +256,9 @@ describe('Profile', () => {
     const { harness, host } = await render();
     buttonByText(host, 'Manage')!.click();
     harness.detectChanges();
-    [...document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')].find((i) => i.textContent?.includes('Activate'))!.click();
+    [...document.querySelectorAll<HTMLButtonElement>('[role="menuitem"]')]
+      .find((i) => i.textContent?.includes('Activate'))!
+      .click();
     await settle();
     harness.detectChanges();
 
@@ -220,14 +269,20 @@ describe('Profile', () => {
   it('shows a not-found state with a way back when there is no such person', async () => {
     getEmployee.mockReturnValue(of(null));
     const { host } = await render();
-    expect(host.querySelector('ui-error-state')?.textContent).toContain("We can't find this person");
+    expect(host.querySelector('ui-error-state')?.textContent).toContain(
+      "We can't find this person",
+    );
     expect(host.querySelector('ui-error-state a')?.getAttribute('href')).toBe('/people');
   });
 
   it('shows the error with a retry when loading fails', async () => {
-    getEmployee.mockReturnValueOnce(throwError(() => new Error('Employee not found or access denied.')));
+    getEmployee.mockReturnValueOnce(
+      throwError(() => new Error('Employee not found or access denied.')),
+    );
     const { harness, host } = await render();
-    expect(host.querySelector('ui-error-state')?.textContent).toContain('Employee not found or access denied.');
+    expect(host.querySelector('ui-error-state')?.textContent).toContain(
+      'Employee not found or access denied.',
+    );
 
     buttonByText(host, 'Try again')!.click();
     await settle();

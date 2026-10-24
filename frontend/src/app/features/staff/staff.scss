@@ -19,7 +19,10 @@
 
 .people-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ems-space-16) * 4.25)), 1fr));
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(100%, calc(var(--ems-space-16) * 4.25)), 1fr)
+  );
   gap: var(--ems-space-4);
   margin: 0;
   padding: 0;
