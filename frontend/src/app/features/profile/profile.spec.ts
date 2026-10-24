@@ -132,7 +132,8 @@ describe('Profile', () => {
     expect(host.querySelector('.profile-head__position')?.textContent).toContain(
       'Backend Engineer',
     );
-    expect(host.querySelector('.profile-head__meta .profile-mono')?.textContent).toContain('#42');
+    // The database id is never shown; the employee number takes its place once the API returns it.
+    expect(host.querySelector('.profile-header')?.textContent).not.toContain('42');
     expect(host.querySelector('.profile-crumbs a')?.getAttribute('href')).toBe('/people');
   });
 

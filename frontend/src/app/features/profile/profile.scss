@@ -54,17 +54,6 @@
   font-size: var(--ems-type-body-size);
 }
 
-.profile-head__meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--ems-space-2);
-  margin: 0;
-  color: var(--ems-color-text-muted);
-  font-size: var(--ems-type-caption-size);
-  font-weight: var(--ems-type-caption-weight);
-  overflow-wrap: anywhere;
-}
-
 .profile-mono {
   font-family: var(--ems-font-family-mono);
   font-size: var(--ems-type-mono-size);
