@@ -1,5 +1,6 @@
 import AxeBuilder from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
+import { ADMIN } from './pages/support';
 
 /** WCAG 2.2 AA scan of this slice's page only (the shell belongs to another slice). */
 async function expectAccessible(page: Page, selector: string): Promise<void> {
@@ -109,6 +110,8 @@ const page1 = <T>(data: T[]) => ({
 });
 
 function graphqlData(query: string): Record<string, unknown> {
+  // The shell loads the session from `me` (permissions come from it, not the token).
+  if (/\bquery Me\b/.test(query)) return { ...ADMIN };
   if (query.includes('getEmployees')) {
     return {
       getEmployees: {

@@ -1,4 +1,5 @@
 import { expect, test, type Page, type Route } from '@playwright/test';
+import { ADMIN } from './pages/support';
 
 /**
  * Visual snapshots of My profile and every Settings tab (B3), light and dark, desktop and phone.
@@ -190,6 +191,8 @@ const ACCESS_LEVELS = [
 }));
 
 function graphqlData(query: string): Record<string, unknown> | null {
+  // The shell loads the session from `me` (permissions come from it, not the token).
+  if (/\bquery Me\b/.test(query)) return { ...ADMIN };
   if (query.includes('getMyProfile')) return { getMyProfile: PROFILE };
   if (query.includes('getCompanies')) return { getCompanies: page(COMPANIES) };
   if (query.includes('getOffices')) return { getOffices: page(OFFICES) };
