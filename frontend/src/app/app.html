@@ -1,6 +1,2 @@
 <router-outlet />
-<!-- Toasts follow user actions, so the toaster (and the icons it draws) loads once the page is
-     idle rather than in the initial bundle. ToastService queues anything raised before then. -->
-@defer (on idle) {
-  <ui-toaster />
-}
+<ui-toaster />
