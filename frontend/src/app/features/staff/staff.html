@@ -1,317 +1,181 @@
-<div class="staff-page">
-  <!-- ── Page header ──────────────────────────────────────── -->
-  <div class="page-header">
-    <div>
-      <h1>Employees</h1>
-      @if (totalElements() > 0) {
-        <p>{{ totalElements() }} {{ totalElements() === 1 ? 'employee' : 'employees' }}</p>
-      } @else if (!loading()) {
-        <p>No employees found</p>
-      }
-    </div>
-    @if (canManage()) {
-      <button class="add-btn" [class.cancel]="showAddForm()" (click)="toggleAddForm()">
-        {{ showAddForm() ? 'Cancel' : '+ Add Employee' }}
-      </button>
-    }
-  </div>
-
-  <!-- ── Add Employee form ─────────────────────────────────── -->
-  @if (showAddForm()) {
-    <div class="add-form-card">
-      <h3>New Employee</h3>
-      @if (addError()) {
-        <div class="form-api-error">{{ addError() }}</div>
-      }
-      <form (submit)="onAddSubmit(); $event.preventDefault()">
-        <div class="form-grid">
-          <div class="field">
-            <label for="staff-add-form-first-name">First Name <span class="req">*</span></label>
-            <input
-              id="staff-add-form-first-name"
-              [formField]="addForm.firstName"
-              placeholder="John"
-            />
-            @if (addForm.firstName().touched() && addForm.firstName().errors().length) {
-              <span class="field-err">{{ addForm.firstName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="staff-add-form-last-name">Last Name <span class="req">*</span></label>
-            <input id="staff-add-form-last-name" [formField]="addForm.lastName" placeholder="Doe" />
-            @if (addForm.lastName().touched() && addForm.lastName().errors().length) {
-              <span class="field-err">{{ addForm.lastName().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field span-2">
-            <label for="staff-add-form-work-email">Work Email <span class="req">*</span></label>
-            <input
-              id="staff-add-form-work-email"
-              type="email"
-              [formField]="addForm.workEmail"
-              placeholder="john.doe@company.com"
-            />
-            @if (addForm.workEmail().touched() && addForm.workEmail().errors().length) {
-              <span class="field-err">{{ addForm.workEmail().errors()[0].message }}</span>
-            }
-          </div>
-          <div class="field">
-            <label for="staff-add-form-position-id">Position</label>
-            <select id="staff-add-form-position-id" [formField]="addForm.positionId">
-              <option value="">Select position</option>
-              @for (p of positionsResource.value()?.data ?? []; track p.id) {
-                <option [value]="p.id">{{ p.level }} · {{ p.positionName }}</option>
-              }
-            </select>
-          </div>
-          <div class="field">
-            <label for="staff-add-form-department-id">Department</label>
-            <select id="staff-add-form-department-id" [formField]="addForm.departmentId">
-              <option value="">Select department</option>
-              @for (d of departmentsResource.value()?.data ?? []; track d.id) {
-                <option [value]="d.id">{{ d.departmentName }}</option>
-              }
-            </select>
-          </div>
-          <div class="field span-2">
-            <label for="staff-add-form-access-level-id">Access Level</label>
-            <select id="staff-add-form-access-level-id" [formField]="addForm.accessLevelId">
-              <option value="">Select access level</option>
-              @for (a of accessLevelsResource.value()?.data ?? []; track a.id) {
-                <option [value]="a.id">{{ a.accessLevelName }}</option>
-              }
-            </select>
-          </div>
-        </div>
-        <button type="submit" class="save-btn" [disabled]="saving()">
-          {{ saving() ? 'Adding employee…' : 'Add Employee' }}
-        </button>
-      </form>
-    </div>
+<ui-page-header title="People" [count]="loading() && pagesLoaded() === 0 ? null : countLabel()">
+  <ui-view-toggle uiPageHeaderActions label="Layout" [(view)]="view" />
+  @if (canManage()) {
+    <button uiPageHeaderActions uiButton type="button" (click)="toggleAddForm()">
+      <ui-icon name="plus" /> Add person
+    </button>
   }
+</ui-page-header>
 
-  <!-- ── Search toolbar ───────────────────────────────────── -->
-  <div class="toolbar">
-    <div class="search-wrap">
-      <svg
-        class="search-icon"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <circle cx="11" cy="11" r="8" />
-        <path d="m21 21-4.35-4.35" />
-      </svg>
-      <input
-        class="search-input"
-        type="search"
-        placeholder="Search employees…"
-        (input)="onSearchInput($event)"
-      />
-    </div>
-  </div>
-
-  <!-- ── Load error ────────────────────────────────────────── -->
-  @if (loadError()) {
-    <div class="load-error">{{ loadError() }}</div>
-  }
-
-  <!-- ── Skeleton loading ──────────────────────────────────── -->
-  @if (loading() && employees().length === 0) {
-    <div class="cards-grid">
-      @for (n of skeletons; track n) {
-        <div class="skeleton-card">
-          <div class="skeleton-avatar pulse"></div>
-          <div class="skeleton-lines">
-            <div class="skeleton-line w70 pulse"></div>
-            <div class="skeleton-line w50 pulse"></div>
-          </div>
-        </div>
-      }
-    </div>
-
-    <!-- ── Empty state ───────────────────────────────────────── -->
-  } @else if (employees().length === 0 && !loading()) {
-    <div class="empty-state">
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-        <circle cx="9" cy="7" r="4" />
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-      </svg>
-      <h3>No employees found</h3>
-      @if (searchValue()) {
-        <p>Try adjusting your search.</p>
-      } @else if (canManage()) {
-        <p>Get started by adding the first employee.</p>
-      }
-    </div>
-
-    <!-- ── Cards grid ────────────────────────────────────────── -->
-  } @else {
-    <div class="cards-grid">
-      @for (emp of employees(); track emp.id) {
-        <div
-          class="employee-card"
-          (click)="selectedEmployee.set(emp)"
-          role="button"
-          tabindex="0"
-          (keydown.enter)="selectedEmployee.set(emp)"
-          (keydown.space)="selectedEmployee.set(emp); $event.preventDefault()"
-        >
-          <!-- Top: avatar + name + role + status badge -->
-          <div class="card-top">
-            <div
-              class="card-avatar"
-              [style.background]="getAvatarColor(emp.firstName + emp.lastName)"
-            >
-              {{ getInitials(emp.firstName, emp.lastName) }}
-            </div>
-            <div class="card-info">
-              <p class="emp-name">{{ emp.firstName }} {{ emp.lastName }}</p>
-              <p class="emp-role">
-                {{ emp.jobTitle ?? 'No position'
-                }}{{ emp.department ? ' · ' + emp.department : '' }}
-              </p>
-            </div>
-            <span class="badge" [attr.data-status]="emp.status ?? 'PENDING'">
-              {{ emp.status ?? 'PENDING' }}
-            </span>
-          </div>
-
-          <div class="card-divider"></div>
-
-          <!-- Meta grid -->
-          <dl class="card-meta">
-            <div class="emp-meta-item">
-              <dt>Department</dt>
-              <dd>{{ emp.department ?? '' }}</dd>
-            </div>
-            <div class="emp-meta-item">
-              <dt>Role</dt>
-              <dd>{{ emp.jobTitle ?? '' }}</dd>
-            </div>
-          </dl>
-        </div>
-      }
-    </div>
-
-    <!-- Load more -->
-    @if (hasNext() || loading()) {
-      <div class="load-more-row">
-        <button class="load-more-btn" [disabled]="loading()" (click)="loadMore()">
-          @if (loading()) {
-            <span class="spinner"></span> Loading…
-          } @else {
-            Load More
-          }
-        </button>
-      </div>
-    }
+<div class="people-filters" role="search" aria-label="Filter people">
+  <ui-search-input
+    class="people-filters__search"
+    label="Search people"
+    placeholder="Search by name or email"
+    [value]="searchValue()"
+    [debounce]="400"
+    (query)="onSearch($event)"
+  />
+  <ui-filter-pill
+    label="Status"
+    [options]="statusOptions"
+    [value]="statusFilter()"
+    (valueChange)="onStatusFilter($event)"
+  />
+  @if (departmentOptions().length) {
+    <ui-filter-pill
+      label="Department"
+      [options]="departmentOptions()"
+      [value]="departmentFilter()"
+      (valueChange)="onDepartmentFilter($event)"
+    />
   }
 </div>
 
-<!-- ── Employee modal ────────────────────────────────────────────── -->
-@if (selectedEmployee(); as emp) {
-  <div
-    class="modal-overlay"
-    (click)="selectedEmployee.set(null)"
-    (keydown.escape)="selectedEmployee.set(null)"
-    role="dialog"
-    aria-modal="true"
-  >
-    <div class="modal-card" role="presentation" (click)="$event.stopPropagation()">
-      <button class="modal-close" (click)="selectedEmployee.set(null)" aria-label="Close">
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="M18 6 6 18M6 6l12 12" />
-        </svg>
+@if (loadError() && employees().length === 0) {
+  <ui-error-state
+    heading="We couldn't load people"
+    [description]="loadError() + ' Check your connection, then try again.'"
+    (action)="retry()"
+  />
+} @else if (loading() && employees().length === 0) {
+  <ul class="people-grid" aria-busy="true" aria-label="Loading people">
+    @for (n of skeletons; track n) {
+      <li><ui-skeleton shape="card" /></li>
+    }
+  </ul>
+} @else if (employees().length === 0) {
+  @if (hasFilters()) {
+    <ui-empty-state
+      heading="No one matches"
+      description="Try another name, or clear the filters to see everyone."
+    >
+      <ui-icon uiEmptyStateIcon name="search" />
+      <button uiEmptyStateActions uiButton variant="secondary" type="button" (click)="clearFilters()">
+        Clear filters
       </button>
-
-      <div class="modal-top">
-        <div class="modal-avi" [style.background]="getAvatarColor(emp.firstName + emp.lastName)">
-          {{ getInitials(emp.firstName, emp.lastName) }}
-        </div>
-        <div class="modal-name-block">
-          <p class="modal-name">{{ emp.firstName }} {{ emp.lastName }}</p>
-          <p class="modal-role">{{ emp.jobTitle ?? 'No position' }}</p>
-        </div>
-        <span class="badge" [attr.data-status]="emp.status ?? 'PENDING'">
-          {{ emp.status ?? 'PENDING' }}
-        </span>
-      </div>
-
-      <div class="modal-divider"></div>
-
-      <dl class="modal-fields">
-        <div class="modal-field">
-          <dt>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M3 9h18M3 15h18M9 3v18M15 3v18" />
-            </svg>
-            Department
-          </dt>
-          <dd>{{ emp.department ?? 'Unassigned' }}</dd>
-        </div>
-        <div class="modal-field">
-          <dt>
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <rect x="2" y="7" width="20" height="14" rx="2" />
-              <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-            </svg>
-            Position
-          </dt>
-          <dd>{{ emp.jobTitle ?? 'Unassigned' }}</dd>
-        </div>
-      </dl>
-
+    </ui-empty-state>
+  } @else {
+    <ui-empty-state
+      heading="No people yet"
+      [description]="canManage() ? 'Add the first person to start your directory.' : 'People will appear here once HR adds them.'"
+    >
+      <ui-icon uiEmptyStateIcon name="users" />
       @if (canManage()) {
-        <div class="modal-actions">
-          <a class="modal-profile-btn" [routerLink]="['/staff', emp.id]">
-            View full profile
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M3 8h10M9 4l4 4-4 4" />
-            </svg>
-          </a>
-        </div>
+        <button uiEmptyStateActions uiButton type="button" (click)="toggleAddForm()">
+          <ui-icon name="plus" /> Add person
+        </button>
       }
-    </div>
-  </div>
+    </ui-empty-state>
+  }
+} @else {
+  @if (view() === 'grid') {
+    <ul class="people-grid" aria-label="People">
+      @for (emp of employees(); track emp.id) {
+        <li>
+          <a
+            uiPersonCard
+            [routerLink]="['/people', emp.id]"
+            [name]="fullName(emp)"
+            [position]="emp.jobTitle ?? 'No position'"
+            [department]="emp.department ?? null"
+            [tintKey]="emp.department ?? fullName(emp)"
+          >
+            <ui-status-pill uiPersonCardStatus [status]="asStatus(emp.status)" />
+          </a>
+        </li>
+      }
+    </ul>
+  } @else {
+    <ui-card flush>
+      <ui-data-table caption="People" [rows]="employees()" [trackBy]="trackById" activatable (rowActivate)="openProfile($event)">
+        <ng-container uiColumn="name" header="Name" primary>
+          <ng-template uiCell let-emp>
+            <a class="people-name" [routerLink]="['/people', emp.id]">
+              <ui-avatar [name]="fullName(emp)" [tintKey]="emp.department ?? fullName(emp)" size="sm" decorative />
+              {{ fullName(emp) }}
+            </a>
+          </ng-template>
+        </ng-container>
+        <ng-container uiColumn="position" header="Position">
+          <ng-template uiCell let-emp>{{ emp.jobTitle ?? 'No position' }}</ng-template>
+        </ng-container>
+        <ng-container uiColumn="department" header="Department">
+          <ng-template uiCell let-emp>{{ emp.department ?? 'No department' }}</ng-template>
+        </ng-container>
+        <ng-container uiColumn="status" header="Status">
+          <ng-template uiCell let-emp><ui-status-pill [status]="asStatus(emp.status)" /></ng-template>
+        </ng-container>
+      </ui-data-table>
+    </ui-card>
+  }
+
+  @if (loadError()) {
+    <ui-alert class="people-more-error" tone="danger" heading="More people didn't load">
+      {{ loadError() }} Try again.
+    </ui-alert>
+  }
+
+  <ui-pagination
+    class="people-pagination"
+    variant="load-more"
+    label="More people"
+    itemLabel="people"
+    [page]="pagesLoaded()"
+    [pageSize]="pageSize"
+    [total]="totalElements()"
+    [loading]="loading()"
+    (loadMore)="loadMore()"
+  />
 }
+
+<ng-template #addDrawer>
+  <ui-drawer heading="Add person" description="They join the directory as pending until they're activated.">
+    <form id="staff-add-form" class="add-person-form" novalidate (submit)="onAddSubmit(); $event.preventDefault()">
+      @if (addError()) {
+        <ui-alert tone="danger" heading="The person wasn't added">{{ addError() }}</ui-alert>
+      }
+      <div class="add-person-form__row">
+        <ui-form-field label="First name" required [error]="fieldError(addForm.firstName())">
+          <input uiInput id="staff-add-form-first-name" autocomplete="off" [formField]="addForm.firstName" />
+        </ui-form-field>
+        <ui-form-field label="Last name" required [error]="fieldError(addForm.lastName())">
+          <input uiInput id="staff-add-form-last-name" autocomplete="off" [formField]="addForm.lastName" />
+        </ui-form-field>
+      </div>
+      <ui-form-field label="Work email" required [error]="fieldError(addForm.workEmail())">
+        <input uiInput id="staff-add-form-work-email" type="email" autocomplete="off" [formField]="addForm.workEmail" />
+      </ui-form-field>
+      <ui-form-field label="Position">
+        <select uiSelect id="staff-add-form-position-id" [formField]="addForm.positionId">
+          <option value="">No position yet</option>
+          @for (p of positionsResource.value()?.data ?? []; track p.id) {
+            <option [value]="p.id">{{ p.level }} · {{ p.positionName }}</option>
+          }
+        </select>
+      </ui-form-field>
+      <ui-form-field label="Department">
+        <select uiSelect id="staff-add-form-department-id" [formField]="addForm.departmentId">
+          <option value="">No department yet</option>
+          @for (d of departmentsResource.value()?.data ?? []; track d.id) {
+            <option [value]="d.id">{{ d.departmentName }}</option>
+          }
+        </select>
+      </ui-form-field>
+      <ui-form-field label="Access level" hint="Decides what they can see and change in EMS.">
+        <select uiSelect id="staff-add-form-access-level-id" [formField]="addForm.accessLevelId">
+          <option value="">No access level yet</option>
+          @for (a of accessLevelsResource.value()?.data ?? []; track a.id) {
+            <option [value]="a.id">{{ a.accessLevelName }}</option>
+          }
+        </select>
+      </ui-form-field>
+    </form>
+    <button uiDrawerAction uiButton variant="secondary" type="button" [disabled]="saving()" (click)="toggleAddForm()">
+      Cancel
+    </button>
+    <button uiDrawerAction uiButton type="submit" form="staff-add-form" [loading]="saving()">
+      Add person
+    </button>
+  </ui-drawer>
+</ng-template>
