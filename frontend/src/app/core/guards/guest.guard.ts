@@ -1,16 +1,7 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
-import { Permission } from '../models/permission.model';
+import { AuthService, HOME_URL } from '../services/auth.service';
 
-export const guestGuard: CanActivateFn = () => {
-  const authService = inject(AuthService);
-  const router = inject(Router);
-
-  if (!authService.isAuthenticated()) return true;
-
-  if (authService.hasAnyPermission([Permission.VIEW_ADMIN, Permission.VIEW_MANAGER])) {
-    return router.parseUrl('/dashboard');
-  }
-  return router.parseUrl('/staff');
-};
+/** Sign-in page only for signed-out users; signed-in users go Home. */
+export const guestGuard: CanActivateFn = () =>
+  !inject(AuthService).isAuthenticated() || inject(Router).parseUrl(HOME_URL);

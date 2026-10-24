@@ -1,0 +1,27 @@
+query Me {
+  me {
+    account {
+      id
+      email
+      lastLoginAt
+    }
+    employee {
+      id
+      firstName
+      lastName
+      workEmail
+      status
+      position {
+        positionName
+      }
+      department {
+        id
+        departmentName
+      }
+      accessLevel {
+        accessLevelName
+      }
+    }
+    permissions
+  }
+}

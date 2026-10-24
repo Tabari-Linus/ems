@@ -1,36 +1,15 @@
 import { Injectable, computed, signal } from '@angular/core';
 
-interface JwtPayload {
-  sub: string;
-  permissions: string[];
-  account_id: number;
-  exp: number;
-  iss: string;
-}
-
+/**
+ * Holds the short-lived access token in memory only (never in storage). The token is opaque to
+ * the app: permissions come from the `me` query (SessionStore), not from JWT claims.
+ */
 @Injectable({ providedIn: 'root' })
 export class TokenService {
   private readonly _token = signal('');
 
-  readonly permissions = computed<string[]>(() => {
-    const token = this._token();
-    if (!token) return [];
-    try {
-      return this.decode(token).permissions ?? [];
-    } catch {
-      return [];
-    }
-  });
-
-  readonly isValid = computed(() => {
-    const token = this._token();
-    if (!token) return false;
-    try {
-      return this.decode(token).exp * 1000 > Date.now();
-    } catch {
-      return false;
-    }
-  });
+  /** Whether an access token is held. An expired one is renewed on the next 401. */
+  readonly hasToken = computed(() => this._token() !== '');
 
   set(token: string): void {
     this._token.set(token);
@@ -42,10 +21,5 @@ export class TokenService {
 
   clear(): void {
     this._token.set('');
-  }
-
-  private decode(token: string): JwtPayload {
-    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(atob(base64)) as JwtPayload;
   }
 }
