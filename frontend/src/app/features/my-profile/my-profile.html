@@ -16,7 +16,7 @@
 } @else if (profileResource.error() || !profileResource.value()) {
   <ui-card>
     <ui-error-state
-      kind="server"
+      kind="network"
       [headingLevel]="1"
       heading="We couldn't load your profile"
       description="Check your connection, then try again. If it keeps happening, contact your EMS admin."
